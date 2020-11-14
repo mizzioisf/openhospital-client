@@ -178,7 +178,6 @@ function set_language {
 	if [ -z ${OH_LANGUAGE+x} ]; then
 		OH_LANGUAGE=en
 	fi
-
 	case $OH_LANGUAGE in 
 		en|fr|it|es|pt) 
 			echo "Open Hospital language is set to $OH_LANGUAGE"
@@ -296,7 +295,7 @@ function inizialize_database {
 	# Recreate directory structure
 	rm -rf $POH_PATH/$MYSQL_DATA_DIR
 	mkdir -p $POH_PATH/$MYSQL_DATA_DIR
-	mkdir -p $POH_PATH/var/run/mysql
+	mkdir -p $POH_PATH/var/run/mysqld
 	mkdir -p $POH_PATH/var/log/mysql
 	# Inizialize MySQL
 	echo "Initializing MySQL database on port $MYSQL_PORT..."
@@ -315,7 +314,7 @@ function start_database {
 		exit 2
 	fi
 	# Wait till the MySQL socket file is created
-	while [ -e $POH_PATH/var/run/mysqld/mysql.sock ]; do sleep 1; done
+	while [ -e $POH_PATH/$MYSQL_SOCKET ]; do sleep 1; done
 	# Wait till the MySQL tcp port is open
 	until nc -z $MYSQL_SERVER $MYSQL_PORT; do sleep 1; done
 	echo "MySQL server started! "
@@ -365,7 +364,7 @@ function shutdown_database {
 	echo "Shutting down MySQL... "
 	$POH_PATH/$MYSQL_DIR/bin/mysqladmin --host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root shutdown 2>&1 > /dev/null
 	# Wait till the MySQL socket file is removed
-	while [ -e $POH_PATH/var/run/mysqld/mysql.sock ]; do sleep 1; done
+	while [ -e $POH_PATH/$MYSQL_SOCKET ]; do sleep 1; done
 }
 
 function clean_database {
@@ -419,7 +418,16 @@ while getopts ${OPTSTRING} opt; do
 		set_path;
 		clean_database;
 		restore_database;
+		# checking if data exist
+		mysql_check;
+		config_database;
+		inizialize_database;
+		start_database;
+		import_database;
+        	echo "Done!"
+		exit 0
 		;;
+
 	c)	# clean
         	echo "Cleaning Portable Open Hospital installation..."
 		set_path;
