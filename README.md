@@ -1,4 +1,4 @@
-# Portable Open Hospital - POH
+# Open Hospital Client - POH 
 
 Open Hospital (https://www.open-hospital.org/en/) is a free and open source
 software for healthcare data management. Its portable version (Portable Open
@@ -7,7 +7,7 @@ any computer, keeping the data you have saved. With POH, we also hope to
 reach the goal to make Open Hospital easily installable so that even somebody
 with no experience of Java or MySQL can try or use it.
 
-POH allows to use Open Hospital on a computer, easily move the installation on
+OH allows to use Open Hospital on a computer, easily move the installation on
 another computer or even run it from a USB stick or drive. All you have to do
 is to copy the root installation directory of POH to your favourite path, where
 the program and the data will be kept. POH uses its own version of the Java Virtual
