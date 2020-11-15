@@ -279,7 +279,7 @@ function oh_check_and_go {
 		echo "Warning - OH not found. Do you want to download it? (120 MB)"
 		get_confirmation;
 		read -p "Enter subdirectory for installation (default poh-1.11.0) -> " OH_SUBDIR
-	       	if [ -z $OH_SUBDIR ]; then
+		if [ -z $OH_SUBDIR ]; then
 			OH_SUBDIR="poh-1.11.0"
 			echo "$OH_SUBDIR"
 		fi
@@ -294,6 +294,7 @@ function oh_check_and_go {
 		fi
 		# set new POH_PATH
 		POH_PATH=$POH_PATH/$OH_SUBDIR/
+		POH_PATH_ESCAPED=$(echo $POH_PATH | sed -e 's/\//\\\//g')
 		cd $POH_PATH
 		git pull
 #		./oh.sh
@@ -562,7 +563,6 @@ fi
 echo "Setting up environment..."
 
 set_path;
-
 oh_check_and_go;
 set_path;
 
