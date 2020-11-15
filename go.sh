@@ -556,10 +556,6 @@ if [ $OH_DISTRO = portable ]; then
 	fi
 fi
 
-if [ ! -f ./$SCRIPT_NAME ]; then
-	echo "Error - oh.sh not found in the current PATH. Please cd the directory where POH was unzipped or set up POH_PATH properly."
-	exit 1
-fi
 ######## Environment setup
 
 echo "Setting up environment..."
