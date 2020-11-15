@@ -292,10 +292,12 @@ function oh_check_and_go {
 		if [ ! -d $POH_PATH/$OH_SUBDIR ]; then
 			git clone https://github.com/mizzioisf/openhospital-client $OH_SUBDIR
 		fi
-		cd $POH_PATH/$OH_SUBDIR
+		# set new POH_PATH
+		POH_PATH=$POH_PATH/$OH_SUBDIR
+		cd $POH_PATH/
 		git pull
-		./oh.sh
-		exit 0;
+#		./oh.sh
+#		exit 0;
 fi
 }
 
@@ -581,6 +583,7 @@ fi
 
 echo "Starting Open Hospital - $OH_DISTRO..."
 
+cd $POH_PATH/$OH_DIR
 ######## DICOM setup
 echo "Setting up configuration files..."
 
@@ -631,7 +634,6 @@ java_lib_setup;
 
 echo "Starting Open Hospital..."
 
-cd $POH_PATH/$OH_DIR
 $JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu 2>&1 > /dev/null
 
 echo "Exiting Open Hospital..."
