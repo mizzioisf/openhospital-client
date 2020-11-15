@@ -73,10 +73,10 @@ case $ARCH in
 esac
 
 ######## MySQL Software
-#MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
-#MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
-MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
-MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
+MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
+MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
+#MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
+#MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 EXT="tar.gz"
 
 
