@@ -156,7 +156,8 @@ read -p "(y/n)? " choice
 case "$choice" in 
 	y|Y ) echo "yes";;
 	n|N ) echo "Exiting..."; exit 0;;
-	* ) echo "Invalid choice"; exit 1 ;;
+#	* ) echo "Invalid choice"; exit 1 ;;
+	* ) echo "Default choice";  ;;
 esac
 }
 
