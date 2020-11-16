@@ -2,47 +2,43 @@
 port = MYSQL_PORT
 socket = "OH_PATH_SUBSTITUTE/var/run/mysqld/mysql.sock"  
 
+[mysql] 
+no-auto-rehash
+max_allowed_packet = DICOM_SIZE
+## default_character_set = utf8
+
+[mysqldump] 
+max_allowed_packet = 16M
+
 [mysqld] 
 port = MYSQL_PORT 
+bind-address = localhost
 socket = "OH_PATH_SUBSTITUTE/var/run/mysqld/mysql.sock"
 pid-file = "OH_PATH_SUBSTITUTE/var/run/mysqld/mysql.pid"
 basedir = "OH_PATH_SUBSTITUTE/MYSQL_DISTRO"  
 tmpdir = "OH_PATH_SUBSTITUTE/tmp"  
 datadir = "OH_PATH_SUBSTITUTE/var/lib/mysql" 
-skip-external-locking 
-key_buffer_size = 16M 
-max_allowed_packet = DICOM_SIZE
-table_open_cache = 64
-sort_buffer_size = 512K 
-net_buffer_length = 8K 
-read_buffer_size = 256K 
-read_rnd_buffer_size = 512K 
-myisam_sort_buffer_size = 8M 
-server-id	= 1 
-bind-address = localhost
 general_log_file = "OH_PATH_SUBSTITUTE/var/log/mysql/mysql.log"
 slow_query_log_file = "OH_PATH_SUBSTITUTE/var/log/mysql/mysql-slow-query.log"
 log-error = "OH_PATH_SUBSTITUTE/var/log/mysql/mysql.err.log"
+
+server-id = 1 
+skip-external-locking 
+max_allowed_packet = 16M
+max_connections = 64
+max_user_connections = 64
+thread_cache_size = 64
+
 lower_case_table_names = 1
+table_open_cache = 128
+table_open_cache_instances = 16
+tmp_table_size = 16M
 
-[mysqldump] 
-quick 
-max_allowed_packet = 16M 
+read_buffer_size = 256K 
+read_rnd_buffer_size = 512K 
+join_buffer_size = 256k
+sort_buffer_size = 4M 
 
-[mysql] 
-no-auto-rehash 
-
-[isamchk] 
-key_buffer = 20M 
-sort_buffer_size = 20M 
-read_buffer = 2M 
-write_buffer = 2M 
-
-[myisamchk] 
-key_buffer = 20M 
-sort_buffer_size = 20M 
-read_buffer = 2M 
-write_buffer = 2M 
-
-[mysqlhotcopy] 
-interactive-timeout
+# MyISAM
+myisam_sort_buffer_size = 8M 
+key_buffer_size = 8M 
