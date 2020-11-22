@@ -10,83 +10,9 @@
 /*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `admission`
---
-
-DROP TABLE IF EXISTS `admission`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `admission` (
-  `ADM_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `ADM_IN` int(11) NOT NULL DEFAULT 0,
-  `ADM_TYPE` char(1) NOT NULL DEFAULT 'N',
-  `ADM_WRD_ID_A` char(1) NOT NULL DEFAULT '',
-  `ADM_YPROG` int(11) NOT NULL DEFAULT 0,
-  `ADM_PAT_ID` int(11) NOT NULL DEFAULT 0,
-  `ADM_DATE_ADM` datetime NOT NULL,
-  `ADM_ADMT_ID_A_ADM` varchar(10) NOT NULL DEFAULT '',
-  `ADM_FHU` varchar(50) DEFAULT NULL,
-  `ADM_IN_DIS_ID_A` varchar(10) DEFAULT NULL,
-  `ADM_OUT_DIS_ID_A` varchar(10) DEFAULT NULL,
-  `ADM_OUT_DIS_ID_A_2` varchar(10) DEFAULT NULL,
-  `ADM_OUT_DIS_ID_A_3` varchar(10) DEFAULT NULL,
-  `ADM_OPE_ID_A` varchar(10) DEFAULT NULL,
-  `ADM_DATE_OP` datetime DEFAULT NULL,
-  `ADM_RESOP` varchar(10) DEFAULT NULL,
-  `ADM_DATE_DIS` datetime DEFAULT NULL,
-  `ADM_DIST_ID_A` varchar(10) DEFAULT NULL,
-  `ADM_NOTE` text DEFAULT NULL,
-  `ADM_TRANS` float DEFAULT 0,
-  `ADM_PRG_DATE_VIS` datetime DEFAULT NULL,
-  `ADM_PRG_PTT_ID_A` varchar(10) DEFAULT NULL,
-  `ADM_PRG_DATE_DEL` datetime DEFAULT NULL,
-  `ADM_PRG_DLT_ID_A` char(1) DEFAULT NULL,
-  `ADM_PRG_DRT_ID_A` char(1) DEFAULT NULL,
-  `ADM_PRG_WEIGHT` float DEFAULT NULL,
-  `ADM_PRG_DATE_CTRL1` datetime DEFAULT NULL,
-  `ADM_PRG_DATE_CTRL2` datetime DEFAULT NULL,
-  `ADM_PRG_DATE_ABORT` datetime DEFAULT NULL,
-  `ADM_USR_ID_A` varchar(50) NOT NULL DEFAULT 'admin',
-  `ADM_LOCK` int(11) NOT NULL DEFAULT 0,
-  `ADM_DELETED` char(1) NOT NULL DEFAULT 'N',
-  `ADM_CREATED_BY` varchar(50) DEFAULT NULL,
-  `ADM_CREATED_DATE` datetime DEFAULT NULL,
-  `ADM_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `ADM_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `ADM_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`ADM_ID`),
-  KEY `FK_ADMISSION_DISCHARGETYPE` (`ADM_DIST_ID_A`),
-  KEY `FK_ADMISSION_DELIVERYTYPE` (`ADM_PRG_DLT_ID_A`),
-  KEY `FK_ADMISSION_DELIVERYRESULTTYPE` (`ADM_PRG_DRT_ID_A`),
-  KEY `FK_ADMISSION_ADMISSIONTYPE` (`ADM_ADMT_ID_A_ADM`),
-  KEY `FK_ADMISSION_OPERATION` (`ADM_OPE_ID_A`),
-  KEY `FK_ADMISSION_WARD` (`ADM_WRD_ID_A`),
-  KEY `FK_ADMISSION_PREGNANTTREATMENTTYPE` (`ADM_PRG_PTT_ID_A`),
-  KEY `FK_ADMISSION_IN_DISEASE` (`ADM_IN_DIS_ID_A`),
-  KEY `FK_ADMISSION_OUT_DISEASE1` (`ADM_OUT_DIS_ID_A`),
-  KEY `FK_ADMISSION_OUT_DISEASE2` (`ADM_OUT_DIS_ID_A_2`),
-  KEY `FK_ADMISSION_OUT_DISEASE3` (`ADM_OUT_DIS_ID_A_3`),
-  KEY `FK_ADMISSION_PATIENT` (`ADM_PAT_ID`),
-  CONSTRAINT `FK_ADMISSION_ADMISSIONTYPE` FOREIGN KEY (`ADM_ADMT_ID_A_ADM`) REFERENCES `admissiontype` (`ADMT_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_DELIVERYRESULTTYPE` FOREIGN KEY (`ADM_PRG_DRT_ID_A`) REFERENCES `deliveryresulttype` (`DRT_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_DELIVERYTYPE` FOREIGN KEY (`ADM_PRG_DLT_ID_A`) REFERENCES `deliverytype` (`DLT_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_DISCHARGETYPE` FOREIGN KEY (`ADM_DIST_ID_A`) REFERENCES `dischargetype` (`DIST_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_IN_DISEASE` FOREIGN KEY (`ADM_IN_DIS_ID_A`) REFERENCES `disease` (`DIS_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_OPERATION` FOREIGN KEY (`ADM_OPE_ID_A`) REFERENCES `operation` (`OPE_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_OUT_DISEASE1` FOREIGN KEY (`ADM_OUT_DIS_ID_A`) REFERENCES `disease` (`DIS_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_OUT_DISEASE2` FOREIGN KEY (`ADM_OUT_DIS_ID_A_2`) REFERENCES `disease` (`DIS_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_OUT_DISEASE3` FOREIGN KEY (`ADM_OUT_DIS_ID_A_3`) REFERENCES `disease` (`DIS_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_PATIENT` FOREIGN KEY (`ADM_PAT_ID`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_ADMISSION_PREGNANTTREATMENTTYPE` FOREIGN KEY (`ADM_PRG_PTT_ID_A`) REFERENCES `pregnanttreatmenttype` (`PTT_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_ADMISSION_WARD` FOREIGN KEY (`ADM_WRD_ID_A`) REFERENCES `ward` (`WRD_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=507 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `admission`
@@ -546,27 +472,9 @@ INSERT INTO `admission` VALUES (503,0,'N','C',4628,506,'2020-10-25 00:00:00','I'
 INSERT INTO `admission` VALUES (504,0,'N','F',757,507,'2020-10-31 00:00:00','I',NULL,'39','29',NULL,NULL,NULL,NULL,NULL,'2020-11-01 00:00:00','D',NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin',0,'N',NULL,NULL,NULL,NULL,1);
 INSERT INTO `admission` VALUES (505,0,'N','F',753,508,'2020-10-27 00:00:00','I',NULL,'12','12',NULL,NULL,NULL,NULL,NULL,'2020-11-02 00:00:00','EQ',NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin',0,'N',NULL,NULL,NULL,NULL,1);
 INSERT INTO `admission` VALUES (506,1,'N','I',916,501,'2020-11-19 01:20:25','A',NULL,'106',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin',1,'Y',NULL,NULL,NULL,NULL,1);
+INSERT INTO `admission` VALUES (507,1,'N','I',918,522,'2020-11-22 17:58:14','I',NULL,'58',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'admin',0,'N',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `admission` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `admissiontype`
---
-
-DROP TABLE IF EXISTS `admissiontype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `admissiontype` (
-  `ADMT_ID_A` varchar(10) NOT NULL,
-  `ADMT_DESC` varchar(50) NOT NULL,
-  `ADMT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `ADMT_CREATED_DATE` datetime DEFAULT NULL,
-  `ADMT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `ADMT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `ADMT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`ADMT_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `admissiontype`
@@ -579,27 +487,6 @@ INSERT INTO `admissiontype` VALUES ('I','SELF',NULL,NULL,NULL,NULL,1);
 INSERT INTO `admissiontype` VALUES ('R','REFERRAL',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `admissiontype` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `agetype`
---
-
-DROP TABLE IF EXISTS `agetype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `agetype` (
-  `AT_CODE` varchar(4) NOT NULL DEFAULT '',
-  `AT_FROM` int(11) NOT NULL DEFAULT 0,
-  `AT_TO` int(11) NOT NULL DEFAULT 0,
-  `AT_DESC` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `AT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `AT_CREATED_DATE` datetime DEFAULT NULL,
-  `AT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `AT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `AT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`AT_CODE`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `agetype`
@@ -617,39 +504,11 @@ INSERT INTO `agetype` VALUES ('d5',60,99,'angal.agetype.elderly',NULL,NULL,NULL,
 UNLOCK TABLES;
 
 --
--- Table structure for table `billitems`
---
-
-DROP TABLE IF EXISTS `billitems`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `billitems` (
-  `BLI_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `BLI_ID_BILL` int(11) DEFAULT NULL,
-  `BLI_IS_PRICE` tinyint(1) NOT NULL,
-  `BLI_ID_PRICE` varchar(10) DEFAULT NULL,
-  `BLI_ITEM_DESC` varchar(100) DEFAULT NULL,
-  `BLI_ITEM_AMOUNT` double NOT NULL,
-  `BLI_QTY` int(11) NOT NULL,
-  `BLI_CREATED_BY` varchar(50) DEFAULT NULL,
-  `BLI_CREATED_DATE` datetime DEFAULT NULL,
-  `BLI_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `BLI_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `BLI_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`BLI_ID`),
-  KEY `FK_BILLITEMS_BILLS` (`BLI_ID_BILL`),
-  CONSTRAINT `FK_BILLITEMS_BILLS` FOREIGN KEY (`BLI_ID_BILL`) REFERENCES `bills` (`BLL_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `billitems`
 --
 
 LOCK TABLES `billitems` WRITE;
 /*!40000 ALTER TABLE `billitems` DISABLE KEYS */;
-INSERT INTO `billitems` VALUES (22,7,1,'MED9','Iodin Crystal 100g',0,1,'admin','2020-11-20 00:37:40','admin','2020-11-20 00:37:40',1);
-INSERT INTO `billitems` VALUES (23,7,1,'EXA04.01','4.1 CULTURE AND SENSITIVITY (C&S) FOR HAEMOPHILUS INFUENZA TYPE B',0,1,'admin','2020-11-20 00:37:40','admin','2020-11-20 00:37:40',1);
 INSERT INTO `billitems` VALUES (24,8,1,'MED385','Suture Cutgut Chromic (2/0) RN22230TH',0,4,'admin','2020-11-20 00:38:33','admin','2020-11-20 00:38:33',1);
 INSERT INTO `billitems` VALUES (25,8,1,'MED71','Ketamine 10mg/ml 10ml Vial',0,2,'admin','2020-11-20 00:38:33','admin','2020-11-20 00:38:33',1);
 INSERT INTO `billitems` VALUES (26,8,1,'MED415','Paracetamol 500 MG',0,4,'admin','2020-11-20 00:38:33','admin','2020-11-20 00:38:33',1);
@@ -694,32 +553,13 @@ INSERT INTO `billitems` VALUES (64,20,1,'EXA03.01','3.1 Blood Slide (Malaria)',0
 INSERT INTO `billitems` VALUES (65,21,1,'MED2','Acetic Acid Glacial 1 ltr',0,1,'admin','2020-11-21 22:08:16','admin','2020-11-21 22:08:16',1);
 INSERT INTO `billitems` VALUES (66,21,1,'EXA05.06','5.6 WAYSON',0,1,'admin','2020-11-21 22:08:16','admin','2020-11-21 22:08:16',1);
 INSERT INTO `billitems` VALUES (67,21,0,'','Special service',1,1,'admin','2020-11-21 22:08:16','admin','2020-11-21 22:08:16',1);
+INSERT INTO `billitems` VALUES (68,22,1,'MED111','Bendrofluazide 5mg Tab',0,2,'admin','2020-11-22 02:38:22','admin','2020-11-22 02:38:22',1);
+INSERT INTO `billitems` VALUES (69,22,1,'OPE15','Peritonitis',0,1,'admin','2020-11-22 02:38:22','admin','2020-11-22 02:38:22',1);
+INSERT INTO `billitems` VALUES (70,22,1,'OTH1','Amount per day',0,5,'admin','2020-11-22 02:38:22','admin','2020-11-22 02:38:22',1);
+INSERT INTO `billitems` VALUES (71,23,1,'MED127','Cimetidine 400mg Tab',0,4,'admin','2020-11-22 17:59:12','admin','2020-11-22 17:59:12',1);
+INSERT INTO `billitems` VALUES (72,23,1,'OPE25','uretheral stricture-bougienage',0,1,'admin','2020-11-22 17:59:12','admin','2020-11-22 17:59:12',1);
 /*!40000 ALTER TABLE `billitems` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `billpayments`
---
-
-DROP TABLE IF EXISTS `billpayments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `billpayments` (
-  `BLP_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `BLP_ID_BILL` int(11) DEFAULT NULL,
-  `BLP_DATE` datetime NOT NULL,
-  `BLP_AMOUNT` double NOT NULL,
-  `BLP_USR_ID_A` varchar(50) NOT NULL DEFAULT 'admin',
-  `BLP_CREATED_BY` varchar(50) DEFAULT NULL,
-  `BLP_CREATED_DATE` datetime DEFAULT NULL,
-  `BLP_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `BLP_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `BLP_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`BLP_ID`),
-  KEY `FK_BILLPAYMENTS_BILLS` (`BLP_ID_BILL`),
-  CONSTRAINT `FK_BILLPAYMENTS_BILLS` FOREIGN KEY (`BLP_ID_BILL`) REFERENCES `bills` (`BLL_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `billpayments`
@@ -756,42 +596,11 @@ INSERT INTO `billpayments` VALUES (34,18,'2020-11-21 22:01:47',-200,'admin','adm
 INSERT INTO `billpayments` VALUES (36,19,'2020-11-21 22:02:47',100,'admin','admin','2020-11-21 22:03:16','admin','2020-11-21 22:03:16',1);
 INSERT INTO `billpayments` VALUES (37,19,'2020-11-21 22:03:13',-100,'admin','admin','2020-11-21 22:03:16','admin','2020-11-21 22:03:16',1);
 INSERT INTO `billpayments` VALUES (38,20,'2020-11-21 22:05:23',80,'admin','admin','2020-11-21 22:05:25','admin','2020-11-21 22:05:25',1);
+INSERT INTO `billpayments` VALUES (39,22,'2020-11-22 02:38:10',100,'admin','admin','2020-11-22 02:38:23','admin','2020-11-22 02:38:23',1);
+INSERT INTO `billpayments` VALUES (40,22,'2020-11-22 02:38:15',-120,'admin','admin','2020-11-22 02:38:23','admin','2020-11-22 02:38:23',1);
+INSERT INTO `billpayments` VALUES (41,23,'2020-11-22 17:59:11',250,'admin','admin','2020-11-22 17:59:12','admin','2020-11-22 17:59:12',1);
 /*!40000 ALTER TABLE `billpayments` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `bills`
---
-
-DROP TABLE IF EXISTS `bills`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bills` (
-  `BLL_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `BLL_DATE` datetime NOT NULL,
-  `BLL_UPDATE` datetime NOT NULL,
-  `BLL_IS_LST` tinyint(1) NOT NULL,
-  `BLL_ID_LST` int(11) DEFAULT NULL,
-  `BLL_LST_NAME` varchar(50) DEFAULT NULL,
-  `BLL_IS_PAT` tinyint(1) NOT NULL,
-  `BLL_ID_PAT` int(11) DEFAULT NULL,
-  `BLL_PAT_NAME` varchar(100) DEFAULT NULL,
-  `BLL_STATUS` varchar(1) DEFAULT NULL,
-  `BLL_AMOUNT` double DEFAULT NULL,
-  `BLL_BALANCE` double DEFAULT NULL,
-  `BLL_USR_ID_A` varchar(50) NOT NULL DEFAULT 'admin',
-  `BLL_CREATED_BY` varchar(50) DEFAULT NULL,
-  `BLL_CREATED_DATE` datetime DEFAULT NULL,
-  `BLL_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `BLL_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `BLL_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`BLL_ID`),
-  KEY `FK_BILLS_PATIENT` (`BLL_ID_PAT`),
-  KEY `FK_BILLS_PRICELISTS` (`BLL_ID_LST`),
-  CONSTRAINT `FK_BILLS_PATIENT` FOREIGN KEY (`BLL_ID_PAT`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_BILLS_PRICELISTS` FOREIGN KEY (`BLL_ID_LST`) REFERENCES `pricelists` (`LST_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `bills`
@@ -820,27 +629,10 @@ INSERT INTO `bills` VALUES (18,'2020-11-21 22:00:18','2020-11-21 22:01:47',1,1,'
 INSERT INTO `bills` VALUES (19,'2020-11-21 22:02:01','2020-11-21 22:03:13',1,1,'Basic',1,130,'Otha Duer','O',0,0,'admin',NULL,NULL,'admin','2020-11-21 22:03:16',1);
 INSERT INTO `bills` VALUES (20,'2020-11-21 22:05:03','2020-11-21 22:05:23',1,1,'Basic',1,187,'Bethel Booker','O',0,-80,'admin','admin','2020-11-21 22:05:25','admin','2020-11-21 22:05:25',1);
 INSERT INTO `bills` VALUES (21,'2020-11-21 22:07:15','2020-11-21 22:07:15',1,1,'Basic',1,512,'Enriquetta Millman','O',1,1,'admin','admin','2020-11-21 22:08:16','admin','2020-11-21 22:08:16',1);
+INSERT INTO `bills` VALUES (22,'2020-11-22 02:37:34','2020-11-22 02:38:15',1,1,'Basic',1,521,'Betta Jamison','O',0,20,'admin','admin','2020-11-22 02:38:22','admin','2020-11-22 02:38:22',1);
+INSERT INTO `bills` VALUES (23,'2020-11-22 17:58:46','2020-11-22 17:59:11',1,1,'Basic',1,522,'Harry Colterson','O',0,-250,'admin','admin','2020-11-22 17:59:12','admin','2020-11-22 17:59:12',1);
 /*!40000 ALTER TABLE `bills` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `deliveryresulttype`
---
-
-DROP TABLE IF EXISTS `deliveryresulttype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deliveryresulttype` (
-  `DRT_ID_A` char(1) NOT NULL,
-  `DRT_DESC` varchar(50) NOT NULL,
-  `DRT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `DRT_CREATED_DATE` datetime DEFAULT NULL,
-  `DRT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `DRT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `DRT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`DRT_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `deliveryresulttype`
@@ -857,25 +649,6 @@ INSERT INTO `deliveryresulttype` VALUES ('S','FRESH STILL BIRTH',NULL,NULL,NULL,
 UNLOCK TABLES;
 
 --
--- Table structure for table `deliverytype`
---
-
-DROP TABLE IF EXISTS `deliverytype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deliverytype` (
-  `DLT_ID_A` char(1) NOT NULL,
-  `DLT_DESC` varchar(50) NOT NULL,
-  `DLT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `DLT_CREATED_DATE` datetime DEFAULT NULL,
-  `DLT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `DLT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `DLT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`DLT_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `deliverytype`
 --
 
@@ -888,50 +661,6 @@ INSERT INTO `deliverytype` VALUES ('V','DELIVERY ASSISTED BY VACUUM EXTRACTION',
 UNLOCK TABLES;
 
 --
--- Table structure for table `dicom`
---
-
-DROP TABLE IF EXISTS `dicom`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dicom` (
-  `DM_PAT_ID` int(11) NOT NULL,
-  `DM_DATA` longblob DEFAULT NULL,
-  `DM_FILE_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `DM_FILE_NOME` varchar(255) NOT NULL,
-  `DM_FILE_ACCESSION_NUMBER` varchar(255) DEFAULT NULL,
-  `DM_FILE_INSTITUTION_NAME` varchar(255) DEFAULT NULL,
-  `DM_FILE_PAT_UID` varchar(255) DEFAULT NULL,
-  `DM_FILE_PAT_NAME` varchar(255) DEFAULT NULL,
-  `DM_FILE_PAT_ADDR` varchar(255) DEFAULT NULL,
-  `DM_FILE_PAT_AGE` varchar(255) DEFAULT NULL,
-  `DM_FILE_PAT_SEX` varchar(255) DEFAULT NULL,
-  `DM_FILE_PAT_BIRTHDATE` varchar(255) DEFAULT NULL,
-  `DM_FILE_ST_UID` varchar(255) NOT NULL,
-  `DM_FILE_ST_DATE` datetime DEFAULT NULL,
-  `DM_FILE_ST_DESCR` varchar(255) DEFAULT NULL,
-  `DM_FILE_SER_UID` varchar(255) NOT NULL,
-  `DM_FILE_SER_INST_UID` varchar(255) NOT NULL,
-  `DM_FILE_SER_NUMBER` varchar(255) DEFAULT NULL,
-  `DM_FILE_SER_DESC_COD_SEQ` varchar(255) DEFAULT NULL,
-  `DM_FILE_SER_DATE` datetime DEFAULT NULL,
-  `DM_FILE_SER_DESC` varchar(255) DEFAULT NULL,
-  `DM_FILE_INST_UID` varchar(255) NOT NULL,
-  `DM_FILE_MODALIITY` varchar(255) DEFAULT NULL,
-  `DM_THUMBNAIL` blob DEFAULT NULL,
-  `DM_DCMT_ID` varchar(3) DEFAULT NULL,
-  `DM_CREATED_BY` varchar(50) DEFAULT NULL,
-  `DM_CREATED_DATE` datetime DEFAULT NULL,
-  `DM_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `DM_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `DM_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`DM_FILE_ID`),
-  KEY `FK_DICOM_DICOMTYPE_idx` (`DM_DCMT_ID`),
-  CONSTRAINT `FK_DICOM_DICOMTYPE` FOREIGN KEY (`DM_DCMT_ID`) REFERENCES `dicomtype` (`DCMT_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `dicom`
 --
 
@@ -941,20 +670,6 @@ LOCK TABLES `dicom` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `dicomtype`
---
-
-DROP TABLE IF EXISTS `dicomtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dicomtype` (
-  `DCMT_ID` varchar(3) NOT NULL,
-  `DCMT_DESC` varchar(50) NOT NULL,
-  PRIMARY KEY (`DCMT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `dicomtype`
 --
 
@@ -962,25 +677,6 @@ LOCK TABLES `dicomtype` WRITE;
 /*!40000 ALTER TABLE `dicomtype` DISABLE KEYS */;
 /*!40000 ALTER TABLE `dicomtype` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `dischargetype`
---
-
-DROP TABLE IF EXISTS `dischargetype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dischargetype` (
-  `DIST_ID_A` varchar(10) NOT NULL,
-  `DIST_DESC` varchar(50) NOT NULL,
-  `DIST_CREATED_BY` varchar(50) DEFAULT NULL,
-  `DIST_CREATED_DATE` datetime DEFAULT NULL,
-  `DIST_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `DIST_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `DIST_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`DIST_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `dischargetype`
@@ -994,32 +690,6 @@ INSERT INTO `dischargetype` VALUES ('EQ','NORMAL DISCHARGE',NULL,NULL,NULL,NULL,
 INSERT INTO `dischargetype` VALUES ('ES','ESCAPE',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `dischargetype` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `disease`
---
-
-DROP TABLE IF EXISTS `disease`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `disease` (
-  `DIS_ID_A` varchar(10) NOT NULL,
-  `DIS_DESC` varchar(160) NOT NULL,
-  `DIS_DCL_ID_A` char(2) NOT NULL,
-  `DIS_LOCK` int(11) NOT NULL DEFAULT 0,
-  `DIS_OPD_INCLUDE` int(11) NOT NULL DEFAULT 0,
-  `DIS_IPD_IN_INCLUDE` int(11) NOT NULL DEFAULT 0,
-  `DIS_IPD_OUT_INCLUDE` int(11) NOT NULL DEFAULT 0,
-  `DIS_CREATED_BY` varchar(50) DEFAULT NULL,
-  `DIS_CREATED_DATE` datetime DEFAULT NULL,
-  `DIS_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `DIS_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `DIS_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`DIS_ID_A`),
-  KEY `FK_DISEASE_DISEASETYPE` (`DIS_DCL_ID_A`),
-  CONSTRAINT `FK_DISEASE_DISEASETYPE` FOREIGN KEY (`DIS_DCL_ID_A`) REFERENCES `diseasetype` (`DCL_ID_A`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `disease`
@@ -1048,6 +718,7 @@ INSERT INTO `disease` VALUES ('115','Sleeping sickness','OC',0,1,1,1,NULL,NULL,N
 INSERT INTO `disease` VALUES ('116','Malaria in pregnancy','MP',0,1,1,1,NULL,NULL,NULL,NULL,1);
 INSERT INTO `disease` VALUES ('117','Injuries - (road traffic accident)','NC',0,1,1,1,NULL,NULL,NULL,NULL,1);
 INSERT INTO `disease` VALUES ('12','Anaemia','NC',0,1,1,1,NULL,NULL,NULL,NULL,1);
+INSERT INTO `disease` VALUES ('127','Covid-19','ND',0,1,1,0,'admin','2020-11-22 02:56:26','admin','2020-11-22 02:56:26',1);
 INSERT INTO `disease` VALUES ('13','Dental DISEASE and conditions','NC',0,1,1,1,NULL,NULL,NULL,NULL,1);
 INSERT INTO `disease` VALUES ('14','Diabetes Mellitus','NC',0,1,1,1,NULL,NULL,NULL,NULL,1);
 INSERT INTO `disease` VALUES ('15','Gastro-intestinal DISEASEss (non infective)','NC',1,1,1,1,NULL,NULL,NULL,NULL,1);
@@ -1140,25 +811,6 @@ INSERT INTO `disease` VALUES ('99','Malignant neoplasm of Haemopoetic tissue','N
 UNLOCK TABLES;
 
 --
--- Table structure for table `diseasetype`
---
-
-DROP TABLE IF EXISTS `diseasetype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `diseasetype` (
-  `DCL_ID_A` char(2) NOT NULL,
-  `DCL_DESC` varchar(110) NOT NULL,
-  `DCL_CREATED_BY` varchar(50) DEFAULT NULL,
-  `DCL_CREATED_DATE` datetime DEFAULT NULL,
-  `DCL_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `DCL_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `DCL_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`DCL_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `diseasetype`
 --
 
@@ -1171,31 +823,6 @@ INSERT INTO `diseasetype` VALUES ('ND','1.NOTIFIABLE DISEASES',NULL,NULL,NULL,NU
 INSERT INTO `diseasetype` VALUES ('OC','2.OTHER INFECTIOUS/COMMUNICABLE DISEASES',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `diseasetype` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `exam`
---
-
-DROP TABLE IF EXISTS `exam`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `exam` (
-  `EXA_ID_A` varchar(10) NOT NULL,
-  `EXA_DESC` varchar(100) NOT NULL,
-  `EXA_EXC_ID_A` char(2) NOT NULL,
-  `EXA_PROC` int(11) NOT NULL,
-  `EXA_DEFAULT` varchar(50) DEFAULT NULL,
-  `EXA_LOCK` int(11) NOT NULL DEFAULT 0,
-  `EXA_CREATED_BY` varchar(50) DEFAULT NULL,
-  `EXA_CREATED_DATE` datetime DEFAULT NULL,
-  `EXA_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `EXA_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `EXA_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`EXA_ID_A`),
-  KEY `FK_EXAM_EXAMTYPE` (`EXA_EXC_ID_A`),
-  CONSTRAINT `FK_EXAM_EXAMTYPE` FOREIGN KEY (`EXA_EXC_ID_A`) REFERENCES `examtype` (`EXC_ID_A`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `exam`
@@ -1254,28 +881,6 @@ INSERT INTO `exam` VALUES ('08.01','8.1 OCCULT BLOOD','OC',1,'NEGATIVE',1,NULL,N
 INSERT INTO `exam` VALUES ('URI','URINALYSIS','OT',2,'',1,NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `exam` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `examrow`
---
-
-DROP TABLE IF EXISTS `examrow`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `examrow` (
-  `EXR_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `EXR_EXA_ID_A` varchar(10) NOT NULL,
-  `EXR_DESC` varchar(50) NOT NULL,
-  `EXR_CREATED_BY` varchar(50) DEFAULT NULL,
-  `EXR_CREATED_DATE` datetime DEFAULT NULL,
-  `EXR_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `EXR_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `EXR_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`EXR_ID`),
-  KEY `FK_EXAMROW_EXAM` (`EXR_EXA_ID_A`),
-  CONSTRAINT `FK_EXAMROW_EXAM` FOREIGN KEY (`EXR_EXA_ID_A`) REFERENCES `exam` (`EXA_ID_A`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=213 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `examrow`
@@ -1422,25 +1027,6 @@ INSERT INTO `examrow` VALUES (212,'03.03','HYMENOLEPIS NANA',NULL,NULL,NULL,NULL
 UNLOCK TABLES;
 
 --
--- Table structure for table `examtype`
---
-
-DROP TABLE IF EXISTS `examtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `examtype` (
-  `EXC_ID_A` char(2) NOT NULL,
-  `EXC_DESC` varchar(50) NOT NULL,
-  `EXC_CREATED_BY` varchar(50) DEFAULT NULL,
-  `EXC_CREATED_DATE` datetime DEFAULT NULL,
-  `EXC_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `EXC_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `EXC_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`EXC_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `examtype`
 --
 
@@ -1460,26 +1046,6 @@ INSERT INTO `examtype` VALUES ('SP','STOOLPARASITES',NULL,NULL,NULL,NULL,1);
 INSERT INTO `examtype` VALUES ('UR','URINALYSIS',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `examtype` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `groupmenu`
---
-
-DROP TABLE IF EXISTS `groupmenu`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `groupmenu` (
-  `GM_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `GM_UG_ID_A` varchar(50) NOT NULL DEFAULT '',
-  `GM_MNI_ID_A` varchar(50) NOT NULL DEFAULT '',
-  `GM_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  `GM_CREATED_BY` varchar(50) DEFAULT NULL,
-  `GM_CREATED_DATE` datetime DEFAULT NULL,
-  `GM_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `GM_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`GM_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=139 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `groupmenu`
@@ -1620,23 +1186,6 @@ INSERT INTO `groupmenu` VALUES (138,'admin','worksheet',1,NULL,NULL,NULL,NULL);
 UNLOCK TABLES;
 
 --
--- Table structure for table `help`
---
-
-DROP TABLE IF EXISTS `help`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `help` (
-  `HL_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `HL_MASK` int(11) NOT NULL,
-  `HL_FIELD` int(11) NOT NULL,
-  `HL_LANG` char(2) DEFAULT NULL,
-  `HL_MSG` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`HL_ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `help`
 --
 
@@ -1644,32 +1193,6 @@ LOCK TABLES `help` WRITE;
 /*!40000 ALTER TABLE `help` DISABLE KEYS */;
 /*!40000 ALTER TABLE `help` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `hospital`
---
-
-DROP TABLE IF EXISTS `hospital`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `hospital` (
-  `HOS_ID_A` varchar(10) NOT NULL,
-  `HOS_NAME` varchar(255) NOT NULL,
-  `HOS_ADDR` varchar(255) NOT NULL,
-  `HOS_CITY` varchar(255) NOT NULL,
-  `HOS_TELE` varchar(50) DEFAULT NULL,
-  `HOS_FAX` varchar(50) DEFAULT NULL,
-  `HOS_EMAIL` varchar(50) DEFAULT NULL,
-  `HOS_CURR_COD` varchar(3) DEFAULT NULL,
-  `HOS_LOCK` int(11) NOT NULL DEFAULT 0,
-  `HOS_CREATED_BY` varchar(50) DEFAULT NULL,
-  `HOS_CREATED_DATE` datetime DEFAULT NULL,
-  `HOS_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `HOS_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `HOS_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`HOS_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `hospital`
@@ -1680,53 +1203,6 @@ LOCK TABLES `hospital` WRITE;
 INSERT INTO `hospital` VALUES ('STLUKE','St. Luke HOSPITAL - Angal','P.O. BOX 85 - NEBBI','ANGAL','+256 0472621076','+256 0','angal@ucmb.ug.co.','',1,NULL,NULL,'admin','2020-11-19 02:08:10',1);
 /*!40000 ALTER TABLE `hospital` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `laboratory`
---
-
-DROP TABLE IF EXISTS `laboratory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `laboratory` (
-  `LAB_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LAB_EXA_ID_A` varchar(10) NOT NULL,
-  `LAB_DATE` datetime NOT NULL,
-  `LAB_RES` varchar(50) NOT NULL,
-  `LAB_NOTE` varchar(255) DEFAULT NULL,
-  `LAB_PAT_ID` int(11) DEFAULT NULL,
-  `LAB_PAT_NAME` varchar(100) DEFAULT NULL,
-  `LAB_CROSS1` int(11) DEFAULT NULL,
-  `LAB_CROSS2` int(11) DEFAULT NULL,
-  `LAB_CROSS3` int(11) DEFAULT NULL,
-  `LAB_CROSS4` int(11) DEFAULT NULL,
-  `LAB_CROSS5` int(11) DEFAULT NULL,
-  `LAB_CROSS6` int(11) DEFAULT NULL,
-  `LAB_CROSS7` int(11) DEFAULT NULL,
-  `LAB_CROSS8` int(11) DEFAULT NULL,
-  `LAB_CROSS9` int(11) DEFAULT NULL,
-  `LAB_CROSS10` int(11) DEFAULT NULL,
-  `LAB_CROSS11` int(11) DEFAULT NULL,
-  `LAB_CROSS12` int(11) DEFAULT NULL,
-  `LAB_CROSS13` int(11) DEFAULT NULL,
-  `LAB_LOCK` int(11) NOT NULL DEFAULT 0,
-  `LAB_AGE` int(11) DEFAULT NULL,
-  `LAB_SEX` char(1) DEFAULT NULL,
-  `LAB_MATERIAL` varchar(25) DEFAULT NULL,
-  `LAB_EXAM_DATE` date DEFAULT NULL,
-  `LAB_PAT_INOUT` char(1) DEFAULT NULL,
-  `LAB_CREATED_BY` varchar(50) DEFAULT NULL,
-  `LAB_CREATED_DATE` datetime DEFAULT NULL,
-  `LAB_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `LAB_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `LAB_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`LAB_ID`),
-  KEY `FK_LABORATORY_EXAM` (`LAB_EXA_ID_A`),
-  KEY `FK_LABORATORY_PATIENT` (`LAB_PAT_ID`),
-  CONSTRAINT `FK_LABORATORY_EXAM` FOREIGN KEY (`LAB_EXA_ID_A`) REFERENCES `exam` (`EXA_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_LABORATORY_PATIENT` FOREIGN KEY (`LAB_PAT_ID`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=314 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `laboratory`
@@ -2022,28 +1498,6 @@ INSERT INTO `laboratory` VALUES (313,'04.01','2020-11-21 22:40:40','POSITIVE',NU
 UNLOCK TABLES;
 
 --
--- Table structure for table `laboratoryrow`
---
-
-DROP TABLE IF EXISTS `laboratoryrow`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `laboratoryrow` (
-  `LABR_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LABR_LAB_ID` int(11) NOT NULL,
-  `LABR_DESC` varchar(50) NOT NULL,
-  `LABR_CREATED_BY` varchar(50) DEFAULT NULL,
-  `LABR_CREATED_DATE` datetime DEFAULT NULL,
-  `LABR_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `LABR_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `LABR_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`LABR_ID`),
-  KEY `FK_LABORATORYROW_LABORATORY` (`LABR_LAB_ID`),
-  CONSTRAINT `FK_LABORATORYROW_LABORATORY` FOREIGN KEY (`LABR_LAB_ID`) REFERENCES `laboratory` (`LAB_ID`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `laboratoryrow`
 --
 
@@ -2095,25 +1549,6 @@ INSERT INTO `laboratoryrow` VALUES (75,177,'G.LAMBLIA','admin','2020-11-21 01:40
 UNLOCK TABLES;
 
 --
--- Table structure for table `log`
---
-
-DROP TABLE IF EXISTS `log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `log` (
-  `LOG_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LOG_TYPE` int(11) NOT NULL,
-  `LOG_CLASS` varchar(100) DEFAULT NULL,
-  `LOG_METHOD` varchar(64) DEFAULT NULL,
-  `LOG_TIME` datetime NOT NULL,
-  `LOG_MESS` varchar(1024) DEFAULT NULL,
-  `LOG_USER` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`LOG_ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `log`
 --
 
@@ -2123,30 +1558,6 @@ LOCK TABLES `log` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `malnutritioncontrol`
---
-
-DROP TABLE IF EXISTS `malnutritioncontrol`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `malnutritioncontrol` (
-  `MLN_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `MLN_DATE_SUPP` datetime NOT NULL,
-  `MNL_DATE_CONF` datetime DEFAULT NULL,
-  `MLN_ADM_ID` int(11) NOT NULL,
-  `MLN_HEIGHT` float NOT NULL,
-  `MLN_WEIGHT` float NOT NULL,
-  `MLN_LOCK` int(11) NOT NULL DEFAULT 0,
-  `MLN_CREATED_BY` varchar(50) DEFAULT NULL,
-  `MLN_CREATED_DATE` datetime DEFAULT NULL,
-  `MLN_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `MLN_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `MLN_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`MLN_ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `malnutritioncontrol`
 --
 
@@ -2154,35 +1565,6 @@ LOCK TABLES `malnutritioncontrol` WRITE;
 /*!40000 ALTER TABLE `malnutritioncontrol` DISABLE KEYS */;
 /*!40000 ALTER TABLE `malnutritioncontrol` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `medicaldsr`
---
-
-DROP TABLE IF EXISTS `medicaldsr`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `medicaldsr` (
-  `MDSR_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `MDSR_MDSRT_ID_A` char(1) NOT NULL,
-  `MDSR_CODE` varchar(5) NOT NULL,
-  `MDSR_DESC` varchar(100) NOT NULL,
-  `MDSR_MIN_STOCK_QTI` float NOT NULL DEFAULT 0,
-  `MDSR_INI_STOCK_QTI` float NOT NULL DEFAULT 0,
-  `MDSR_PCS_X_PCK` int(11) NOT NULL,
-  `MDSR_IN_QTI` float NOT NULL DEFAULT 0,
-  `MDSR_OUT_QTI` float NOT NULL DEFAULT 0,
-  `MDSR_LOCK` int(11) NOT NULL DEFAULT 0,
-  `MDSR_CREATED_BY` varchar(50) DEFAULT NULL,
-  `MDSR_CREATED_DATE` datetime DEFAULT NULL,
-  `MDSR_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `MDSR_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `MDSR_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`MDSR_ID`),
-  UNIQUE KEY `MDSR_MDSRT_ID_A` (`MDSR_MDSRT_ID_A`,`MDSR_DESC`),
-  CONSTRAINT `FK_MEDICALDSR_MEDICALDSRTYPE` FOREIGN KEY (`MDSR_MDSRT_ID_A`) REFERENCES `medicaldsrtype` (`MDSRT_ID_A`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=419 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `medicaldsr`
@@ -2609,31 +1991,6 @@ INSERT INTO `medicaldsr` VALUES (418,'D','','Coartem 5-15kg',0,0,0,493,0,0,NULL,
 UNLOCK TABLES;
 
 --
--- Table structure for table `medicaldsrlot`
---
-
-DROP TABLE IF EXISTS `medicaldsrlot`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `medicaldsrlot` (
-  `LT_ID_A` varchar(50) NOT NULL,
-  `LT_MDSR_ID` int(11) NOT NULL,
-  `LT_PREP_DATE` datetime NOT NULL,
-  `LT_DUE_DATE` datetime NOT NULL,
-  `LT_COST` double DEFAULT NULL,
-  `LT_LOCK` int(11) NOT NULL DEFAULT 0,
-  `LT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `LT_CREATED_DATE` datetime DEFAULT NULL,
-  `LT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `LT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `LT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`LT_ID_A`),
-  KEY `FK_MEDICALDSRLOT_MEDICALDSR_idx` (`LT_MDSR_ID`),
-  CONSTRAINT `FK_MEDICALDSRLOT_MEDICALDSR` FOREIGN KEY (`LT_MDSR_ID`) REFERENCES `medicaldsr` (`MDSR_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `medicaldsrlot`
 --
 
@@ -2674,39 +2031,6 @@ INSERT INTO `medicaldsrlot` VALUES ('AUTO_I_98',98,'2020-11-12 00:00:00','2025-1
 INSERT INTO `medicaldsrlot` VALUES ('AUTO_M_98',98,'2020-11-12 00:00:00','2025-11-12 00:00:00',NULL,0,NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `medicaldsrlot` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `medicaldsrstockmov`
---
-
-DROP TABLE IF EXISTS `medicaldsrstockmov`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `medicaldsrstockmov` (
-  `MMV_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `MMV_MDSR_ID` int(11) NOT NULL,
-  `MMV_WRD_ID_A` char(1) DEFAULT NULL,
-  `MMV_MMVT_ID_A` varchar(10) NOT NULL,
-  `MMV_LT_ID_A` varchar(50) DEFAULT NULL,
-  `MMV_DATE` datetime NOT NULL,
-  `MMV_QTY` float NOT NULL DEFAULT 0,
-  `MMV_FROM` int(11) DEFAULT NULL,
-  `MMV_LOCK` int(11) NOT NULL DEFAULT 0,
-  `MMV_REFNO` varchar(50) NOT NULL DEFAULT '',
-  `MMV_CREATED_BY` varchar(50) DEFAULT NULL,
-  `MMV_CREATED_DATE` datetime DEFAULT NULL,
-  `MMV_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `MMV_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `MMV_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`MMV_ID`),
-  KEY `FK_MEDICALDSRSTOCKMOV_MEDICALDSR` (`MMV_MDSR_ID`),
-  KEY `FK_MEDICALDSRSTOCKMOV_MEDICALDSRSTOCKMOVTYPE` (`MMV_MMVT_ID_A`),
-  KEY `FK_MEDICALDSRSTOCKMOV_WARD` (`MMV_WRD_ID_A`),
-  CONSTRAINT `FK_MEDICALDSRSTOCKMOV_MEDICALDSR` FOREIGN KEY (`MMV_MDSR_ID`) REFERENCES `medicaldsr` (`MDSR_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_MEDICALDSRSTOCKMOV_MEDICALDSRSTOCKMOVTYPE` FOREIGN KEY (`MMV_MMVT_ID_A`) REFERENCES `medicaldsrstockmovtype` (`MMVT_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_MEDICALDSRSTOCKMOV_WARD` FOREIGN KEY (`MMV_WRD_ID_A`) REFERENCES `ward` (`WRD_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `medicaldsrstockmov`
@@ -2752,26 +2076,6 @@ INSERT INTO `medicaldsrstockmov` VALUES (36,418,NULL,'charge','58306907258846826
 UNLOCK TABLES;
 
 --
--- Table structure for table `medicaldsrstockmovtype`
---
-
-DROP TABLE IF EXISTS `medicaldsrstockmovtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `medicaldsrstockmovtype` (
-  `MMVT_ID_A` varchar(10) NOT NULL,
-  `MMVT_DESC` varchar(50) NOT NULL,
-  `MMVT_TYPE` char(2) NOT NULL,
-  `MMVT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `MMVT_CREATED_DATE` datetime DEFAULT NULL,
-  `MMVT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `MMVT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `MMVT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`MMVT_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `medicaldsrstockmovtype`
 --
 
@@ -2781,43 +2085,6 @@ INSERT INTO `medicaldsrstockmovtype` VALUES ('charge','Charge','+',NULL,NULL,NUL
 INSERT INTO `medicaldsrstockmovtype` VALUES ('discharge','Discharge','-',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `medicaldsrstockmovtype` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `medicaldsrstockmovward`
---
-
-DROP TABLE IF EXISTS `medicaldsrstockmovward`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `medicaldsrstockmovward` (
-  `MMVN_ID` int(10) NOT NULL AUTO_INCREMENT,
-  `MMVN_WRD_ID_A` char(1) NOT NULL,
-  `MMVN_DATE` datetime NOT NULL,
-  `MMVN_IS_PATIENT` tinyint(1) NOT NULL,
-  `MMVN_PAT_ID` int(11) DEFAULT NULL,
-  `MMVN_PAT_AGE` smallint(6) DEFAULT NULL,
-  `MMVN_PAT_WEIGHT` float DEFAULT NULL,
-  `MMVN_DESC` varchar(100) NOT NULL,
-  `MMVN_MDSR_ID` varchar(100) NOT NULL,
-  `MMVN_MDSR_QTY` float NOT NULL,
-  `MMVN_MDSR_UNITS` varchar(10) NOT NULL,
-  `MMVN_CREATED_BY` varchar(50) DEFAULT NULL,
-  `MMVN_WRD_ID_A_FROM` varchar(1) DEFAULT NULL,
-  `MMVN_WRD_ID_A_TO` varchar(1) DEFAULT NULL,
-  `MMVN_LT_ID` varchar(50) DEFAULT NULL,
-  `MMVN_CREATED_DATE` datetime DEFAULT NULL,
-  `MMVN_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `MMVN_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `MMVN_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`MMVN_ID`) USING BTREE,
-  KEY `FK_MEDICALDSRSTOCKMOVWARD_WARD_idx` (`MMVN_WRD_ID_A`),
-  KEY `FK_MEDICALDSRSTOCKMOVWARD_PATIENT_idx` (`MMVN_PAT_ID`),
-  KEY `FK_MEDICALDSRSTOCKMOVWARD_LOT_idx` (`MMVN_LT_ID`),
-  CONSTRAINT `FK_MEDICALDSRSTOCKMOVWARD_LOT` FOREIGN KEY (`MMVN_LT_ID`) REFERENCES `medicaldsrlot` (`LT_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_MEDICALDSRSTOCKMOVWARD_PATIENT` FOREIGN KEY (`MMVN_PAT_ID`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_MEDICALDSRSTOCKMOVWARD_WARD` FOREIGN KEY (`MMVN_WRD_ID_A`) REFERENCES `ward` (`WRD_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `medicaldsrstockmovward`
@@ -2832,25 +2099,6 @@ INSERT INTO `medicaldsrstockmovward` VALUES (3,'C','2020-11-20 00:22:26',1,489,2
 UNLOCK TABLES;
 
 --
--- Table structure for table `medicaldsrtype`
---
-
-DROP TABLE IF EXISTS `medicaldsrtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `medicaldsrtype` (
-  `MDSRT_ID_A` char(1) NOT NULL,
-  `MDSRT_DESC` varchar(30) DEFAULT NULL,
-  `MDSRT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `MDSRT_CREATED_DATE` datetime DEFAULT NULL,
-  `MDSRT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `MDSRT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `MDSRT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`MDSRT_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `medicaldsrtype`
 --
 
@@ -2862,34 +2110,6 @@ INSERT INTO `medicaldsrtype` VALUES ('L','Laboratory',NULL,NULL,NULL,NULL,1);
 INSERT INTO `medicaldsrtype` VALUES ('S','Surgery',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `medicaldsrtype` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `medicaldsrward`
---
-
-DROP TABLE IF EXISTS `medicaldsrward`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `medicaldsrward` (
-  `MDSRWRD_WRD_ID_A` char(1) NOT NULL,
-  `MDSRWRD_MDSR_ID` int(11) NOT NULL,
-  `MDSRWRD_IN_QTI` float DEFAULT 0,
-  `MDSRWRD_OUT_QTI` float DEFAULT 0,
-  `MDSRWRD_LT_ID_A` varchar(50) NOT NULL,
-  `MDSRWRD_CREATED_BY` varchar(50) DEFAULT NULL,
-  `MDSRWRD_CREATED_DATE` datetime DEFAULT NULL,
-  `MDSRWRD_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `MDSRWRD_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `MDSRWRD_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`MDSRWRD_WRD_ID_A`,`MDSRWRD_MDSR_ID`,`MDSRWRD_LT_ID_A`),
-  KEY `FK_MEDICALDSRWARD_WARD_idx` (`MDSRWRD_WRD_ID_A`),
-  KEY `FK_MEDICALDSRWARD_MEDICALDSR_idx` (`MDSRWRD_MDSR_ID`),
-  KEY `FK_MEDICALDSRWARD_MEDICALDSRLOT_idx` (`MDSRWRD_LT_ID_A`),
-  CONSTRAINT `FK_MEDICALDSRWARD_MEDICALDSR` FOREIGN KEY (`MDSRWRD_MDSR_ID`) REFERENCES `medicaldsr` (`MDSR_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_MEDICALDSRWARD_MEDICALDSRLOT` FOREIGN KEY (`MDSRWRD_LT_ID_A`) REFERENCES `medicaldsrlot` (`LT_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_MEDICALDSRWARD_WARD` FOREIGN KEY (`MDSRWRD_WRD_ID_A`) REFERENCES `ward` (`WRD_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `medicaldsrward`
@@ -2909,27 +2129,6 @@ INSERT INTO `medicaldsrward` VALUES ('I',415,1000,0,'AUTO_I_415',NULL,NULL,NULL,
 INSERT INTO `medicaldsrward` VALUES ('M',98,70,0,'AUTO_M_98',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `medicaldsrward` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `menuitem`
---
-
-DROP TABLE IF EXISTS `menuitem`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `menuitem` (
-  `MNI_ID_A` varchar(50) NOT NULL DEFAULT '',
-  `MNI_BTN_LABEL` varchar(50) NOT NULL DEFAULT '',
-  `MNI_LABEL` varchar(50) NOT NULL DEFAULT '',
-  `MNI_TOOLTIP` varchar(100) DEFAULT NULL,
-  `MNI_SHORTCUT` char(1) DEFAULT NULL,
-  `MNI_SUBMENU` varchar(50) NOT NULL DEFAULT '',
-  `MNI_CLASS` varchar(100) NOT NULL DEFAULT '',
-  `MNI_IS_SUBMENU` char(1) NOT NULL DEFAULT 'N',
-  `MNI_POSITION` int(10) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`MNI_ID_A`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `menuitem`
@@ -3033,48 +2232,6 @@ INSERT INTO `menuitem` VALUES ('btnopdeditoperation','angal.opd.operation','anga
 INSERT INTO `menuitem` VALUES ('worksheet','angal.menu.btn.worksheet','angal.menu.worksheet','x','W','main','org.isf.visits.gui.VisitView','N',8);
 /*!40000 ALTER TABLE `menuitem` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `opd`
---
-
-DROP TABLE IF EXISTS `opd`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `opd` (
-  `OPD_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `OPD_DATE` datetime NOT NULL,
-  `OPD_NEW_PAT` char(1) NOT NULL DEFAULT 'N',
-  `OPD_DATE_VIS` date NOT NULL,
-  `OPD_PROG_YEAR` int(11) NOT NULL,
-  `OPD_SEX` char(1) NOT NULL,
-  `OPD_AGE` int(11) NOT NULL DEFAULT 0,
-  `OPD_DIS_ID_A` varchar(10) DEFAULT NULL,
-  `OPD_DIS_ID_A_2` varchar(10) DEFAULT NULL,
-  `OPD_DIS_ID_A_3` varchar(10) DEFAULT NULL,
-  `OPD_REFERRAL_FROM` varchar(1) DEFAULT NULL,
-  `OPD_REFERRAL_TO` varchar(1) DEFAULT NULL,
-  `OPD_NOTE` text NOT NULL,
-  `OPD_PAT_ID` int(11) DEFAULT NULL,
-  `OPD_USR_ID_A` varchar(50) NOT NULL DEFAULT 'admin',
-  `OPD_LOCK` int(11) NOT NULL DEFAULT 0,
-  `OPD_CREATED_BY` varchar(50) DEFAULT NULL,
-  `OPD_DATE_NEXT_VIS` datetime DEFAULT NULL,
-  `OPD_CREATED_DATE` datetime DEFAULT NULL,
-  `OPD_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `OPD_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `OPD_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`OPD_ID`),
-  KEY `FK_OPD_DISEASE` (`OPD_DIS_ID_A`),
-  KEY `FK_OPD_DISEASE_2` (`OPD_DIS_ID_A_2`),
-  KEY `FK_OPD_DISEASE_3` (`OPD_DIS_ID_A_3`),
-  KEY `FK_OPD_PATIENT` (`OPD_PAT_ID`),
-  CONSTRAINT `FK_OPD_DISEASE` FOREIGN KEY (`OPD_DIS_ID_A`) REFERENCES `disease` (`DIS_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_OPD_DISEASE_2` FOREIGN KEY (`OPD_DIS_ID_A_2`) REFERENCES `disease` (`DIS_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_OPD_DISEASE_3` FOREIGN KEY (`OPD_DIS_ID_A_3`) REFERENCES `disease` (`DIS_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_OPD_PATIENT` FOREIGN KEY (`OPD_PAT_ID`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=393 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `opd`
@@ -3462,33 +2619,11 @@ INSERT INTO `opd` VALUES (389,'2020-11-21 21:57:29','N','2020-11-21',381,'M',57,
 INSERT INTO `opd` VALUES (390,'2020-11-21 21:59:04','N','2020-11-21',382,'F',3,'87',NULL,NULL,'','','',519,'admin',0,'admin',NULL,'2020-11-21 21:59:04','admin','2020-11-21 21:59:04',1);
 INSERT INTO `opd` VALUES (391,'2020-11-21 22:43:25','N','2020-11-21',383,'M',12,'82','68',NULL,'','','',217,'admin',0,'admin',NULL,'2020-11-21 22:43:25','admin','2020-11-21 22:43:25',1);
 INSERT INTO `opd` VALUES (392,'2020-11-21 23:10:38','N','2020-11-21',384,'F',40,'101','84',NULL,'','','',271,'admin',0,'admin',NULL,'2020-11-21 23:10:38','admin','2020-11-21 23:10:38',1);
+INSERT INTO `opd` VALUES (393,'2020-11-22 02:35:47','N','2020-11-22',385,'M',0,'13','12',NULL,'','','',520,'admin',0,'admin',NULL,'2020-11-22 02:35:47','admin','2020-11-22 02:35:47',1);
+INSERT INTO `opd` VALUES (394,'2020-11-22 02:37:09','N','2020-11-22',386,'F',10,'88',NULL,NULL,'','','',521,'admin',0,'admin',NULL,'2020-11-22 02:37:09','admin','2020-11-22 02:37:09',1);
+INSERT INTO `opd` VALUES (395,'2020-11-22 17:58:09','N','2020-11-22',387,'M',61,'33','58',NULL,'','','',522,'admin',0,'admin',NULL,'2020-11-22 17:58:09','admin','2020-11-22 17:58:09',1);
 /*!40000 ALTER TABLE `opd` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `operation`
---
-
-DROP TABLE IF EXISTS `operation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `operation` (
-  `OPE_ID_A` varchar(10) NOT NULL,
-  `OPE_OCL_ID_A` char(2) NOT NULL,
-  `OPE_DESC` varchar(50) NOT NULL,
-  `OPE_STAT` int(11) NOT NULL DEFAULT 0,
-  `OPE_FOR` char(1) DEFAULT '1' COMMENT '''1'' = OPD/IPD, ''2'' = IPD only, ''3'' = OPD only',
-  `OPE_LOCK` int(11) NOT NULL DEFAULT 0,
-  `OPE_CREATED_BY` varchar(50) DEFAULT NULL,
-  `OPE_CREATED_DATE` datetime DEFAULT NULL,
-  `OPE_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `OPE_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `OPE_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`OPE_ID_A`),
-  KEY `FK_OPERATION_OPERATIONTYPE` (`OPE_OCL_ID_A`),
-  CONSTRAINT `FK_OPERATION_OPERATIONTYPE` FOREIGN KEY (`OPE_OCL_ID_A`) REFERENCES `operationtype` (`OCL_ID_A`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `operation`
@@ -3551,33 +2686,6 @@ INSERT INTO `operation` VALUES ('9','OB','Incomplete abortion',1,'1',0,NULL,NULL
 UNLOCK TABLES;
 
 --
--- Table structure for table `operationrow`
---
-
-DROP TABLE IF EXISTS `operationrow`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `operationrow` (
-  `OPER_ID_A` int(11) NOT NULL AUTO_INCREMENT,
-  `OPER_ID` varchar(11) NOT NULL,
-  `OPER_PRESCRIBER` varchar(150) NOT NULL,
-  `OPER_RESULT` varchar(250) NOT NULL,
-  `OPER_OPDATE` datetime NOT NULL,
-  `OPER_REMARKS` varchar(250) NOT NULL,
-  `OPER_ADMISSION_ID` int(11) DEFAULT 0,
-  `OPER_OPD_ID` int(11) DEFAULT 0,
-  `OPER_BILL_ID` int(11) DEFAULT 0,
-  `OPER_TRANS_UNIT` float DEFAULT 0,
-  `OPER_CREATED_BY` varchar(50) DEFAULT NULL,
-  `OPER_CREATED_DATE` datetime DEFAULT NULL,
-  `OPER_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `OPER_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `OPER_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`OPER_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `operationrow`
 --
 
@@ -3585,26 +2693,6 @@ LOCK TABLES `operationrow` WRITE;
 /*!40000 ALTER TABLE `operationrow` DISABLE KEYS */;
 /*!40000 ALTER TABLE `operationrow` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `operationtype`
---
-
-DROP TABLE IF EXISTS `operationtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `operationtype` (
-  `OCL_ID_A` char(2) NOT NULL,
-  `OCL_DESC` varchar(50) NOT NULL,
-  `OCL_TYPE` varchar(20) NOT NULL DEFAULT 'MAJOR',
-  `OCL_CREATED_BY` varchar(50) DEFAULT NULL,
-  `OCL_CREATED_DATE` datetime DEFAULT NULL,
-  `OCL_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `OCL_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `OCL_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`OCL_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `operationtype`
@@ -3620,51 +2708,6 @@ INSERT INTO `operationtype` VALUES ('OR','ORTHOPEDICAL','MAJOR',NULL,NULL,NULL,N
 INSERT INTO `operationtype` VALUES ('OS','OTHERS: SKIN AND SUBCUTANEOUS','MAJOR',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `operationtype` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `patient`
---
-
-DROP TABLE IF EXISTS `patient`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `patient` (
-  `PAT_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PAT_FNAME` varchar(50) NOT NULL,
-  `PAT_SNAME` varchar(50) NOT NULL,
-  `PAT_NAME` varchar(100) DEFAULT NULL,
-  `PAT_BDATE` date DEFAULT NULL,
-  `PAT_AGE` int(11) NOT NULL DEFAULT 0,
-  `PAT_AGETYPE` varchar(50) NOT NULL DEFAULT '',
-  `PAT_SEX` char(1) NOT NULL,
-  `PAT_ADDR` varchar(50) DEFAULT NULL,
-  `PAT_CITY` varchar(50) NOT NULL,
-  `PAT_NEXT_KIN` varchar(50) DEFAULT NULL,
-  `PAT_TELE` varchar(50) DEFAULT NULL,
-  `PAT_MOTH_NAME` varchar(50) NOT NULL DEFAULT '',
-  `PAT_MOTH` char(1) DEFAULT NULL,
-  `PAT_FATH_NAME` varchar(50) NOT NULL DEFAULT '',
-  `PAT_FATH` char(1) DEFAULT NULL,
-  `PAT_LEDU` char(1) DEFAULT NULL,
-  `PAT_ESTA` char(1) DEFAULT NULL,
-  `PAT_PTOGE` char(1) DEFAULT NULL,
-  `PAT_NOTE` text DEFAULT NULL,
-  `PAT_DELETED` char(1) NOT NULL DEFAULT 'N',
-  `PAT_LOCK` int(11) NOT NULL DEFAULT 0,
-  `PAT_BTYPE` varchar(15) NOT NULL DEFAULT 'Unknown',
-  `PAT_TAXCODE` varchar(30) DEFAULT '',
-  `PAT_TIMESTAMP` timestamp NOT NULL DEFAULT current_timestamp(),
-  `PAT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `PAT_CREATED_DATE` datetime DEFAULT NULL,
-  `PAT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `PAT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `PAT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  `PAT_PROFESSION` varchar(50) NOT NULL DEFAULT 'unknown',
-  `PAT_MAR_STAT` varchar(50) NOT NULL DEFAULT 'unknown',
-  `PROFILE_PHOTO_ID` int(11) DEFAULT NULL,
-  PRIMARY KEY (`PAT_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=520 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `patient`
@@ -4144,22 +3187,11 @@ INSERT INTO `patient` VALUES (516,'Genna','Susterlind','Genna Susterlind','1975-
 INSERT INTO `patient` VALUES (517,'Maria','Njoko','Maria Njoko','2001-03-19',19,'','F','Mongi Road 56','West Kurtika','','+2434\\334','','U','','U',NULL,'U','U','','N',0,'AB+','','2020-11-21 02:29:57','admin','2020-11-21 03:29:57','admin','2020-11-21 03:29:57',1,'unknown','married',NULL);
 INSERT INTO `patient` VALUES (518,'Jeremy','Lindon','Jeremy Lindon','1963-06-20',57,'','M','Stenton Plaza 151','Misurel','','+394252422','','U','','U',NULL,'U','U','','N',0,'B-','','2020-11-21 20:56:24','admin','2020-11-21 21:56:24','admin','2020-11-21 21:56:24',1,'unknown','married',NULL);
 INSERT INTO `patient` VALUES (519,'Jeanna','Rickember','Jeanna Rickember','2017-10-30',3,'','F','Lavon Road 62','Justin','','+2243143213','','U','','U',NULL,'U','U','','N',0,'B+','','2020-11-21 20:58:52','admin','2020-11-21 21:58:52','admin','2020-11-21 21:58:52',1,'unknown','unknown',NULL);
+INSERT INTO `patient` VALUES (520,'Rochester','Lenny','Rochester Lenny','2020-11-01',0,'','M','Letterman St. 512','Warengton','','+005199944','','U','','U',NULL,'U','U','','N',0,'A-','','2020-11-22 01:34:49','admin','2020-11-22 02:34:49','admin','2020-11-22 02:34:49',1,'unknown','single',NULL);
+INSERT INTO `patient` VALUES (521,'Betta','Jamison','Betta Jamison','2010-11-03',10,'','F','Kinney Rd. 43','Kensington','','+39','','U','','U',NULL,'U','U','','N',0,'Unknown','','2020-11-22 01:36:53','admin','2020-11-22 02:36:53','admin','2020-11-22 02:36:53',1,'unknown','unknown',NULL);
+INSERT INTO `patient` VALUES (522,'Harry','Colterson','Harry Colterson','1959-02-14',61,'','M','Westeman St. 12','Ottey','','+912314411','','U','','U',NULL,'U','U','','N',0,'A-','','2020-11-22 16:57:57','admin','2020-11-22 17:57:57','admin','2020-11-22 17:57:57',1,'unknown','divorced',NULL);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `patient_profile_photo`
---
-
-DROP TABLE IF EXISTS `patient_profile_photo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `patient_profile_photo` (
-  `PAT_PROFILE_PHOTO_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PAT_PHOTO` blob DEFAULT NULL,
-  PRIMARY KEY (`PAT_PROFILE_PHOTO_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `patient_profile_photo`
@@ -4172,42 +3204,6 @@ INSERT INTO `patient_profile_photo` VALUES (2,'ˇÿˇ‡\0JFIF\0\0\0\0\0\0ˇ€\0C\
 INSERT INTO `patient_profile_photo` VALUES (3,'ˇÿˇ‡\0JFIF\0\0\0\0\0\0ˇ€\0C\0		\n\r\Z\Z $.\' \",#(7),01444\'9=82<.342ˇ€\0C			\r\r2!!22222222222222222222222222222222222222222222222222ˇ¿\0\0†\0†\"\0ˇƒ\0\0\0\0\0\0\0\0\0\0\0	\nˇƒ\0µ\0\0\0}\0!1AQa\"q2Åë°#B±¡R—$3brÇ	\n\Z%&\'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzÉÑÖÜáàâäíìîïñóòôö¢£§•¶ß®©™≤≥¥µ∂∑∏π∫¬√ƒ≈∆«»… “”‘’÷◊ÿŸ⁄·‚„‰ÂÊÁËÈÍÒÚÛÙıˆ˜¯˘˙ˇƒ\0\0\0\0\0\0\0\0	\nˇƒ\0µ\0\0w\0!1AQaq\"2ÅBë°±¡	#3Rbr—\n$4·%Ò\Z&\'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzÇÉÑÖÜáàâäíìîïñóòôö¢£§•¶ß®©™≤≥¥µ∂∑∏π∫¬√ƒ≈∆«»… “”‘’÷◊ÿŸ⁄‚„‰ÂÊÁËÈÍÚÛÙıˆ˜¯˘˙ˇ⁄\0\0\0?\0ÚßI	œ4ãÊpM_\n1ÛSJ)<WSr{8îùd‡ÛNˆ˜´¡c\"ú∞©‚•4¸…kÃÃ.r•€(5†ËN9\"Ä2Ejù–ö◊Bñ…\0è∆çå:’ˇ\0ó”öR™WÅÕIVFkG&q⁄öQ‘gö“(6‡ı®ÿc≠R≤W\'r†IyŒ)n[m[Œ–ZS˜≤8¨•‰]äÕø•!âˆÇ:Uì…≈.\n(KAYÚDÁÉMHZº√ö8€Õ4§ê“)~û¥ÑJ;’ÃË8•`	…©M°_»§Q»Õ7+@–)å†0•›µD´‹∏†7^\rFx8ø49*:PπÆ_=ˆNßV\0s…®‰ûj@sÕ&π]√t+:c“h$∞≈	û˝*SîÑ≠‘w›NFM5N*@xÕ7\085rm;0LëáÀUú˛unIL\03Tÿ„úTÀT+c¡Ê§UœQ»¶#»•.sÅﬁü¯Jµ«awäîÖÉP6@£yY∑ÆÉµ¥Ü‚@¶2ê∏4¯úìMëÛM97∏\'m∆sCdHIfúÃ\nåS÷‚∑P^&êÄz”O:R|ÿ»™N{á∫[Ubrz\n\ZúzböHQéı1mÏMàÇ·¿ßH\né)ÌÇΩy®¡∆95I9u+aWpNhÁæ)‰ÒäjØ9?ïíäª”ÿp|änÓ~î>Ì\'QŒiF“‘LU‰í\rDƒ˘ò\"ûX\'#•Ü2hª∞–{P8<é)§ìÛîª∑ı)ªË¬…\nŒ;S˜qIÄÇ2\r_#oF&ÆÆ*èñòIîºQº»£íŒ√ΩêØÛ-3ZåÊî6=Í\\:1_@Õ&3ÍE.G4+“i≠.;¢…nw\Z7+SDçπ2:äçN«Z—›j%fJƒZè …€äVléh\n†©JÓ˜	XV Q∆3ú˚SßrëNmlÅ\nåwSùÄ‡sQÆrEÚsÈSÀ†ﬁÇ∑»¶ëûîÑ‰‰fúòûjî[∞+uwé‘a∫Áä%`(›ÅOë&—>h\\èJåÙŒ;R¿JM$4ÿÏÕ0\r≠ì“ë\\ìO,\nëﬁ¢/[É∞és…¶\04†ÄqIû{UÕ\'∞-{‘É\n0z”r?\ZWç»Õ&¢ñ£Lµ»8°Œ8ö`”\\‰t≈SªVÆ!À0üµ@Êô¸‹è∆ï˙ı©tÙ–a8=)Po9&î˝ﬂj`™qi…26êj<n„´œ4ˆ (8•Ú» ÖÊï}M#GZ‹8˝iè•Öp£ê)1¡„≠Å‚ö¿û:T©jÓF†Ó\"•\"òÄÉNeœ\"©´Ë\Z_A6„ëLß3£‹úsMjµ†±¶¸˚P…ÉÇiC$w´¡ecúgﬁ≥iﬂQ¢∞¿50êÌ©Æ-÷1ëÇ}™°cüjWèB√±-œÈJÿ¿ı§8Õ!„©.mD«ÏÀöë°¬T∂∞©Ã€Ü)¶Ø®’—\\í»•$c\0–Ys⁄òsör’â¶«`®≈Ü0ÕHK\03C.@‚é^¡∞	8§QÇi3ÉäP¨FOJóı\Z◊QçÖl“ñ„9…§»ÒLÔ“¶WORV¨ò\0sÕ≤µ\Zë‘”âÖ6ùäCNO“öNi€Ü)π˘á°9ƒAÅåR∆ÃçëC\Zj‰µmÍ«ryß%jº2h ÁöLv•∂\Z‘∫WöLÜÇp3FF9™≥J‰7aﬁV;”A∆GJB˝ÖÛ¶£\'©J¬‚§·p1öåõû)èj§“›	∑}Hy¶â21FI4–ßnÍ¨CcYè•;Œ‹\0\"ê‡”x#ÅS$⁄∫\Zv±c“ú§`ÉM†˙÷woRõO≠<éïÎÕ9âË*µµ–ì£ST\ZvNﬁî¿H§›ÿ«=4ŒA=ÈO<“ØZI&Ìq?!2OZcÉú”ÿ„öB	\\÷æœóQs>ÖñRO&ò«g\'öq%õ&£f…¡®ú_02E\\å”Ad\'∏•8≈!›∫©  ¬Ωÿò‘»éjnpyßgÆ\r+∂äΩÜ9 ‡\Zz7Ó»¬	<“Ü¿‹.Æ6–√ñSFWÅO-è≠\n€®K_\"=ÓÌﬁáÁ•\0yßÄ\nú\nµ÷Ëwhè<bóy∆;Q¥ÈJœ®]17ˆ§Îﬂäq≈ ‰‘JÿÏ8})Ä÷óµ&i:n◊eÆ£sûº“‰tÕ\0¶d})&–ﬁ˙rS>µ…jY]]Üp(qV≠ÿç˜\"@r8©§\rÜ≈rqﬁ©∆‚Ù#9dÉJr\niÊ•r«b¥`_#äkd”ôBé¥õ≥Cñ…ÖöÿOΩ÷ó†‚êußØ-äª.[‹ùFı˙”∑*y4∆#¶jZ∫Ä‰ı•-Å@ÈÎMNiF=Y\\ê7LäF!çGû∏4†ÕSZ\r$9±éiÄêiKÉ¡ÎBÚ‹‘)Yr…êßØΩ4ÄiÌ¡‚£=3TﬂP–Öß$Á4¢‰”÷ÿsGŸAÈM)nÑ‰ÜÉ‘R}°∫ììRΩ∂ÏH÷ÑhiÓ≈7Ì\'oi¢~)‚‹cöz⁄ån8©ªatàö~8¶,Á8∆jS\0c◊,vÉi=È8Çv+ôç/⁄6‡bûaµ7»yßÀÓé˛A%—#÷£Û≤9ÎR}õÈÀiëëG-—Wâ\Z‹60iﬁÙÛ:SL‚ív—ªÁw£œ\'Ω8€úu§˚89&ı+D óûiDƒ5(Ñg÷ú-¿‘È∞µg8§ÛAˇ\0 Ù—Çx™VZ	]üˇŸ');
 /*!40000 ALTER TABLE `patient_profile_photo` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `patientexamination`
---
-
-DROP TABLE IF EXISTS `patientexamination`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `patientexamination` (
-  `PEX_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PEX_DATE` datetime NOT NULL,
-  `PEX_PAT_ID` int(11) NOT NULL,
-  `PEX_HEIGHT` int(11) DEFAULT NULL COMMENT 'Height in cm',
-  `PEX_WEIGHT` double DEFAULT NULL COMMENT 'Weight in Kg',
-  `PEX_AP_MIN` int(11) DEFAULT NULL COMMENT 'Blood Pressure MIN in mmHg',
-  `PEX_AP_MAX` int(11) DEFAULT NULL COMMENT 'Blood Pressure MAX in mmHg',
-  `PEX_HR` int(11) DEFAULT NULL COMMENT 'Heart Rate in APm',
-  `PEX_TEMP` double DEFAULT NULL COMMENT 'Temperature in ¬∞C',
-  `PEX_SAT` double DEFAULT NULL COMMENT 'Saturation in %',
-  `PEX_HGT` int(3) DEFAULT NULL COMMENT 'Hemo Glucose Test',
-  `PEX_DIURESIS` int(11) DEFAULT NULL COMMENT 'Daily Urine Volume in ml',
-  `PEX_DIURESIS_DESC` varchar(45) DEFAULT NULL COMMENT 'Diuresis: physiological, oliguria, anuria, fequent, nocturia, stranguria, hematuria, pyuria',
-  `PEX_BOWEL_DESC` varchar(45) DEFAULT NULL COMMENT 'Bowel Function: regular, irregular, constipation, diarrheal',
-  `PEX_RR` int(11) DEFAULT NULL COMMENT 'Respiratory rate in bpm',
-  `PEX_AUSC` varchar(50) DEFAULT NULL COMMENT 'Auscultation: normal, wheezes, rhonchi, crackles, stridor, bronchial',
-  `PEX_NOTE` varchar(300) DEFAULT NULL,
-  `PEX_CREATED_BY` varchar(50) DEFAULT NULL,
-  `PEX_CREATED_DATE` datetime DEFAULT NULL,
-  `PEX_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `PEX_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `PEX_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`PEX_ID`),
-  KEY `PEX_PAT_ID` (`PEX_PAT_ID`),
-  CONSTRAINT `FK_PATIENTEXAMINATION_PATIENT` FOREIGN KEY (`PEX_PAT_ID`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `patientexamination`
@@ -4230,35 +3226,9 @@ INSERT INTO `patientexamination` VALUES (13,'2020-11-21 03:33:07',301,172,71,NUL
 INSERT INTO `patientexamination` VALUES (14,'2020-11-21 03:36:31',219,167,46.2,50,80,60,36,98,80,100,'physiological',NULL,20,NULL,'',NULL,NULL,NULL,NULL,1);
 INSERT INTO `patientexamination` VALUES (15,'2020-11-21 21:56:53',518,173,83.9,80,120,85,NULL,97.9,80,100,'physiological','irregular',20,'bronchial','',NULL,NULL,NULL,NULL,1);
 INSERT INTO `patientexamination` VALUES (16,'2020-11-21 22:42:51',217,180,75.3,NULL,NULL,63,36.1,97.6,83,100,'physiological','constipation',23,'wheezes','',NULL,NULL,NULL,NULL,1);
+INSERT INTO `patientexamination` VALUES (17,'2020-11-22 02:35:05',520,171,69.9,80,120,60,36,98,80,100,'oliguria','diarrheal',NULL,'crackles','',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `patientexamination` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `patientvaccine`
---
-
-DROP TABLE IF EXISTS `patientvaccine`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `patientvaccine` (
-  `PAV_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PAV_YPROG` int(11) NOT NULL,
-  `PAV_DATE` datetime NOT NULL,
-  `PAV_PAT_ID` int(11) NOT NULL,
-  `PAV_VAC_ID_A` varchar(10) NOT NULL,
-  `PAV_LOCK` int(11) NOT NULL DEFAULT 0,
-  `PAV_CREATED_BY` varchar(50) DEFAULT NULL,
-  `PAV_CREATED_DATE` datetime DEFAULT NULL,
-  `PAV_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `PAV_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `PAV_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`PAV_ID`),
-  KEY `FK_PATIENTVACCINE_PATIENT` (`PAV_PAT_ID`),
-  KEY `FK_PATIENTVACCINE_VACCINE` (`PAV_VAC_ID_A`),
-  CONSTRAINT `FK_PATIENTVACCINE_PATIENT` FOREIGN KEY (`PAV_PAT_ID`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_PATIENTVACCINE_VACCINE` FOREIGN KEY (`PAV_VAC_ID_A`) REFERENCES `vaccine` (`VAC_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `patientvaccine`
@@ -4284,27 +3254,9 @@ INSERT INTO `patientvaccine` VALUES (15,15,'2020-11-21 02:05:03',269,'12',0,'adm
 INSERT INTO `patientvaccine` VALUES (16,16,'2020-11-21 02:05:11',131,'4',0,'admin','2020-11-21 02:05:21','admin','2020-11-21 02:05:21',1);
 INSERT INTO `patientvaccine` VALUES (17,17,'2020-11-21 02:05:23',227,'9',0,'admin','2020-11-21 02:05:46','admin','2020-11-21 02:05:46',1);
 INSERT INTO `patientvaccine` VALUES (18,18,'2020-11-21 03:30:08',459,'3',0,'admin','2020-11-21 03:30:19','admin','2020-11-21 03:30:19',1);
+INSERT INTO `patientvaccine` VALUES (19,19,'2020-11-22 17:59:23',520,'5',0,'admin','2020-11-22 17:59:32','admin','2020-11-22 17:59:32',1);
 /*!40000 ALTER TABLE `patientvaccine` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `pregnanttreatmenttype`
---
-
-DROP TABLE IF EXISTS `pregnanttreatmenttype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pregnanttreatmenttype` (
-  `PTT_ID_A` varchar(10) NOT NULL,
-  `PTT_DESC` varchar(50) NOT NULL,
-  `PTT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `PTT_CREATED_DATE` datetime DEFAULT NULL,
-  `PTT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `PTT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `PTT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`PTT_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `pregnanttreatmenttype`
@@ -4323,28 +3275,6 @@ INSERT INTO `pregnanttreatmenttype` VALUES ('S2','SECOND DOSE WITH SP',NULL,NULL
 UNLOCK TABLES;
 
 --
--- Table structure for table `pricelists`
---
-
-DROP TABLE IF EXISTS `pricelists`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pricelists` (
-  `LST_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `LST_CODE` varchar(7) NOT NULL,
-  `LST_NAME` varchar(50) NOT NULL,
-  `LST_DESC` varchar(100) NOT NULL,
-  `LST_CURRENCY` varchar(10) NOT NULL,
-  `LST_CREATED_BY` varchar(50) DEFAULT NULL,
-  `LST_CREATED_DATE` datetime DEFAULT NULL,
-  `LST_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `LST_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `LST_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`LST_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `pricelists`
 --
 
@@ -4353,31 +3283,6 @@ LOCK TABLES `pricelists` WRITE;
 INSERT INTO `pricelists` VALUES (1,'LIST001','Basic','Basic price list','',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `pricelists` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `prices`
---
-
-DROP TABLE IF EXISTS `prices`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `prices` (
-  `PRC_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PRC_LST_ID` int(11) NOT NULL,
-  `PRC_GRP` char(3) NOT NULL,
-  `PRC_ITEM` varchar(10) NOT NULL,
-  `PRC_DESC` varchar(100) NOT NULL,
-  `PRC_PRICE` double NOT NULL,
-  `PRC_CREATED_BY` varchar(50) DEFAULT NULL,
-  `PRC_CREATED_DATE` datetime DEFAULT NULL,
-  `PRC_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `PRC_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `PRC_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`PRC_ID`),
-  KEY `FK_PRICES_PRICELISTS` (`PRC_LST_ID`),
-  CONSTRAINT `FK_PRICES_PRICELISTS` FOREIGN KEY (`PRC_LST_ID`) REFERENCES `pricelists` (`LST_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=517 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `prices`
@@ -4905,31 +3810,6 @@ INSERT INTO `prices` VALUES (516,1,'OTH','1','Amount per day',0,NULL,NULL,NULL,N
 UNLOCK TABLES;
 
 --
--- Table structure for table `pricesothers`
---
-
-DROP TABLE IF EXISTS `pricesothers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pricesothers` (
-  `OTH_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `OTH_CODE` varchar(10) NOT NULL,
-  `OTH_DESC` varchar(100) NOT NULL,
-  `OTH_OPD_INCLUDE` int(11) NOT NULL DEFAULT 0,
-  `OTH_IPD_INCLUDE` int(11) NOT NULL DEFAULT 0,
-  `OTH_DAILY` int(11) NOT NULL DEFAULT 0,
-  `OTH_DISCHARGE` int(11) DEFAULT 0,
-  `OTH_UNDEFINED` int(11) DEFAULT 0,
-  `OTH_CREATED_BY` varchar(50) DEFAULT NULL,
-  `OTH_CREATED_DATE` datetime DEFAULT NULL,
-  `OTH_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `OTH_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `OTH_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`OTH_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `pricesothers`
 --
 
@@ -4938,27 +3818,6 @@ LOCK TABLES `pricesothers` WRITE;
 INSERT INTO `pricesothers` VALUES (1,'OTH001','Amount per day',0,1,1,0,0,NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `pricesothers` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `sms`
---
-
-DROP TABLE IF EXISTS `sms`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sms` (
-  `SMS_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SMS_DATE` timestamp NOT NULL DEFAULT current_timestamp(),
-  `SMS_DATE_SCHED` datetime NOT NULL,
-  `SMS_NUMBER` varchar(45) NOT NULL,
-  `SMS_TEXT` varchar(160) NOT NULL,
-  `SMS_DATE_SENT` datetime DEFAULT NULL,
-  `SMS_USER` varchar(50) NOT NULL DEFAULT 'admin',
-  `SMS_MOD` varchar(45) NOT NULL DEFAULT 'smsmanager',
-  `SMS_MOD_ID` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`SMS_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `sms`
@@ -4970,32 +3829,6 @@ LOCK TABLES `sms` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `supplier`
---
-
-DROP TABLE IF EXISTS `supplier`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `supplier` (
-  `SUP_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `SUP_NAME` varchar(100) NOT NULL,
-  `SUP_ADDRESS` varchar(150) DEFAULT NULL,
-  `SUP_TAXCODE` varchar(50) DEFAULT NULL,
-  `SUP_PHONE` varchar(20) DEFAULT NULL,
-  `SUP_FAX` varchar(20) DEFAULT NULL,
-  `SUP_EMAIL` varchar(100) DEFAULT NULL,
-  `SUP_NOTE` varchar(200) DEFAULT NULL,
-  `SUP_DELETED` char(1) DEFAULT 'N',
-  `SUP_CREATED_BY` varchar(50) DEFAULT NULL,
-  `SUP_CREATED_DATE` datetime DEFAULT NULL,
-  `SUP_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `SUP_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `SUP_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`SUP_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `supplier`
 --
 
@@ -5005,39 +3838,6 @@ INSERT INTO `supplier` VALUES (1,'JMS',NULL,NULL,NULL,NULL,NULL,NULL,'N',NULL,NU
 INSERT INTO `supplier` VALUES (2,'Enterpise Limited','Sesame Strett - 73149 New Harrington 23','','+22.243454252','+22.243454252','info@enterprise.com','','N','admin','2020-11-20 00:23:58','admin','2020-11-20 00:23:58',1);
 /*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `therapies`
---
-
-DROP TABLE IF EXISTS `therapies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `therapies` (
-  `THR_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `THR_PAT_ID` int(11) NOT NULL,
-  `THR_STARTDATE` datetime NOT NULL,
-  `THR_ENDDATE` datetime NOT NULL,
-  `THR_MDSR_ID` int(11) NOT NULL,
-  `THR_QTY` double NOT NULL,
-  `THR_UNT_ID` int(11) NOT NULL,
-  `THR_FREQINDAY` int(11) NOT NULL,
-  `THR_FREQINPRD` int(11) NOT NULL,
-  `THR_NOTE` text DEFAULT NULL,
-  `THR_NOTIFY` tinyint(1) NOT NULL DEFAULT 0,
-  `THR_SMS` tinyint(1) NOT NULL DEFAULT 0,
-  `THR_CREATED_BY` varchar(50) DEFAULT NULL,
-  `THR_CREATED_DATE` datetime DEFAULT NULL,
-  `THR_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `THR_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `THR_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`THR_ID`),
-  KEY `FK_THERAPIES_PATIENT` (`THR_PAT_ID`),
-  KEY `FK_THERAPIES_MDSR` (`THR_MDSR_ID`),
-  CONSTRAINT `FK_THERAPIES_MDSR` FOREIGN KEY (`THR_MDSR_ID`) REFERENCES `medicaldsr` (`MDSR_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_THERAPIES_PATIENT` FOREIGN KEY (`THR_PAT_ID`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `therapies`
@@ -5052,29 +3852,6 @@ INSERT INTO `therapies` VALUES (3,161,'2020-11-20 14:27:46','2021-02-12 14:27:46
 UNLOCK TABLES;
 
 --
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
-  `US_ID_A` varchar(50) NOT NULL DEFAULT '',
-  `US_UG_ID_A` varchar(50) NOT NULL DEFAULT '',
-  `US_PASSWD` varchar(60) NOT NULL DEFAULT '',
-  `US_DESC` varchar(128) DEFAULT NULL,
-  `US_CREATED_BY` varchar(50) DEFAULT NULL,
-  `US_CREATED_DATE` datetime DEFAULT NULL,
-  `US_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `US_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `US_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`US_ID_A`),
-  KEY `FK_USER_USERGROUP` (`US_UG_ID_A`),
-  CONSTRAINT `FK_USER_USERGROUP` FOREIGN KEY (`US_UG_ID_A`) REFERENCES `usergroup` (`UG_ID_A`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `user`
 --
 
@@ -5086,25 +3863,6 @@ INSERT INTO `user` VALUES ('guest','guest','$2a$10$b0WlANdaNV7Ukn/klFGt3.euZ7PaH
 UNLOCK TABLES;
 
 --
--- Table structure for table `usergroup`
---
-
-DROP TABLE IF EXISTS `usergroup`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `usergroup` (
-  `UG_ID_A` varchar(50) NOT NULL DEFAULT '',
-  `UG_DESC` varchar(128) DEFAULT NULL,
-  `UG_CREATED_BY` varchar(50) DEFAULT NULL,
-  `UG_CREATED_DATE` datetime DEFAULT NULL,
-  `UG_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `UG_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `UG_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`UG_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `usergroup`
 --
 
@@ -5114,29 +3872,6 @@ INSERT INTO `usergroup` VALUES ('admin','USER with all the privileges',NULL,NULL
 INSERT INTO `usergroup` VALUES ('guest','Read Only Users',NULL,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `usergroup` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `vaccine`
---
-
-DROP TABLE IF EXISTS `vaccine`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `vaccine` (
-  `VAC_ID_A` varchar(10) NOT NULL,
-  `VAC_DESC` varchar(50) NOT NULL,
-  `VAC_VACT_ID_A` char(1) NOT NULL,
-  `VAC_LOCK` int(11) NOT NULL DEFAULT 0,
-  `VAC_CREATED_BY` varchar(50) DEFAULT NULL,
-  `VAC_CREATED_DATE` datetime DEFAULT NULL,
-  `VAC_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `VAC_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `VAC_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`VAC_ID_A`),
-  KEY `FK_VACCINE_VACCINETYPE` (`VAC_VACT_ID_A`),
-  CONSTRAINT `FK_VACCINE_VACCINETYPE` FOREIGN KEY (`VAC_VACT_ID_A`) REFERENCES `vaccinetype` (`VACT_ID_A`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `vaccine`
@@ -5166,25 +3901,6 @@ INSERT INTO `vaccine` VALUES ('9','MEASLES','C',0,NULL,NULL,NULL,NULL,0);
 UNLOCK TABLES;
 
 --
--- Table structure for table `vaccinetype`
---
-
-DROP TABLE IF EXISTS `vaccinetype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `vaccinetype` (
-  `VACT_ID_A` char(1) NOT NULL,
-  `VACT_DESC` varchar(50) NOT NULL,
-  `VACT_CREATED_BY` varchar(50) DEFAULT NULL,
-  `VACT_CREATED_DATE` datetime DEFAULT NULL,
-  `VACT_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `VACT_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `VACT_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`VACT_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `vaccinetype`
 --
 
@@ -5197,23 +3913,6 @@ INSERT INTO `vaccinetype` VALUES ('P','Pregnant',NULL,NULL,NULL,NULL,0);
 UNLOCK TABLES;
 
 --
--- Table structure for table `version`
---
-
-DROP TABLE IF EXISTS `version`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `version` (
-  `VER_MAJOR` int(11) NOT NULL,
-  `VER_MINOR` int(11) NOT NULL,
-  `VER_SOURCE` longblob DEFAULT NULL,
-  `VER_DATE` datetime NOT NULL,
-  `VER_CURRENT` char(1) NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`VER_MAJOR`,`VER_MINOR`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `version`
 --
 
@@ -5221,35 +3920,6 @@ LOCK TABLES `version` WRITE;
 /*!40000 ALTER TABLE `version` DISABLE KEYS */;
 /*!40000 ALTER TABLE `version` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `visits`
---
-
-DROP TABLE IF EXISTS `visits`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `visits` (
-  `VST_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `VST_PAT_ID` int(11) NOT NULL,
-  `VST_DATE` datetime NOT NULL,
-  `VST_NOTE` text DEFAULT NULL,
-  `VST_SMS` tinyint(1) DEFAULT 0,
-  `VST_CREATED_BY` varchar(50) DEFAULT NULL,
-  `VST_CREATED_DATE` datetime DEFAULT NULL,
-  `VST_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `VST_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `VST_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  `VST_WRD_ID_A` char(1) DEFAULT NULL,
-  `VST_DURATION` int(11) DEFAULT NULL,
-  `VST_SERVICE` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`VST_ID`),
-  KEY `FK_VISITS_PATIENT` (`VST_PAT_ID`),
-  KEY `FK_VISITS_WARD` (`VST_WRD_ID_A`),
-  CONSTRAINT `FK_VISITS_PATIENT` FOREIGN KEY (`VST_PAT_ID`) REFERENCES `patient` (`PAT_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_VISITS_WARD` FOREIGN KEY (`VST_WRD_ID_A`) REFERENCES `ward` (`WRD_ID_A`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `visits`
@@ -5268,37 +3938,9 @@ INSERT INTO `visits` VALUES (8,83,'2020-11-21 02:04:43',NULL,0,'admin','2020-11-
 INSERT INTO `visits` VALUES (9,299,'2020-11-21 02:04:43',NULL,0,'admin','2020-11-21 02:04:58','admin','2020-11-21 02:04:58',1,'F',0,'');
 INSERT INTO `visits` VALUES (10,54,'2020-11-21 02:22:51',NULL,0,'admin','2020-11-21 02:23:14','admin','2020-11-21 02:23:14',1,'C',180,'');
 INSERT INTO `visits` VALUES (11,373,'2020-11-22 22:05:45',NULL,0,'admin','2020-11-21 22:06:13','admin','2020-11-21 22:06:13',1,'F',120,'');
+INSERT INTO `visits` VALUES (12,97,'2020-11-23 02:37:13',NULL,0,'admin','2020-11-22 02:37:30','admin','2020-11-22 02:37:30',1,'F',30,'');
 /*!40000 ALTER TABLE `visits` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `ward`
---
-
-DROP TABLE IF EXISTS `ward`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ward` (
-  `WRD_ID_A` char(1) NOT NULL,
-  `WRD_NAME` varchar(50) NOT NULL,
-  `WRD_TELE` varchar(50) DEFAULT NULL,
-  `WRD_FAX` varchar(50) DEFAULT NULL,
-  `WRD_EMAIL` varchar(50) DEFAULT NULL,
-  `WRD_NBEDS` int(11) NOT NULL,
-  `WRD_NQUA_NURS` int(11) NOT NULL,
-  `WRD_NDOC` int(11) NOT NULL,
-  `WRD_IS_PHARMACY` tinyint(1) NOT NULL DEFAULT 1,
-  `WRD_IS_MALE` tinyint(1) NOT NULL DEFAULT 1,
-  `WRD_IS_FEMALE` tinyint(1) NOT NULL DEFAULT 1,
-  `WRD_LOCK` int(11) NOT NULL DEFAULT 0,
-  `WRD_CREATED_BY` varchar(50) DEFAULT NULL,
-  `WRD_CREATED_DATE` datetime DEFAULT NULL,
-  `WRD_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
-  `WRD_LAST_MODIFIED_DATE` datetime DEFAULT NULL,
-  `WRD_ACTIVE` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`WRD_ID_A`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ward`
@@ -5306,20 +3948,19 @@ CREATE TABLE `ward` (
 
 LOCK TABLES `ward` WRITE;
 /*!40000 ALTER TABLE `ward` DISABLE KEYS */;
-INSERT INTO `ward` VALUES ('C','CHILDREN WARD','219','','',35,18,1,1,1,1,2,NULL,NULL,NULL,NULL,1);
-INSERT INTO `ward` VALUES ('F','FEMALE WARD','218','','',41,15,1,1,1,1,2,NULL,NULL,NULL,NULL,1);
-INSERT INTO `ward` VALUES ('I','MALE WARD','210','','',53,14,1,1,1,1,1,NULL,NULL,NULL,NULL,1);
-INSERT INTO `ward` VALUES ('M','MATERNITY WARD','211','','',67,19,1,1,0,1,1,NULL,NULL,NULL,NULL,1);
+INSERT INTO `ward` VALUES ('C','CHILDREN WARD','219','','',35,18,2,1,1,1,3,NULL,NULL,'admin','2020-11-22 02:41:08',1);
+INSERT INTO `ward` VALUES ('F','FEMALE WARD','218','','',41,15,4,1,0,1,5,NULL,NULL,'admin','2020-11-22 02:45:20',1);
+INSERT INTO `ward` VALUES ('I','MALE WARD','210','','',53,14,4,1,1,0,3,NULL,NULL,'admin','2020-11-22 02:45:11',1);
+INSERT INTO `ward` VALUES ('M','MATERNITY WARD','211','','',67,19,4,1,0,1,2,NULL,NULL,'admin','2020-11-22 02:45:40',1);
 /*!40000 ALTER TABLE `ward` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-21 23:10:54
+-- Dump completed on 2020-11-22 17:59:43
