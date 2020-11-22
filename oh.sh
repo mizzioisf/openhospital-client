@@ -232,7 +232,7 @@ if [ ! -x $JAVA_BIN ]; then
 		get_confirmation;
 		# Downloading openjdk binaries
 		echo "Downloading $JAVA_DISTRO..."
-		wget $JAVA_URL/$JAVA_DISTRO.tar.gz
+		wget -P $POH_PATH/ $JAVA_URL/$JAVA_DISTRO.tar.gz
 	fi
 	echo "Unpacking $JAVA_DISTRO..."
 	tar xf $JAVA_DISTRO.tar.gz
@@ -261,7 +261,7 @@ if [ ! -d "$POH_PATH/$MYSQL_DIR" ]; then
 		get_confirmation;
 		# Downloading mysql binary
 		echo "Downloading $MYSQL_DIR..."
-		wget $MYSQL_URL/$MYSQL_DIR.$EXT
+		wget -P $POH_PATH/ $MYSQL_URL/$MYSQL_DIR.$EXT
 	fi
 	echo "Unpacking $MYSQL_DIR..."
 	tar xf $MYSQL_DIR.$EXT
