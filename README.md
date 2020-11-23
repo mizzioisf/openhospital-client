@@ -18,7 +18,7 @@ The Linux version has been tested on different distributions and versions,
 including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 20.04 x64 (64bit).
 The Windows version has been tested on Windows 10.
 
-# Running POH - Ultra Quickstart
+# Running POH - Ultra quickstart
 
 on Linux:
 
