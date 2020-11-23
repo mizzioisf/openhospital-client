@@ -21,7 +21,8 @@ The Windows version has been tested on Windows 10.
 # Running POH - Ultra Quickstart
 
 on Linux:
-bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
+
+ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 
 # Running POH - Quickstart
 
