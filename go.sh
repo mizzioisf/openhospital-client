@@ -73,7 +73,7 @@ read -p "(y/n)? " choice
 case "$choice" in 
 	y|Y ) echo "yes";;
 	n|N ) echo "Exiting..."; exit 0;;
-	* ) echo "Invalid choice"; exit 1 ;;
+	* ) echo "Invalid choice. Exiting."; exit 1 ;;
 esac
 }
 
@@ -96,7 +96,7 @@ function oh_check_and_go {
 		if [ -z $OH_SUBDIR_TMP ]; then
 			echo "Using $OH_SUBDIR"
 		else
-			OH_SUBIDR=$OH_SUBDIR_TMP
+			OH_SUBDIR=$OH_SUBDIR_TMP
 		fi
 		# Downloading oh
 		echo "Downloading Open Hospital"
