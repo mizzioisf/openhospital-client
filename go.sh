@@ -92,9 +92,11 @@ function oh_check_and_go {
 	if [ ! -f "$POH_PATH/$OH_DIR/bin/OH-gui.jar" ]; then
 		echo "Warning - OH not found in current dir. Do you want to download it? (120 MB)"
 		get_confirmation;
-		read -p "Enter subdirectory for installation (default $OH_SUBDIR) -> " OH_SUBDIR
-		if [ -z $OH_SUBDIR ]; then
+		read -p "Enter subdirectory for installation (default $OH_SUBDIR) -> " OH_SUBDIR_TMP
+		if [ -z $OH_SUBDIR_TMP ]; then
 			echo "Using $OH_SUBDIR"
+		else
+			OH_SUBIDR=$OH_SUBDIR_TMP
 		fi
 		# Downloading oh
 		echo "Downloading Open Hospital"
