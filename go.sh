@@ -30,9 +30,7 @@ set -o errexit -o pipefail -o noclobber -o nounset
 # POH_PATH is the directory where Portable OpenHospital files are located
 # POH_PATH=/usr/local/PortableOpenHospital
 
-OH_DISTRO=portable
-#OH_DISTRO=client
-DEMO_MODE=off
+OH_SUBDIR="poh-1.11.beta"
 
 # Language setting - default set to en
 #OH_LANGUAGE=en fr es it pt
@@ -40,11 +38,6 @@ DEMO_MODE=off
 
 ######## Software configuration - change at your own risk :-)
 OH_DIR="oh"
-SQL_DIR="sql"
-MYSQL_SOCKET="var/run/mysqld/mysql.sock"
-MYSQL_DATA_DIR="var/lib/mysql/"
-DB_CREATE_SQL="create_all_en.sql"
-DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S`
 
 ######## Define architecture
@@ -58,20 +51,20 @@ SCRIPT_ARGS=$@
 
 ######## User input / option parsing
 
-#function script_usage {
-#	echo ""
-#	echo " Portable Open Hospital Client | OH"
-#	echo ""
-#	echo " Usage: $SCRIPT_NAME [-option]"
-#	echo ""
-#	echo "   -s    save OH database"
-#	echo "   -r    restore OH database"
-#	echo "   -c    clean POH installation"
-#	echo "   -v    show POH version information"
-#	echo "   -h    show this help"
-#	echo ""
-#	exit 0
-#}
+function script_usage {
+	echo ""
+	echo " Portable Hospital Client - Web start - experimental "
+	echo ""
+	echo " Usage: $SCRIPT_NAME [-option]"
+	echo ""
+	echo " If the script finds a POH installation in the current dir, launches oh.sh [-params]"
+	echo " Otherwise it downloads a dev copy, all the necessary software libraries, clone the POH installation"
+	echo " in a subdirectory (poh-version) and launches oh.sh passing the command line options (go.sh -v -> poh-dev/oh.sh -v)"
+	echo ""
+	echo "   -h    show this help"
+	echo ""
+	exit 0
+}
 
 ######## Functions
 
@@ -97,11 +90,10 @@ function set_path {
 
 function oh_check_and_go {
 	if [ ! -f "$POH_PATH/$OH_DIR/bin/OH-gui.jar" ]; then
-		echo "Warning - OH not found. Do you want to download it? (120 MB)"
+		echo "Warning - OH not found in current dir. Do you want to download it? (120 MB)"
 		get_confirmation;
-		read -p "Enter subdirectory for installation (default poh-1.11.beta) -> " OH_SUBDIR
+		read -p "Enter subdirectory for installation (default $OH_SUBDIR) -> " OH_SUBDIR
 		if [ -z $OH_SUBDIR ]; then
-			OH_SUBDIR="poh-1.11.beta"
 			echo "Using $OH_SUBDIR"
 		fi
 		# Downloading oh
@@ -110,10 +102,12 @@ function oh_check_and_go {
 			git clone https://github.com/mizzioisf/openhospital-client $OH_SUBDIR
 		fi
 		# set new POH_PATH
+
 		POH_PATH=$POH_PATH/$OH_SUBDIR/
-		export POH_PATH;
-		#cd $POH_PATH
-		git pull
+                export POH_PATH;
+                cd $POH_PATH
+                echo "Pulling updates..."
+                git pull;
 		echo "Download completed!"
 	fi
 	if [ -x "$POH_PATH/oh.sh" ]; then
@@ -127,28 +121,22 @@ function oh_check_and_go {
 }
 
 # list of arguments expected in user the input
-#OPTIND=1 # Reset in case getopts has been used previously in the shell.
-#OPTSTRING=":hr:"
+OPTIND=1 # Reset in case getopts has been used previously in the shell.
+OPTSTRING=":ht:"
 
 # function to parse input
-#while getopts ${OPTSTRING} opt; do
-#	case ${opt} in
-#	h)	# help
-#		script_usage;
-#		;;
-#	r)	# restore 
-#        	echo "Restoring Portable Open Hospital installation...."
-#		set_path;
-#		;;
-#	esac
-#done
+while getopts ${OPTSTRING} opt; do
+	case ${opt} in
+	h)	# help
+		script_usage;
+		;;
+	t)	# test
+        	echo "Test function"
+		set_path;
+		;;
+	esac
+done
 ######################## Script start ########################
-
-# check distro
-if [ -z ${OH_DISTRO+x} ]; then
-		echo "Error - OH_DISTRO not defined [client - portable]"
-	exit 1
-fi
 
 # check user
 if [ $(id -u) -eq 0 ]; then
@@ -157,8 +145,6 @@ if [ $(id -u) -eq 0 ]; then
 fi
 
 ######## Environment setup
-
-echo "Starting OH TEST - $OH_DISTRO..."
 
 set_path;
 oh_check_and_go;
