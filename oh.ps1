@@ -79,12 +79,12 @@ $JAVA_ARCH=64
 
 ######## MySQL Software
 # MariaDB
-MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
-MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
+$MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
+$MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
 # MySQL
 #MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
 #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
-EXT="tar.gz"
+$EXT="tar.gz"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
@@ -99,9 +99,9 @@ EXT="tar.gz"
 #JAVA_DIR="zulu11.43.21-ca-jre11.0.9-linux_x64"
 
 ### JRE 11 - openjdk
-JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9%2B11.1"
-JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.9_11"
-JAVA_DIR="jdk-11.0.9+11-jre"
+$JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9%2B11.1"
+$JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.9_11"
+$JAVA_DIR="jdk-11.0.9+11-jre"
 
 ######## JAVA 32bit
 if ( $JAVA_ARCH = 32 ) {
@@ -430,7 +430,7 @@ if ( $(id -u) -eq 0 ) {
 
 # debug level - set default to INFO
 if ( -z ${DEBUG_LEVEL+x} ) {
-	DEBUG_LEVEL=INFO
+	DEBUG_LEVEL="INFO"
 }	
 
 ######## Environment setup
@@ -441,8 +441,8 @@ set_language;
 ######## User input
 
 # list of arguments expected in user the input
-OPTIND=1 # Reset in case getopts has been used previously in the shell.
-OPTSTRING=":h?rcsdCtGDvl:"
+$OPTIND=1 # Reset in case getopts has been used previously in the shell.
+$OPTSTRING=":h?rcsdCtGDvl:"
 
 # function to parse input
 param ($opt)
@@ -455,7 +455,7 @@ param ($opt)
         	write-host "Restoring Portable Open Hospital database...."
 		clean_database;
 		# ask user for database to restore
-		read -p "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> " DB_CREATE_SQL
+		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> "
 		if ( -f $POH_PATH/$SQL_DIR/$DB_CREATE_SQL ) {
 		        write-host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
 			}
