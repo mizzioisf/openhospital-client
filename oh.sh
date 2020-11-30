@@ -30,9 +30,9 @@
 # POH_PATH is the directory where Portable OpenHospital files are located
 # POH_PATH=/usr/local/PortableOpenHospital
 
-OH_DISTRO=portable
-#OH_DISTRO=client
-DEMO_MODE=off
+OH_DISTRO="portable"
+#OH_DISTRO="client"
+DEMO_MODE="off"
 
 # Language setting - default set to en
 #OH_LANGUAGE=en fr es it pt
