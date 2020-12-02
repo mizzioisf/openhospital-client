@@ -91,6 +91,7 @@ echo "MySQL will listen on the free port %freePort%"
 cd /d %OH_PATH%\oh\rsc
 echo f | xcopy dicom.properties.dist dicom.properties /y
 %REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- dicom.properties
+%REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- dicom.properties
 REM %REPLACE_PATH%\replace.exe "^x5c" "^x2f" -- dicom.properties
 
 REM ### SETUP database.properties
@@ -149,10 +150,11 @@ REM	fi
 REM }
 
 cd /d %OH_PATH%
-echo f | xcopy etc\mysql\my.cnf.dist %OH_PATH%\%MYSQL_DIR%\bin\my.cnf /y
-%REPLACE_PATH%\replace.exe MYSQL_PORT %freePort% -- %OH_PATH%\%MYSQL_DIR%\bin\my.cnf
-%REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\%MYSQL_DIR%\bin\my.cnf
-%REPLACE_PATH%\replace.exe DICOM_SIZE %dicom_size% -- %OH_PATH%\%MYSQL_DIR%\bin\my.cnf
+echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y
+%REPLACE_PATH%\replace.exe MYSQL_PORT %freePort% -- %OH_PATH%\etc\mysql\my.cnf
+%REPLACE_PATH%\replace.exe MYSQL_PORT %freePort% -- %OH_PATH%\etc\mysql\my.cnf
+%REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\etc\mysql\my.cnf
+%REPLACE_PATH%\replace.exe MYSQL_DISTRO %MYSQL_DIR% -- %OH_PATH%\etc\mysql\my.cnf
 REM %REPLACE_PATH%\replace.exe "^x5c" "^x2f" -- my.cnf 
 
 IF EXIST "%OH_PATH%\sql\create_all_en.sql" (
@@ -164,10 +166,10 @@ REM %OH_PATH%\%MYSQL_DIR%\scripts\mysql_install_db --socket=%OH_PATH%/%MYSQL_SOC
 
 
   IF ERRORLEVEL 1 (goto END)
-  start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld --tmpdir=%OH_PATH%\tmp --standalone --console --log_syslog=0
-  %OH_PATH%\%MYSQL_DIR%\bin\mysql -u root --port=%freePort% -e "CREATE SCHEMA oh; GRANT ALL ON oh.* TO 'isf'@'localhost' IDENTIFIED BY 'isf123'; GRANT ALL ON oh.* TO 'isf'@'%' IDENTIFIED BY 'isf123';"
+  start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console --log_syslog=0
+  %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root --port=%freePort% -e "CREATE SCHEMA oh; GRANT ALL ON oh.* TO 'isf'@'localhost' IDENTIFIED BY 'isf123'; GRANT ALL ON oh.* TO 'isf'@'%' IDENTIFIED BY 'isf123';"
   cd %OH_PATH%\sql
-  %OH_PATH%\%MYSQL_DIR%\bin\mysql -u root --port=%freePort% oh < "%OH_PATH%\sql\create_all_en.sql"
+  %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root --port=%freePort% oh < "%OH_PATH%\sql\create_all_en.sql"
   IF ERRORLEVEL 1 (goto END)
   echo Database initialized.
 REM 
