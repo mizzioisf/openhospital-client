@@ -326,10 +326,10 @@ function config_database {
 	# Creating MySQL configuration
 	write-host "Generating MySQL config file..."
 #	[ -f $POH_PATH/etc/mysql/my.cnf ] && mv -f $POH_PATH/etc/mysql/my.cnf $POH_PATH/etc/mysql/my.cnf.old
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("OH_PATH_SUBSTITUTE","$POH_PATH") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$POH_PATH\etc/mysql\my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$POH_PATH\etc\mysql\my.cnf"
+	(Get-Content "$POH_PATH\etc/mysql\my.cnf").replace("OH_PATH_SUBSTITUTE","$POH_PATH") | Set-Content "$POH_PATH\etc\mysql\my.cnf"
+	(Get-Content "$POH_PATH\etc/mysql\my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH\etc\mysql\my.cnf"
+	(Get-Content "$POH_PATH\etc/mysql\my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$POH_PATH\etc\mysql\my.cnf"
 
 #	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$POH_PATH_ESCAPED/g" -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $POH_PATH/etc/mysql/my.cnf.dist > $POH_PATH/etc/mysql/my.cnf
 }
@@ -429,7 +429,7 @@ function dump_database {
 
 function shutdown_database {
 	write-host "Shutting down MySQL..."
-	"$POH_PATH/$MYSQL_DIR/bin/mysqladmin.exe --host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root shutdown"
+	Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysqladmin.exe" -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root shutdown")
 	# Wait till the MySQL socket file is removed
 #	while ( -e $POH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 }
@@ -462,18 +462,19 @@ function clean_files {
 	write-host "Warning: do you want to remove all configuration and log files ?"
 	get_confirmation;
 	write-host "Removing files..."
-#	rm -f $POH_PATH/etc/mysql/my.cnf
-#	rm -f $POH_PATH/etc/mysql/my.cnf.old
-#	rm -f $POH_PATH/var/log/mysql/*
-#	rm -f $POH_PATH/$OH_DIR/rsc/generalData.properties
-#	rm -f $POH_PATH/$OH_DIR/rsc/generalData.properties.old
-#	rm -f $POH_PATH/$OH_DIR/rsc/database.properties
-#	rm -f $POH_PATH/$OH_DIR/rsc/database.properties.old
-#	rm -f $POH_PATH/$OH_DIR/rsc/log4j.properties
-#	rm -f $POH_PATH/$OH_DIR/rsc/log4j.properties.old
-#	rm -f $POH_PATH/$OH_DIR/rsc/dicom.properties
-#	rm -f $POH_PATH/$OH_DIR/rsc/dicom.properties.old
-#	rm -f $POH_PATH/$OH_DIR/logs/*
+
+	Get-ChildItem -Path "$POH_PATH\etc\mysql\my.cnf" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\etc\mysql\my.cnf.old" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\var\log\mysql\*" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\rsc\generalData.properties" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\rsc\generalData.properties.old" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\rsc\database.properties" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\rsc\database.properties.old" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\rsc\log4j.properties" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\rsc\log4j.properties.old" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\rsc\dicom.properties" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\rsc\dicom.properties.old" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
+	Get-ChildItem -Path "$POH_PATH\$OH_DIR\logs/*" | Remove-Item -Recurse -Confirm:$false -ErrorAction Ignore
 }
 
 
@@ -685,7 +686,7 @@ write-host "Setting up OH configuration files..."
 #[ -f $POH_PATH/$OH_DIR/rsc/log4j.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/log4j.properties $POH_PATH/$OH_DIR/rsc/log4j.properties.old
 #sed -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBSERVER/$MYSQL_SERVER/" -e "s/DBUSER/$DATABASE_USER/" -e "s/DBPASS/$DATABASE_PASSWORD/" -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/" $POH_PATH/$OH_DIR/rsc/log4j.properties.dist > $POH_PATH/$OH_DIR/rsc/log4j.properties
 
-(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DB_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties.dist"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties.dist").replace("DB_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
 (Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
 (Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
 (Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
@@ -700,7 +701,7 @@ write-host "jdbc.password=$DATABASE_PASSWORD" >> $POH_PATH/$OH_DIR/rsc/database.
 ######## generalData.properties language setup 
 # set language in OH config file
 #[ -f $POH_PATH/$OH_DIR/rsc/generalData.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/generalData.properties $POH_PATH/$OH_DIR/rsc/generalData.properties.old
-(Get-Content "$POH_PATH/$OH_DIR/rsc/generalData.properties").replace("OH_SET_LANGUAGE","$OH_LANGUAGE") | Set-Content "$POH_PATH/$OH_DIR/rsc/generalData.properties.dist"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/generalData.properties.dist").replace("OH_SET_LANGUAGE","$OH_LANGUAGE") | Set-Content "$POH_PATH/$OH_DIR/rsc/generalData.properties"
 
 ######## Open Hospital start
 
