@@ -42,7 +42,7 @@ Set-Variable -Name MYSQL_SOCKET -Option AllScope
 Set-Variable -Name DATABASE_NAME -Option AllScope
 Set-Variable -Name CURRENT_DIR -Option AllScope
 Set-Variable -Name OH_CLASSPATH -Option AllScope
-Set-Variable -Name NATIVE_LIB -Option AllScope
+Set-Variable -Name NATIVE_LIB_PATH -Option AllScope
 
 $OH_DISTRO="portable"
 #OH_DISTRO="client"
@@ -225,22 +225,24 @@ function set_language {
 function java_lib_setup {
 	# NATIVE LIB setup
 	switch ( "$JAVA_ARCH" ) {
-		"64" { $NATIVE_LIB_PATH="$POH_PATH/$OH_DIR/lib/native/Win64/" }
-		"32" { $NATIVE_LIB_PATH="$POH_PATH/$OH_DIR/lib/native/Windows/" }
+		"64" { $NATIVE_LIB_PATH="$POH_PATH\$OH_DIR\lib\native\Win64" }
+		"32" { $NATIVE_LIB_PATH="$POH_PATH\$OH_DIR\lib\native\Windows" }
 	}
 
 	# CLASSPATH setup
-	$OH_CLASSPATH="$POH_PATH/$OH_DIR/bin/OH-gui.jar"
-	$OH_CLASSPATH="${OH_CLASSPATH}:$POH_PATH/$OH_DIR/bundle"
-	$OH_CLASSPATH="${OH_CLASSPATH}:$POH_PATH/$OH_DIR/rpt"
+	$OH_CLASSPATH="$POH_PATH\$OH_DIR\bin\OH-gui.jar"
+	$OH_CLASSPATH="${OH_CLASSPATH}:$POH_PATH\$OH_DIR\bundle"
+	$OH_CLASSPATH="${OH_CLASSPATH}:$POH_PATH\$OH_DIR\rpt"
 
 #FOR %%A IN (%OH_LIB%\*.jar) DO (
 #        set CLASSPATH=!CLASSPATH!;%%A
 #)
 
 
-	$DIRLIBS="$POH_PATH/$OH_DIR/lib/*.jar"
+	$DIRLIBS="$POH_PATH\$OH_DIR\lib"
+	write-host "---->>> $DIRLIBS"
 #	for i in ${DIRLIBS}
+#	gci -file -r *.pdf
 	foreach ( $i in ${DIRLIBS} ) {
 		$OH_CLASSPATH="{$OH_CLASSPATH}:{$i}"
 		write-host "---------$OH_CLASSPATH"
@@ -346,14 +348,12 @@ function inizialize_database {
 	switch -Regex ( $MYSQL_DIR ) {
 		"mysql" {
 		write-host "MYSQL"
-			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqldi" -ArgumentList ("--initialize-insecure --socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR"); break
+			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR") -NoNewWindow; break
 			}
 		"mariadb" {
 		write-host "MARIADB"
-#			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" 
 #			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR  --auth-root-authentication-method=normal") -Wait -NoNewWindow ; break
-			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR") -Wait -NoNewWindow ; break
-			}
+			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR") -Wait -NoNewWindow 			}
 	}
 
 #	if ( $? -ne 0 ){
@@ -366,8 +366,7 @@ function start_database {
 	write-host "Starting MySQL server... "
 #	"$POH_PATH/$MYSQL_DIR/bin/mysqld_safe --defaults-file=$POH_PATH\etc\mysql\my.cnf"
 
-
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf --tmpdir=$POH_PATH\tmp --standalone --console") -NoNewWindow   -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console.err'
+	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf --tmpdir=$POH_PATH\tmp --standalone --console") -NoNewWindow  -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console.err'
 	#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf", "--tmpdir=$POH_PATH\tmp", "--standalone", "--console", "--log_syslog=0")
 
 
@@ -390,15 +389,15 @@ function start_database {
 function import_database () {
 	write-host "Creating OH Database..."
 	# Create OH database and user
-	Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("-u root -h $MYSQL_SERVER --port=$MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
+	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -h $MYSQL_SERVER --port=$MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
 	CREATE USER \'$DATABASE_USER\'@\'localhost\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; `
 	CREATE USER \'$DATABASE_USER\'\@\'\%\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'@\'localhost\'; `
-	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;""")
+	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;""") -NoNewWindow
 
 	# Create OH database structure
 	write-host "Importing database schema $DB_CREATE_SQL..."
 	cd $POH_PATH/$SQL_DIR
-	Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("--local-infile=1 -u root -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME < $POH_PATH/$SQL_DIR/$DB_CREATE_SQL")
+	Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("--local-infile=1 -u root -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME < $POH_PATH/$SQL_DIR/$DB_CREATE_SQL") -NoNewWindow
 #	if ( $? -ne 0 ) {
 #		write-host "Error: Database not imported! Exiting."
 #		shutdown_database;
@@ -429,7 +428,7 @@ function dump_database {
 
 function shutdown_database {
 	write-host "Shutting down MySQL..."
-	Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysqladmin.exe" -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root shutdown")
+	Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysqladmin.exe" -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root shutdown") -NoNewWindow
 	# Wait till the MySQL socket file is removed
 #	while ( -e $POH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 }
@@ -447,10 +446,10 @@ function clean_database {
 function test_database_connection {
 	# Test connection to the OH MySQL database
 	write-host "Testing database connection..."
-	$DBTEST=$("$POH_PATH/$MYSQL_DIR/bin/mysql.exe --host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD -e USE $DATABASE_NAME;" )
-	if ( $DBTEST -eq 0 ) {
-		write-host "Database connection successfully established!"
-	}
+#	$DBTEST=$("$POH_PATH/$MYSQL_DIR/bin/mysql.exe --host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD -e USE $DATABASE_NAME;" )
+#	if ( $DBTEST -eq 0 ) {
+#		write-host "Database connection successfully established!"
+#	}
 #	else {
 #		write-host "Error: can't connect to database! Exiting."
 #		exit 2
@@ -494,7 +493,6 @@ if ( ${DEBUG_LEVEL+x} ) {
 ######## Environment setup
 
 set_path;
-write-host "------------ $POH_PATH"
 set_language;
 
 ######## User input
@@ -694,9 +692,9 @@ write-host "Setting up OH configuration files..."
 
 ######## database.properties setup 
 #[ -f $POH_PATH/$OH_DIR/rsc/database.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/database.properties $POH_PATH/$OH_DIR/rsc/database.properties.old
-write-host "jdbc.url=jdbc:mysql://{$MYSQL_SERVER}:$MYSQL_PORT/$DATABASE_NAME" > $POH_PATH/$OH_DIR/rsc/database.properties
-write-host "jdbc.username=$DATABASE_USER" >> $POH_PATH/$OH_DIR/rsc/database.properties
-write-host "jdbc.password=$DATABASE_PASSWORD" >> $POH_PATH/$OH_DIR/rsc/database.properties
+Set-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.url=jdbc:mysql://{$MYSQL_SERVER}:$MYSQL_PORT/$DATABASE_NAME"
+Add-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.username=$DATABASE_USER"
+Add-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.password=$DATABASE_PASSWORD"
 
 ######## generalData.properties language setup 
 # set language in OH config file
@@ -713,9 +711,14 @@ cd $POH_PATH/$OH_DIR
 #$JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu 2>&1 > /dev/null
 #
 
-write-host "$NATIVE_LIB_PATH classpath $OH_CLASSPATH "
+write-host "----javabin $JAVA_BIN"
+write-host "----native $NATIVE_LIB_PATH"
+write-host "----ohclasspath $OH_CLASSPATH"
+
 #Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu")
-Start-Process -FilePath "$JAVA_BIN" -ArgumentList (" -Dlog4j.configuration=$POH_PATH/oh/rsc/log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -cp $OH_CLASSPATH org.isf.menu.gui.Menu")
+#Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-h") -Wait -NoNewWindow
+
+Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$POH_PATH/oh/rsc/log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path=$NATIVE_LIB_PATH -classpath $OH_CLASSPATH org.isf.menu.gui.Menu") -Wait -NoNewWindow
 
 #%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 
