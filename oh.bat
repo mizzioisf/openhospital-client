@@ -179,7 +179,7 @@ REM DEL %OH_PATH%\sql\create_all_en.sql
   start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld --tmpdir=%OH_PATH%\tmp --standalone --console --basedir=%OH_PATH%\%MYSQL_DIR% --datadir=%OH_PATH%\%MYSQL_DATA_DIR% --log_syslog=0
 )
 
-set OH_HOME=%OH_PATH%oh
+set OH_HOME=%OH_PATH%\oh
 
 set OH_BIN=%OH_HOME%\bin
 set OH_LIB=%OH_HOME%\lib
@@ -197,7 +197,9 @@ set CLASSPATH=%CLASSPATH%;%OH_BIN%\OH-gui.jar
 set CLASSPATH=%CLASSPATH%;%OH_BUNDLE%
 set CLASSPATH=%CLASSPATH%;%OH_REPORT%
 
+echo " TEMPORARY "
 echo %CLASSPATH%
+echo " TEMPORARY "
 
 REM start Open Hospital
 
