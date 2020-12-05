@@ -50,7 +50,7 @@ $script:DEMO_MODE="off"
 
 ######## Software configuration - change at your own risk :-)
 # Database
-$script:MYSQL_SERVER="127.0.0.1"
+$script:MYSQL_SERVER="localhost"
 $script:MYSQL_PORT=3306
 $script:DATABASE_NAME="oh"
 $script:DATABASE_USER="isf"
@@ -92,6 +92,7 @@ $script:MYSQL_DIR="mariadb-10.2.36-winx64"
 #MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
 #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 $script:EXT="zip"
+$script:MYSQL_ROOT_PW="root"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
@@ -250,11 +251,12 @@ function java_lib_setup {
         $script:OH_CLASSPATH="$OH_CLASSPATH;$n"
         # $n.Name | Out-File -Append 'D:\Movielist.txt'
 }
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin\OH-gui.jar"
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bundle"
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\rpt"
-    $script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\lib"
-    $script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin"
+	#$script:OH_CLASSPATH="$POH_PATH/$OH_DIR\bin\OH-gui.jar"
+	#$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin\OH-gui.jar"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bundle\*"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\rpt\*"
+    #$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\lib\*"
+    #$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin\*"
 
 
 }
@@ -264,7 +266,7 @@ function java_check {
 	    $script:JAVA_BIN="$POH_PATH\$JAVA_DIR\bin\java.exe"
     }
 
-    if ( ! (Test-Path $JAVA_BIN )) {
+    if ( ! ( Test-Path $JAVA_BIN ) ) {
         if ( ! (Test-Path "$POH_PATH\$JAVA_DISTRO.$EXT") ) {
     		write-host "Warning - JAVA not found. Do you want to download it? (50 MB)"
 		    get_confirmation;
@@ -296,7 +298,6 @@ function java_check {
 
 
 function mysql_check {
-write-host "aaaaaaaaa $POH_PATH\$MYSQL_DIR"
 	if (  !( Test-Path "$POH_PATH\$MYSQL_DIR" ) ) {
 		if ( Test-Path "$POH_PATH\$MYSQL_DIR.$EXT" ) {
 			write-host "Warning - MySQL not found. Do you want to download it? (630 MB)"
@@ -330,7 +331,7 @@ function config_database {
 #	while ( $(ss -tna | awk '{ print $4 }' | grep ":$MYSQL_PORT") ); do
 #		MYSQL_PORT=$(expr $MYSQL_PORT + 1)
 #	done
-	$MYSQL_PORT=$($MYSQL_PORT + 1)
+	$script.MYSQL_PORT=$($MYSQL_PORT + 1)
 	write-host "Found TCP port $MYSQL_PORT!"
 
 	# Creating MySQL configuration
@@ -349,7 +350,11 @@ function inizialize_database {
 	#mkdir -p $POH_PATH/$MYSQL_DATA_DIR
 	#mkdir -p $POH_PATH/var/run/mysqld
 	#mkdir -p $POH_PATH/var/log/mysql
-	# Inizialize MySQL
+
+    # Killing all mysqld zombie processes
+    Stop-Process -name mysqld
+	
+    # Inizialize MySQL
 	write-host "Initializing MySQL database on port $MYSQL_PORT..."
 	write-host "-------------- $MYSQL_DIR..."
 	switch -Regex ( $MYSQL_DIR ) {
@@ -360,7 +365,7 @@ function inizialize_database {
 		"mariadb" {
 		write-host "MARIADB"
 #			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR  --auth-root-authentication-method=normal") -Wait -NoNewWindow ; break
-			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR") -NoNewWindow -Wait -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console1.err'
+			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --password=$MYSQL_ROOT_PW" ) -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console1.out' -RedirectStandardError '$POH_PATH\console1.err'
         }
 	}
 
@@ -375,7 +380,7 @@ function start_database {
 #	"$POH_PATH/$MYSQL_DIR/bin/mysqld_safe --defaults-file=$POH_PATH\etc\mysql\my.cnf"
 
     #Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf --tmpdir=$POH_PATH\tmp --standalone --console") -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console2.err'
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf --tmpdir=$POH_PATH\tmp --standalone") -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console2.err'
+	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf --tmpdir=$POH_PATH\tmp --standalone") -RedirectStandardOutput '.\console2.out' -RedirectStandardError '.\console2.err'
     sleep 2;
 
 
@@ -398,15 +403,34 @@ function start_database {
 function import_database {
 	write-host "Creating OH Database..."
 	# Create OH database and user
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -h $MYSQL_SERVER --port=$MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
+	
+    #$script:SQL_CREATE="CREATE DATABASE $DATABASE_NAME; `
+
+    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
 	CREATE USER \'$DATABASE_USER\'@\'localhost\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; `
 	CREATE USER \'$DATABASE_USER\'\@\'\%\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'@\'localhost\'; `
-	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;""") -Wait -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console4.err'
+	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;")  -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
+    
+    #$script:SQL_CREATE=" ""CREATE DATABASE $DATABASE_NAME;	CREATE USER \'$DATABASE_USER\'@\'localhost\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; CREATE USER \'$DATABASE_USER\'\@\'\%\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'@\'localhost\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;"" " 
+
+
+    #write-host "----------------------- $SQL_CREATE "
+
+    #write-host "-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e '$SQL_CREATE'"
+
+   #Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e 'SQL_CREATE'") -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
+
+#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT -e "CREATE DATABASE $DATABASE_NAME;")
+#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT -e "
 
 	# Create OH database structure
 	write-host "Importing database schema $DB_CREATE_SQL..."
-	cd $POH_PATH\$SQL_DIR
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("--local-infile=1 -u root -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME < $POH_PATH\$SQL_DIR\$DB_CREATE_SQL") -NoNewWindow -Wait -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console.err'
+	
+    cd $POH_PATH\$SQL_DIR
+	
+    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("--local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME < ""$POH_PATH\$SQL_DIR\$DB_CREATE_SQL"" ") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
+    ###Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME < ""$POH_PATH\$SQL_DIR\$DB_CREATE_SQL"" ") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
+
 #	if ( $? -ne 0 ) {
 #		write-host "Error: Database not imported! Exiting."
 #		shutdown_database;
@@ -420,7 +444,7 @@ function dump_database {
 	if ( ! ( Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
 		write-host "Dumping MySQL database..."
 		# $POH_PATH\$MYSQL_DIR\bin\mysqldump.exe --no-create-info --skip-extended-insert -h $MYSQL_SERVER --port=$MYSQL_PORT -u root $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql
-		Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("--skip-extended-insert -h $MYSQL_SERVER --port=$MYSQL_PORT -u root $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql") -NoNewWindow -Wait 
+		Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("--skip-extended-insert -u root-p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql") -NoNewWindow -Wait 
 		if ( $? -ne 0 ) {
 			write-host "Error: Database not dumped! Exiting."
 			shutdown_database;
@@ -437,7 +461,7 @@ function dump_database {
 
 function shutdown_database {
 	write-host "Shutting down MySQL..."
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root shutdown") -NoNewWindow -Wait -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console.err'
+	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root -p$MYSQL_ROOT_PW shutdown") -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console5.out' -RedirectStandardError '$POH_PATH\console5.err'
 	# Wait till the MySQL socket file is removed
 #	while ( -e $POH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 }
@@ -447,8 +471,7 @@ function clean_database {
 	get_confirmation;
 	write-host "Removing data..."
 	# remove databases
-	del "$POH_PATH\$MYSQL_DATA_DIR\*"
-	$filetodel="$POH_PATH\$MYSQL_DATA_DIR\"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$POH_PATH\$MYSQL_DATA_DIR\*"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$POH_PATH\var\run\mysqld\*"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
@@ -533,7 +556,7 @@ switch ( "$opt" ) {
 		clean_database;
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> "
-		if ( -f $POH_PATH\$SQL_DIR\$DB_CREATE_SQL ) {
+		if ( Test-Path "$POH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
 		        write-host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
 			}
 		else {
@@ -557,7 +580,8 @@ switch ( "$opt" ) {
 		}
 	"s"	{ # save database 
 		# checking if data exist
-		if ( Test-Path "$POH_PATH/$MYSQL_DATA_DIR/$DATABASE_NAME" ) {
+        Write-host "$POH_PATH\$MYSQL_DATA_DIR\$DATABASE_NAME"
+		if ( Test-Path "$POH_PATH\$MYSQL_DATA_DIR\$DATABASE_NAME" ) {
 			mysql_check;
 			config_database;
 			start_database;
@@ -621,7 +645,7 @@ switch ( "$opt" ) {
 		exit 0
 		}
 	"a"	# test option to go on
-		{ write-host "aaaaaaaaaaa"
+		{ write-host "Going forward..."
         }
 #	"?"	# default
 		default { write-host "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"; exit 1; }
@@ -631,7 +655,7 @@ switch ( "$opt" ) {
 ######################## Script start ########################
 
 # check distro
-if ( ${OH_DISTRO+x} ) {
+if ( !( $OH_DISTRO -eq "portable" ) -And !( $OH_DISTRO -eq "client" ) ) {
 	write-host "Error - OH_DISTRO not defined [client - portable]! Exiting."
 	exit 1
 }
@@ -670,7 +694,7 @@ if ( $OH_DISTRO -eq "portable" ) {
 	# Config MySQL
 	config_database;
 	# Check if OH database already exists
-	if ( ! (Test-Path -Path "$POH_PATH\$MYSQL_DATA_DIR\$DATABASE_NAME" ) ) {
+	if ( ! (Test-Path "$POH_PATH\$MYSQL_DATA_DIR\$DATABASE_NAME" ) ) {
 		# Prepare MySQL
 		inizialize_database;
 		# Start MySQL
@@ -728,15 +752,17 @@ cd $POH_PATH/$OH_DIR
 #
 
 write-host "----javabin $JAVA_BIN"
-write-host "----native $NATIVE_LIB_PATH"
-write-host "----ohclasspath $OH_CLASSPATH"
+#write-host "----native $NATIVE_LIB_PATH"
+#write-host "----ohclasspath $OH_CLASSPATH"
 
-#Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu")
-#Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-h") -Wait -NoNewWindow
+###Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu")
+####Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-h") -Wait -NoNewWindow
 
-Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$POH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path=$NATIVE_LIB_PATH -classpath $OH_CLASSPATH org.isf.menu.gui.Menu") -Wait -RedirectStandardOutput '.\OH.out' -RedirectStandardError '.\OH.err'
+Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$POH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow
 
-#%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
+# -RedirectStandardOutput "$POH_PATH\OH.out" -RedirectStandardError "$POH_PATH\OH.err"
+
+###%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 
 
 write-host "Exiting Open Hospital..."
