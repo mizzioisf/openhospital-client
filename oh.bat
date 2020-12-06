@@ -46,8 +46,8 @@ SET DATABASE_PASSWORD=isf123
 
 SET DICOM_MAX_SIZE="4M"
 
-SET OH_DIR="oh"
-SET SQL_DIR="sql"
+SET OH_DIR=oh
+SET SQL_DIR=sql
 SET MYSQL_SOCKET="var/run/mysqld/mysql.sock"
 SET MYSQL_DATA_DIR="var/lib/mysql/"
 SET DB_CREATE_SQL="create_all_en.sql"
@@ -178,7 +178,7 @@ IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 
 REM ### SETUP OH configuration
 
-set OH_HOME=%OH_PATH%\oh
+set OH_HOME=%OH_DIR%
 set OH_BIN=%OH_HOME%\bin
 set OH_LIB=%OH_HOME%\lib
 set OH_BUNDLE=%OH_HOME%\bundle
