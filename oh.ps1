@@ -86,13 +86,13 @@ $script:JAVA_ARCH="64"
 
 ######## MySQL Software
 # MariaDB
-$script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/mariadb-10.2.36-winx64.zip"
+$script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/"
 $script:MYSQL_DIR="mariadb-10.2.36-winx64"
 # MySQL
 #MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
 #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 $script:EXT="zip"
-$script:MYSQL_ROOT_PW="root"
+$script:MYSQL_ROOT_PW="root123"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
@@ -190,7 +190,7 @@ function set_path {
 		write-host "Warning: POH_PATH not found - using current directory"
 		$script:POH_PATH=$CURRENT_DIR
 		if ( ! (Test-Path "$POH_PATH\$SCRIPT_NAME") ) {
-			write-host "Error - $SCRIPT_NAME not found in the current PATH. Please cd the directory where POH was unzipped or set up POH_PATH properly."
+			write-host "Error - $SCRIPT_NAME not found in the current PATH. Please cd the directory where POH was unzipped or set up POH_PATH properly." -ForegroundColor Yellow
 			exit 1
 		}
 	}
@@ -258,7 +258,22 @@ function java_lib_setup {
     #$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\lib\*"
     #$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin\*"
 
+}
 
+function download_file ($download_url,$download_file){
+write-host "Downloading $download_file from $download_url..."
+    try {
+        $wc = new-object System.Net.WebClient
+        $wc.DownloadFile("$download_url\$download_file","$POH_PATH\$download_file")
+    }
+    catch [System.Net.WebException],[System.IO.IOException] {
+        "Unable to download $download_file from $download_url"
+        exit 1;
+    }
+    catch {
+        "An error occurred. Exiting."
+        exit 1;
+    }
 }
 
 function java_check {
@@ -266,62 +281,61 @@ function java_check {
 	    $script:JAVA_BIN="$POH_PATH\$JAVA_DIR\bin\java.exe"
     }
 
-    if ( ! ( Test-Path $JAVA_BIN ) ) {
-        if ( ! (Test-Path "$POH_PATH\$JAVA_DISTRO.$EXT") ) {
-    		write-host "Warning - JAVA not found. Do you want to download it? (50 MB)"
+    if ( !( Test-Path $JAVA_BIN ) ) {
+        if ( !(Test-Path "$POH_PATH\$JAVA_DISTRO.$EXT") ) {
+    		write-host "Warning - JAVA not found. Do you want to download it? (50 MB)" -ForegroundColor Yellow
 		    get_confirmation;
 		    # Downloading openjdk binaries
-		    write-host "Downloading $JAVA_DISTRO..."
-            # wget -P $POH_PATH/ $JAVA_URL/$JAVA_DISTRO.$EXT
+            download_file "$JAVA_URL" "$JAVA_DISTRO.$EXT"
 	    }
 	    write-host "Unpacking $JAVA_DISTRO..."
-	    #Expand-Archive "$POH_PATH\$JAVA_DISTRO.$EXT" -DestinationPath $POH_PATH/
-	    # Expand-Archive "$POH_PATH\$JAVA_DISTRO.$EXT"
-	    # check for java binary
-	    if ( Test-Path "$POH_PATH\$JAVA_DIR\bin\java.exe" ) {
-    		write-host "Java unpacked successfully!"
-		    $script:JAVA_BIN="$POH_PATH\$JAVA_DIR\bin\java.exe"
-    		write-host "Java found!"
-    	}
-    	else {
-		    write-host "Error unpacking Java. Exiting."
-		exit 1
+        try {
+            Expand-Archive "$POH_PATH\$JAVA_DISTRO.$EXT" -DestinationPath $POH_PATH\ -Force
+        }
+        catch {
+            write-host "Error unpacking Java. Exiting." -ForegroundColor Red
+		    exit 1
 	    }
-	write-host "Removing downloaded file...":119
-	#rm $POH_PATH\$JAVA_DISTRO.$EXT
-	write-host "Done!"
-	#else 
-	write-host "JAVA found!"
-	write-host "Using $JAVA_DIR"
+        write-host "Java unpacked successfully!"
+    }
+    # check for java binary
+    if ( Test-Path "$POH_PATH\$JAVA_DIR\bin\java.exe" ) {
+        $script:JAVA_BIN="$POH_PATH\$JAVA_DIR\bin\java.exe"
+    }
+    else {
+        write-host "Error: JAVA not found. Exiting." -ForegroundColor Red
+        exit 1
+    }
+    write-host "JAVA found!"
+    write-host "Using $JAVA_BIN"
 }
-}
-
 
 function mysql_check {
 	if (  !( Test-Path "$POH_PATH\$MYSQL_DIR" ) ) {
-		if ( Test-Path "$POH_PATH\$MYSQL_DIR.$EXT" ) {
-			write-host "Warning - MySQL not found. Do you want to download it? (630 MB)"
+		if ( !( Test-Path "$POH_PATH\$MYSQL_DIR.$EXT" ) ) {
+			write-host "Warning - MySQL not found. Do you want to download it? (630 MB)" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading mysql binary
-			write-host "Downloading $MYSQL_DIR..."
-#			wget -P $POH_PATH/ $MYSQL_URL/$MYSQL_DIR.$EXT
+            download_file "$MYSQL_URL" "$MYSQL_DIR.$EXT" 
 		}
 		write-host "Unpacking $MYSQL_DIR..."
-		unzip $POH_PATH\$MYSQL_DIR.$EXT -C $POH_PATH\
-		if (Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqld_safe.exe" ) {
-			write-host "MySQL unpacked successfully!"
-		}
-		else {
-			write-host "Error unpacking MySQL. Exiting."
+        try {
+            Expand-Archive "$POH_PATH\$MYSQL_DIR.$EXT" -DestinationPath $POH_PATH\ -Force
+        }
+        catch {
+			write-host "Error unpacking MySQL. Exiting." -ForegroundColor Red
 			exit 1
 		}
-		write-host "Removing downloaded file..."
-		# rm $POH_PATH/$MYSQL_DIR.$EXT
-		write-host "Done!"
-		else {	
-			write-host "MySQL found!"
-			write-host "Using $MYSQL_DIR"
-		}
+        write-host "MySQL unpacked successfully!"
+    }
+    # check for mysql binary
+    if (Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe") {
+        write-host "MySQL found!"
+	    write-host "Using $MYSQL_DIR"
+	}
+	else {
+		write-host "Error: MySQL not found. Exiting." -ForegroundColor Red
+		exit 1
 	}
 }
 
@@ -331,16 +345,16 @@ function config_database {
 #	while ( $(ss -tna | awk '{ print $4 }' | grep ":$MYSQL_PORT") ); do
 #		MYSQL_PORT=$(expr $MYSQL_PORT + 1)
 #	done
-	$script.MYSQL_PORT=$($MYSQL_PORT + 1)
+	$script:MYSQL_PORT=$($MYSQL_PORT + 1)
 	write-host "Found TCP port $MYSQL_PORT!"
 
 	# Creating MySQL configuration
 	write-host "Generating MySQL config file..."
 #	[ if Test-Path $POH_PATH/etc/mysql/my.cnf ] && mv -f $POH_PATH/etc/mysql/my.cnf $POH_PATH/etc/mysql/my.cnf.old
-	(Get-Content "$POH_PATH\etc/mysql\my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$POH_PATH\etc\mysql\my.cnf"
-	(Get-Content "$POH_PATH\etc/mysql\my.cnf").replace("OH_PATH_SUBSTITUTE","$POH_PATH") | Set-Content "$POH_PATH\etc\mysql\my.cnf"
-	(Get-Content "$POH_PATH\etc/mysql\my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH\etc\mysql\my.cnf"
-	(Get-Content "$POH_PATH\etc/mysql\my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$POH_PATH\etc\mysql\my.cnf"
+	(Get-Content "$POH_PATH/etc/mysql/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("OH_PATH_SUBSTITUTE","$POH_PATH") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
 
 #	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$POH_PATH_ESCAPED/g" -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $POH_PATH/etc/mysql/my.cnf.dist > $POH_PATH/etc/mysql/my.cnf
 }
@@ -350,13 +364,8 @@ function inizialize_database {
 	#mkdir -p $POH_PATH/$MYSQL_DATA_DIR
 	#mkdir -p $POH_PATH/var/run/mysqld
 	#mkdir -p $POH_PATH/var/log/mysql
-
-    # Killing all mysqld zombie processes
-    Stop-Process -name mysqld
-	
     # Inizialize MySQL
 	write-host "Initializing MySQL database on port $MYSQL_PORT..."
-	write-host "-------------- $MYSQL_DIR..."
 	switch -Regex ( $MYSQL_DIR ) {
 		"mysql" {
 		write-host "MYSQL"
@@ -370,7 +379,7 @@ function inizialize_database {
 	}
 
 #	if ( $? -ne 0 ){
-#		write-host "Error: MySQL initialization failed! Exiting."
+#		write-host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
 #		exit 2
 #	}
 }
@@ -389,7 +398,7 @@ function start_database {
 #	 %OH_PATH%\%MYSQL_DIR%\bin\mysqld --tmpdir=%OH_PATH%\tmp --standalone --console --log_syslog=0
 
 #	if ( $? -ne 0 ) {
-#		write-host "Error: Database not started! Exiting."
+#		write-host "Error: Database not started! Exiting." -ForegroundColor Red
 #		exit 2
 #	}
 
@@ -432,7 +441,7 @@ function import_database {
     ###Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME < ""$POH_PATH\$SQL_DIR\$DB_CREATE_SQL"" ") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
 
 #	if ( $? -ne 0 ) {
-#		write-host "Error: Database not imported! Exiting."
+#		write-host "Error: Database not imported! Exiting." -ForegroundColor Red
 #		shutdown_database;
 #		exit 2
 #	}
@@ -444,48 +453,52 @@ function dump_database {
 	if ( ! ( Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
 		write-host "Dumping MySQL database..."
 		# $POH_PATH\$MYSQL_DIR\bin\mysqldump.exe --no-create-info --skip-extended-insert -h $MYSQL_SERVER --port=$MYSQL_PORT -u root $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql
-		Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("--skip-extended-insert -u root-p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql") -NoNewWindow -Wait 
+        #try {
+		    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("--skip-extended-insert -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql") -NoNewWindow -Wait 
 		if ( $? -ne 0 ) {
-			write-host "Error: Database not dumped! Exiting."
+			write-host "Error: Database not dumped! Exiting." -ForegroundColor Yellow
 			shutdown_database;
 			exit 2
 		}
 	    else {
-		    write-host "Error: No mysqldump utility found! Exiting."
+		    write-host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
 		    shutdown_database;
 		    exit 2
 	    }
 	}
-	write-host "MySQL dump file $SQL_DIR\mysqldump_$DATE.sql completed!"
+	write-host "MySQL dump yfile $SQL_DIR\mysqldump_$DATE.sql completed!"
 }
 
 function shutdown_database {
 	write-host "Shutting down MySQL..."
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root -p$MYSQL_ROOT_PW shutdown") -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console5.out' -RedirectStandardError '$POH_PATH\console5.err'
+	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("--user=root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT shutdown") -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console5.out' -RedirectStandardError '$POH_PATH\console5.err'
 	# Wait till the MySQL socket file is removed
 #	while ( -e $POH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 }
 
 function clean_database {
 	write-host "Warning: do you want to remove all data and database ?"
-	get_confirmation;
+    get_confirmation;
+    write-host "Killing mysql processes..."
+    # stop mysqld zombies
+    Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
 	write-host "Removing data..."
 	# remove databases
-	$filetodel="$POH_PATH\$MYSQL_DATA_DIR\*"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\var\run\mysqld\*"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$POH_PATH\$MYSQL_DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$POH_PATH\var\run\mysqld\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 function test_database_connection {
 	# Test connection to the OH MySQL database
 	write-host "Testing database connection..."
-#	$DBTEST=$("$POH_PATH\$MYSQL_DIR\bin\mysql.exe --host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD -e USE $DATABASE_NAME;" )
-#	if ( $DBTEST -eq 0 ) {
-#		write-host "Database connection successfully established!"
-#	}
-#	else {
-#		write-host "Error: can't connect to database! Exiting."
-#		exit 2
-#	}
+    try {
+	    Start-Process -FilePath ("$POH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD -e USE $DATABASE_NAME;" ) -Wait -NoNewWindow
+        write-host "Database connection successfully established!"
+	}
+    catch {
+        Write-Host "Error: can't connect to database! Exiting." -ForegroundColor Red
+	    exit 2
+	}
 }
 
 function clean_files {
@@ -592,7 +605,7 @@ switch ( "$opt" ) {
 			exit 0
 		}
 		else {
-	        	write-host "Error: no data found! Exiting."
+	        	write-host "Error: no data found! Exiting." -ForegroundColor Red
 		exit 1
 		}
 		}
@@ -656,7 +669,7 @@ switch ( "$opt" ) {
 
 # check distro
 if ( !( $OH_DISTRO -eq "portable" ) -And !( $OH_DISTRO -eq "client" ) ) {
-	write-host "Error - OH_DISTRO not defined [client - portable]! Exiting."
+	write-host "Error - OH_DISTRO not defined [client - portable]! Exiting." -ForegroundColor Red
 	exit 1
 }
 
@@ -668,7 +681,7 @@ if ( $DEMO_MODE -eq "on" ) {
 		$DB_CREATE_SQL=$DB_DEMO
 	}
 	else {
-	      	write-host "Error: no $DB_DEMO found! Exiting."
+	      	write-host "Error: no $DB_DEMO found! Exiting." -ForegroundColor Red
 		exit 1
 	}
 }
@@ -751,7 +764,7 @@ cd $POH_PATH/$OH_DIR
 #$JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu 2>&1 > /dev/null
 #
 
-write-host "----javabin $JAVA_BIN"
+#write-host "----javabin $JAVA_BIN"
 #write-host "----native $NATIVE_LIB_PATH"
 #write-host "----ohclasspath $OH_CLASSPATH"
 
@@ -763,7 +776,6 @@ Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$POH_P
 # -RedirectStandardOutput "$POH_PATH\OH.out" -RedirectStandardError "$POH_PATH\OH.err"
 
 ###%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
-
 
 write-host "Exiting Open Hospital..."
 
