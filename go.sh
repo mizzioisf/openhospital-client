@@ -24,7 +24,7 @@
 
 # SET DEBUG mode
 # saner programming env: these switches turn some bugs into errors
-set -o errexit -o pipefail -o noclobber -o nounset
+#set -o errexit -o pipefail -o noclobber -o nounset
 
 ######## Open Hospital - Portable Open Hospital Configuration
 # POH_PATH is the directory where Portable OpenHospital files are located
