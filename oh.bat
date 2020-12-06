@@ -54,24 +54,22 @@ REM default to create_all_en.sql - set to "create_all_demo.sql" for demo or crea
 
 REM ######## MySQL Software
 REM # MariaDB
-REM curl http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/mariadb-10.2.36-winx64.zip -o mariadb-10.2.36-winx64.zip
-REM MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
+REM MYSQL_URL=http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/mariadb-10.2.36-winx64.zip
 REM http://ftp.kaist.ac.kr/mysql/Downloads/MySQL-5.7/mysql-5.7.31-winx64.zip
 REM 
 REM # MySQL
 REM #MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
 REM #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
-REM EXT="tar.gz"
 
 set MYSQL_DIR=mariadb-10.2.36-winx64
 set MYSQL_DIR=mysql-5.7.31-winx64
 
 REM ####### JAVA Software
 REM ######## JAVA 64bit - default architecture
-
 REM ### JRE 11 - openjdk
 REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/"
 REM set JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1"
+
 set JAVA_DIR="jdk-11.0.9.1+1-jre"
 set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
