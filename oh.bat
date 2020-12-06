@@ -169,7 +169,6 @@ IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 	IF ERRORLEVEL 1 (goto END)
 )
 
-
 REM ###### SETUP CLASSPATH #####
 
 set CLASSPATH="%OH_PATH%\%OH_DIR%\lib"
@@ -182,8 +181,6 @@ FOR %%A IN (%OH_PATH%\%OH_DIR%\lib\*.jar) DO (
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bundle"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt"
-
-echo %CLASSPATH%
 
 REM ###### Start Open Hospital #####
 cd /d %OH_PATH%\%OH_DIR%
