@@ -24,6 +24,11 @@ on Linux:
 
  bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 
+on Windows (experimental) :
+
+ - download oh.ps1 (powershell)
+ - run it 
+
 # Running POH - Quickstart
 
 - unzip the package in any directory
