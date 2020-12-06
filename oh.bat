@@ -18,10 +18,9 @@ REM # GNU General Public License for more details.
 REM #
 REM # You should have received a copy of the GNU General Public License
 REM # along with this program. If not, see <http://www.gnu.org/licenses/>.
-REm #
+REM #
 
-
-@echo off
+REM ################### Configuration ###################
 set OH_PATH=%~dps0
 
 set OH_DISTRO="portable"
@@ -58,31 +57,23 @@ REM # MariaDB
 REM curl http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/mariadb-10.2.36-winx64.zip -o mariadb-10.2.36-winx64.zip
 REM MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
 REM http://ftp.kaist.ac.kr/mysql/Downloads/MySQL-5.7/mysql-5.7.31-winx64.zip
-
-set MYSQL_DIR=mariadb-10.2.36-winx64
-REM set MYSQL_DIR=mysql-5.7.31-winx64
-
+REM 
 REM # MySQL
 REM #MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
 REM #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 REM EXT="tar.gz"
 
+set MYSQL_DIR=mariadb-10.2.36-winx64
+set MYSQL_DIR=mysql-5.7.31-winx64
+
 REM ####### JAVA Software
 REM ######## JAVA 64bit - default architecture
-REM ### JRE 8 - openlogic
-REM #JAVA_DISTRO="openlogic-openjdk-jre-8u262-b10-linux-x64"
-REM #JAVA_URL="https://builds.openlogic.com/downloadJDK/openlogic-openjdk-jre/8u262-b10/"
-REM #JAVA_DIR="openlogic-openjdk-jre-8u262-b10-linux-64"
-
-REM ### JRE 11 - zulu
-REM #JAVA_DISTRO="zulu11.43.21-ca-jre11.0.9-linux_x64"
-REM #JAVA_URL="https://cdn.azul.com/zulu/bin"
-REM #JAVA_DIR="zulu11.43.21-ca-jre11.0.9-linux_x64"
 
 REM ### JRE 11 - openjdk
-set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/"
-set JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1"
+REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/"
+REM set JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1"
 set JAVA_DIR="jdk-11.0.9.1+1-jre"
+set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
 
@@ -102,7 +93,7 @@ if "%ERRORLEVEL%" equ "0" (
 :FOUNDPORT
 echo "Found TCP port %MYSQL_PORT% for MySQL !"
 
-REM ### SETUP mysql configuration
+REM ### SETUP MySQL configuration
 echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y
 %REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf
 %REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf
@@ -144,26 +135,31 @@ IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 	del /s /q %OH_PATH%\tmp
 	
 	IF  %MYSQL_DIR:~0,5% == maria (
-		echo MariaDB
-		start /b /min %OH_PATH%/%MYSQL_DIR%\bin\mysql_install_db.exe --datadir=%OH_PATH%\%MYSQL_DATA_DIR% --password=%MYSQL_ROOT_PW%
-		timeout /t 3 /nobreak >nul
+		echo Inizializing MariaDB...
+		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql_install_db.exe --datadir=%OH_PATH%\%MYSQL_DATA_DIR% --password=%MYSQL_ROOT_PW%
 	)
 	IF  %MYSQL_DIR:~0,5% == mysql (
-		echo MySQL
-		REM %OH_PATH%/%MYSQL_DIR/bin/mysqld --initialize-insecure --socket=%OH_PATH%/%MYSQL_SOCKET% --basedir=%OH_PATH%/%MYSQL_DIR% --datadir=%OH_PATH%/%MYSQL_DATA_DIR%
+		echo Inizializing MySQL...
+		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --initialize-insecure --console --basedir="%OH_PATH%\%MYSQL_DIR%" --datadir="%OH_PATH%\%MYSQL_DATA_DIR%"
 	)
 	IF ERRORLEVEL 1 (goto END)
-	
+
 	echo Starting MySQL....
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console
-	timeout /t 3 /nobreak >nul
+	timeout /t 2 /nobreak >nul
 	IF ERRORLEVEL 1 (goto END)
+
+	REM # If using MySQL root password need to be set
+	IF  %MYSQL_DIR:~0,5% == mysql (
+		echo Setting MySQL root password...
+		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root --skip-password --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '%MYSQL_ROOT_PW%';"
+	)
 	
 	echo Importing database schema %DB_CREATE_SQL%...
-	%OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "CREATE SCHEMA %DATABASE_NAME%; CREATE USER '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%'; GRANT ALL PRIVILEGES ON %DATABASE_NAME%.* TO '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%';"
+	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "CREATE SCHEMA %DATABASE_NAME%; CREATE USER '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%'; GRANT ALL PRIVILEGES ON %DATABASE_NAME%.* TO '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%';"
 	
 	cd /d %OH_PATH%\sql
-	%OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"
+	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"
 	IF ERRORLEVEL 1 (goto END)
 	echo Database imported!
 
@@ -176,48 +172,32 @@ IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 )
 
 
-REM ### SETUP OH configuration
+REM ###### SETUP CLASSPATH #####
 
-set OH_HOME=%OH_DIR%
-set OH_BIN=%OH_HOME%\bin
-set OH_LIB=%OH_HOME%\lib
-set OH_BUNDLE=%OH_HOME%\bundle
-set OH_REPORT=%OH_HOME%\rpt
-
-set CLASSPATH=%OH_BIN%
+set CLASSPATH="%OH_PATH%\%OH_DIR%\lib"
 
 SETLOCAL ENABLEDELAYEDEXPANSION
 
-FOR %%A IN (%OH_LIB%\*.jar) DO (
+FOR %%A IN (%OH_PATH%\%OH_DIR%\lib\*.jar) DO (
 	set CLASSPATH=!CLASSPATH!;%%A
 )
-set CLASSPATH=%CLASSPATH%;%OH_BIN%\OH-gui.jar
-set CLASSPATH=%CLASSPATH%;%OH_BUNDLE%
-set CLASSPATH=%CLASSPATH%;%OH_REPORT%
+set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar"
+set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bundle"
+set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt"
 
-REM #### Start Open Hospital
+echo %CLASSPATH%
 
+REM ###### Start Open Hospital #####
 cd /d %OH_PATH%\%OH_DIR%
-%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%\%OH_DIR%\rsc\log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%\%OH_DIR%\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
+%JAVA_BIN% -Dlog4j.configuration=%OH_PATH%\%OH_DIR%\rsc\log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%\%OH_DIR%\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 
 REM # Shutting down MySQL
 
-start /b %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% shutdown
+start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% shutdown
 
 cd /d %OH_PATH%\
 echo Done !
 
-REM :function_clean_database
-REM 	echo "Warning: do you want to remove all data and database ?"
-REM 	REM get_confirmation;
-REM	echo "Removing data..."
-REM 	REM remove databases
-REM	del /s /q %OH_PATH%\%MYSQL_DATA_DIR%\*
-REM	del /s /q %OH_PATH%\var\run\mysqld\*
-REM	del /s /q %OH_PATH%\tmp
-REM EXIT /B 0
-
 :END
 echo Error initializing the DB.
 cd /d %OH_PATH%
-pause
