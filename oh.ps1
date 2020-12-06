@@ -52,6 +52,7 @@ $script:DEMO_MODE="off"
 # Database
 $script:MYSQL_SERVER="localhost"
 $script:MYSQL_PORT=3306
+$script:MYSQL_ROOT_PW="root123"
 $script:DATABASE_NAME="oh"
 $script:DATABASE_USER="isf"
 $script:DATABASE_PASSWORD="isf123"
@@ -92,7 +93,6 @@ $script:MYSQL_DIR="mariadb-10.2.36-winx64"
 #MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
 #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 $script:EXT="zip"
-$script:MYSQL_ROOT_PW="root123"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
@@ -367,15 +367,15 @@ function inizialize_database {
     # Inizialize MySQL
 	write-host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
-		"mysql" {
-		write-host "MYSQL"
-			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR") -NoNewWindow; break
-			}
 		"mariadb" {
 		write-host "MARIADB"
 #			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR  --auth-root-authentication-method=normal") -Wait -NoNewWindow ; break
 			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --password=$MYSQL_ROOT_PW" ) -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console1.out' -RedirectStandardError '$POH_PATH\console1.err'
-        }
+        	}
+		"mysql" {
+		write-host "MYSQL"
+			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR") -NoNewWindow; break
+		}
 	}
 
 #	if ( $? -ne 0 ){
@@ -408,6 +408,13 @@ function start_database {
 	# until nc -z $MYSQL_SERVER $MYSQL_PORT; do sleep 1; done
 	write-host "MySQL server started! "
 }
+
+function set_database_root_pw {
+        # If using MySQL/MariaDB root password need to be set
+        echo "Setting MySQL root password..."
+        $POH_PATH/$MYSQL_DIR/bin/mysql -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';" 2>&1 > /dev/null
+}
+
 
 function import_database {
 	write-host "Creating OH Database..."
@@ -712,6 +719,8 @@ if ( $OH_DISTRO -eq "portable" ) {
 		inizialize_database;
 		# Start MySQL
 		start_database;	
+                # Set database root password
+                set_database_root_pw;
 		# Create database and load data
 		import_database;
 	}
