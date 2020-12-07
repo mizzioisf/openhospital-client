@@ -81,8 +81,8 @@ esac
 MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
 MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
 # MySQL
-MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
-MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
+#MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
+#MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 EXT="tar.gz"
 
 ######## JAVA Software
@@ -236,22 +236,24 @@ if [ ! -x $JAVA_BIN ]; then
 		wget -P $POH_PATH/ $JAVA_URL/$JAVA_DISTRO.$EXT
 	fi
 	echo "Unpacking $JAVA_DISTRO..."
-	tar xf $POH_PATH/$JAVA_DISTRO.tar.gz -C $POH_PATH/
-	# check for java binary
-	if [ -x $POH_PATH/$JAVA_DIR/bin/java ]; then
-		echo "Java unpacked successfully!"
-		JAVA_BIN=$POH_PATH/$JAVA_DIR/bin/java
-		echo "Java found!"
-	else 
+	tar xf $POH_PATH/$JAVA_DISTRO.$EXT -C $POH_PATH/
+	if [ $? -ne 0 ]; then
 		echo "Error unpacking Java. Exiting."
 		exit 1
 	fi
-	echo "Removing downloaded file..."
-	rm $POH_PATH/$JAVA_DISTRO.$EXT
-	echo "Done!"
-else
+		echo "JAVA unpacked successfully!"
+		echo "Removing downloaded file..."
+		rm $POH_PATH/$JAVA_DISTRO.$EXT
+		echo "Done!"
+	fi
+# check for java binary
+if [ -x $POH_PATH/$JAVA_DIR/bin/java ]; then
+	JAVA_BIN=$POH_PATH/$JAVA_DIR/bin/java
 	echo "JAVA found!"
 	echo "Using $JAVA_DIR"
+else 
+	echo "JAVA not found! Exiting."
+	exit 1
 fi
 }
 
@@ -266,25 +268,29 @@ if [ ! -d "$POH_PATH/$MYSQL_DIR" ]; then
 	fi
 	echo "Unpacking $MYSQL_DIR..."
 	tar xf $POH_PATH/$MYSQL_DIR.$EXT -C $POH_PATH/
-	if [ -x $POH_PATH/$MYSQL_DIR/bin/mysqld_safe ]; then
-		echo "MySQL unpacked successfully!"
-	else 
+	if [ $? -ne 0 ]; then
 		echo "Error unpacking MySQL. Exiting."
-		exit 1
+		exit 2
 	fi
+	echo "MySQL unpacked successfully!"
 	echo "Removing downloaded file..."
 	rm $POH_PATH/$MYSQL_DIR.$EXT
 	echo "Done!"
-else	
+fi
+# check for mysql binary
+if [ -x $POH_PATH/$MYSQL_DIR/bin/mysqld_safe ]; then
 	echo "MySQL found!"
 	echo "Using $MYSQL_DIR"
+else
+	echo "MySQL not found! Exiting."
+	exit 2
 fi
 }
 
 function config_database {
 	# Find a free TCP port to run MySQL starting from the default port
 	echo "Looking for a free TCP port for MySQL database..."
-	while [ $(ss -tna | awk '{ print $4 }' | grep ":$MYSQL_PORT") ]; do
+	while [[ $(ss -tl4  sport = :$MYSQL_PORT | grep LISTEN) ]]; do
 		MYSQL_PORT=$(expr $MYSQL_PORT + 1)
 	done
 	echo "Found TCP port $MYSQL_PORT!"
