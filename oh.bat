@@ -182,9 +182,12 @@ set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bundle"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt"
 
+REM # Set architecture
+IF (%PROCESSOR_ARCHITECTURE%)==(AMD64) (set %NATIVE_LIB_PATH%=%OH_PATH%\%OH_DIR%\lib\native\Win64) ELSE (set %NATIVE_LIB_PATH%=%OH_PATH%\%OH_DIR%\lib\native\Windows)
+
 REM ###### Start Open Hospital #####
 cd /d %OH_PATH%\%OH_DIR%
-%JAVA_BIN% -Dlog4j.configuration=%OH_PATH%\%OH_DIR%\rsc\log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%\%OH_DIR%\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
+%JAVA_BIN% -Dlog4j.configuration=%OH_PATH%\%OH_DIR%\rsc\log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.menu.gui.Menu
 
 REM # Shutting down MySQL
 
