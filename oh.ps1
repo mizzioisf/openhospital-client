@@ -51,7 +51,7 @@ $script:DEMO_MODE="off"
 ######## Software configuration - change at your own risk :-)
 # Database
 $script:MYSQL_SERVER="localhost"
-$script:MYSQL_PORT=3306
+$script:MYSQL_PORT=3305
 $script:MYSQL_ROOT_PW="root123"
 $script:DATABASE_NAME="oh"
 $script:DATABASE_USER="isf"
@@ -64,7 +64,8 @@ $script:SQL_DIR="sql"
 $script:MYSQL_SOCKET="var/run/mysqld/mysql.sock"
 $script:MYSQL_DATA_DIR="var/lib/mysql/"
 $script:DB_DEMO="create_all_demo.sql"
-$script:DATE= Get-Date
+# date +%Y-%m-%d_%H-%M-%S
+$script:DATE= Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
 
 ######## Define architecture
 
@@ -184,6 +185,8 @@ switch ("$choice") {
 
 function set_path {
 	# set current dir
+
+################################################## SISTEMAREEEEEEEEEEEEEEE
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
 	# set POH_PATH if not defined
 	if ( ! $POH_PATH ) {
@@ -203,16 +206,17 @@ function set_language {
 	if ( ! $OH_LANGUAGE ) {
 		$script:OH_LANGUAGE="en"
 	}	
-#	switch ( "$OH_LANGUAGE" ) {
-#		en|fr|it|es|pt) 
+	switch ( "$OH_LANGUAGE" ) {
+		{"en","fr","it","es","pt"} {
 			# set database creation script in chosen language
-			$DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
-#			;;
-#		*)
-#			write-host "Invalid option: $OH_LANGUAGE. Exiting."
-#			exit 1
-#		;;
-#	}
+			$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
+            break
+        }
+    default {
+        write-host "Invalid option: $OH_LANGUAGE. Exiting."
+	    exit 1
+        }
+    }
 }
 
 function java_lib_setup {
@@ -369,8 +373,11 @@ function inizialize_database {
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
 		write-host "MARIADB"
-#			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR  --auth-root-authentication-method=normal") -Wait -NoNewWindow ; break
-			Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --password=$MYSQL_ROOT_PW" ) -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console1.out' -RedirectStandardError '$POH_PATH\console1.err'
+		#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --auth-root-authentication-method=normal") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'
+		Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'			
+
+
+#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --password=$MYSQL_ROOT_PW") -Wait #
         	}
 		"mysql" {
 		write-host "MYSQL"
@@ -410,9 +417,16 @@ function start_database {
 }
 
 function set_database_root_pw {
-        # If using MySQL/MariaDB root password need to be set
-        echo "Setting MySQL root password..."
-        $POH_PATH/$MYSQL_DIR/bin/mysql -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';" 2>&1 > /dev/null
+     # If using MySQL root password need to be set
+     switch -Regex ( $MYSQL_DIR ) {
+		"mysql" {
+            echo "Setting MySQL root password..."
+        $SQLCOMMAND=@"
+        -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';"
+"@
+        Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow  -RedirectStandardOutput '.\consolePW.out' -RedirectStandardError '.\consolePW.err'
+        }
+    }
 }
 
 
@@ -422,58 +436,54 @@ function import_database {
 	
     #$script:SQL_CREATE="CREATE DATABASE $DATABASE_NAME; `
 
-    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
-	CREATE USER \'$DATABASE_USER\'@\'localhost\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; `
-	CREATE USER \'$DATABASE_USER\'\@\'\%\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'@\'localhost\'; `
-	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;")  -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
+    #Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
+	#CREATE USER \'$DATABASE_USER\'@\'localhost\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; `
+	#CREATE USER \'$DATABASE_USER\'\@\'\%\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'@\'localhost\'; `
+	#GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;")  -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
     
-    #$script:SQL_CREATE=" ""CREATE DATABASE $DATABASE_NAME;	CREATE USER \'$DATABASE_USER\'@\'localhost\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; CREATE USER \'$DATABASE_USER\'\@\'\%\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'@\'localhost\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;"" " 
-
-
-    #write-host "----------------------- $SQL_CREATE "
-
-    #write-host "-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e '$SQL_CREATE'"
-
-   #Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e 'SQL_CREATE'") -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
-
-#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT -e "CREATE DATABASE $DATABASE_NAME;")
-#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT -e "
+    $SQLCOMMAND=@"
+    -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT -e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
+"@
+    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
+    
+    # Check for database creation script
+    if ( Test-Path "$POH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
+                Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
+                }
+        else {
+                Write-Host "No SQL file found! Exiting."
+                shutdown_database;
+                exit 2
+        }
 
 	# Create OH database structure
 	write-host "Importing database schema $DB_CREATE_SQL..."
 	
     cd $POH_PATH\$SQL_DIR
-	
-    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("--local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME < ""$POH_PATH\$SQL_DIR\$DB_CREATE_SQL"" ") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
-    ###Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME < ""$POH_PATH\$SQL_DIR\$DB_CREATE_SQL"" ") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
 
-#	if ( $? -ne 0 ) {
-#		write-host "Error: Database not imported! Exiting." -ForegroundColor Red
-#		shutdown_database;
-#		exit 2
-#	}
+    $SQLCOMMAND=@"
+   --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME
+"@
+    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardInput "$POH_PATH\$SQL_DIR\$DB_CREATE_SQL" -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
+ 
 	write-host "Database imported!"
 }
 
 function dump_database {
 	# Save OH database if existing
-	if ( ! ( Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
-		write-host "Dumping MySQL database..."
-		# $POH_PATH\$MYSQL_DIR\bin\mysqldump.exe --no-create-info --skip-extended-insert -h $MYSQL_SERVER --port=$MYSQL_PORT -u root $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql
-        #try {
-		    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("--skip-extended-insert -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql") -NoNewWindow -Wait 
-		if ( $? -ne 0 ) {
-			write-host "Error: Database not dumped! Exiting." -ForegroundColor Yellow
-			shutdown_database;
-			exit 2
-		}
-	    else {
-		    write-host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
-		    shutdown_database;
-		    exit 2
-	    }
-	}
-	write-host "MySQL dump yfile $SQL_DIR\mysqldump_$DATE.sql completed!"
+	if ( ( Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
+		write-host "Dumping MySQL database..."	
+        $SQLCOMMAND=@"
+    --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NaAME
+"@
+        Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardOutput "$POH_PATH\$SQL_DIR\mysqldump_$DATE.sql"-NoNewWindow -Wait	
+    }
+    else {
+	    write-host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
+	    shutdown_database;
+	    exit 2
+    }
+	write-host "MySQL dump file $SQL_DIR\mysqldump_$DATE.sql completed!"-ForegroundColor Green
 }
 
 function shutdown_database {
@@ -718,9 +728,9 @@ if ( $OH_DISTRO -eq "portable" ) {
 		# Prepare MySQL
 		inizialize_database;
 		# Start MySQL
-		start_database;	
-                # Set database root password
-                set_database_root_pw;
+        start_database;	
+        # Set database root password
+        set_database_root_pw;
 		# Create database and load data
 		import_database;
 	}
@@ -746,17 +756,23 @@ write-host "Setting up OH configuration files..."
 #[ if Test-Path -Path  $POH_PATH/$OH_DIR/rsc/log4j.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/log4j.properties $POH_PATH/$OH_DIR/rsc/log4j.properties.old
 #sed -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBSERVER/$MYSQL_SERVER/" -e "s/DBUSER/$DATABASE_USER/" -e "s/DBPASS/$DATABASE_PASSWORD/" -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/" $POH_PATH/$OH_DIR/rsc/log4j.properties.dist > $POH_PATH/$OH_DIR/rsc/log4j.properties
 
-(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties.dist").replace("DB_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
 (Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
 (Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
 (Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG_LEVEL","$DEBUG_LEVE") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
 
 ######## database.properties setup 
 #[ if Test-Path -Path  $POH_PATH/$OH_DIR/rsc/database.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/database.properties $POH_PATH/$OH_DIR/rsc/database.properties.old
-Set-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.url=jdbc:mysql://{$MYSQL_SERVER}:$MYSQL_PORT/$DATABASE_NAME"
-Add-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.username=$DATABASE_USER"
-Add-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.password=$DATABASE_PASSWORD"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties").replace("DBNAME","$DATABASE_NAME") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
+
+#Set-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.url=jdbc:mysql://"$MYSQL_SERVER":$MYSQL_PORT/$DATABASE_NAME"
+#Add-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.username=$DATABASE_USER"
+#Add-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.password=$DATABASE_PASSWORD"
 
 ######## generalData.properties language setup 
 # set language in OH config file
