@@ -65,7 +65,7 @@ $script:MYSQL_SOCKET="var/run/mysqld/mysql.sock"
 $script:MYSQL_DATA_DIR="var/lib/mysql/"
 $script:DB_DEMO="create_all_demo.sql"
 # date +%Y-%m-%d_%H-%M-%S
-$script:DATE= Get-Date -Format "yyyy-MM-dd-HH-mm-ss"
+$script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 ######## Define architecture
 
