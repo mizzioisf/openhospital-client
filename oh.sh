@@ -43,7 +43,8 @@ DEMO_MODE=off
 
 ######## Software configuration - change at your own risk :-)
 # Database
-MYSQL_SERVER=localhost
+MYSQL_SERVER=127.0.0.1
+#MYSQL_SERVER="127.0.0.1"
 MYSQL_PORT=3306
 MYSQL_ROOT_PW="root2020oh"
 DATABASE_NAME=oh
@@ -632,7 +633,7 @@ $POH_PATH/$OH_DIR/rsc/log4j.properties.dist > $POH_PATH/$OH_DIR/rsc/log4j.proper
 ######## database.properties setup 
 [ -f $POH_PATH/$OH_DIR/rsc/database.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/database.properties $POH_PATH/$OH_DIR/rsc/database.properties.old
 sed -e "s/DBSERVER/$MYSQL_SERVER/" -e "s/DBPORT/$MYSQL_PORT/" -e"s/DBNAME/$DATABASE_NAME/" \
--e "s/DBUSER/$DATABASE_USER/" -e "s/DBPASS/$DATABASE_PASSWORD/" -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/" \
+-e "s/DBUSER/$DATABASE_USER/" -e "s/DBPASS/$DATABASE_PASSWORD/" \
 $POH_PATH/$OH_DIR/rsc/database.properties.dist > $POH_PATH/$OH_DIR/rsc/database.properties
 
 #echo "jdbc.url=jdbc:mysql://$MYSQL_SERVER:$MYSQL_PORT/$DATABASE_NAME" > $POH_PATH/$OH_DIR/rsc/database.properties
