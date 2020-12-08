@@ -43,7 +43,7 @@ DEMO_MODE=off
 
 ######## Software configuration - change at your own risk :-)
 # Database
-MYSQL_SERVER=127.0.0.1
+MYSQL_SERVER=localhost
 #MYSQL_SERVER="127.0.0.1"
 MYSQL_PORT=3306
 MYSQL_ROOT_PW="root2020oh"
