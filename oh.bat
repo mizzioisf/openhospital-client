@@ -166,8 +166,9 @@ IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"
 	IF ERRORLEVEL 1 (goto END)
 	echo Database imported!
+	cd /d %OH_PATH%
 
-	rename "%OH_PATH%\sql\create_all_en.sql" create_all_en.sql.imported
+	rename "%OH_PATH%\sql\%DB_CREATE_SCRIPT%" "%DB_CREATE_SCRIPT%.imported"
 ) ELSE (
 	echo Missing sql database creation script or Database already initialized, trying to start...
 	echo Starting MySQL....
