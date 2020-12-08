@@ -93,9 +93,8 @@ echo "Found TCP port %MYSQL_PORT% for MySQL !"
 
 REM ### SETUP MySQL configuration
 echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y
-%REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf
-%REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf
 %REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\etc\mysql\my.cnf
+%REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf
 %REPLACE_PATH%\replace.exe MYSQL_DISTRO %MYSQL_DIR% -- %OH_PATH%\etc\mysql\my.cnf
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\etc\mysql\my.cnf
 
@@ -105,9 +104,16 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\dicom.properties.dist %OH_PATH%\%OH_DIR%\r
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties
 
 REM ### SETUP database.properties
-echo "jdbc.url=jdbc:mysql://%MYSQL_SERVER%:%MYSQL_PORT%/%DATABASE_NAME%" > %OH_PATH%\oh\rsc\database.properties
-echo "jdbc.username=%DATABASE_USER%" >> %OH_PATH%\oh\rsc\database.properties
-echo "jdbc.password=%DATABASE_PASSWORD%" >> %OH_PATH%\oh\rsc\database.properties
+echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\database.properties.dist %OH_PATH%\%OH_DIR%\rsc\database.properties /y
+%REPLACE_PATH%\replace.exe DBSERVER %MYSQL_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties
+%REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\database.properties
+%REPLACE_PATH%\replace.exe DBNAME %DATABASE_NAME% -- %OH_PATH%\%OH_DIR%\rsc\database.properties
+%REPLACE_PATH%\replace.exe DBUSER %DATABASE_USER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties
+%REPLACE_PATH%\replace.exe DBPASS %DATABASE_PASSWORD% -- %OH_PATH%\%OH_DIR%\rsc\database.properties
+
+REM echo "jdbc.url=jdbc:mysql://%MYSQL_SERVER%:%MYSQL_PORT%/%DATABASE_NAME%" > %OH_PATH%\oh\rsc\database.properties
+REM echo "jdbc.username=%DATABASE_USER%" >> %OH_PATH%\oh\rsc\database.properties
+REM echo "jdbc.password=%DATABASE_PASSWORD%" >> %OH_PATH%\oh\rsc\database.properties
 
 REM ### SETUP generalData.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\generalData.properties.dist %OH_PATH%\%OH_DIR%\rsc\generalData.properties /y
@@ -115,8 +121,8 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\generalData.properties.dist %OH_PATH%\%OH_
 
 REM ### SETUP log4j.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\rsc\log4j.properties /y
-%REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties
 %REPLACE_PATH%\replace.exe DBSERVER %MYSQL_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties
+%REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties
 %REPLACE_PATH%\replace.exe DBUSER %DATABASE_USER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties
 %REPLACE_PATH%\replace.exe DBPASS %DATABASE_PASSWORD% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties
 %REPLACE_PATH%\replace.exe DEBUG_LEVEL %DEBUG_LEVEL% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties
