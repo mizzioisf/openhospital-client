@@ -387,7 +387,7 @@ function dump_database {
 
 function shutdown_database {
 	echo "Shutting down MySQL..."
-	$POH_PATH/$MYSQL_DIR/bin/mysqladmin -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --user=root shutdown 2>&1 > /dev/null
+	$POH_PATH/$MYSQL_DIR/bin/mysqladmin -u root -p$MYSQL_ROOT_PW --host="$MYSQL_SERVER" --port=$MYSQL_PORT --user=root shutdown 2>&1 > /dev/null
 	# Wait till the MySQL socket file is removed
 	while [ -e $POH_PATH/$MYSQL_SOCKET ]; do sleep 1; done
 }
