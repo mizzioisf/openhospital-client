@@ -381,7 +381,7 @@ function inizialize_database {
         	}
 		"mysql" {
 		write-host "MYSQL"
-			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --socket=$POH_PATH\$MYSQL_SOCKET --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR") -NoNewWindow; break
+			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR") -NoNewWindow; break
 		}
 	}
 
@@ -422,7 +422,7 @@ function set_database_root_pw {
 		"mysql" {
             echo "Setting MySQL root password..."
         $SQLCOMMAND=@"
-        -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';"
+        -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';"
 "@
         Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow  -RedirectStandardOutput '.\consolePW.out' -RedirectStandardError '.\consolePW.err'
         }
@@ -442,7 +442,7 @@ function import_database {
 	#GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;")  -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
     
     $SQLCOMMAND=@"
-    -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT -e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
+    -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
 "@
     Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
     
@@ -462,7 +462,7 @@ function import_database {
     cd $POH_PATH\$SQL_DIR
 
     $SQLCOMMAND=@"
-   --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NAME
+   --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME
 "@
     Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardInput "$POH_PATH\$SQL_DIR\$DB_CREATE_SQL" -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
  
@@ -474,7 +474,7 @@ function dump_database {
 	if ( ( Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
 		write-host "Dumping MySQL database..."	
         $SQLCOMMAND=@"
-    --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT $DATABASE_NaAME
+    --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NaAME
 "@
         Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardOutput "$POH_PATH\$SQL_DIR\mysqldump_$DATE.sql"-NoNewWindow -Wait	
     }
@@ -488,7 +488,7 @@ function dump_database {
 
 function shutdown_database {
 	write-host "Shutting down MySQL..."
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("--user=root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT shutdown") -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console5.out' -RedirectStandardError '$POH_PATH\console5.err'
+	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console5.out' -RedirectStandardError '$POH_PATH\console5.err'
 	# Wait till the MySQL socket file is removed
 #	while ( -e $POH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 }
@@ -509,7 +509,7 @@ function test_database_connection {
 	# Test connection to the OH MySQL database
 	write-host "Testing database connection..."
     try {
-	    Start-Process -FilePath ("$POH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD -e USE $DATABASE_NAME;" ) -Wait -NoNewWindow
+	    Start-Process -FilePath ("$POH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD --protocol=tcp -e USE $DATABASE_NAME;" ) -Wait -NoNewWindow
         write-host "Database connection successfully established!"
 	}
     catch {
