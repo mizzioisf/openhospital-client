@@ -36,20 +36,20 @@ set DEBUG_LEVEL=INFO
 
 REM ### Software configuration - change at your own risk :-)
 REM # Database
-SET MYSQL_SERVER=localhost
-SET MYSQL_PORT=3306
+set MYSQL_SERVER=localhost
+set MYSQL_PORT=3306
 set MYSQL_ROOT_PW=root123
-SET DATABASE_NAME=oh
-SET DATABASE_USER=isf
-SET DATABASE_PASSWORD=isf123
+set DATABASE_NAME=oh
+set DATABASE_USER=isf
+set DATABASE_PASSWORD=isf123
 
-SET DICOM_MAX_SIZE="4M"
+set DICOM_MAX_SIZE="4M"
 
-SET OH_DIR=oh
-SET SQL_DIR=sql
-SET MYSQL_SOCKET="var/run/mysqld/mysql.sock"
-SET MYSQL_DATA_DIR="var/lib/mysql/"
-SET DB_CREATE_SQL="create_all_en.sql"
+set OH_DIR=oh
+set SQL_DIR=sql
+set MYSQL_SOCKET="var/run/mysqld/mysql.sock"
+set MYSQL_DATA_DIR="var/lib/mysql/"
+set DB_CREATE_SQL="create_all_en.sql"
 REM default to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
 set LOG_DIR="var\log"
 set LOG_FILE="startup.log"
