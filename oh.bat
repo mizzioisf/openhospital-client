@@ -126,9 +126,9 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\r
 %REPLACE_PATH%\replace.exe DEBUG_LEVEL %DEBUG_LEVEL% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
 REM ### Setup database
-IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
+IF EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
+ 	REM # Remove database files
 	echo Removing data...
- 	REM remove database files
 	rmdir /s /q %OH_PATH%\%MYSQL_DATA_DIR%
 	mkdir %OH_PATH%\%MYSQL_DATA_DIR%
 	del /s /q %OH_PATH%\var\run\mysqld\*
@@ -158,13 +158,13 @@ IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 	echo "Importing database schema %DB_CREATE_SQL%..."
 	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "CREATE DATABASE %DATABASE_NAME%; CREATE USER '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%'; GRANT ALL PRIVILEGES ON %DATABASE_NAME%.* TO '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 	
-	cd /d %OH_PATH%\sql
+	cd /d %OH_PATH%\%SQL_DIR%
 	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 	IF ERRORLEVEL 1 (goto END)
 	echo Database imported!
 	cd /d %OH_PATH%
 
-	rename "%OH_PATH%\sql\%DB_CREATE_SQL%" "%DB_CREATE_SQL%.imported"  >>"%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+	rename "%OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL%" "%DB_CREATE_SQL%.imported"  >>"%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 ) ELSE (
 	echo "Missing SQL creation script or database already initialized, trying to start..."
 	echo "Starting MySQL server on port %MYSQL_PORT%..."
