@@ -259,6 +259,7 @@ function java_lib_setup {
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin\OH-gui.jar"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bundle\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\rpt\"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\rsc\"
     $script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\lib\"
     #$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin\*"
 

@@ -183,6 +183,7 @@ FOR %%A IN (%OH_PATH%\%OH_DIR%\lib\*.jar) DO (
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bundle"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt"
+set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rsc"
 
 REM # Setup architecture
 IF (%PROCESSOR_ARCHITECTURE%)==(AMD64) (set %NATIVE_LIB_PATH%=%OH_PATH%\%OH_DIR%\lib\native\Win64) ELSE (set %NATIVE_LIB_PATH%=%OH_PATH%\%OH_DIR%\lib\native\Windows)
