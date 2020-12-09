@@ -64,7 +64,7 @@ REM #MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
 REM #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 
 set MYSQL_DIR=mariadb-10.2.36-winx64
-set MYSQL_DIR=mysql-5.7.31-winx64
+REM set MYSQL_DIR=mysql-5.7.31-winx64
 
 REM ####### JAVA Software
 REM ######## JAVA 64bit - default architecture
@@ -77,7 +77,7 @@ set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
 
-REM set mysql port
+REM Set mysql TCP port
 set startPort=%MYSQL_PORT%
 :SEARCHPORT
 netstat -o -n -a | find "LISTENING" | find ":%startPort% " > NUL
@@ -93,19 +93,19 @@ if "%ERRORLEVEL%" equ "0" (
 :FOUNDPORT
 echo "Found TCP port %MYSQL_PORT% for MySQL !"
 
-REM ### SETUP MySQL configuration
+REM ### Setup MySQL configuration
 echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y > "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\etc\mysql\my.cnf  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe MYSQL_DISTRO %MYSQL_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
-REM ### SETUP dicom.properties
+REM ### Setup dicom.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\dicom.properties.dist %OH_PATH%\%OH_DIR%\rsc\dicom.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
-REM ### SETUP database.properties
+REM ### Setup database.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\database.properties.dist %OH_PATH%\%OH_DIR%\rsc\database.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBSERVER %MYSQL_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -113,11 +113,11 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\database.properties.dist %OH_PATH%\%OH_DIR
 %REPLACE_PATH%\replace.exe DBUSER %DATABASE_USER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPASS %DATABASE_PASSWORD% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
-REM ### SETUP generalData.properties
+REM ### Setup generalData.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\generalData.properties.dist %OH_PATH%\%OH_DIR%\rsc\generalData.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_SET_LANGUAGE %OH_LANGUAGE% -- %OH_PATH%\%OH_DIR%\rsc\generalData.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
-REM ### SETUP log4j.properties
+REM ### Setup log4j.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\rsc\log4j.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBSERVER %MYSQL_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -125,7 +125,7 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\r
 %REPLACE_PATH%\replace.exe DBPASS %DATABASE_PASSWORD% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DEBUG_LEVEL %DEBUG_LEVEL% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
-
+REM ### Setup database
 IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 	echo "Initializing MySQL database on port %MYSQL_PORT%..."
 
@@ -168,14 +168,13 @@ IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 
 	rename "%OH_PATH%\sql\%DB_CREATE_SQL%" "%DB_CREATE_SQL%.imported"  >>"%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 ) ELSE (
-	echo Missing sql database creation script or Database already initialized, trying to start...
+	echo Missing SQL creation script or database already initialized, trying to start...
 	echo Starting MySQL....
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console
 	IF ERRORLEVEL 1 (goto END)
 )
 
-REM ###### SETUP CLASSPATH #####
-
+REM ###### Setup CLASSPATH #####
 set CLASSPATH="%OH_PATH%\%OH_DIR%\lib"
 
 SETLOCAL ENABLEDELAYEDEXPANSION
@@ -187,18 +186,17 @@ set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bundle"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt"
 
-REM # Set architecture
+REM # Setup architecture
 IF (%PROCESSOR_ARCHITECTURE%)==(AMD64) (set %NATIVE_LIB_PATH%=%OH_PATH%\%OH_DIR%\lib\native\Win64) ELSE (set %NATIVE_LIB_PATH%=%OH_PATH%\%OH_DIR%\lib\native\Windows)
 
 REM ###### Start Open Hospital #####
 cd /d %OH_PATH%\%OH_DIR%
 %JAVA_BIN% -Dlog4j.configuration=%OH_PATH%\%OH_DIR%\rsc\log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.menu.gui.Menu
 
-REM # Shutting down MySQL
-
+REM # Shutdown MySQL
 start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% shutdown >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 
-
+REM # Exit
 cd /d %OH_PATH%\
 echo Done !
 
