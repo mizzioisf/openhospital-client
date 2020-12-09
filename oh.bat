@@ -82,11 +82,11 @@ set startPort=%MYSQL_PORT%
 :SEARCHPORT
 netstat -o -n -a | find "LISTENING" | find ":%startPort% " > NUL
 if "%ERRORLEVEL%" equ "0" (
-	echo "port unavailable %startPort%"
+	echo "TCP port %startPort% unavailable"
 	set /a startPort +=1
 	GOTO :SEARCHPORT
 ) ELSE (
-	echo "port available %startPort%"
+	echo "TCP port %startPort% available"
 	set MYSQL_PORT=%startPort%
 	GOTO :FOUNDPORT
 )
@@ -127,37 +127,35 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\r
 
 REM ### Setup database
 IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
-	echo "Initializing MySQL database on port %MYSQL_PORT%..."
-
-	echo "Removing data..."
- 	REM remove databases
+	echo Removing data...
+ 	REM remove database files
 	rmdir /s /q %OH_PATH%\%MYSQL_DATA_DIR%
 	mkdir %OH_PATH%\%MYSQL_DATA_DIR%
 	del /s /q %OH_PATH%\var\run\mysqld\*
 	del /s /q %OH_PATH%\tmp
 	
 	IF  %MYSQL_DIR:~0,5% == maria (
-		echo Inizializing MariaDB...
+		echo Initializing MariaDB...
 		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql_install_db.exe --datadir=%OH_PATH%\%MYSQL_DATA_DIR% --password=%MYSQL_ROOT_PW%  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 	)
 	IF  %MYSQL_DIR:~0,5% == mysql (
-		echo Inizializing MySQL...
+		echo Initializing MySQL...
 		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --initialize-insecure --console --basedir="%OH_PATH%\%MYSQL_DIR%" --datadir="%OH_PATH%\%MYSQL_DATA_DIR%"
 	)
 	IF ERRORLEVEL 1 (goto END)
 
-	echo Starting MySQL....
+	echo "Starting MySQL server on port %MYSQL_PORT%..."
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console
 	IF ERRORLEVEL 1 (goto END)
 	timeout /t 2 /nobreak >nul
 	
 	REM # If using MySQL root password need to be set
 	IF  %MYSQL_DIR:~0,5% == mysql (
-		echo Setting MySQL root password...
+		echo "Setting MySQL root password..."
 		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root --skip-password --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '%MYSQL_ROOT_PW%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 	)
 	
-	echo Importing database schema %DB_CREATE_SQL%...
+	echo "Importing database schema %DB_CREATE_SQL%..."
 	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "CREATE DATABASE %DATABASE_NAME%; CREATE USER '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%'; GRANT ALL PRIVILEGES ON %DATABASE_NAME%.* TO '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 	
 	cd /d %OH_PATH%\sql
@@ -168,8 +166,8 @@ IF EXIST %OH_PATH%\sql\%DB_CREATE_SQL% (
 
 	rename "%OH_PATH%\sql\%DB_CREATE_SQL%" "%DB_CREATE_SQL%.imported"  >>"%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 ) ELSE (
-	echo Missing SQL creation script or database already initialized, trying to start...
-	echo Starting MySQL....
+	echo "Missing SQL creation script or database already initialized, trying to start..."
+	echo "Starting MySQL server on port %MYSQL_PORT%..."
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console
 	IF ERRORLEVEL 1 (goto END)
 )
@@ -197,9 +195,9 @@ REM # Shutdown MySQL
 start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% shutdown >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 
 REM # Exit
-cd /d %OH_PATH%\
+cd /d %OH_PATH%
 echo Done !
 
 :END
-echo Error initializing the DB.
+echo Error initializing the database, exiting.
 cd /d %OH_PATH%
