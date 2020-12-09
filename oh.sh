@@ -476,7 +476,7 @@ while getopts ${OPTSTRING} opt; do
 	r)	# restore 
         	echo "Restoring Portable Open Hospital database...."
 		clean_database;
-		# ask user for database to restore
+		# ask user for database/sql script to restore
 		read -p "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> " DB_CREATE_SQL
 		if [ -f $POH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
 		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
@@ -571,7 +571,7 @@ if [ -z ${OH_DISTRO+x} ]; then
 	exit 1
 fi
 
-# check demo mode
+# check for demo mode
 if [ $DEMO_MODE = "on" ]; then
 	if [ -f $POH_PATH/$SQL_DIR/$DB_DEMO ]; then
 	        echo "Found SQL demo database, starting OH in demo mode..."
