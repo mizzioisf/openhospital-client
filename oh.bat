@@ -49,7 +49,8 @@ set OH_DIR=oh
 set SQL_DIR=sql
 set MYSQL_SOCKET="var/run/mysqld/mysql.sock"
 set MYSQL_DATA_DIR="var/lib/mysql/"
-set DB_CREATE_SQL="create_all_en.sql" REM default to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
+set DB_CREATE_SQL="create_all_en.sql"
+REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
 set LOG_DIR="var\log"
 set LOG_FILE="startup.log"
 
