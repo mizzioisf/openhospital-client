@@ -55,7 +55,7 @@ function script_usage {
 	echo ""
 	echo " Portable Hospital Client - Web start - experimental "
 	echo ""
-	echo " Usage: $SCRIPT_NAME [-option]"
+	echo " Usage: $SCRIPT_NAME [-h][-option]"
 	echo ""
 	echo " If the script finds a POH installation in the current dir, launches oh.sh [-params]"
 	echo " Otherwise it downloads a dev copy, all the necessary software libraries, clone the POH installation"
