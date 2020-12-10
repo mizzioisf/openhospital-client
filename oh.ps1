@@ -358,6 +358,7 @@ function config_database {
 #	[ if Test-Path $POH_PATH/etc/mysql/my.cnf ] && mv -f $POH_PATH/etc/mysql/my.cnf $POH_PATH/etc/mysql/my.cnf.old
 	(Get-Content "$POH_PATH/etc/mysql/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("OH_PATH_SUBSTITUTE","$POH_PATH") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_SERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
 

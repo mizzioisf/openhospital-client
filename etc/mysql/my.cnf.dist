@@ -4,7 +4,7 @@ socket = "OH_PATH_SUBSTITUTE/var/run/mysqld/mysql.sock"
 
 [mysqld] 
 port = MYSQL_PORT 
-bind-address = localhost
+bind-address = MYSQL_SERVER
 socket = "OH_PATH_SUBSTITUTE/var/run/mysqld/mysql.sock"
 pid-file = "OH_PATH_SUBSTITUTE/var/run/mysqld/mysql.pid"
 basedir = "OH_PATH_SUBSTITUTE/MYSQL_DISTRO"  
