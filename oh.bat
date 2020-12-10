@@ -165,7 +165,7 @@ IF EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
 	echo Database imported!
 	cd /d %OH_PATH%
 
-	rename "%OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL%" "%DB_CREATE_SQL%.imported"  >>"%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+	rename "%OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL%" "%DB_CREATE_SQL%.imported"
 ) ELSE (
 	echo "Missing SQL creation script or database already initialized, trying to start..."
 	echo "Starting MySQL server on port %MYSQL_PORT%..."
