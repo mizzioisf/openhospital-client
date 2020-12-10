@@ -26,6 +26,11 @@ on Linux:
 
 on Windows (experimental) :
 
+ - dowload oh.bat
+ - run it
+
+on Windows (experimental) :
+
  - download oh.ps1 (powershell)
  - run it 
 
