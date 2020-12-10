@@ -69,23 +69,20 @@ $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 ######## Define architecture
 
-#ARCH=`uname -m`
-$script:ARCH="x86_64"
-$script:JAVA_ARCH="64"
+$script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
-#case $ARCH in
-#	x86_64|amd64|AMD64)
-#		JAVA_ARCH=64
-#		;;
-#	i[3456789]86|x86|i86pc)
-#		JAVA_ARCH=32
-#		;;
-#	*)
-#		write-host "Unknown architecture $(uname -m)"
-#		exit 1
-#		;;
-#esac
-
+switch ( "$ARCH" ) {	
+    "amd64" { $script:JAVA_ARCH=64; }
+    "AMD64" { $script:JAVA_ARCH=64; }
+    "x86_64" { $script:JAVA_ARCH=64; }
+    ("486","586","686","x86","i86pc") { $script:JAVA_ARCH=64; }
+	default {
+	    write-host "Unknown architecture: $ARCH. Exiting."
+		exit 1
+	}
+}
+		write-host " architecture: $ARCH.."
+		write-host " JAVA AR: $JAVA_ARCH. Exiting."
 ######## MySQL Software
 # MariaDB
 $script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/"
@@ -243,8 +240,6 @@ function java_lib_setup {
 	#	write-host "---------$OH_CLASSPATH"
 	#}
 
-    #$filetojar="$POH_PATH\$MYSQL_DATA_DIR\"; if (Test-Path $filetodel){ Remove-Item $filet
-
     #SETLOCAL ENABLEDELAYEDEXPANSION
 
     #$list = Get-ChildItem -Path "$POH_PATH\$OH_DIR\lib" -Recurse | % { $_.FullName } `
@@ -401,7 +396,6 @@ function start_database {
 	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf --tmpdir=$POH_PATH\tmp --standalone") -RedirectStandardOutput '.\console2.out' -RedirectStandardError '.\console2.err'
     sleep 2;
 
-
 #	 Start-Process java -ArgumentList '-jar', 'MyProgram.jar' ` -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console3.err'
 	 #start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld --tmpdir=%OH_PATH%\tmp --standalone --console --log_syslog=0
 #	 %OH_PATH%\%MYSQL_DIR%\bin\mysqld --tmpdir=%OH_PATH%\tmp --standalone --console --log_syslog=0
@@ -464,9 +458,9 @@ function import_database {
     cd $POH_PATH\$SQL_DIR
 
     $SQLCOMMAND=@"
-   --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME
+   --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME -e "source $POH_PATH\$SQL_DIR\$DB_CREATE_SQL"
 "@
-    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardInput "$POH_PATH\$SQL_DIR\$DB_CREATE_SQL" -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
+    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
  
 	write-host "Database imported!"
 }
