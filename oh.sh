@@ -72,7 +72,7 @@ case $ARCH in
 		JAVA_ARCH=32
 		;;
 	*)
-		echo "Unknown architecture $(uname -m)"
+		echo "Unknown architecture: $ARCH. Exiting."
 		exit 1
 		;;
 esac
