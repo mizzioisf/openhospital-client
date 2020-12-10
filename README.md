@@ -24,14 +24,14 @@ on Linux:
 
  bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 
-on Windows (experimental) :
+on Windows (standard batch file) :
 
  - dowload oh.bat
  - run it
 
-on Windows (experimental) :
+on Windows (experimental powershell script) :
 
- - download oh.ps1 (powershell)
+ - download oh.ps1
  - run it 
 
 # Running POH - Quickstart
