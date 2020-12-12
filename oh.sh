@@ -409,7 +409,7 @@ function clean_database {
 	echo "Removing data..."
 	# remove databases
 	rm -rf $POH_PATH/$MYSQL_DATA_DIR/*
-	rm -ff $POH_PATH/var/run/mysqld/*
+	rm -rf $POH_PATH/var/run/mysqld/*
 }
 
 function test_database_connection {
