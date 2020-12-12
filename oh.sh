@@ -55,8 +55,10 @@ DICOM_MAX_SIZE="4M"
 
 OH_DIR=oh
 SQL_DIR=sql
-MYSQL_SOCKET="var/run/mysqld/mysql.sock"
-MYSQL_DATA_DIR="var/lib/mysql/"
+DATA_DIR="data/db"
+LOG_DIR="data/log"
+RUN_DIR="tmp"
+MYSQL_SOCKET="$RUN_DIR/mysql.sock"
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S`
@@ -181,6 +183,9 @@ function set_path {
 		fi
 	fi
 	POH_PATH_ESCAPED=$(echo $POH_PATH | sed -e 's/\//\\\//g')
+	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
+	RUN_DIR_ESCAPED=$(echo $RUN_DIR | sed -e 's/\//\\\//g')
+	LOG_DIR_ESCAPED=$(echo $LOG_DIR | sed -e 's/\//\\\//g')
 }
 
 function set_language {
@@ -301,25 +306,26 @@ function config_database {
 	echo "Generating MySQL config file..."
 	[ -f $POH_PATH/etc/mysql/my.cnf ] && mv -f $POH_PATH/etc/mysql/my.cnf $POH_PATH/etc/mysql/my.cnf.old
 	sed -e "s/MYSQL_SERVER/$MYSQL_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$POH_PATH_ESCAPED/g" \
-	    -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $POH_PATH/etc/mysql/my.cnf.dist > $POH_PATH/etc/mysql/my.cnf
+	-e "s/RUN_DIR/$RUN_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
+	-e "s/MYSQL_PORT/$MYSQL_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $POH_PATH/etc/mysql/my.cnf.dist > $POH_PATH/etc/mysql/my.cnf
 }
 
 function inizialize_database {
 	# Recreate directory structure
-	mkdir -p $POH_PATH/$MYSQL_DATA_DIR
-	mkdir -p $POH_PATH/var/run/mysqld
-	mkdir -p $POH_PATH/var/log/mysql
+	mkdir -p "$POH_PATH/$DATA_DIR"
+	mkdir -p "$POH_PATH/$RUN_DIR"
+	mkdir -p "$POH_PATH/$LOG_DIR"
 	# Inizialize MySQL
 	echo "Initializing MySQL database on port $MYSQL_PORT..."
 	case "$MYSQL_DIR" in 
 	*mariadb*)
-#		$POH_PATH/$MYSQL_DIR/scripts/mysql_install_db --socket=$POH_PATH/$MYSQL_SOCKET --basedir="$POH_PATH/$MYSQL_DIR" --datadir="$POH_PATH/$MYSQL_DATA_DIR" \
-		$POH_PATH/$MYSQL_DIR/scripts/mysql_install_db --basedir=$POH_PATH/$MYSQL_DIR --datadir="$POH_PATH/$MYSQL_DATA_DIR" \
+#		$POH_PATH/$MYSQL_DIR/scripts/mysql_install_db --socket=$POH_PATH/$MYSQL_SOCKET --basedir="$POH_PATH/$MYSQL_DIR" --datadir="$POH_PATH/$DATA_DIR" \
+		$POH_PATH/$MYSQL_DIR/scripts/mysql_install_db --basedir=$POH_PATH/$MYSQL_DIR --datadir="$POH_PATH/$DATA_DIR" \
 		--auth-root-authentication-method=normal 2>&1 > /dev/null
 		;;
 	*mysql*)
-#		$POH_PATH/$MYSQL_DIR/bin/mysqld --initialize-insecure --socket=$POH_PATH/$MYSQL_SOCKET --basedir=$POH_PATH/$MYSQL_DIR --datadir=$POH_PATH/$MYSQL_DATA_DIR 2>&1 > /dev/null
-		$POH_PATH/$MYSQL_DIR/bin/mysqld --initialize-insecure --basedir=$POH_PATH/$MYSQL_DIR --datadir=$POH_PATH/$MYSQL_DATA_DIR 2>&1 > /dev/null
+#		$POH_PATH/$MYSQL_DIR/bin/mysqld --initialize-insecure --socket=$POH_PATH/$MYSQL_SOCKET --basedir=$POH_PATH/$MYSQL_DIR --datadir=$POH_PATH/$DATA_DIR 2>&1 > /dev/null
+		$POH_PATH/$MYSQL_DIR/bin/mysqld --initialize-insecure --basedir=$POH_PATH/$MYSQL_DIR --datadir=$POH_PATH/$DATA_DIR 2>&1 > /dev/null
 		;;
 	esac
 
@@ -408,8 +414,8 @@ function clean_database {
 	get_confirmation;
 	echo "Removing data..."
 	# remove databases
-	rm -rf $POH_PATH/$MYSQL_DATA_DIR/*
-	rm -rf $POH_PATH/var/run/mysqld/*
+	rm -rf $POH_PATH/$DATA_DIR/*
+	rm -rf $POH_PATH/$RUN_DIR/*
 }
 
 function test_database_connection {
@@ -431,7 +437,7 @@ function clean_files {
 	echo "Removing files..."
 	rm -f $POH_PATH/etc/mysql/my.cnf
 	rm -f $POH_PATH/etc/mysql/my.cnf.old
-	rm -f $POH_PATH/var/log/mysql/*
+	rm -f $POH_PATH/$LOG_DIR/*
 	rm -f $POH_PATH/$OH_DIR/rsc/generalData.properties
 	rm -f $POH_PATH/$OH_DIR/rsc/generalData.properties.old
 	rm -f $POH_PATH/$OH_DIR/rsc/database.properties
@@ -502,7 +508,7 @@ while getopts ${OPTSTRING} opt; do
 		;;
 	s)	# save database
 		# checking if data exist
-		if [ -d $POH_PATH/$MYSQL_DATA_DIR/$DATABASE_NAME ]; then
+		if [ -d $POH_PATH/$DATA_DIR/$DATABASE_NAME ]; then
 			mysql_check;
 			config_database;
 			start_database;
@@ -602,7 +608,7 @@ if [ $OH_DISTRO = portable ]; then
 	# Config MySQL
 	config_database;
 	# Check if OH database already exists
-	if [ ! -d $POH_PATH/$MYSQL_DATA_DIR/$DATABASE_NAME ]; then
+	if [ ! -d $POH_PATH/$DATA_DIR/$DATABASE_NAME ]; then
 		# Prepare MySQL
 		inizialize_database;
 		# Start MySQL
