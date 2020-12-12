@@ -47,11 +47,13 @@ set DICOM_MAX_SIZE="4M"
 
 set OH_DIR=oh
 set SQL_DIR=sql
-set MYSQL_SOCKET="var/run/mysqld/mysql.sock"
-set MYSQL_DATA_DIR="var/lib/mysql/"
+set DATA_DIR="data\db"
+set LOG_DIR="data\log"
+set DICOM_DIR="data\dicom_storage"
+set RUN_DIR="tmp"
+set MYSQL_SOCKET="$RUN_DIR/mysql.sock"
 set DB_CREATE_SQL="create_all_en.sql"
 REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
-set LOG_DIR="var\log"
 set LOG_FILE="startup.log"
 
 REM ######## MySQL Software
@@ -104,6 +106,7 @@ echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y > "
 REM ### Setup dicom.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\dicom.properties.dist %OH_PATH%\%OH_DIR%\rsc\dicom.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DICOM_DIR %DICOM_DIR% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
 REM ### Setup database.properties
@@ -130,18 +133,21 @@ REM ### Setup database
 IF EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
  	REM # Remove database files
 	echo Removing data...
-	rmdir /s /q %OH_PATH%\%MYSQL_DATA_DIR%
-	mkdir %OH_PATH%\%MYSQL_DATA_DIR%
-	del /s /q %OH_PATH%\var\run\mysqld\*
+	rmdir /s /q %OH_PATH%\%DATA_DIR%
+	REM # recreate directory structure
+	mkdir %OH_PATH%\%RUN_DIR%
+	mkdir %OH_PATH%\%DATA_DIR%
+	mkdir %OH_PATH%\%LOG_DIR%
+	del /s /q %OH_PATH%\%RUN_DIR%\*
 	del /s /q %OH_PATH%\tmp
 	
 	IF  %MYSQL_DIR:~0,5% == maria (
 		echo Initializing MariaDB...
-		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql_install_db.exe --datadir=%OH_PATH%\%MYSQL_DATA_DIR% --password=%MYSQL_ROOT_PW%  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql_install_db.exe --datadir=%OH_PATH%\%DATA_DIR% --password=%MYSQL_ROOT_PW%  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 	)
 	IF  %MYSQL_DIR:~0,5% == mysql (
 		echo Initializing MySQL...
-		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --initialize-insecure --console --basedir="%OH_PATH%\%MYSQL_DIR%" --datadir="%OH_PATH%\%MYSQL_DATA_DIR%"
+		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --initialize-insecure --console --basedir="%OH_PATH%\%MYSQL_DIR%" --datadir="%OH_PATH%\%DATA_DIR%"
 	)
 	IF ERRORLEVEL 1 (goto END)
 
