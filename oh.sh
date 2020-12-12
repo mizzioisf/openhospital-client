@@ -55,6 +55,7 @@ DICOM_MAX_SIZE="4M"
 
 OH_DIR=oh
 SQL_DIR=sql
+DICOM_DIR="data/dicom_storage"
 DATA_DIR="data/db"
 LOG_DIR="data/log"
 RUN_DIR="tmp"
@@ -186,6 +187,7 @@ function set_path {
 	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
 	RUN_DIR_ESCAPED=$(echo $RUN_DIR | sed -e 's/\//\\\//g')
 	LOG_DIR_ESCAPED=$(echo $LOG_DIR | sed -e 's/\//\\\//g')
+	DICOM_DIR_ESCAPED=$(echo $DICOM_DIR | sed -e 's/\//\\\//g')
 }
 
 function set_language {
@@ -315,6 +317,7 @@ function inizialize_database {
 	mkdir -p "$POH_PATH/$DATA_DIR"
 	mkdir -p "$POH_PATH/$RUN_DIR"
 	mkdir -p "$POH_PATH/$LOG_DIR"
+	mkdir -p "$POH_PATH/$DICOM_DIR"
 	# Inizialize MySQL
 	echo "Initializing MySQL database on port $MYSQL_PORT..."
 	case "$MYSQL_DIR" in 
@@ -630,23 +633,24 @@ echo "Setting up OH configuration files..."
 
 ######## DICOM setup
 [ -f $POH_PATH/$OH_DIR/rsc/dicom.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/dicom.properties $POH_PATH/$OH_DIR/rsc/dicom.properties.old
-sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/" -e "s/OH_PATH_SUBSTITUTE/$POH_PATH_ESCAPED/g" $POH_PATH/$OH_DIR/rsc/dicom.properties.dist > $POH_PATH/$OH_DIR/rsc/dicom.properties
+sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$POH_PATH_ESCAPED/g" \
+    -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" $POH_PATH/$OH_DIR/rsc/dicom.properties.dist > $POH_PATH/$OH_DIR/rsc/dicom.properties
 
 ######## log4j.properties setup
 [ -f $POH_PATH/$OH_DIR/rsc/log4j.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/log4j.properties $POH_PATH/$OH_DIR/rsc/log4j.properties.old
-sed -e "s/DBSERVER/$MYSQL_SERVER/" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/" -e "s/DBPASS/$DATABASE_PASSWORD/" -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/" \
-$POH_PATH/$OH_DIR/rsc/log4j.properties.dist > $POH_PATH/$OH_DIR/rsc/log4j.properties
+sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
+    -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/g" $POH_PATH/$OH_DIR/rsc/log4j.properties.dist > $POH_PATH/$OH_DIR/rsc/log4j.properties
 
 ######## database.properties setup 
 [ -f $POH_PATH/$OH_DIR/rsc/database.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/database.properties $POH_PATH/$OH_DIR/rsc/database.properties.old
-sed -e "s/DBSERVER/$MYSQL_SERVER/" -e "s/DBPORT/$MYSQL_PORT/" -e"s/DBNAME/$DATABASE_NAME/" \
--e "s/DBUSER/$DATABASE_USER/" -e "s/DBPASS/$DATABASE_PASSWORD/" \
+sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e"s/DBNAME/$DATABASE_NAME/g" \
+    -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 $POH_PATH/$OH_DIR/rsc/database.properties.dist > $POH_PATH/$OH_DIR/rsc/database.properties
 
 ######## generalData.properties language setup 
 # set language in OH config file
 [ -f $POH_PATH/$OH_DIR/rsc/generalData.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/generalData.properties $POH_PATH/$OH_DIR/rsc/generalData.properties.old
-sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/" $POH_PATH/$OH_DIR/rsc/generalData.properties.dist > $POH_PATH/$OH_DIR/rsc/generalData.properties
+sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" $POH_PATH/$OH_DIR/rsc/generalData.properties.dist > $POH_PATH/$OH_DIR/rsc/generalData.properties
 
 ######## Open Hospital start
 
