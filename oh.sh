@@ -44,9 +44,8 @@ DEMO_MODE=off
 ######## Software configuration - change at your own risk :-)
 # Database
 MYSQL_SERVER=localhost
-#MYSQL_SERVER="127.0.0.1"
 MYSQL_PORT=3306
-MYSQL_ROOT_PW="root2020oh"
+MYSQL_ROOT_PW="root2020oh111"
 DATABASE_NAME=oh
 DATABASE_USER=isf
 DATABASE_PASSWORD=isf123
@@ -58,7 +57,8 @@ SQL_DIR=sql
 DICOM_DIR="data/dicom_storage"
 DATA_DIR="data/db"
 LOG_DIR="data/log"
-RUN_DIR="tmp"
+BACKUP_DIR=sql
+RUN_DIR=tmp
 MYSQL_SOCKET="$RUN_DIR/mysql.sock"
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
@@ -85,7 +85,7 @@ esac
 MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
 MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
 # MySQL
-#MYSQL_DIR="mysql-5.7.30-linux-glibc2.12-$ARCH"
+#MYSQL_DIR="mysql-5.7.31-linux-glibc2.12-$ARCH"
 #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 EXT="tar.gz"
 
@@ -318,16 +318,15 @@ function inizialize_database {
 	mkdir -p "$POH_PATH/$RUN_DIR"
 	mkdir -p "$POH_PATH/$LOG_DIR"
 	mkdir -p "$POH_PATH/$DICOM_DIR"
+	mkdir -p "$POH_PATH/$BACKUP_DIR"
 	# Inizialize MySQL
 	echo "Initializing MySQL database on port $MYSQL_PORT..."
 	case "$MYSQL_DIR" in 
 	*mariadb*)
-#		$POH_PATH/$MYSQL_DIR/scripts/mysql_install_db --socket=$POH_PATH/$MYSQL_SOCKET --basedir="$POH_PATH/$MYSQL_DIR" --datadir="$POH_PATH/$DATA_DIR" \
 		$POH_PATH/$MYSQL_DIR/scripts/mysql_install_db --basedir=$POH_PATH/$MYSQL_DIR --datadir="$POH_PATH/$DATA_DIR" \
 		--auth-root-authentication-method=normal 2>&1 > /dev/null
 		;;
 	*mysql*)
-#		$POH_PATH/$MYSQL_DIR/bin/mysqld --initialize-insecure --socket=$POH_PATH/$MYSQL_SOCKET --basedir=$POH_PATH/$MYSQL_DIR --datadir=$POH_PATH/$DATA_DIR 2>&1 > /dev/null
 		$POH_PATH/$MYSQL_DIR/bin/mysqld --initialize-insecure --basedir=$POH_PATH/$MYSQL_DIR --datadir=$POH_PATH/$DATA_DIR 2>&1 > /dev/null
 		;;
 	esac
@@ -391,7 +390,7 @@ function dump_database {
 	if [ -x "$POH_PATH/$MYSQL_DIR/bin/mysqldump" ]; then
 		echo "Dumping MySQL database..."
 		# $POH_PATH/$MYSQL_DIR/bin/mysqldump --no-create-info --skip-extended-insert -h $MYSQL_SERVER --port=$MYSQL_PORT -u root $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql
-		$POH_PATH/$MYSQL_DIR/bin/mysqldump --skip-extended-insert -u root --password=$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME > $POH_PATH/$SQL_DIR/mysqldump_$DATE.sql
+		$POH_PATH/$MYSQL_DIR/bin/mysqldump --skip-extended-insert -u root --password=$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME > $POH_PATH/$BACKUP_DIR/mysqldump_$DATE.sql
 		if [ $? -ne 0 ]; then
 			echo "Error: Database not dumped! Exiting."
 			shutdown_database;
@@ -402,7 +401,7 @@ function dump_database {
 		shutdown_database;
 		exit 2
 	fi
-	echo "MySQL dump file $SQL_DIR/mysqldump_$DATE.sql completed!"
+	echo "MySQL dump file $BACKUP_DIR/mysqldump_$DATE.sql completed!"
 }
 
 function shutdown_database {

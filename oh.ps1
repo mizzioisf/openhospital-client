@@ -50,19 +50,24 @@ $script:DEMO_MODE="off"
 
 ######## Software configuration - change at your own risk :-)
 # Database
-$script:MYSQL_SERVER="localhost"
+$script:MYSQL_SERVER=localhost
 $script:MYSQL_PORT=3305
 $script:MYSQL_ROOT_PW="root123"
-$script:DATABASE_NAME="oh"
-$script:DATABASE_USER="isf"
+$script:DATABASE_NAME=oh
+$script:DATABASE_USER=isf
 $script:DATABASE_PASSWORD="isf123"
 
 $script:DICOM_MAX_SIZE="4M"
 
-$script:OH_DIR="oh"
-$script:SQL_DIR="sql"
-$script:MYSQL_SOCKET="var/run/mysqld/mysql.sock"
-$script:MYSQL_DATA_DIR="var/lib/mysql/"
+$script:OH_DIR=oh
+$script:SQL_DIR=sql
+$script:DATA_DIR="data/db"
+$script:DICOM_DIR="data/dicom_storage"
+$script:LOG_DIR="data/log"
+$script:RUN_DIR=tmp
+$script:BACKUP_DIR=sql
+$script:MYSQL_SOCKET="$RUN_DIR/mysql.sock"
+
 $script:DB_DEMO="create_all_demo.sql"
 # date +%Y-%m-%d_%H-%M-%S
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
@@ -356,29 +361,34 @@ function config_database {
 	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_SERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("RUN_DIR","$RUN_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
 
 #	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$POH_PATH_ESCAPED/g" -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $POH_PATH/etc/mysql/my.cnf.dist > $POH_PATH/etc/mysql/my.cnf
 }
 
 function inizialize_database {
 	# Recreate directory structure
-	#mkdir -p $POH_PATH/$MYSQL_DATA_DIR
-	#mkdir -p $POH_PATH/var/run/mysqld
-	#mkdir -p $POH_PATH/var/log/mysql
+	mkdir -p $POH_PATH/$DATA_DIR
+	mkdir -p $POH_PATH/$RUN_DIR
+	mkdir -p $POH_PATH/$LOG_DIR
+	mkdir -p $POH_PATH/$DICOM_DIR
+	mkdir -p $POH_PATH/$BACKUP_DIR
     # Inizialize MySQL
 	write-host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
 		write-host "MARIADB"
 		#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --auth-root-authentication-method=normal") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'
-		Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'			
+		Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'			
 
 
-#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --password=$MYSQL_ROOT_PW") -Wait #
+#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait #
         	}
 		"mysql" {
 		write-host "MYSQL"
-			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$MYSQL_DATA_DIR") -NoNewWindow; break
+			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$DATA_DIR") -NoNewWindow; break
 		}
 	}
 
@@ -472,14 +482,14 @@ function dump_database {
         $SQLCOMMAND=@"
     --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NaAME
 "@
-        Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardOutput "$POH_PATH\$SQL_DIR\mysqldump_$DATE.sql"-NoNewWindow -Wait	
+        Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardOutput "$POH_PATH\$BACKUP_DIR\mysqldump_$DATE.sql"-NoNewWindow -Wait	
     }
     else {
 	    write-host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
 	    shutdown_database;
 	    exit 2
     }
-	write-host "MySQL dump file $SQL_DIR\mysqldump_$DATE.sql completed!"-ForegroundColor Green
+	write-host "MySQL dump file $BACKUP_DIR\mysqldump_$DATE.sql completed!"-ForegroundColor Green
 }
 
 function shutdown_database {
@@ -497,8 +507,8 @@ function clean_database {
     Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
 	write-host "Removing data..."
 	# remove databases
-	$filetodel="$POH_PATH\$MYSQL_DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\var\run\mysqld\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$POH_PATH\$DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$POH_PATH\$RUN_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 function test_database_connection {
@@ -522,7 +532,7 @@ function clean_files {
 
     $filetodel="$POH_PATH\etc\mysql\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$POH_PATH\etc\mysql\my.cnf.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\var\log\mysql\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$POH_PATH\$LOG_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$POH_PATH\$OH_DIR\rsc\generalData.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$POH_PATH\$OH_DIR\rsc\generalData.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$POH_PATH\$OH_DIR\rsc\database.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
@@ -606,8 +616,8 @@ switch ( "$opt" ) {
 		}
 	"s"	{ # save database 
 		# checking if data exist
-        Write-host "$POH_PATH\$MYSQL_DATA_DIR\$DATABASE_NAME"
-		if ( Test-Path "$POH_PATH\$MYSQL_DATA_DIR\$DATABASE_NAME" ) {
+        Write-host "$POH_PATH\$DATA_DIR\$DATABASE_NAME"
+		if ( Test-Path "$POH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
 			mysql_check;
 			config_database;
 			start_database;
@@ -720,7 +730,7 @@ if ( $OH_DISTRO -eq "portable" ) {
 	# Config MySQL
 	config_database;
 	# Check if OH database already exists
-	if ( ! (Test-Path "$POH_PATH\$MYSQL_DATA_DIR\$DATABASE_NAME" ) ) {
+	if ( ! (Test-Path "$POH_PATH\$DATA_DIR\$DATABASE_NAME" ) ) {
 		# Prepare MySQL
 		inizialize_database;
 		# Start MySQL
@@ -746,6 +756,7 @@ write-host "Setting up OH configuration files..."
 #
 	
 (Get-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties.dist").replace("OH_PATH_SUBSTITUTE","$POH_PATH") | Set-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties"
+(Get-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties").replace("DICOM_DIR","$DICOM_DIR") | Set-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties"
 (Get-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties"
 
 ######## log4j.properties setup

@@ -38,7 +38,7 @@ REM ### Software configuration - change at your own risk :-)
 REM # Database
 set MYSQL_SERVER=localhost
 set MYSQL_PORT=3306
-set MYSQL_ROOT_PW=root123
+set MYSQL_ROOT_PW=root2020oh111
 set DATABASE_NAME=oh
 set DATABASE_USER=isf
 set DATABASE_PASSWORD=isf123
@@ -50,7 +50,7 @@ set SQL_DIR=sql
 set DATA_DIR="data\db"
 set LOG_DIR="data\log"
 set DICOM_DIR="data\dicom_storage"
-set RUN_DIR="tmp"
+set RUN_DIR=tmp
 set MYSQL_SOCKET="$RUN_DIR/mysql.sock"
 set DB_CREATE_SQL="create_all_en.sql"
 REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
@@ -102,12 +102,15 @@ echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y > "
 %REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe MYSQL_DISTRO %MYSQL_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe RUN_DIR %RUN_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DATA_DIR %DATA_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe LOG_DIR %LOG_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
 REM ### Setup dicom.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\dicom.properties.dist %OH_PATH%\%OH_DIR%\rsc\dicom.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe DICOM_DIR %DICOM_DIR% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DICOM_DIR %DICOM_DIR% -- %OH_PATH%\%OH_DIR%\rsc\dicom.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
 REM ### Setup database.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\database.properties.dist %OH_PATH%\%OH_DIR%\rsc\database.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -133,12 +136,12 @@ REM ### Setup database
 IF EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
  	REM # Remove database files
 	echo Removing data...
-	rmdir /s /q %OH_PATH%\%DATA_DIR%
-	REM # recreate directory structure
-	mkdir %OH_PATH%\%RUN_DIR%
-	mkdir %OH_PATH%\%DATA_DIR%
-	mkdir %OH_PATH%\%LOG_DIR%
-	del /s /q %OH_PATH%\%RUN_DIR%\*
+ 	rmdir /s /q %OH_PATH%\%DATA_DIR%
+ 	REM # recreate directory structure
+ 	mkdir %OH_PATH%\%RUN_DIR%
+ 	mkdir %OH_PATH%\%DATA_DIR%
+ 	mkdir %OH_PATH%\%LOG_DIR%
+ 	del /s /q %OH_PATH%\%RUN_DIR%\*
 	del /s /q %OH_PATH%\tmp
 	
 	IF  %MYSQL_DIR:~0,5% == maria (
