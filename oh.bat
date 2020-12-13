@@ -93,8 +93,9 @@ if "%ERRORLEVEL%" equ "0" (
 :FOUNDPORT
 echo Found TCP port %MYSQL_PORT% for MySQL !
 
-REM # Create log dir
+REM # Create log and tmp dir
 mkdir %OH_PATH%\%LOG_DIR%
+mkdir %OH_PATH%\%RUN_DIR%
 
 REM ### Setup MySQL configuration
 echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y > "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
