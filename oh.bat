@@ -23,8 +23,7 @@ REM #
 REM ################### Configuration ###################
 set OH_PATH=%~dps0
 
-set OH_DISTRO="portable"
-REM set OH_DISTRO="client"
+REM set OH_DISTRO="portable|client"
 REM set DEMO_MODE="off"
 
 REM # Language setting - default set to en
@@ -78,21 +77,21 @@ set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
 
-REM Set mysql TCP port
+REM # Set mysql TCP port
 set startPort=%MYSQL_PORT%
 :SEARCHPORT
 netstat -o -n -a | find "LISTENING" | find ":%startPort% " > NUL
 if "%ERRORLEVEL%" equ "0" (
-	echo "TCP port %startPort% unavailable"
+	echo TCP port %startPort% unavailable
 	set /a startPort +=1
 	GOTO :SEARCHPORT
 ) ELSE (
-	echo "TCP port %startPort% available"
+	echo TCP port %startPort% available
 	set MYSQL_PORT=%startPort%
 	GOTO :FOUNDPORT
 )
 :FOUNDPORT
-echo "Found TCP port %MYSQL_PORT% for MySQL !"
+echo Found TCP port %MYSQL_PORT% for MySQL !
 
 REM # Create log dir
 mkdir %OH_PATH%\%LOG_DIR%
@@ -156,20 +155,21 @@ IF EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
 	)
 	IF ERRORLEVEL 1 (goto END)
 
-	echo "Starting MySQL server on port %MYSQL_PORT%..."
+	echo Starting MySQL server on port %MYSQL_PORT%...
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console
 	IF ERRORLEVEL 1 (goto END)
 	timeout /t 2 /nobreak >nul
 	
 	REM # If using MySQL root password need to be set
 	IF  %MYSQL_DIR:~0,5% == mysql (
-		echo "Setting MySQL root password..."
+		echo Setting MySQL root password...
 		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root --skip-password --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '%MYSQL_ROOT_PW%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 	)
 	
-	echo "Importing database schema %DB_CREATE_SQL%..."
+	echo Creating database...
 	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "CREATE DATABASE %DATABASE_NAME%; CREATE USER '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%'; GRANT ALL PRIVILEGES ON %DATABASE_NAME%.* TO '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 	
+	echo Importing database schema %DB_CREATE_SQL%...
 	cd /d %OH_PATH%\%SQL_DIR%
 	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 	IF ERRORLEVEL 1 (goto END)
@@ -178,27 +178,26 @@ IF EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
 
 	rename "%OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL%" "%DB_CREATE_SQL%.imported"
 ) ELSE (
-	echo "Missing SQL creation script or database already initialized, trying to start..."
-	echo "Starting MySQL server on port %MYSQL_PORT%..."
+	echo Missing SQL creation script or database already initialized, trying to start...
+	echo Starting MySQL server on port %MYSQL_PORT%...
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console
 	IF ERRORLEVEL 1 (goto END)
 )
 
 REM ###### Setup CLASSPATH #####
-set CLASSPATH="%OH_PATH%\%OH_DIR%\lib"
+set CLASSPATH=%OH_PATH%\%OH_DIR%\lib
 
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 FOR %%A IN (%OH_PATH%\%OH_DIR%\lib\*.jar) DO (
 	set CLASSPATH=!CLASSPATH!;%%A
 )
-set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar"
-set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\bundle"
-set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt"
-set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rsc"
+set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar
+set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\bundle
+set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt
+set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\rsc
 
-REM # Setup architecture
-
+REM # Setup native_lib_path for current architecture
 if (%PROCESSOR_ARCHITECTURE%)==(AMD64) (
   set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Win64
 ) else (
@@ -207,7 +206,7 @@ if (%PROCESSOR_ARCHITECTURE%)==(AMD64) (
 
 REM ###### Start Open Hospital #####
 cd /d %OH_PATH%\%OH_DIR%
-%JAVA_BIN% -Dlog4j.configuration=%OH_PATH%\%OH_DIR%\rsc\log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.menu.gui.Menu
+%JAVA_BIN% -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.menu.gui.Menu
 
 REM # Shutdown MySQL
 start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% shutdown >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
