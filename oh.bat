@@ -51,7 +51,6 @@ set DATA_DIR="data\db"
 set LOG_DIR="data\log"
 set DICOM_DIR="data\dicom_storage"
 set RUN_DIR=tmp
-set MYSQL_SOCKET="$RUN_DIR/mysql.sock"
 set DB_CREATE_SQL="create_all_en.sql"
 REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
 set LOG_FILE="startup.log"
@@ -94,6 +93,9 @@ if "%ERRORLEVEL%" equ "0" (
 )
 :FOUNDPORT
 echo "Found TCP port %MYSQL_PORT% for MySQL !"
+
+REM # Create log dir
+mkdir %OH_PATH%\%LOG_DIR%
 
 REM ### Setup MySQL configuration
 echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y > "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -140,7 +142,7 @@ IF EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
  	REM # recreate directory structure
  	mkdir %OH_PATH%\%RUN_DIR%
  	mkdir %OH_PATH%\%DATA_DIR%
- 	mkdir %OH_PATH%\%LOG_DIR%
+	mkdir %OH_PATH%\%DICOM_DIR%
  	del /s /q %OH_PATH%\%RUN_DIR%\*
 	del /s /q %OH_PATH%\tmp
 	
@@ -196,7 +198,12 @@ set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt"
 set CLASSPATH="%CLASSPATH%;%OH_PATH%\%OH_DIR%\rsc"
 
 REM # Setup architecture
-IF (%PROCESSOR_ARCHITECTURE%)==(AMD64) (set %NATIVE_LIB_PATH%=%OH_PATH%\%OH_DIR%\lib\native\Win64) ELSE (set %NATIVE_LIB_PATH%=%OH_PATH%\%OH_DIR%\lib\native\Windows)
+
+if (%PROCESSOR_ARCHITECTURE%)==(AMD64) (
+  set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Win64
+) else (
+  set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Windows
+)
 
 REM ###### Start Open Hospital #####
 cd /d %OH_PATH%\%OH_DIR%

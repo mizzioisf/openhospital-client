@@ -66,7 +66,6 @@ $script:DICOM_DIR="data/dicom_storage"
 $script:LOG_DIR="data/log"
 $script:RUN_DIR=tmp
 $script:BACKUP_DIR=sql
-$script:MYSQL_SOCKET="$RUN_DIR/mysql.sock"
 
 $script:DB_DEMO="create_all_demo.sql"
 # date +%Y-%m-%d_%H-%M-%S
