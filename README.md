@@ -60,6 +60,18 @@ unzip mysql-5.7.30-linux-glibc2.12-win64.zip
 - cd to the repo directory: cd openhospital-client
 - run oh.ps1
 
+# Default dir structure for all distributions:
+
+We don't need to have or pack empty directories anymore: the scripts take care of crating everything, which is also parametric and user adjustable.
+The default is now clean and simple and common to all distros:
+
+/tmp
+/data
+data/db
+data/log
+data/dicom_storage
+
+
 **Updated 2020.11.16**
 
 In order to have a complete, easy to support and extensible solution to OP-223 and also OP-218, and following #138  and #142  I have basically rewritten oh.sh, also adding a few possible useful user functions.
