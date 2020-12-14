@@ -42,5 +42,84 @@ on Windows (experimental powershell script) :
 - on Linux, start POH by running ./oh.sh
 - on Linux, to see available options, run ./oh.sh -h
 
+# Running POH - Windows: oh.bat (cmd batch file)
+
+- clone the repository: git clone https://github.com/mizzioisf/openhospital-client
+- cd to the repo directory: cd openhospital-client
+- download and unzip java:
+wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
+unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
+- download and unzip mysql:
+wget  https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.30-linux-glibc2.12-win64
+unzip mysql-5.7.30-linux-glibc2.12-win64.zip
+- run oh.bat
+
+# Running POH - Windows: powershell (oh.ps1)
+
+- clone the repository: git clone https://github.com/mizzioisf/openhospital-client
+- cd to the repo directory: cd openhospital-client
+- run oh.ps1
+
+**Updated 2020.11.16**
+
+In order to have a complete, easy to support and extensible solution to OP-223 and also OP-218, and following #138  and #142  I have basically rewritten oh.sh, also adding a few possible useful user functions.
+Note: the pull requires this code (https://github.com/informatici/openhospital-core/pull/241) related to OP-344 to be merged in order to expose all functionalities (demo mode in particular).
+
+I have widely tested it and it seems to be working well (Ubuntu 20.04 64bit), solving also a few old outstanding bugs (mysql not always starting or shutting down, wrong socket references, hard coded values, etc. etc.)
+
+Description of changes:
+- Complete overhaul of the code, reworked the entire script
+- Everything is now function based
+- Menu based, interactive options for many operations: see **./oh.sh -h** (or below for short description)
+- **Unified script** for:
+    Portable 64bit (default) and 32bit (with automatic architecture detection)
+    Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
+- **New**: Language support (both via variable in the script or user input option: **oh.sh -l fr**)
+- **New**: Demo database support -> depends on this -> https://github.com/informatici/openhospital-core/pull/241
+- **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
+- **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
+- Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
+- More flexible execution and configuration options
+- Automation of configuration files generation
+- Everything is commented in the code and a brief output all operations is shown in console
+- Backward compatible with old versions and installations, no default behaviour change
+- Added sql subdirectory to organize sql scripts
+- Added various checks about correct settings of parameters and startup of services
+- Added security controls (no more _rm -rf_ here and there :-)
+- Added support for **MariaDB** - (tested with mariadb-10.2.36-linux-x86_64) (POH seems faster and more responsive)
+- Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
+- Fixed _a_few_ bugs ;-)
+
+Still working on:
+- Small fixes ad modification: I will be still add few commits in next days
+
+Will update Admin Manual accordingly after OP-223 and OP-218 are completed.
+
+Feel free to comment ad add suggestions !
+
+--------------------
+
+```
+ Portable Open Hospital Client - OH
+
+ Usage: oh.sh [-option]
+
+   -l    en|fr|it|es|pt   --> set language [default: oh.sh -l en]
+
+   -s    save OH database
+   -r    restore OH database
+   -c    clean POH installation
+   -d    start POH in debug mode
+   -C    start Open Hospital - Client / Server mode
+   -t    test database connection (Client mode only)
+   -v    show POH version information
+   -D    start POH in Demo mode
+   -G    Setup GSM
+   -h    show this help
+
+
+```
+
+
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
