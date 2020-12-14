@@ -71,10 +71,9 @@ data/db
 data/log
 data/dicom_storage
 
+# New oh.sh
 
-**Updated 2020.11.16**
-
-In order to have a complete, easy to support and extensible solution to OP-223 and also OP-218, and following #138  and #142  I have basically rewritten oh.sh, also adding a few possible useful user functions.
+In order to have a complete, easy to support and extensible solution to OP-223 and also OP-218, and following #138  and #142, oh.sh has been rewritteng, also adding a few possible useful user functions.
 Note: the pull requires this code (https://github.com/informatici/openhospital-core/pull/241) related to OP-344 to be merged in order to expose all functionalities (demo mode in particular).
 
 I have widely tested it and it seems to be working well (Ubuntu 20.04 64bit), solving also a few old outstanding bugs (mysql not always starting or shutting down, wrong socket references, hard coded values, etc. etc.)
