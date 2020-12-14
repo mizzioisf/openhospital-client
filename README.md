@@ -65,11 +65,18 @@ unzip mysql-5.7.30-linux-glibc2.12-win64.zip
 We don't need to have or pack empty directories anymore: the scripts take care of crating everything, which is also parametric and user adjustable.
 The default is now clean and simple and common to all distros:
 
-/tmp
+```
+/oh -> Open Hospital distribution
+/sql -> containing the SQL creation scripta
+/etc -> configuration files for database (MySQL)
+
+Created at runtime:
+/tmp 
 /data
 data/db
 data/log
 data/dicom_storage
+```
 
 # New oh.sh
 
