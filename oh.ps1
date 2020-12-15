@@ -37,8 +37,7 @@ param (
 
 write-output $opt
 
-$script:OH_DISTRO="portable"
-#$script:OH_DISTRO="client"
+$script:OH_DISTRO="portable"  # set distro to portable | client
 $script:DEMO_MODE="off"
 
 # Language setting - default set to en
@@ -70,6 +69,12 @@ $script:BACKUP_DIR=sql
 $script:DB_DEMO="create_all_demo.sql"
 # date +%Y-%m-%d_%H-%M-%S
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+
+######## Advanced options
+## set MANUAL_CONFIG to "on" to setup configuration files manually
+# my.cnf and all oh/rsc/*.properties files will not be generated or
+# overwritten if already present
+$script:MANUAL_CONFIG=off
 
 ######## Define architecture
 
@@ -618,7 +623,9 @@ switch ( "$opt" ) {
         Write-host "$POH_PATH\$DATA_DIR\$DATABASE_NAME"
 		if ( Test-Path "$POH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
 			mysql_check;
-			config_database;
+			if ($MANUAL_CONFIG != on ) {
+				config_database;
+			}
 			start_database;
         	write-host "Saving Portable Open Hospital database..."
 			dump_database;
@@ -748,6 +755,7 @@ if ( $OH_DISTRO -eq "portable" ) {
 # test database
 #test_database_connection;
 
+if ($MANUAL_CONFIG != on ) {
 write-host "Setting up OH configuration files..."
 
 ######## DICOM setup
@@ -784,6 +792,7 @@ write-host "Setting up OH configuration files..."
 # set language in OH config file
 #[ if Test-Path -Path  $POH_PATH/$OH_DIR/rsc/generalData.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/generalData.properties $POH_PATH/$OH_DIR/rsc/generalData.properties.old
 (Get-Content "$POH_PATH/$OH_DIR/rsc/generalData.properties.dist").replace("OH_SET_LANGUAGE","$OH_LANGUAGE") | Set-Content "$POH_PATH/$OH_DIR/rsc/generalData.properties"
+}
 
 ######## Open Hospital start
 

@@ -30,8 +30,7 @@
 # POH_PATH is the directory where Portable OpenHospital files are located
 # POH_PATH=/usr/local/PortableOpenHospital
 
-OH_DISTRO=portable
-#OH_DISTRO=client
+OH_DISTRO=portable # set distro to portable | client
 DEMO_MODE=off
 
 # Language setting - default set to en
@@ -59,10 +58,15 @@ DATA_DIR="data/db"
 LOG_DIR="data/log"
 BACKUP_DIR=sql
 RUN_DIR=tmp
-#MYSQL_SOCKET="$RUN_DIR/mysql.sock"
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S`
+
+######## Advanced options
+## set MANUAL_CONFIG to "on" to setup configuration files manually
+# my.cnf and all oh/rsc/*.properties files will not be generated or
+# overwritten if already present
+MANUAL_CONFIG=off 
 
 ######## Define architecture
 
@@ -82,11 +86,11 @@ esac
 
 ######## MySQL Software
 # MariaDB
-MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
-MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
+#MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
+#MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
 # MySQL
-#MYSQL_DIR="mysql-5.7.31-linux-glibc2.12-$ARCH"
-#MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
+MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
+MYSQL_DIR="mysql-5.7.31-linux-glibc2.12-$ARCH"
 EXT="tar.gz"
 
 ######## JAVA Software
@@ -512,7 +516,9 @@ while getopts ${OPTSTRING} opt; do
 		# checking if data exist
 		if [ -d $POH_PATH/$DATA_DIR/$DATABASE_NAME ]; then
 			mysql_check;
-			config_database;
+			if [ $MANUAL_CONFIG != "on" ]; then
+				config_database;
+			fi
 			start_database;
 	        	echo "Saving Portable Open Hospital database..."
 			dump_database;
@@ -608,7 +614,9 @@ if [ $OH_DISTRO = portable ]; then
 	# Check for MySQL software
 	mysql_check;
 	# Config MySQL
-	config_database;
+	if [ $MANUAL_CONFIG != "on" ]; then
+		config_database;
+	fi
 	# Check if OH database already exists
 	if [ ! -d $POH_PATH/$DATA_DIR/$DATABASE_NAME ]; then
 		# Prepare MySQL
@@ -627,6 +635,9 @@ fi
 
 # test database
 test_database_connection;
+
+# set up configuration files
+if [ $MANUAL_CONFIG != "on" ]; then
 
 echo "Setting up OH configuration files..."
 
@@ -650,6 +661,8 @@ $POH_PATH/$OH_DIR/rsc/database.properties.dist > $POH_PATH/$OH_DIR/rsc/database.
 # set language in OH config file
 [ -f $POH_PATH/$OH_DIR/rsc/generalData.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/generalData.properties $POH_PATH/$OH_DIR/rsc/generalData.properties.old
 sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" $POH_PATH/$OH_DIR/rsc/generalData.properties.dist > $POH_PATH/$OH_DIR/rsc/generalData.properties
+
+fi
 
 ######## Open Hospital start
 
