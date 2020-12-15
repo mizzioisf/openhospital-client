@@ -87,8 +87,8 @@ I have widely tested it and it seems to be working well (Ubuntu 20.04 64bit), so
 
 Description of changes:
 - Complete overhaul of the code, reworked the entire script
-- Everything is now function based
-- Menu based, interactive options for many operations: see **./oh.sh -h** (or below for short description)
+- Everything is now based on functions and parametric variables
+- Menu based, interactive options for many operations: see **./oh.sh -h** (or see below for short description)
 - **Unified script** for:
     Portable 64bit (default) and 32bit (with automatic architecture detection)
     Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
@@ -110,11 +110,9 @@ Description of changes:
 - Fixed _a_few_ bugs ;-)
 
 Still working on:
-- Small fixes ad modification: I will be still add few commits in next days
+- Porting to powershell :-)
 
-Will update Admin Manual accordingly after OP-223 and OP-218 are completed.
-
-Feel free to comment ad add suggestions !
+Comments, suggestions and requests are welcome !
 
 --------------------
 
