@@ -47,16 +47,23 @@ on Windows (experimental powershell script) :
 - clone the repository: git clone https://github.com/mizzioisf/openhospital-client
 - cd to the repo directory: cd openhospital-client
 - download and unzip java:
+```
 wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
 unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
+```
 - download and unzip mysql:
+```
 wget  https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.30-linux-glibc2.12-win64
 unzip mysql-5.7.30-linux-glibc2.12-win64.zip
+```
 - run oh.bat
 
 # Running POH - Windows: powershell (oh.ps1)
 
-- clone the repository: git clone https://github.com/mizzioisf/openhospital-client
+- clone the repository:
+```
+git clone https://github.com/mizzioisf/openhospital-client
+```
 - cd to the repo directory: cd openhospital-client
 - run oh.ps1
 
@@ -80,8 +87,7 @@ data/dicom_storage
 
 # New oh.sh
 
-In order to have a complete, easy to support and extensible solution to OP-223 and also OP-218, and following #138  and #142, oh.sh has been rewritteng, also adding a few possible useful user functions.
-Note: the pull requires this code (https://github.com/informatici/openhospital-core/pull/241) related to OP-344 to be merged in order to expose all functionalities (demo mode in particular).
+In order to have a complete, easy to support and extensible solution to run Open Hospital on linux and Windows WSL, oh.sh has been rewritteng, also adding a few possible useful user functions.
 
 I have widely tested it and it seems to be working well (Ubuntu 20.04 64bit), solving also a few old outstanding bugs (mysql not always starting or shutting down, wrong socket references, hard coded values, etc. etc.)
 
@@ -101,6 +107,7 @@ Description of changes:
 - More flexible execution and configuration options
 - Automation of configuration files generation
 - Everything is commented in the code and a brief output all operations is shown in console
+- Startup and database operations are logged to configurable output file
 - Backward compatible with old versions and installations, no default behaviour change
 - Added sql subdirectory to organize sql scripts
 - Added various checks about correct settings of parameters and startup of services
@@ -111,6 +118,16 @@ Description of changes:
 
 Still working on:
 - Porting to powershell :-)
+
+
+For more informations see:
+https://github.com/informatici/openhospital/pull/149
+https://github.com/informatici/openhospital/pull/143
+https://github.com/informatici/openhospital/pull/142
+
+And also:
+https://github.com/informatici/openhospital-core/pull/241
+
 
 Comments, suggestions and requests are welcome !
 
