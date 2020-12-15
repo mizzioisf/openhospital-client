@@ -61,6 +61,7 @@ RUN_DIR=tmp
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S`
+LOG_FILE=startup.log
 
 ######## Advanced options
 ## set MANUAL_CONFIG to "on" to setup configuration files manually
@@ -328,10 +329,10 @@ function inizialize_database {
 	case "$MYSQL_DIR" in 
 	*mariadb*)
 		$POH_PATH/$MYSQL_DIR/scripts/mysql_install_db --basedir=$POH_PATH/$MYSQL_DIR --datadir="$POH_PATH/$DATA_DIR" \
-		--auth-root-authentication-method=normal 2>&1 > /dev/null
+		--auth-root-authentication-method=normal > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 		;;
 	*mysql*)
-		$POH_PATH/$MYSQL_DIR/bin/mysqld --initialize-insecure --basedir=$POH_PATH/$MYSQL_DIR --datadir=$POH_PATH/$DATA_DIR 2>&1 > /dev/null
+		$POH_PATH/$MYSQL_DIR/bin/mysqld --initialize-insecure --basedir=$POH_PATH/$MYSQL_DIR --datadir=$POH_PATH/$DATA_DIR > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 		;;
 	esac
 
@@ -343,7 +344,7 @@ function inizialize_database {
 
 function start_database {
 	echo "Starting MySQL server... "
-	$POH_PATH/$MYSQL_DIR/bin/mysqld_safe --defaults-file=$POH_PATH/etc/mysql/my.cnf 2>&1 > /dev/null &
+	$POH_PATH/$MYSQL_DIR/bin/mysqld_safe --defaults-file=$POH_PATH/etc/mysql/my.cnf > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1 &
 	if [ $? -ne 0 ]; then
 		echo "Error: Database not started! Exiting."
 		exit 2
@@ -356,7 +357,7 @@ function start_database {
 function set_database_root_pw {
 	# If using MySQL/MariaDB root password need to be set
 	echo "Setting MySQL root password..."
-	$POH_PATH/$MYSQL_DIR/bin/mysql -u root --skip-password --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';" 2>&1 > /dev/null
+	$POH_PATH/$MYSQL_DIR/bin/mysql -u root --skip-password --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';" > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 }
 
 
@@ -366,7 +367,7 @@ function import_database {
 	$POH_PATH/$MYSQL_DIR/bin/mysql -u root -p$MYSQL_ROOT_PW --protocol=tcp --host=$MYSQL_SERVER --port=$MYSQL_PORT \
 	-e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; \
 	CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; \
-	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%' ; "
+	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%' ; " > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 
 	# Check for database creation script
 	if [ -f $POH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
@@ -380,7 +381,7 @@ function import_database {
 	# Create OH database structure
 	echo "Importing database schema $DB_CREATE_SQL..."
 	cd $POH_PATH/$SQL_DIR
-	$POH_PATH/$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME < $POH_PATH/$SQL_DIR/$DB_CREATE_SQL
+	$POH_PATH/$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME < $POH_PATH/$SQL_DIR/$DB_CREATE_SQL > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 	if [ $? -ne 0 ]; then
 		echo "Error: Database not imported! Exiting."
 		shutdown_database;
@@ -410,7 +411,7 @@ function dump_database {
 
 function shutdown_database {
 	echo "Shutting down MySQL..."
-	$POH_PATH/$MYSQL_DIR/bin/mysqladmin -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown 2>&1 > /dev/null
+	$POH_PATH/$MYSQL_DIR/bin/mysqladmin -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 	# Wait till the MySQL tcp port is closed
 	until !( nc -z $MYSQL_SERVER $MYSQL_PORT ); do sleep 1; done
 }
@@ -427,7 +428,7 @@ function clean_database {
 function test_database_connection {
 	# Test connection to the OH MySQL database
 	echo "Testing database connection..."
-	DBTEST=$($POH_PATH/$MYSQL_DIR/bin/mysql --user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "USE $DATABASE_NAME" >/dev/null 2>&1; echo "$?" )
+	DBTEST=$($POH_PATH/$MYSQL_DIR/bin/mysql --user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "USE $DATABASE_NAME" > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1; echo "$?" )
 	if [ $DBTEST -eq 0 ];then
 		echo "Database connection successfully established!"
 	else
@@ -671,7 +672,7 @@ echo "Starting Open Hospital..."
 cd $POH_PATH/$OH_DIR
 
 # OH GUI launch
-$JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu 2>&1 > /dev/null
+$JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu > $POH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 
 echo "Exiting Open Hospital..."
 
