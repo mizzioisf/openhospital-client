@@ -96,6 +96,7 @@ Description of changes:
 - **New**: Demo database support -> depends on this -> https://github.com/informatici/openhospital-core/pull/241
 - **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
 - **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
+- **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for testing
 - Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
 - More flexible execution and configuration options
 - Automation of configuration files generation
