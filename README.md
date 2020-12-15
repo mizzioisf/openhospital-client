@@ -67,10 +67,10 @@ git clone https://github.com/mizzioisf/openhospital-client
 - cd to the repo directory: cd openhospital-client
 - run oh.ps1
 
-# Default dir structure for all distributions:
+# Default directory structure
 
 We don't need to have or pack empty directories anymore: the scripts take care of crating everything, which is also parametric and user adjustable.
-The default is now clean and simple and common to all distros:
+The default is now clean, simple and **common to all distros:**
 
 ```
 /oh -> Open Hospital distribution
