@@ -76,8 +76,9 @@ The default is now clean and simple and common to all distros:
 /oh -> Open Hospital distribution
 /sql -> containing the SQL creation scripta
 /etc -> configuration files for database (MySQL)
-
+```
 Created at runtime:
+```
 /tmp 
 /data
 data/db
@@ -99,7 +100,8 @@ Description of changes:
     Portable 64bit (default) and 32bit (with automatic architecture detection)
     Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
 - **New**: Language support (both via variable in the script or user input option: **oh.sh -l fr**)
-- **New**: Demo database support -> depends on this -> https://github.com/informatici/openhospital-core/pull/241
+- **New**: Demo database support (See oh.sh -D)
+- **New**: Save / Restore database also for Portable distro !
 - **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
 - **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
 - **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for testing
@@ -109,7 +111,7 @@ Description of changes:
 - Everything is commented in the code and a brief output all operations is shown in console
 - Startup and database operations are logged to configurable output file
 - Backward compatible with old versions and installations, no default behaviour change
-- Added sql subdirectory to organize sql scripts
+- Added sql subdirectory to organize sql creation scripts
 - Added various checks about correct settings of parameters and startup of services
 - Added security controls (no more _rm -rf_ here and there :-)
 - Added support for **MariaDB** - (tested with mariadb-10.2.36-linux-x86_64) (POH seems faster and more responsive)
@@ -122,7 +124,9 @@ Still working on:
 
 For more informations see:
 https://github.com/informatici/openhospital/pull/149
+
 https://github.com/informatici/openhospital/pull/143
+
 https://github.com/informatici/openhospital/pull/142
 
 And also:
