@@ -27,8 +27,8 @@
 #set -o errexit -o pipefail -o noclobber -o nounset
 
 ######## Open Hospital - Portable Open Hospital Configuration
-# POH_PATH is the directory where Portable OpenHospital files are located
-# POH_PATH=/usr/local/PortableOpenHospital
+# OH_PATH is the directory where Portable OpenHospital files are located
+# OH_PATH=/usr/local/PortableOpenHospital
 
 OH_DISTRO=portable # set distro to portable | client
 DEMO_MODE=off
@@ -179,16 +179,16 @@ esac
 function set_path {
 	# set current dir
 	CURRENT_DIR=$PWD
-	# set POH_PATH if not defined
-	if [ -z ${POH_PATH+x} ]; then
+	# set OH_PATH if not defined
+	if [ -z ${OH_PATH+x} ]; then
 #		echo "Warning: POH_PATH not found - using current directory"
-		POH_PATH=$CURRENT_DIR
+		OH_PATH=$CURRENT_DIR
 		if [ ! -f $OH_PATH/$SCRIPT_NAME ]; then
-			echo "Error - oh.sh not found in the current PATH. Please cd the directory where POH was unzipped or set up POH_PATH properly."
+			echo "Error - oh.sh not found in the current PATH. Please cd the directory where Open Hospital was unzipped or set up OH_PATH properly."
 			exit 1
 		fi
 	fi
-	POH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
+	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
 	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
 	RUN_DIR_ESCAPED=$(echo $RUN_DIR | sed -e 's/\//\\\//g')
 	LOG_DIR_ESCAPED=$(echo $LOG_DIR | sed -e 's/\//\\\//g')
@@ -599,8 +599,8 @@ if [ $DEMO_MODE = "on" ]; then
 fi
 
 echo "Starting Open Hospital in $OH_DISTRO mode..."
-echo "POH_PATH set to $OH_PATH"
-echo "POH language is set to $OH_LANGUAGE"
+echo "OH_PATH set to $OH_PATH"
+echo "OH language is set to $OH_LANGUAGE"
 
 # check for java
 java_check;
