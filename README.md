@@ -20,7 +20,7 @@ The Windows version has been tested on Windows 10.
 
 **This repo is experimental and is used to test the latest Open Hospital releases**
 
-# Running POH - Ultra quickstart
+# Running POH - Ultra-quickstart
 
 on Linux:
 
@@ -28,16 +28,23 @@ on Linux:
 bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 ```
 
-- start POH by running **./oh.sh**
-- to see available options, run **./oh.sh -h**
+# Running POH - Quickstart
 
-# Running POH - Windows: oh.bat (cmd batch file)
+Common to all architecture:
 
 - clone the repository
-
 ```
 git clone https://github.com/mizzioisf/openhospital-client
 ```
+- browse to the directory
+
+# Linux
+
+- start POH by running **./oh.sh**
+- to see available options, run **./oh.sh -h**
+
+# Windows: oh.bat (cmd batch file)
+
 - download and unzip java:
 ```
 wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
@@ -52,11 +59,6 @@ unzip mysql-5.7.30-linux-glibc2.12-win64.zip
 
 # Running POH - Windows: powershell (oh.ps1) - EXPERIMENTAL
 
-- clone the repository:
-```
-git clone https://github.com/mizzioisf/openhospital-client
-```
-- cd to the repo directory: cd openhospital-client
 - run **oh.ps1**
 
 # Running POH - Quickstart - full distro 
