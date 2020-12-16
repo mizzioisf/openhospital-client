@@ -24,7 +24,9 @@ The Windows version has been tested on Windows 10.
 
 on Linux:
 
- bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
+```
+bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
+```
 
 on Windows (standard batch file) :
 
