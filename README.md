@@ -1,4 +1,4 @@
-# OH - Open Hospital Portable | Client  ![](./oh.ico)
+# ![](./oh.ico) OH - Open Hospital Portable | Client 
 
 Open Hospital (https://www.open-hospital.org/en/) is a free and open source
 software for healthcare data management. Its portable version (Portable Open
