@@ -1,4 +1,4 @@
-# OH - Open Hospital Portable | Client 
+# OH - Open Hospital Portable | Client  ![Happy Christmas](oh/oh.ico)
 
 Open Hospital (https://www.open-hospital.org/en/) is a free and open source
 software for healthcare data management. Its portable version (Portable Open
