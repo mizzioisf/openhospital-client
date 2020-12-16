@@ -1,4 +1,4 @@
-# Open Hospital Client - POH 
+# Open Hospital Portable | Client 
 
 Open Hospital (https://www.open-hospital.org/en/) is a free and open source
 software for healthcare data management. Its portable version (Portable Open
@@ -20,7 +20,7 @@ The Windows version has been tested on Windows 10.
 
 **This repo is experimental and is used to test the latest Open Hospital releases**
 
-# Running POH - Ultra-quickstart
+# Running OH - Ultra-quickstart
 
 on Linux:
 
@@ -28,7 +28,7 @@ on Linux:
 bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 ```
 
-# Running POH - Quickstart
+# Running OH - Quickstart
 
 Common to all architecture:
 
