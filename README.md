@@ -18,6 +18,8 @@ The Linux version has been tested on different distributions and versions,
 including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 20.04 x64 (64bit).
 The Windows version has been tested on Windows 10.
 
+**This repo is experimental and is used to test the latest Open Hospital releases**
+
 # Running POH - Ultra quickstart
 
 on Linux:
@@ -39,13 +41,16 @@ on Windows (experimental powershell script) :
 - unzip the package in any directory
 - browse to the directory
 - on Windows, start POH by double clicking on the oh.bat batch file
-- on Linux, start POH by running ./oh.sh
-- on Linux, to see available options, run ./oh.sh -h
+- on Linux, start POH by running **./oh.sh**
+- on Linux, to see available options, run **./oh.sh -h**
 
 # Running POH - Windows: oh.bat (cmd batch file)
 
-- clone the repository: git clone https://github.com/mizzioisf/openhospital-client
-- cd to the repo directory: cd openhospital-client
+- clone the repository
+
+```
+git clone https://github.com/mizzioisf/openhospital-client
+```
 - download and unzip java:
 ```
 wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
@@ -56,16 +61,16 @@ unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
 wget  https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.30-linux-glibc2.12-win64
 unzip mysql-5.7.30-linux-glibc2.12-win64.zip
 ```
-- run oh.bat
+- run **oh.bat**
 
-# Running POH - Windows: powershell (oh.ps1)
+# Running POH - Windows: powershell (oh.ps1) - EXPERIMENTAL
 
 - clone the repository:
 ```
 git clone https://github.com/mizzioisf/openhospital-client
 ```
 - cd to the repo directory: cd openhospital-client
-- run oh.ps1
+- run **oh.ps1**
 
 # Default directory structure
 
@@ -161,3 +166,6 @@ Comments, suggestions and requests are welcome !
 
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
+
+last updated: mer 16 dic 2020, 01:51:20, CET
+

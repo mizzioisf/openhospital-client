@@ -28,8 +28,8 @@
 #set -o errexit -o pipefail -o noclobber -o nounset
 
 ######## Open Hospital - Portable Open Hospital Configuration
-# POH_PATH is the directory where Portable OpenHospital files are located
-# POH_PATH=/usr/local/PortableOpenHospital
+# OH_PATH is the directory where Portable OpenHospital files are located
+# OH_PATH=/usr/local/PortableOpenHospital
 
 param (
     [Parameter(Mandatory=$true)][string]$opt
@@ -194,17 +194,17 @@ function set_path {
 
 ################################################## SISTEMAREEEEEEEEEEEEEEE
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
-	# set POH_PATH if not defined
-	if ( ! $POH_PATH ) {
-		write-host "Warning: POH_PATH not found - using current directory"
-		$script:POH_PATH=$CURRENT_DIR
-		if ( ! (Test-Path "$POH_PATH\$SCRIPT_NAME") ) {
-			write-host "Error - $SCRIPT_NAME not found in the current PATH. Please cd the directory where POH was unzipped or set up POH_PATH properly." -ForegroundColor Yellow
+	# set OH_PATH if not defined
+	if ( ! $OH_OPATH ) {
+		write-host "Warning: OH_PATH not found - using current directory"
+		$script:OH_PATH=$CURRENT_DIR
+		if ( ! (Test-Path "$OH_OPATH\$SCRIPT_NAME") ) {
+			write-host "Error - $SCRIPT_NAME not found in the current PATH. Please cd the directory where POH was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
 			exit 1
 		}
 	}
-#	$POH_PATH_ESCAPED=$(write-host $POH_PATH | sed -e 's/\//\\\//g'")
-#	$POH_PATH_ESCAPED=$POH_PATH
+#	$OH_OPATH_ESCAPED=$(write-host $OH_OPATH | sed -e 's/\//\\\//g'")
+#	$OH_OPATH_ESCAPED=$OH_OPATH
 }
 
 function set_language {
@@ -228,8 +228,8 @@ function set_language {
 function java_lib_setup {
 	# NATIVE LIB setup
 	switch ( "$JAVA_ARCH" ) {
-		"64" { $script:NATIVE_LIB_PATH="$POH_PATH\$OH_DIR\lib\native\Win64" }
-		"32" { $script:NATIVE_LIB_PATH="$POH_PATH\$OH_DIR\lib\native\Windows" }
+		"64" { $script:NATIVE_LIB_PATH="$OH_OPATH\$OH_DIR\lib\native\Win64" }
+		"32" { $script:NATIVE_LIB_PATH="$OH_OPATH\$OH_DIR\lib\native\Windows" }
 	}
 
 	# CLASSPATH setup
@@ -239,7 +239,7 @@ function java_lib_setup {
 #        set CLASSPATH=!CLASSPATH!;%%A
 #)
 
-	$script:DIRLIBS="$POH_PATH\$OH_DIR\lib"
+	$script:DIRLIBS="$OH_OPATH\$OH_DIR\lib"
 
 #	for i in ${DIRLIBS}
 #	gci -file -r *.pdf
@@ -251,21 +251,21 @@ function java_lib_setup {
 
     #SETLOCAL ENABLEDELAYEDEXPANSION
 
-    #$list = Get-ChildItem -Path "$POH_PATH\$OH_DIR\lib" -Recurse | % { $_.FullName } `
-    $jarlist = Get-ChildItem -Path "$POH_PATH\$OH_DIR\lib" | % { $_.FullName } `
+    #$list = Get-ChildItem -Path "$OH_OPATH\$OH_DIR\lib" -Recurse | % { $_.FullName } `
+    $jarlist = Get-ChildItem -Path "$OH_OPATH\$OH_DIR\lib" | % { $_.FullName } `
         #Where-Object { $_.PSIsContainer -eq $false -and $_.Extension -eq '.jar' }
         Where-Object { $_.Extension -eq '.jar' }
         ForEach($n in $jarlist){
         $script:OH_CLASSPATH="$OH_CLASSPATH;$n"
         # $n.Name | Out-File -Append 'D:\Movielist.txt'
 }
-	#$script:OH_CLASSPATH="$POH_PATH/$OH_DIR\bin\OH-gui.jar"
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin\OH-gui.jar"
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bundle\"
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\rpt\"
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\rsc\"
-    $script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\lib\"
-    #$script:OH_CLASSPATH="$OH_CLASSPATH;$POH_PATH\$OH_DIR\bin\*"
+	#$script:OH_CLASSPATH="$OH_OPATH/$OH_DIR\bin\OH-gui.jar"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_OPATH\$OH_DIR\bin\OH-gui.jar"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_OPATH\$OH_DIR\bundle\"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_OPATH\$OH_DIR\rpt\"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_OPATH\$OH_DIR\rsc\"
+    $script:OH_CLASSPATH="$OH_CLASSPATH;$OH_OPATH\$OH_DIR\lib\"
+    #$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_OPATH\$OH_DIR\bin\*"
 
 }
 
@@ -273,7 +273,7 @@ function download_file ($download_url,$download_file){
 write-host "Downloading $download_file from $download_url..."
     try {
         $wc = new-object System.Net.WebClient
-        $wc.DownloadFile("$download_url\$download_file","$POH_PATH\$download_file")
+        $wc.DownloadFile("$download_url\$download_file","$OH_OPATH\$download_file")
     }
     catch [System.Net.WebException],[System.IO.IOException] {
         "Unable to download $download_file from $download_url"
@@ -287,11 +287,11 @@ write-host "Downloading $download_file from $download_url..."
 
 function java_check {
     if ( !( $JAVA_BIN ) ) {
-	    $script:JAVA_BIN="$POH_PATH\$JAVA_DIR\bin\java.exe"
+	    $script:JAVA_BIN="$OH_OPATH\$JAVA_DIR\bin\java.exe"
     }
 
     if ( !( Test-Path $JAVA_BIN ) ) {
-        if ( !(Test-Path "$POH_PATH\$JAVA_DISTRO.$EXT") ) {
+        if ( !(Test-Path "$OH_OPATH\$JAVA_DISTRO.$EXT") ) {
     		write-host "Warning - JAVA not found. Do you want to download it? (50 MB)" -ForegroundColor Yellow
 		    get_confirmation;
 		    # Downloading openjdk binaries
@@ -299,7 +299,7 @@ function java_check {
 	    }
 	    write-host "Unpacking $JAVA_DISTRO..."
         try {
-            Expand-Archive "$POH_PATH\$JAVA_DISTRO.$EXT" -DestinationPath $POH_PATH\ -Force
+            Expand-Archive "$OH_OPATH\$JAVA_DISTRO.$EXT" -DestinationPath $OH_OPATH\ -Force
         }
         catch {
             write-host "Error unpacking Java. Exiting." -ForegroundColor Red
@@ -308,8 +308,8 @@ function java_check {
         write-host "Java unpacked successfully!"
     }
     # check for java binary
-    if ( Test-Path "$POH_PATH\$JAVA_DIR\bin\java.exe" ) {
-        $script:JAVA_BIN="$POH_PATH\$JAVA_DIR\bin\java.exe"
+    if ( Test-Path "$OH_OPATH\$JAVA_DIR\bin\java.exe" ) {
+        $script:JAVA_BIN="$OH_OPATH\$JAVA_DIR\bin\java.exe"
     }
     else {
         write-host "Error: JAVA not found. Exiting." -ForegroundColor Red
@@ -320,8 +320,8 @@ function java_check {
 }
 
 function mysql_check {
-	if (  !( Test-Path "$POH_PATH\$MYSQL_DIR" ) ) {
-		if ( !( Test-Path "$POH_PATH\$MYSQL_DIR.$EXT" ) ) {
+	if (  !( Test-Path "$OH_OPATH\$MYSQL_DIR" ) ) {
+		if ( !( Test-Path "$OH_OPATH\$MYSQL_DIR.$EXT" ) ) {
 			write-host "Warning - MySQL not found. Do you want to download it? (630 MB)" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading mysql binary
@@ -329,7 +329,7 @@ function mysql_check {
 		}
 		write-host "Unpacking $MYSQL_DIR..."
         try {
-            Expand-Archive "$POH_PATH\$MYSQL_DIR.$EXT" -DestinationPath $POH_PATH\ -Force
+            Expand-Archive "$OH_OPATH\$MYSQL_DIR.$EXT" -DestinationPath $OH_OPATH\ -Force
         }
         catch {
 			write-host "Error unpacking MySQL. Exiting." -ForegroundColor Red
@@ -338,7 +338,7 @@ function mysql_check {
         write-host "MySQL unpacked successfully!"
     }
     # check for mysql binary
-    if (Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe") {
+    if (Test-Path "$OH_OPATH\$MYSQL_DIR\bin\mysqld.exe") {
         write-host "MySQL found!"
 	    write-host "Using $MYSQL_DIR"
 	}
@@ -359,40 +359,40 @@ function config_database {
 
 	# Creating MySQL configuration
 	write-host "Generating MySQL config file..."
-#	[ if Test-Path $POH_PATH/etc/mysql/my.cnf ] && mv -f $POH_PATH/etc/mysql/my.cnf $POH_PATH/etc/mysql/my.cnf.old
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("OH_PATH_SUBSTITUTE","$POH_PATH") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_SERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("RUN_DIR","$RUN_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$POH_PATH/etc/mysql/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$POH_PATH/etc/mysql/my.cnf"
+#	[ if Test-Path $OH_OPATH/etc/mysql/my.cnf ] && mv -f $OH_OPATH/etc/mysql/my.cnf $OH_OPATH/etc/mysql/my.cnf.old
+	(Get-Content "$OH_OPATH/etc/mysql/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_OPATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_OPATH/etc/mysql/my.cnf").replace("OH_PATH_SUBSTITUTE","$OH_OPATH") | Set-Content "$OH_OPATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_OPATH/etc/mysql/my.cnf").replace("MYSQL_SERVER","$MYSQL_SERVER") | Set-Content "$OH_OPATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_OPATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$OH_OPATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_OPATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$OH_OPATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_OPATH/etc/mysql/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_OPATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_OPATH/etc/mysql/my.cnf").replace("RUN_DIR","$RUN_DIR") | Set-Content "$OH_OPATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_OPATH/etc/mysql/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_OPATH/etc/mysql/my.cnf"
 
-#	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$POH_PATH_ESCAPED/g" -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $POH_PATH/etc/mysql/my.cnf.dist > $POH_PATH/etc/mysql/my.cnf
+#	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_OPATH_ESCAPED/g" -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $OH_OPATH/etc/mysql/my.cnf.dist > $OH_OPATH/etc/mysql/my.cnf
 }
 
 function inizialize_database {
 	# Recreate directory structure
-	mkdir -p $POH_PATH/$DATA_DIR
-	mkdir -p $POH_PATH/$RUN_DIR
-	mkdir -p $POH_PATH/$LOG_DIR
-	mkdir -p $POH_PATH/$DICOM_DIR
-	mkdir -p $POH_PATH/$BACKUP_DIR
+	mkdir -p $OH_OPATH/$DATA_DIR
+	mkdir -p $OH_OPATH/$RUN_DIR
+	mkdir -p $OH_OPATH/$LOG_DIR
+	mkdir -p $OH_OPATH/$DICOM_DIR
+	mkdir -p $OH_OPATH/$BACKUP_DIR
     # Inizialize MySQL
 	write-host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
 		write-host "MARIADB"
-		#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$MYSQL_DATA_DIR --auth-root-authentication-method=normal") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'
-		Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'			
+		#Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_OPATH\$MYSQL_DATA_DIR --auth-root-authentication-method=normal") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'
+		Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_OPATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'			
 
 
-#Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$POH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait #
+#Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_OPATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait #
         	}
 		"mysql" {
 		write-host "MYSQL"
-			Start-Process "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$POH_PATH\$MYSQL_DIR --datadir=$POH_PATH\$DATA_DIR") -NoNewWindow; break
+			Start-Process "$OH_OPATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$OH_OPATH\$MYSQL_DIR --datadir=$OH_OPATH\$DATA_DIR") -NoNewWindow; break
 		}
 	}
 
@@ -404,10 +404,10 @@ function inizialize_database {
 
 function start_database {
 	write-host "Starting MySQL server... "
-#	"$POH_PATH/$MYSQL_DIR/bin/mysqld_safe --defaults-file=$POH_PATH\etc\mysql\my.cnf"
+#	"$OH_OPATH/$MYSQL_DIR/bin/mysqld_safe --defaults-file=$OH_OPATH\etc\mysql\my.cnf"
 
-    #Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf --tmpdir=$POH_PATH\tmp --standalone --console") -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console2.err'
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$POH_PATH\etc\mysql\my.cnf --tmpdir=$POH_PATH\tmp --standalone") -RedirectStandardOutput '.\console2.out' -RedirectStandardError '.\console2.err'
+    #Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_OPATH\etc\mysql\my.cnf --tmpdir=$OH_OPATH\tmp --standalone --console") -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console2.err'
+	Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_OPATH\etc\mysql\my.cnf --tmpdir=$OH_OPATH\tmp --standalone") -RedirectStandardOutput '.\console2.out' -RedirectStandardError '.\console2.err'
     sleep 2;
 
 #	 Start-Process java -ArgumentList '-jar', 'MyProgram.jar' ` -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console3.err'
@@ -420,7 +420,7 @@ function start_database {
 #	}
 
 	# Wait till the MySQL socket file is created
-	# while ( -e $POH_PATH/$MYSQL_SOCKET ); do sleep 1; done
+	# while ( -e $OH_OPATH/$MYSQL_SOCKET ); do sleep 1; done
 	# # Wait till the MySQL tcp port is open
 	# until nc -z $MYSQL_SERVER $MYSQL_PORT; do sleep 1; done
 	write-host "MySQL server started! "
@@ -434,7 +434,7 @@ function set_database_root_pw {
         $SQLCOMMAND=@"
         -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';"
 "@
-        Start-Process -FilePath "$POH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow  -RedirectStandardOutput '.\consolePW.out' -RedirectStandardError '.\consolePW.err'
+        Start-Process -FilePath "$OH_OPATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow  -RedirectStandardOutput '.\consolePW.out' -RedirectStandardError '.\consolePW.err'
         }
     }
 }
@@ -446,7 +446,7 @@ function import_database {
 	
     #$script:SQL_CREATE="CREATE DATABASE $DATABASE_NAME; `
 
-    #Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
+    #Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
 	#CREATE USER \'$DATABASE_USER\'@\'localhost\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; `
 	#CREATE USER \'$DATABASE_USER\'\@\'\%\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'@\'localhost\'; `
 	#GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;")  -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
@@ -454,10 +454,10 @@ function import_database {
     $SQLCOMMAND=@"
     -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
 "@
-    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
+    Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
     
     # Check for database creation script
-    if ( Test-Path "$POH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
+    if ( Test-Path "$OH_OPATH\$SQL_DIR\$DB_CREATE_SQL" ) {
                 Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
                 }
         else {
@@ -469,24 +469,24 @@ function import_database {
 	# Create OH database structure
 	write-host "Importing database schema $DB_CREATE_SQL..."
 	
-    cd $POH_PATH\$SQL_DIR
+    cd $OH_OPATH\$SQL_DIR
 
     $SQLCOMMAND=@"
-   --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME -e "source $POH_PATH\$SQL_DIR\$DB_CREATE_SQL"
+   --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME -e "source $OH_OPATH\$SQL_DIR\$DB_CREATE_SQL"
 "@
-    Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
+    Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
  
 	write-host "Database imported!"
 }
 
 function dump_database {
 	# Save OH database if existing
-	if ( ( Test-Path "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
+	if ( ( Test-Path "$OH_OPATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
 		write-host "Dumping MySQL database..."	
         $SQLCOMMAND=@"
     --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NaAME
 "@
-        Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardOutput "$POH_PATH\$BACKUP_DIR\mysqldump_$DATE.sql"-NoNewWindow -Wait	
+        Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardOutput "$OH_OPATH\$BACKUP_DIR\mysqldump_$DATE.sql"-NoNewWindow -Wait	
     }
     else {
 	    write-host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
@@ -498,9 +498,9 @@ function dump_database {
 
 function shutdown_database {
 	write-host "Shutting down MySQL..."
-	Start-Process -FilePath "$POH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -NoNewWindow -Wait -RedirectStandardOutput '$POH_PATH\console5.out' -RedirectStandardError '$POH_PATH\console5.err'
+	Start-Process -FilePath "$OH_OPATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -NoNewWindow -Wait -RedirectStandardOutput '$OH_OPATH\console5.out' -RedirectStandardError '$OH_OPATH\console5.err'
 	# Wait till the MySQL socket file is removed
-#	while ( -e $POH_PATH/$MYSQL_SOCKET ); do sleep 1; done
+#	while ( -e $OH_OPATH/$MYSQL_SOCKET ); do sleep 1; done
 }
 
 function clean_database {
@@ -511,15 +511,15 @@ function clean_database {
     Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
 	write-host "Removing data..."
 	# remove databases
-	$filetodel="$POH_PATH\$DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$RUN_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$RUN_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 function test_database_connection {
 	# Test connection to the OH MySQL database
 	write-host "Testing database connection..."
     try {
-	    Start-Process -FilePath ("$POH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD --protocol=tcp -e USE $DATABASE_NAME;" ) -Wait -NoNewWindow
+	    Start-Process -FilePath ("$OH_OPATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD --protocol=tcp -e USE $DATABASE_NAME;" ) -Wait -NoNewWindow
         write-host "Database connection successfully established!"
 	}
     catch {
@@ -534,18 +534,18 @@ function clean_files {
 	get_confirmation;
 	write-host "Removing files..."
 
-    $filetodel="$POH_PATH\etc\mysql\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\etc\mysql\my.cnf.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$LOG_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\rsc\generalData.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\rsc\generalData.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\rsc\database.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\rsc\database.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\rsc\log4j.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\rsc\log4j.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\rsc\dicom.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\rsc\dicom.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$POH_PATH\$OH_DIR\logs\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+    $filetodel="$OH_OPATH\etc\mysql\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\etc\mysql\my.cnf.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$LOG_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\rsc\generalData.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\rsc\generalData.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\rsc\database.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\rsc\database.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\rsc\log4j.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\rsc\log4j.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\rsc\dicom.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\rsc\dicom.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_OPATH\$OH_DIR\logs\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 
@@ -596,7 +596,7 @@ switch ( "$opt" ) {
 		clean_database;
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> "
-		if ( Test-Path "$POH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
+		if ( Test-Path "$OH_OPATH\$SQL_DIR\$DB_CREATE_SQL" ) {
 		        write-host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
 			}
 		else {
@@ -620,8 +620,8 @@ switch ( "$opt" ) {
 		}
 	"s"	{ # save database 
 		# checking if data exist
-        Write-host "$POH_PATH\$DATA_DIR\$DATABASE_NAME"
-		if ( Test-Path "$POH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
+        Write-host "$OH_OPATH\$DATA_DIR\$DATABASE_NAME"
+		if ( Test-Path "$OH_OPATH\$DATA_DIR\$DATABASE_NAME" ) {
 			mysql_check;
 			if ($MANUAL_CONFIG != on ) {
 				config_database;
@@ -657,7 +657,7 @@ switch ( "$opt" ) {
 		write-host "Setting up GSM..."
 		java_check;
 		java_lib_setup;
-		cd $POH_PATH\$OH_DIR
+		cd $OH_OPATH\$OH_DIR
 #		"$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM "$@""
 		"$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM "
 		exit 0;
@@ -674,7 +674,7 @@ switch ( "$opt" ) {
 		write-host "Demo mode is set to $DEMO_MODE"
         write-host "Software versions:"
 
-#        Get-Content $POH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
+#        Get-Content $OH_OPATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 #        $var = $_.Split('=',2).Trim()
 #        New-Variable -Scope Script -Name $var[0] -Value $var[1]
 #        }
@@ -705,7 +705,7 @@ if ( !( $OH_DISTRO -eq "portable" ) -And !( $OH_DISTRO -eq "client" ) ) {
 # check demo mode
 
 if ( $DEMO_MODE -eq "on" ) {
-	if ( Test-Path -Path "$POH_PATH\$SQL_DIR\$DB_DEMO" ) {
+	if ( Test-Path -Path "$OH_OPATH\$SQL_DIR\$DB_DEMO" ) {
 	        write-host "Found SQL demo database, starting OH in demo mode..."
 		$DB_CREATE_SQL=$DB_DEMO
 	}
@@ -716,7 +716,7 @@ if ( $DEMO_MODE -eq "on" ) {
 }
 
 write-host "Starting Open Hospital in $OH_DISTRO mode..."
-write-host "POH_PATH set to $POH_PATH"
+write-host "OH_PATH set to $OH_OPATH"
 write-host "POH language is set to $OH_LANGUAGE"
 
 # check for java
@@ -736,7 +736,7 @@ if ( $OH_DISTRO -eq "portable" ) {
 	# Config MySQL
 	config_database;
 	# Check if OH database already exists
-	if ( ! (Test-Path "$POH_PATH\$DATA_DIR\$DATABASE_NAME" ) ) {
+	if ( ! (Test-Path "$OH_OPATH\$DATA_DIR\$DATABASE_NAME" ) ) {
 		# Prepare MySQL
 		inizialize_database;
 		# Start MySQL
@@ -759,46 +759,46 @@ if ($MANUAL_CONFIG != on ) {
 write-host "Setting up OH configuration files..."
 
 ######## DICOM setup
-#[ if Test-Path -Path $POH_PATH/$OH_DIR/rsc/dicom.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/dicom.properties $POH_PATH/$OH_DIR/rsc/dicom.properties.old
+#[ if Test-Path -Path $OH_OPATH/$OH_DIR/rsc/dicom.properties ] && mv -f $OH_OPATH/$OH_DIR/rsc/dicom.properties $OH_OPATH/$OH_DIR/rsc/dicom.properties.old
 #
 	
-(Get-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties.dist").replace("OH_PATH_SUBSTITUTE","$POH_PATH") | Set-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties").replace("DICOM_DIR","$DICOM_DIR") | Set-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$POH_PATH/$OH_DIR/rsc/dicom.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/dicom.properties.dist").replace("OH_PATH_SUBSTITUTE","$OH_OPATH") | Set-Content "$OH_OPATH/$OH_DIR/rsc/dicom.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/dicom.properties").replace("DICOM_DIR","$DICOM_DIR") | Set-Content "$OH_OPATH/$OH_DIR/rsc/dicom.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/dicom.properties").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_OPATH/$OH_DIR/rsc/dicom.properties"
 
 ######## log4j.properties setup
-#[ if Test-Path -Path  $POH_PATH/$OH_DIR/rsc/log4j.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/log4j.properties $POH_PATH/$OH_DIR/rsc/log4j.properties.old
-#sed -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBSERVER/$MYSQL_SERVER/" -e "s/DBUSER/$DATABASE_USER/" -e "s/DBPASS/$DATABASE_PASSWORD/" -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/" $POH_PATH/$OH_DIR/rsc/log4j.properties.dist > $POH_PATH/$OH_DIR/rsc/log4j.properties
+#[ if Test-Path -Path  $OH_OPATH/$OH_DIR/rsc/log4j.properties ] && mv -f $OH_OPATH/$OH_DIR/rsc/log4j.properties $OH_OPATH/$OH_DIR/rsc/log4j.properties.old
+#sed -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBSERVER/$MYSQL_SERVER/" -e "s/DBUSER/$DATABASE_USER/" -e "s/DBPASS/$DATABASE_PASSWORD/" -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/" $OH_OPATH/$OH_DIR/rsc/log4j.properties.dist > $OH_OPATH/$OH_DIR/rsc/log4j.properties
 
-(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG_LEVEL","$DEBUG_LEVE") | Set-Content "$POH_PATH/$OH_DIR/rsc/log4j.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG_LEVEL","$DEBUG_LEVE") | Set-Content "$OH_OPATH/$OH_DIR/rsc/log4j.properties"
 
 ######## database.properties setup 
-#[ if Test-Path -Path  $POH_PATH/$OH_DIR/rsc/database.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/database.properties $POH_PATH/$OH_DIR/rsc/database.properties.old
-(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties").replace("DBNAME","$DATABASE_NAME") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
-(Get-Content "$POH_PATH/$OH_DIR/rsc/database.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$POH_PATH/$OH_DIR/rsc/database.properties"
+#[ if Test-Path -Path  $OH_OPATH/$OH_DIR/rsc/database.properties ] && mv -f $OH_OPATH/$OH_DIR/rsc/database.properties $OH_OPATH/$OH_DIR/rsc/database.properties.old
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/database.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$OH_OPATH/$OH_DIR/rsc/database.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/database.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$OH_OPATH/$OH_DIR/rsc/database.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/database.properties").replace("DBNAME","$DATABASE_NAME") | Set-Content "$OH_OPATH/$OH_DIR/rsc/database.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/database.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$OH_OPATH/$OH_DIR/rsc/database.properties"
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/database.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$OH_OPATH/$OH_DIR/rsc/database.properties"
 
-#Set-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.url=jdbc:mysql://"$MYSQL_SERVER":$MYSQL_PORT/$DATABASE_NAME"
-#Add-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.username=$DATABASE_USER"
-#Add-Content -Path $POH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.password=$DATABASE_PASSWORD"
+#Set-Content -Path $OH_OPATH/$OH_DIR/rsc/database.properties -Value "jdbc.url=jdbc:mysql://"$MYSQL_SERVER":$MYSQL_PORT/$DATABASE_NAME"
+#Add-Content -Path $OH_OPATH/$OH_DIR/rsc/database.properties -Value "jdbc.username=$DATABASE_USER"
+#Add-Content -Path $OH_OPATH/$OH_DIR/rsc/database.properties -Value "jdbc.password=$DATABASE_PASSWORD"
 
 ######## generalData.properties language setup 
 # set language in OH config file
-#[ if Test-Path -Path  $POH_PATH/$OH_DIR/rsc/generalData.properties ] && mv -f $POH_PATH/$OH_DIR/rsc/generalData.properties $POH_PATH/$OH_DIR/rsc/generalData.properties.old
-(Get-Content "$POH_PATH/$OH_DIR/rsc/generalData.properties.dist").replace("OH_SET_LANGUAGE","$OH_LANGUAGE") | Set-Content "$POH_PATH/$OH_DIR/rsc/generalData.properties"
+#[ if Test-Path -Path  $OH_OPATH/$OH_DIR/rsc/generalData.properties ] && mv -f $OH_OPATH/$OH_DIR/rsc/generalData.properties $OH_OPATH/$OH_DIR/rsc/generalData.properties.old
+(Get-Content "$OH_OPATH/$OH_DIR/rsc/generalData.properties.dist").replace("OH_SET_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_OPATH/$OH_DIR/rsc/generalData.properties"
 }
 
 ######## Open Hospital start
 
 write-host "Starting Open Hospital..."
 
-cd $POH_PATH/$OH_DIR
+cd $OH_OPATH/$OH_DIR
 
 # OH GUI launch
 #$JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu 2>&1 > /dev/null
@@ -811,9 +811,9 @@ cd $POH_PATH/$OH_DIR
 ###Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu")
 ####Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-h") -Wait -NoNewWindow
 
-Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$POH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow
+Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_OPATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow
 
-# -RedirectStandardOutput "$POH_PATH\OH.out" -RedirectStandardError "$POH_PATH\OH.err"
+# -RedirectStandardOutput "$OH_OPATH\OH.out" -RedirectStandardError "$OH_OPATH\OH.err"
 
 ###%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 
