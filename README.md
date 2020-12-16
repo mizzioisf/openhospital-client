@@ -28,23 +28,8 @@ on Linux:
 bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 ```
 
-on Windows (standard batch file) :
-
- - dowload oh.bat
- - run it
-
-on Windows (experimental powershell script) :
-
- - download oh.ps1
- - run it 
-
-# Running POH - Quickstart
-
-- unzip the package in any directory
-- browse to the directory
-- on Windows, start POH by double clicking on the oh.bat batch file
-- on Linux, start POH by running **./oh.sh**
-- on Linux, to see available options, run **./oh.sh -h**
+- start POH by running **./oh.sh**
+- to see available options, run **./oh.sh -h**
 
 # Running POH - Windows: oh.bat (cmd batch file)
 
@@ -73,6 +58,15 @@ git clone https://github.com/mizzioisf/openhospital-client
 ```
 - cd to the repo directory: cd openhospital-client
 - run **oh.ps1**
+
+# Running POH - Quickstart - full distro 
+
+(see poh downloads on sourceforce for full release packages)
+
+- unzip the package in any directory
+- browse to the directory
+- on Linux, start POH by running **./oh.sh**
+- on Windows, start POH by double clicking on the **oh.bat** batch file
 
 # Default directory structure
 
