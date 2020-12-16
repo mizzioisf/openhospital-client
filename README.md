@@ -43,7 +43,7 @@ git clone https://github.com/mizzioisf/openhospital-client
 - start POH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
 
-** on Windows: oh.bat (cmd batch file)**
+**on Windows: oh.bat (cmd batch file)**
 
 - download and unzip java:
 ```
@@ -57,9 +57,10 @@ unzip mysql-5.7.30-linux-glibc2.12-win64.zip
 ```
 - run **oh.bat**
 
-** on Windows: oh.bat (cmd batch file) - EXPERIMENTAL**
+**on Windows: oh.bat (cmd batch file) - EXPERIMENTAL**
 
 - run **oh.ps1**
+- to see available options, run **./oh.ps1 -h** (not working)
 
 # Running POH - Quickstart - full distro 
 
