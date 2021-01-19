@@ -28,6 +28,7 @@ on Linux:
 ```
 sudo apt-get install ncurses
 ```
+To download and launch the Open Hospital package contained in this distribution open a shell and type:
 
 ```
 bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
