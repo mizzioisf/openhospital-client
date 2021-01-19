@@ -18,15 +18,15 @@ The Linux version has been tested on different distributions and versions,
 including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 20.04 x64 (64bit).
 The Windows version has been tested on Windows 10.
 
-**This repo is experimental and is used to test the latest Open Hospital releases**
+**This repo is experimental and is used to test the latest Open Hospital releases. Use at your own risk !**
 
 # Running OH - Ultra-quickstart
 
 on Linux:
 
--> ncurses library is needed system-wide: on Ubuntu:
+**Prerequisites** - ncurses library is needed system-wide. On Ubuntu it is possibile to install it with:
 ```
-apt-get install ncurses
+sudo apt-get install ncurses
 ```
 
 ```
@@ -98,7 +98,7 @@ data/dicom_storage
 # Known issues
 
 - If you select languages en-fr-it, a ICD10 patologies subset is loaded at startup, languages es-pt don't.
-- powershell script (oh.ps1) is still not working
+- Powershell script (oh.ps1) is still not working
 
 # New oh.sh
 
