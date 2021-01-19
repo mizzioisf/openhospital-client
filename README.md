@@ -24,6 +24,11 @@ The Windows version has been tested on Windows 10.
 
 on Linux:
 
+-> ncurses library is needed system-wide: on Ubuntu:
+```
+apt-get install ncurses
+```
+
 ```
 bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 ```
@@ -90,6 +95,11 @@ data/log
 data/dicom_storage
 ```
 
+# Known issues
+
+- If you select languages en-fr-it, a ICD10 patologies subset is loaded at startup, languages es-pt don't.
+- powershell script (oh.ps1) is still not working
+
 # New oh.sh
 
 In order to have a complete, easy to support and extensible solution to run Open Hospital on linux and Windows WSL, oh.sh has been rewritteng, also adding a few possible useful user functions.
@@ -124,6 +134,7 @@ Description of changes:
 
 Still working on:
 - Porting to powershell :-)
+
 
 
 For more informations see:
