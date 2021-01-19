@@ -24,10 +24,6 @@ The Windows version has been tested on Windows 10.
 
 on Linux:
 
-**Prerequisites** - ncurses library is needed system-wide. On Ubuntu it is possibile to install it with:
-```
-sudo apt-get install ncurses
-```
 To download and launch the Open Hospital package contained in this distribution open a shell and type:
 
 ```
@@ -36,7 +32,9 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 # Running OH - Quickstart
 
-Common to all architecture:
+**Prerequisites** - ncurses and libaio libraries are needed system-wide. See Known Issues for installation.
+
+Common to all architectures:
 
 - clone the repository
 ```
@@ -97,6 +95,25 @@ data/dicom_storage
 ```
 
 # Known issues
+
+- If you get this error:
+
+Error on creating OH Database error while loading shared libraries: libncurses.so.5.
+
+You have to install the ncurses library:
+
+```
+sudo apt-get install ncurses
+```
+
+- If you get this error:
+Error Initializing MySQL database on port 3306 error while loading shared libraries: libaio.so.1. I had to install it manually and re-launch the script.
+
+You have to install the libaio library:
+
+```
+sudo apt-get install libaio1 
+```
 
 - If you select languages en-fr-it, a ICD10 patologies subset is loaded at startup, languages es-pt don't.
 - Powershell script (oh.ps1) is still not working
