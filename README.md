@@ -41,6 +41,9 @@ Common to all architectures:
 git clone https://github.com/mizzioisf/openhospital-client
 ```
 - browse to the directory:
+```
+cd openhospital-client
+```
 
 **on Linux**
 
@@ -56,8 +59,8 @@ unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
 ```
 - download and unzip mysql:
 ```
-wget  https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.30-linux-glibc2.12-win64
-unzip mysql-5.7.30-linux-glibc2.12-win64.zip
+wget  https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.31-linux-glibc2.12-win64
+unzip mysql-5.7.31-linux-glibc2.12-win64.zip
 ```
 - run **oh.bat**
 
@@ -98,7 +101,9 @@ data/dicom_storage
 
 - If you get this error:
 
+```
 Error on creating OH Database error while loading shared libraries: libncurses.so.5.
+```
 
 You have to install the ncurses library:
 
@@ -107,7 +112,9 @@ sudo apt-get install ncurses
 ```
 
 - If you get this error:
+```
 Error Initializing MySQL database on port 3306 error while loading shared libraries: libaio.so.1. I had to install it manually and re-launch the script.
+```
 
 You have to install the libaio library:
 
