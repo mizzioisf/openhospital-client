@@ -105,7 +105,7 @@ data/dicom_storage
 Error on creating OH Database error while loading shared libraries: libncurses.so.5.
 ```
 
-You have to install the ncurses library:
+You have to install the ncurses librares, on Ubuntu:
 
 ```
 sudo apt-get install ncurses
@@ -116,7 +116,7 @@ sudo apt-get install ncurses
 Error Initializing MySQL database on port 3306 error while loading shared libraries: libaio.so.1. I had to install it manually and re-launch the script.
 ```
 
-You have to install the libaio library:
+You have to install the libaio libraries, on Ubuntu:
 
 ```
 sudo apt-get install libaio1 
