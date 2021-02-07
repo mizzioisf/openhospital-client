@@ -64,7 +64,7 @@ unzip mysql-5.7.31-linux-glibc2.12-win64.zip
 ```
 - run **oh.bat**
 
-**on Windows: (poweshell script) - EXPERIMENTAL**
+**on Windows: (powershell script) - EXPERIMENTAL**
 
 - run **oh.ps1**
 - to see available options, run **./oh.ps1 -h** (not working)
@@ -209,5 +209,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-last updated: mer 16 dic 2020, 01:51:20, CET
+last updated: 8 feb 2021
 
