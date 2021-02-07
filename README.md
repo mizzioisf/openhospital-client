@@ -22,7 +22,7 @@ The Windows version has been tested on Windows 10.
 
 # Running OH - Ultra-quickstart
 
-on Linux:
+**on Linux:**
 
 To download and launch the Open Hospital package contained in this distribution open a shell and type:
 
@@ -45,7 +45,7 @@ git clone https://github.com/mizzioisf/openhospital-client
 cd openhospital-client
 ```
 
-**on Linux**
+**on Linux:**
 
 - start POH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
@@ -99,6 +99,8 @@ data/dicom_storage
 
 # Known issues
 
+**Linux**
+
 - If you get this error:
 
 ```
@@ -123,6 +125,11 @@ sudo apt-get install libaio1
 ```
 
 - If you select languages en-fr-it, a ICD10 patologies subset is loaded at startup, languages es-pt don't.
+
+**Windows**
+
+Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit is mandadory.
+
 - Powershell script (oh.ps1) is still not working
 
 # New oh.sh
