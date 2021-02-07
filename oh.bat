@@ -218,8 +218,6 @@ if %PROCESSOR_ARCHITECTURE%==AMD64 if not %DICOM_ENABLE%==true (
   set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Windows
 )
 
-
-
 REM ###### Start Open Hospital #####
 cd /d %OH_PATH%\%OH_DIR%
 %JAVA_BIN% -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.menu.gui.Menu
