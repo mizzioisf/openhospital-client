@@ -118,14 +118,14 @@ if [ $JAVA_ARCH = 32 ]; then
 	### JRE 8 - openlogic 32bit
 	#JAVA_DISTRO="openlogic-openjdk-8u262-b10-linux-x32"
 	#JAVA_URL="https://builds.openlogic.com/downloadJDK/openlogic-openjdk/8u262-b10/"
-	#JAVA_DIR="openlogic-openjdk-8u262-b10-linux-32"
 
 	### JRE zulu distro
 	JAVA_URL="https://cdn.azul.com/zulu/bin/"
 	### JRE 8 32bit
-	JAVA_DISTRO="zulu8.50.0.21-ca-jre8.0.272-linux_i686"
+	#JAVA_DISTRO="zulu8.52.0.23-ca-jre8.0.282-linux_i686"
 	### JRE 11 32bit
 	JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-linux_i686"
+
 	JAVA_DIR=$JAVA_DISTRO
 fi
 
