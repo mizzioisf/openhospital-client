@@ -107,9 +107,9 @@ EXT="tar.gz"
 #JAVA_DIR="zulu11.43.21-ca-jre11.0.9-linux_x64"
 
 ### JRE 11 - openjdk
-JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9%2B11.1"
-JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.9_11"
-JAVA_DIR="jdk-11.0.9+11-jre"
+JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9"
+JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.10_9"
+JAVA_DIR="jdk-11.0.10+9-jre"
 
 ######## JAVA 32bit
 if [ $JAVA_ARCH = 32 ]; then
@@ -120,15 +120,13 @@ if [ $JAVA_ARCH = 32 ]; then
 	#JAVA_URL="https://builds.openlogic.com/downloadJDK/openlogic-openjdk/8u262-b10/"
 	#JAVA_DIR="openlogic-openjdk-8u262-b10-linux-32"
 
-	### JRE 8 - zulu 32bit
-	JAVA_DISTRO="zulu8.50.0.21-ca-jre8.0.272-linux_i686"
+	### JRE zulu distro
 	JAVA_URL="https://cdn.azul.com/zulu/bin/"
-	JAVA_DIR="zulu8.50.0.21-ca-jre8.0.272-linux_i686"
-
+	### JRE 8 32bit
+	JAVA_DISTRO="zulu8.50.0.21-ca-jre8.0.272-linux_i686"
 	### JRE 11 32bit
-	#JAVA_DISTRO="zulu11.43.21-ca-jre11.0.9-linux_i686"
-	#JAVA_URL="https://cdn.azul.com/zulu/bin/"
-	#JAVA_DIR="zulu11.43.21-ca-jre11.0.9-linux_i686"
+	JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-linux_i686"
+	JAVA_DIR=$JAVA_DISTRO
 fi
 
 ######## set JAVA_BIN
