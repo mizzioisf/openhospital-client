@@ -91,7 +91,7 @@ esac
 #MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
 # MySQL
 MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
-MYSQL_DIR="mysql-5.7.31-linux-glibc2.12-$ARCH"
+MYSQL_DIR="mysql-5.7.32-linux-glibc2.12-$ARCH"
 EXT="tar.gz"
 
 ######## JAVA Software
