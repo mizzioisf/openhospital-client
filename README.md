@@ -15,7 +15,7 @@ Machine and the MySQL server and everything is contained in the root
 installation directory. POH is released under the GNU GPL 3.0 License.
 
 The Linux version has been tested on different distributions and versions,
-including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 20.04 x64 (64bit).
+including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 20.10 x64 (64bit).
 The Windows version has been tested on Windows 10.
 
 **This repo is experimental and is used to test the latest Open Hospital releases. Use at your own risk !**
