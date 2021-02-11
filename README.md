@@ -110,7 +110,7 @@ Error on creating OH Database error while loading shared libraries: libncurses.s
 You have to install the ncurses librares, on Ubuntu:
 
 ```
-sudo apt-get install ncurses
+sudo apt-get install libncurses5
 ```
 
 - If you get this error:
