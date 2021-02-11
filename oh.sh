@@ -86,13 +86,13 @@ case $ARCH in
 esac
 
 ######## MySQL Software
-# MariaDB
-#MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
-#MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
-# MySQL
-MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
-MYSQL_DIR="mysql-5.7.32-linux-glibc2.12-$ARCH"
 EXT="tar.gz"
+# MariaDB
+MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-10.2.36/bintar-linux-x86_64"
+MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
+# MySQL
+#MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
+#MYSQL_DIR="mysql-5.7.32-linux-glibc2.12-$ARCH"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
