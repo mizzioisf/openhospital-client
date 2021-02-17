@@ -69,20 +69,20 @@ REM # MySQL 32bit
 REM https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.31-win32.zip
 
 REM set MYSQL_DIR=mariadb-10.2.36-win32
-set MYSQL_DIR=mysql-5.7.31-win32
+set MYSQL_DIR=mysql-5.7.32-win32
 
 REM ####### JAVA Software
 REM ######## JAVA 64bit - experimental architecture
 REM ### JRE 11 - openjdk
-REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/"
-REM set JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1"
+REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/"
+REM set JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.10_9.zip"
 
 REM ######## JAVA 32bit - default architecture
 REM ### JRE 11 - openjdk
-REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/"
-REM set JAVA_DISTRO="OpenJDK11U-jre_x86-32_windows_hotspot_11.0.9.1_1"
+REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/"
+REM set JAVA_DISTRO="OpenJDK11U-jre_x86-32_windows_hotspot_11.0.10_9.zip"
 
-set JAVA_DIR="jdk-11.0.9.1+1-jre"
+set JAVA_DIR="jdk-11.0.10+9-jre"
 set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin

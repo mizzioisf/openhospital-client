@@ -102,9 +102,9 @@ MYSQL_DIR="mariadb-10.2.36-linux-$ARCH"
 #JAVA_DIR="openlogic-openjdk-jre-8u262-b10-linux-64"
 
 ### JRE 11 - zulu
-#JAVA_DISTRO="zulu11.43.21-ca-jre11.0.9-linux_x64"
+#JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-linux_x64"
 #JAVA_URL="https://cdn.azul.com/zulu/bin"
-#JAVA_DIR="zulu11.43.21-ca-jre11.0.9-linux_x64"
+#JAVA_DIR="zulu11.45.27-ca-jre11.0.9-linux_x64"
 
 ### JRE 11 - openjdk
 JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9"
