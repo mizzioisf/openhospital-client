@@ -130,7 +130,9 @@ sudo apt-get install libaio1
 
 Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit is mandadory.
 
-- Powershell script (oh.ps1) is still not working
+- Powershell script (oh.ps1) is in beta: give it a try :-)
+The script offers an interactive menu that can be used to setup and choose how to run Open Hospital Client.
+Tested on Windows 10 x64.
 
 # New oh.sh
 
