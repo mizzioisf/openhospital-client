@@ -35,7 +35,7 @@ $script:OH_LANGUAGE=$lang
 
 ######## Open Hospital - Portable Open Hospital Configuration
 # OH_PATH is the directory where Portable OpenHospital files are located
-# OH_PATH=/usr/local/PortableOpenHospital
+# OH_PATH="c:\Users\OpenOspital\PortableOpenHospital"
 
 $script:OH_DISTRO="portable"  # set distro to portable | client
 $script:DEMO_MODE="off"
@@ -107,15 +107,10 @@ $script:EXT="zip"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
-### JRE 8 - openlogic
-#JAVA_DISTRO="openlogic-openjdk-jre-8u262-b10-linux-x64"
-#JAVA_URL="https://builds.openlogic.com/downloadJDK/openlogic-openjdk-jre/8u262-b10/"
-#JAVA_DIR="openlogic-openjdk-jre-8u262-b10-linux-64"
-
 ### JRE 11 - zulu
-#JAVA_DISTRO="zulu11.43.21-ca-jre11.0.9-linux_x64"
-#JAVA_URL="https://cdn.azul.com/zulu/bin"
-#JAVA_DIR="zulu11.43.21-ca-jre11.0.9-linux_x64"
+#$script:JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-win_i686"
+#$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
+#$script:JAVA_DIR="zulu11.45.27-ca-jre11.0.10-win_i686"
 
 ### JRE 11 - openjdk
 $script:JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/"
@@ -127,14 +122,14 @@ if ( $JAVA_ARCH -eq "32" ) {
 	# Setting JRE 32 bit
 	
 	### JRE 8 - zulu 32bit
-	$JAVA_DISTRO="zulu8.50.0.21-ca-jre8.0.272-linux_i686"
-	$JAVA_URL="https://cdn.azul.com/zulu/bin/"
-	$JAVA_DIR="zulu8.50.0.21-ca-jre8.0.272-linux_i686"
+	#$script:JAVA_DISTRO="zulu8.52.0.23-ca-jre8.0.282-win_i686"
+	#$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
+	#$script:JAVA_DIR="zulu8.52.0.23-ca-jre8.0.282-win_i686"
 
 	### JRE 11 32bit
-	#JAVA_DISTRO="zulu11.43.21-ca-jre11.0.9-linux_i686"
-	#JAVA_URL="https://cdn.azul.com/zulu/bin/"
-	#JAVA_DIR="zulu11.43.21-ca-jre11.0.9-linux_i686"
+	$script:JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-win_i686"
+	$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
+	$script:JAVA_DIR="zulu11.45.27-ca-jre11.0.10-win_i686"
 }
 
 ######## set JAVA_BIN # Uncomment this if you want to use system wide JAVA
@@ -188,7 +183,7 @@ function get_confirmation {
 function set_path {
 # set current dir
 
-################################################## SISTEMARE
+##################################################  FIXME
 
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
 	# set OH_PATH if not defined
@@ -714,6 +709,7 @@ if ( $OH_DISTRO -eq "portable" ) {
 test_database_connection;
 
 if ($MANUAL_CONFIG -eq "off" ) {
+# set up configuration files
 write-host "Setting up OH configuration files..."
 
 ######## DICOM setup

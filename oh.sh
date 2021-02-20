@@ -635,9 +635,9 @@ fi
 # test database connection
 test_database_connection;
 
-# set up configuration files
 if [ $MANUAL_CONFIG != "on" ]; then
 
+# set up configuration files
 echo "Setting up OH configuration files..."
 
 ######## DICOM setup
