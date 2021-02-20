@@ -31,12 +31,6 @@
 # OH_PATH is the directory where Portable OpenHospital files are located
 # OH_PATH=/usr/local/PortableOpenHospital
 
-param (
-    [Parameter(Mandatory=$true)][string]$opt
-)
-
-write-output $opt
-
 $script:OH_DISTRO="portable"  # set distro to portable | client
 $script:DEMO_MODE="off"
 
@@ -63,6 +57,8 @@ $script:SQL_DIR="sql"
 $script:DATA_DIR="data/db"
 $script:DICOM_DIR="data/dicom_storage"
 $script:LOG_DIR="data/log"
+$script:LOG_FILE="startup.log"
+$script:LOG_FILE_ERR="startup.err"
 $script:RUN_DIR="tmp"
 $script:BACKUP_DIR="sql"
 
@@ -90,8 +86,9 @@ switch ( "$ARCH" ) {
 		exit 1
 	}
 }
-#		write-host " architecture: $ARCH.."
-#		write-host " JAVA AR: $JAVA_ARCH. Exiting."
+
+write-host "Architecture is set to $ARCH"
+
 ######## MySQL Software
 # MariaDB
 $script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/"
@@ -122,11 +119,6 @@ $script:JAVA_DIR="jdk-11.0.10+9-jre"
 if ( $JAVA_ARCH -eq "32" ) {
 	# Setting JRE 32 bit
 	
-	### JRE 8 - openlogic 32bit
-	#JAVA_DISTRO="openlogic-openjdk-8u262-b10-linux-x32"
-	#JAVA_URL="https://builds.openlogic.com/downloadJDK/openlogic-openjdk/8u262-b10/"
-	#JAVA_DIR="openlogic-openjdk-8u262-b10-linux-32"
-
 	### JRE 8 - zulu 32bit
 	$JAVA_DISTRO="zulu8.50.0.21-ca-jre8.0.272-linux_i686"
 	$JAVA_URL="https://cdn.azul.com/zulu/bin/"
@@ -153,8 +145,9 @@ Write-Host "Current script $SCRIPT_NAME"
 
 ######## User input / option parsing
 
-function script_usage {
-	# show help
+function script_menu {
+	# show menu
+	Clear-Host
 	write-host ""
 	write-host " Portable Open Hospital Client - OH"
 	write-host ""
@@ -162,35 +155,35 @@ function script_usage {
 	write-host ""
 	write-host "   -l    en|fr|it|es|pt   --> set language [default set to en]"
 	write-host ""
-	write-host "   -s    save OH database"
-	write-host "   -r    restore OH database"
-	write-host "   -c    clean POH installation"
-	write-host "   -d    start POH in debug mode"
-	write-host "   -C    start Open Hospital - Client / Server mode"
-	write-host "   -t    test database connection (Client mode only)"
-	write-host "   -v    show POH version information"
-	write-host "   -D    start POH in Demo mode"
-	write-host "   -G    Setup GSM"
-	write-host "   -h    show this help"
+	write-host "   s    save OH database"
+	write-host "   r    restore OH database"
+	write-host "   c    clean POH installation"
+	write-host "   d    start POH in debug mode"
+	write-host "   C    start Open Hospital - Client / Server mode"
+	write-host "   t    test database connection (Client mode only)"
+	write-host "   v    show POH version information"
+	write-host "   D    start POH in Demo mode"
+	write-host "   G    setup GSM"
+	write-host "   q    quit"
 	write-host ""
-	exit 0
 }
 
 ######## Functions
 
 function get_confirmation {
-$choice = Read-Host -Prompt "(y/n)? "
-switch ("$choice") {
-	"y"  { "yes"; break }
-	"n"  { "Exiting."; exit 0 }
-	default {"Invalid choice. Exiting."; exit 1; }
+	$choice = Read-Host -Prompt "(y/n)? "
+	switch ("$choice") {
+		"y"  { "yes"; break }
+		"n"  { "Exiting."; exit 0 }
+		default { "Invalid choice. Exiting."; exit 1; }
 	}
 }
 
 function set_path {
-	# set current dir
+# set current dir
 
-################################################## SISTEMAREEEEEEEEEEEEEEE
+################################################## SISTEMARE
+
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
 	# set OH_PATH if not defined
 	if ( ! $OH_PATH ) {
@@ -249,21 +242,18 @@ function java_lib_setup {
 
     #SETLOCAL ENABLEDELAYEDEXPANSION
 
-    #$list = Get-ChildItem -Path "$OH_PATH\$OH_DIR\lib" -Recurse | % { $_.FullName } `
     $jarlist = Get-ChildItem -Path "$OH_PATH\$OH_DIR\lib" | % { $_.FullName } `
         #Where-Object { $_.PSIsContainer -eq $false -and $_.Extension -eq '.jar' }
         Where-Object { $_.Extension -eq '.jar' }
         ForEach($n in $jarlist){
         $script:OH_CLASSPATH="$OH_CLASSPATH;$n"
-        # $n.Name | Out-File -Append 'D:\Movielist.txt'
 }
 	#$script:OH_CLASSPATH="$OH_PATH/$OH_DIR\bin\OH-gui.jar"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bin\OH-gui.jar"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bundle\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rpt\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\"
-    $script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\lib\"
-    #$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bin\*"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\lib\"
 
 }
 
@@ -372,21 +362,17 @@ function config_database {
 
 function inizialize_database {
 	# Recreate directory structure
-	mkdir -p $OH_PATH/$DATA_DIR
-	mkdir -p $OH_PATH/$RUN_DIR
-	mkdir -p $OH_PATH/$LOG_DIR
-	mkdir -p $OH_PATH/$DICOM_DIR
-	mkdir -p $OH_PATH/$BACKUP_DIR
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR")
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$RUN_DIR")
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$LOG_DIR")
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DICOM_DIR")
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR")
     # Inizialize MySQL
 	write-host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
 		write-host "MARIADB"
-		#Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$MYSQL_DATA_DIR --auth-root-authentication-method=normal") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'
-		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow  -RedirectStandardOutput '.\console1.out' -RedirectStandardError '.\console1.err'			
-
-
-#Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait #
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow  -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
         	}
 		"mysql" {
 		write-host "MYSQL"
@@ -404,13 +390,8 @@ function start_database {
 	write-host "Starting MySQL server... "
 #	"$OH_PATH/$MYSQL_DIR/bin/mysqld_safe --defaults-file=$OH_PATH\etc\mysql\my.cnf"
 
-    #Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\tmp --standalone --console") -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console2.err'
-	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\tmp --standalone") -RedirectStandardOutput '.\console2.out' -RedirectStandardError '.\console2.err'
+	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\tmp --standalone") -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
     sleep 2;
-
-#	 Start-Process java -ArgumentList '-jar', 'MyProgram.jar' ` -RedirectStandardOutput '.\console.out' -RedirectStandardError '.\console3.err'
-	 #start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld --tmpdir=%OH_PATH%\tmp --standalone --console --log_syslog=0
-#	 %OH_PATH%\%MYSQL_DIR%\bin\mysqld --tmpdir=%OH_PATH%\tmp --standalone --console --log_syslog=0
 
 #	if ( $? -ne 0 ) {
 #		write-host "Error: Database not started! Exiting." -ForegroundColor Red
@@ -432,27 +413,19 @@ function set_database_root_pw {
         $SQLCOMMAND=@"
         -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';"
 "@
-        Start-Process -FilePath "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow  -RedirectStandardOutput '.\consolePW.out' -RedirectStandardError '.\consolePW.err'
+        Start-Process -FilePath "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
         }
     }
 }
-
 
 function import_database {
 	write-host "Creating OH Database..."
 	# Create OH database and user
 	
-    #$script:SQL_CREATE="CREATE DATABASE $DATABASE_NAME; `
-
-    #Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port $MYSQL_PORT -e ""CREATE DATABASE $DATABASE_NAME; `
-	#CREATE USER \'$DATABASE_USER\'@\'localhost\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; `
-	#CREATE USER \'$DATABASE_USER\'\@\'\%\' IDENTIFIED BY \'$DATABASE_PASSWORD\'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'@\'localhost\'; `
-	#GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO \'$DATABASE_USER\'\@\'\%\' ;")  -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
-    
     $SQLCOMMAND=@"
     -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
 "@
-    Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console3.out' -RedirectStandardError '.\console3.err'
+    Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
     
     # Check for database creation script
     if ( Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
@@ -472,7 +445,7 @@ function import_database {
     $SQLCOMMAND=@"
    --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME -e "source $OH_PATH\$SQL_DIR\$DB_CREATE_SQL"
 "@
-    Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -NoNewWindow -Wait -RedirectStandardOutput '.\console4.out' -RedirectStandardError '.\console4.err'
+    Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
  
 	write-host "Database imported!"
 }
@@ -496,19 +469,19 @@ function dump_database {
 
 function shutdown_database {
 	write-host "Shutting down MySQL..."
-	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -NoNewWindow -Wait -RedirectStandardOutput '$OH_PATH\console5.out' -RedirectStandardError '$OH_PATH\console5.err'
+	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 	# Wait till the MySQL socket file is removed
 #	while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 }
 
 function clean_database {
 	write-host "Warning: do you want to remove all data and database ?"
-    get_confirmation;
-    write-host "Killing mysql processes..."
-    # stop mysqld zombies
-    Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
+	get_confirmation;
+	write-host "Killing mysql processes..."
+	# stop mysqld zombies
+	Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
 	write-host "Removing data..."
-	# remove databases
+	# remove database files
 	$filetodel="$OH_PATH\$DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$RUN_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
@@ -566,31 +539,25 @@ set_language;
 
 ######## User input
 
+#param (
+#    [Parameter(Mandatory=$true)][string]$opt
+#)
+
+script_menu;
+$opt = Read-Host "Please make a selection"
+
 # list of arguments expected in user the input
 #$OPTIND=1 # Reset in case getopts has been used previously in the shell.
 #$OPTSTRING=":h?rcsdCtGDvl:"
 
-
 # parse_input 
 
-# function to parse input
-#
-#param ($opt)
-#param
-#    (
-#        [Parameter(Mandatory)]
-#        [Alias("help")] 
-#        [string[]]$opt
-#    )
- 
-    #Get-Content -h $opt
-	#write-host "OOOOOOOOOOOOO $opt"
 switch ( "$opt" ) {
-	"h"	{ # help
-        script_usage; 
+	"q"	{ # quit
+        exit 0; 
 		}
 	"r"	{ # restore
-       	write-host "Restoring Portable Open Hospital database...."
+	       	write-host "Restoring Portable Open Hospital database...."
 		clean_database;
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> "
@@ -605,20 +572,20 @@ switch ( "$opt" ) {
 		}
 
 	"c"	{ # clean
-       	write-host "Cleaning Portable Open Hospital installation..."
+		write-host "Cleaning Portable Open Hospital installation..."
 		clean_files;
 		clean_database;
-       	write-host "Done!"
+		write-host "Done!"
 		exit 0
 		}
 	"d"	{ # debug 
            	write-host "Starting Portable Open Hospital in debug mode..."
-		    $DEBUG_LEVEL="DEBUG"
-		    write-host "Debug level set to $DEBUG_LEVEL"
+		$DEBUG_LEVEL="DEBUG"
+		write-host "Debug level set to $DEBUG_LEVEL"
 		}
 	"s"	{ # save database 
 		# checking if data exist
-        Write-host "$OH_PATH\$DATA_DIR\$DATABASE_NAME"
+	        Write-host "$OH_PATH\$DATA_DIR\$DATABASE_NAME"
 		if ( Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
 			mysql_check;
 			if ($MANUAL_CONFIG -eq "on" ) {
@@ -626,10 +593,10 @@ switch ( "$opt" ) {
 			}
 			start_database;
         	write-host "Saving Portable Open Hospital database..."
-			dump_database;
-			shutdown_database;
+		dump_database;
+		shutdown_database;
         	write-host "Done!"
-			exit 0
+		exit 0
 		}
 		else {
 	        	write-host "Error: no data found! Exiting." -ForegroundColor Red
@@ -661,17 +628,17 @@ switch ( "$opt" ) {
 		exit 0;
 		}
 	"D"	{ # demo mode 
-        write-host "Starting Portable Open Hospital in demo mode..."
+		write-host "Starting Portable Open Hospital in demo mode..."
 		$OH_DISTRO="portable"
 		$DEMO_MODE="on"
 		}
 	"v"	{ # show versions 
-        write-host "Architecture is $ARCH"
+		write-host "Architecture is $ARCH"
 		write-host "Open Hospital is configured in $OH_DISTRO mode"
 		write-host "Language is set to $OH_LANGUAGE"
 		write-host "Demo mode is set to $DEMO_MODE"
-        write-host "Software versions:"
-
+        	write-host "Software versions:"
+	
 #        Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 #        $var = $_.Split('=',2).Trim()
 #        New-Variable -Scope Script -Name $var[0] -Value $var[1]
@@ -679,18 +646,14 @@ switch ( "$opt" ) {
         #write-host "Open Hospital version" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
         #write-host "Open Hospital version" $var[1] $var[3] $var[]
 
-        write-host "MySQL version: $MYSQL_DIR"
-        write-host "JAVA version:"
+	        write-host "MySQL version: $MYSQL_DIR"
+        	write-host "JAVA version:"
 		write-host "$JAVA_DISTRO"
 		exit 0
 		}
-	"a"	# test option to go on
-		{ write-host "Going forward..."
-        }
 #	"?"	# default
-		default { write-host "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"; exit 1; }
+#		default { write-host "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"; exit 1; }
 }
-
 
 ######################## Script start ########################
 
@@ -723,8 +686,6 @@ java_check;
 # setup java lib
 java_lib_setup;
 
-#clean_files; # TEMPORARY
-
 ######## Database setup
 
 # Start MySQL and create database
@@ -753,7 +714,7 @@ if ( $OH_DISTRO -eq "portable" ) {
 # test database
 #test_database_connection;
 
-if ($MANUAL_CONFIG -eq "on" ) {
+if ($MANUAL_CONFIG -eq "off" ) {
 write-host "Setting up OH configuration files..."
 
 ######## DICOM setup
@@ -798,20 +759,11 @@ write-host "Starting Open Hospital..."
 
 cd $OH_PATH/$OH_DIR
 
-# OH GUI launch
-#$JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu 2>&1 > /dev/null
-#
-
-#write-host "----javabin $JAVA_BIN"
 #write-host "----native $NATIVE_LIB_PATH"
 #write-host "----ohclasspath $OH_CLASSPATH"
 
-###Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu")
-####Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-h") -Wait -NoNewWindow
-
-Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow
-
-# -RedirectStandardOutput "$OH_PATH\OH.out" -RedirectStandardError "$OH_PATH\OH.err"
+# OH GUI launch
+Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 
 ###%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 

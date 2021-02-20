@@ -66,7 +66,7 @@ REM https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.31-winx64.zip
 REM # MariaDB 32bit
 REM http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/win32-packages/mariadb-10.2.36-win32.zip
 REM # MySQL 32bit
-REM https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.31-win32.zip
+REM https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.32-win32.zip
 
 REM set MYSQL_DIR=mariadb-10.2.36-win32
 set MYSQL_DIR=mysql-5.7.32-win32

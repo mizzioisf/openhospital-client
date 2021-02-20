@@ -157,7 +157,7 @@ function script_usage {
 	echo "   -t    test database connection (Client mode only)"
 	echo "   -v    show POH version information"
 	echo "   -D    start POH in Demo mode"
-	echo "   -G    Setup GSM"
+	echo "   -G    setup GSM"
 	echo "   -h    show this help"
 	echo ""
 	exit 0
