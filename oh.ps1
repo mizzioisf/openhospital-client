@@ -27,18 +27,17 @@
 # saner programming env: these switches turn some bugs into errors
 #Set-PSDebug -Strict
 
-# command line param for language
-param ($lang)
+# command line parameters
+param ($lang,$debuglevel)
 $script:OH_LANGUAGE=$lang
-#    [string]$language = "en",
-#    [Parameter(Mandatory=$true)][string]$language,
+$script:DEBUG_LEVEL=$debuglevel
 
 ######## Open Hospital - Portable Open Hospital Configuration
 # OH_PATH is the directory where Portable OpenHospital files are located
 # OH_PATH="c:\Users\OpenOspital\PortableOpenHospital"
 
 $script:OH_DISTRO="portable"  # set distro to portable | client
-$script:DEMO_MODE="off"
+#$script:DEMO_MODE="off"
 
 # Language setting - default set to en
 #$script:OH_LANGUAGE=en fr es it pt
@@ -138,8 +137,8 @@ if ( $JAVA_ARCH -eq "32" ) {
 # Determine script name and location for PowerShell
 $script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
 $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
-Write-Host "Current script directory is $SCRIPT_DIR"
-Write-Host "Current script $SCRIPT_NAME"
+#Write-Host "Current script directory is $SCRIPT_DIR"
+#Write-Host "Current script $SCRIPT_NAME"
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
@@ -509,13 +508,15 @@ function clean_files {
 ######## Pre-flight checks
 
 # check user running the script
-#if ( $(id -u) -eq 0 ) {
-#	write-host "Error - do not run this script as root. Exiting."
-#	exit 1
+#Write-Host "Checking for elevated permissions..."
+#if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`[Security.Principal.WindowsBuiltInRole] "Administrator")) {
+#Write-Warning "Cannot run as Administrator user. Exiting";
+#exit 1
 #}
+#else {Write-Host "User ok — go on executing the script..." -ForegroundColor Green}
 
 # debug level - set default to INFO
-if ( $DEBUG_LEVEL -ne $null ) {
+if ( [string]::IsNullOrEmpty($DEBUG_LEVEL) ) {
 	$script:DEBUG_LEVEL="INFO"
 }	
 ######## Environment setup
@@ -710,7 +711,7 @@ if ( Test-Path "$OH_PATH/$OH_DIR/rsc/log4j.properties" ) {
 (Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 (Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 (Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
-(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG_LEVEL","$DEBUG_LEVE") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG_LEVEL","$DEBUG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 
 ######## database.properties setup 
 if ( Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties" ) {
