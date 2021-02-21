@@ -556,6 +556,7 @@ while getopts ${OPTSTRING} opt; do
         	echo "Starting Portable Open Hospital in demo mode..."
 		OH_DISTRO=portable
 		DEMO_MODE="on"
+		clean_database;
 		;;
 	v)	# show versions
         	echo "Architecture is $ARCH"

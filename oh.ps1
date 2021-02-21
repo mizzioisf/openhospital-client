@@ -25,7 +25,7 @@
 
 # SET DEBUG mode
 # saner programming env: these switches turn some bugs into errors
-#set -o errexit -o pipefail -o noclobber -o nounset
+#Set-PSDebug -Strict
 
 # command line param for language
 param ($lang)
@@ -101,8 +101,8 @@ write-host "MYSQL architecture is set to $script:MYSQL_ARCH"
 $script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/"
 $script:MYSQL_DIR="mariadb-10.2.36-win$script:MYSQL_ARCH"
 # MySQL
-$script:MYSQL_DIR="mysql-5.7.32-win$script:MYSQL_ARCH"
-$script:MYSQL_URL=" https://downloads.mysql.com/archives/get/p/23/file"
+#$script:MYSQL_DIR="mysql-5.7.32-win$script:MYSQL_ARCH"
+#$script:MYSQL_URL=" https://downloads.mysql.com/archives/get/p/23/file"
 $script:EXT="zip"
 
 ######## JAVA Software
@@ -135,13 +135,11 @@ if ( $JAVA_ARCH -eq "32" ) {
 ######## set JAVA_BIN # Uncomment this if you want to use system wide JAVA
 #JAVA_BIN=`which java`
 
-# name of this shell script
-# Determine script location for PowerShell
+# Determine script name and location for PowerShell
 $script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
 $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
 Write-Host "Current script directory is $SCRIPT_DIR"
 Write-Host "Current script $SCRIPT_NAME"
-
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
@@ -226,29 +224,17 @@ function java_lib_setup {
 
 	# CLASSPATH setup
 
-#FOR %%A IN (%OH_LIB%\*.jar) DO (
-#        set CLASSPATH=!CLASSPATH!;%%A
-#)
+	#SETLOCAL ENABLEDELAYEDEXPANSION
 
-	$script:DIRLIBS="$OH_PATH\$OH_DIR\lib"
+#	$jarlist = Get-ChildItem -Path "$OH_PATH\$OH_DIR\lib" | % { $_.FullName } `
+	$jarlist = Get-ChildItem -Path "$OH_PATH\$OH_DIR\lib" | % { $_.FullName } 
+	# Where-Object { $_.PSIsContainer -eq $false -and $_.Extension -eq '.jar' }
+	Where-Object { $_.Extension -eq '.jar' }
 
-#	for i in ${DIRLIBS}
-#	gci -file -r *.pdf
+	ForEach($n in $jarlist){
+		$script:OH_CLASSPATH="$OH_CLASSPATH;$n"
+	}
 
-	#foreach ( $i in ${DIRLIBS} ) {
-	#	$OH_CLASSPATH="{$OH_CLASSPATH};{$i}"
-	#	write-host "---------$OH_CLASSPATH"
-	#}
-
-    #SETLOCAL ENABLEDELAYEDEXPANSION
-
-    $jarlist = Get-ChildItem -Path "$OH_PATH\$OH_DIR\lib" | % { $_.FullName } `
-        #Where-Object { $_.PSIsContainer -eq $false -and $_.Extension -eq '.jar' }
-        Where-Object { $_.Extension -eq '.jar' }
-        ForEach($n in $jarlist){
-        $script:OH_CLASSPATH="$OH_CLASSPATH;$n"
-    }
-	#$script:OH_CLASSPATH="$OH_PATH/$OH_DIR\bin\OH-gui.jar"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bin\OH-gui.jar"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bundle\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rpt\"
@@ -258,19 +244,19 @@ function java_lib_setup {
 }
 
 function download_file ($download_url,$download_file){
-write-host "Downloading $download_file from $download_url..."
-    try {
-        $wc = new-object System.Net.WebClient
-        $wc.DownloadFile("$download_url\$download_file","$OH_PATH\$download_file")
-    }
-    catch [System.Net.WebException],[System.IO.IOException] {
+	write-host "Downloading $download_file from $download_url..."
+	try {
+        	$wc = new-object System.Net.WebClient
+	        $wc.DownloadFile("$download_url\$download_file","$OH_PATH\$download_file")
+	    }
+	catch [System.Net.WebException],[System.IO.IOException] {
         "Unable to download $download_file from $download_url"
         exit 1;
-    }
-    catch {
+	}
+	catch {
         "An error occurred. Exiting."
         exit 1;
-    }
+	}
 }
 
 function java_check {
@@ -320,15 +306,15 @@ function mysql_check {
             Expand-Archive "$OH_PATH\$MYSQL_DIR.$EXT" -DestinationPath $OH_PATH\ -Force
         }
         catch {
-			write-host "Error unpacking MySQL. Exiting." -ForegroundColor Red
-			exit 1
-		}
+	    write-host "Error unpacking MySQL. Exiting." -ForegroundColor Red
+	    exit 1
+	}
         write-host "MySQL unpacked successfully!"
-    }
-    # check for mysql binary
-    if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe") {
-        write-host "MySQL found!"
-	    write-host "Using $MYSQL_DIR"
+	}
+	# check for mysql binary
+	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe") {
+        	write-host "MySQL found!"
+		write-host "Using $MYSQL_DIR"
 	}
 	else {
 		write-host "Error: MySQL not found. Exiting." -ForegroundColor Red
@@ -375,11 +361,9 @@ function inizialize_database {
 	write-host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
-    		write-host "MARIADB"
 	    	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
         	}
 		"mysql" {
-		    write-host "MYSQL"
 		    Start-Process "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$OH_PATH\$MYSQL_DIR --datadir=$OH_PATH\$DATA_DIR") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"; break
         }
 	}
@@ -542,14 +526,14 @@ set_language;
 ######## User input
 
 script_menu;
-$opt = Read-Host "Please make a selection or press Enter to start Open Hospital"
+$opt = Read-Host "Please make a selection or press any other key to start Open Hospital"
 write-host ""
 
 # parse_input 
 
 switch -casesensitive( "$opt" ) {
 	"q"	{ # quit
-        exit 0; 
+		exit 0; 
 		}
 	"r"	{ # restore
 	       	write-host "Restoring Portable Open Hospital database...."
@@ -599,7 +583,7 @@ switch -casesensitive( "$opt" ) {
 		}
 		}
 	"C"	{ # start in client mode 
-		OH_DISTRO=client
+		OH_DISTRO="client"
 		}
 	"l"	{ # set language 
 		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt (default is en)"
@@ -625,6 +609,7 @@ switch -casesensitive( "$opt" ) {
 		write-host "Starting Portable Open Hospital in demo mode..."
 		$OH_DISTRO="portable"
 		$DEMO_MODE="on"
+		clean_database;
 		}
 	"v"	{ # show versions 
 		write-host "Architecture is $ARCH"
@@ -633,20 +618,17 @@ switch -casesensitive( "$opt" ) {
 		write-host "Demo mode is set to $DEMO_MODE"
         	write-host "Software versions:"
 	
-#        Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
-#        $var = $_.Split('=',2).Trim()
-#        New-Variable -Scope Script -Name $var[0] -Value $var[1]
-#        }
-        #write-host "Open Hospital version" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
-        #write-host "Open Hospital version" $var[1] $var[3] $var[]
-
-	        write-host "MySQL version: $MYSQL_DIR"
-        	write-host "JAVA version:"
+		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
+		$var = $_.Split('=',2).Trim()
+		New-Variable -Scope Script -Name $var[0] -Value $var[1]
+		}
+		write-host "Open Hospital version" $script:VER_MAJOR $script:VER_MINOR $script:VER_RELEASE
+		write-host "MySQL version: $MYSQL_DIR"
+		write-host "JAVA version:"
 		write-host "$JAVA_DISTRO"
 		exit 0
 		}
-#	"?"	# default
-#		default { write-host "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"; exit 1; }
+#		default { write-host "Invalid option: $opt. Exiting."; exit 1; }
 }
 
 ######################## Script start ########################
