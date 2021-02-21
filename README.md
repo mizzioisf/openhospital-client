@@ -67,6 +67,7 @@ unzip mysql-5.7.31-linux-glibc2.12-win64.zip
 **on Windows: (powershell script) - Beta**
 
 - run **oh.ps1** to see available options and run Open Hospital
+
 The script offers an interactive menu that can be used to setup and choose how to run Open Hospital Client.
 Tested on Windows 10 x64.
 
