@@ -133,6 +133,17 @@ sudo apt-get install libaio1
 Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit is mandadory.
 
 - Powershell script (oh.ps1) is in beta: give it a try :-)
+If you get:
+
+```
++ CategoryInfo : NotSpecified: (:) [], PSSecurityException
++ FullyQualifiedErrorId : RuntimeException
+```
+
+- Start Windows PowerShell with the "Run as Administrator" option. Only members of the Administrators group on the computer can change the execution policy.
+- Enable running unsigned scripts by entering:
+- set-executionpolicy remotesigned
+
 
 # New oh.sh
 
@@ -211,5 +222,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-last updated: 8 feb 2021
+last updated: 21 feb 2021
 
