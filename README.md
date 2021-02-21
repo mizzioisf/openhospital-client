@@ -138,7 +138,7 @@ If you get this error:
 
 ```
 + CategoryInfo : NotSpecified: (:) [], PSSecurityException
-+ FullyQualifiedErrorId : RuntimeException
++ FullyQualifiedErrorId : RuntimeException or UnauthorizedAccess
 ```
 
 - Start Windows PowerShell with the "Run as Administrator" option. Only members of the Administrators group on the computer can change the execution policy.
