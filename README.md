@@ -64,10 +64,12 @@ unzip mysql-5.7.31-linux-glibc2.12-win64.zip
 ```
 - run **oh.bat**
 
-**on Windows: (powershell script) - EXPERIMENTAL**
+**on Windows: (powershell script) - Beta**
 
-- run **oh.ps1**
-- to see available options, run **./oh.ps1 -h** (not working)
+- run **oh.ps1** to see available options and run Open Hospital
+
+The script offers an interactive menu that can be used to setup and choose how to run Open Hospital Client.
+Tested on Windows 10 x64.
 
 # Running POH - Quickstart - full distro 
 
@@ -130,7 +132,7 @@ sudo apt-get install libaio1
 
 Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit is mandadory.
 
-- Powershell script (oh.ps1) is still not working
+- Powershell script (oh.ps1) is in beta: give it a try :-)
 
 # New oh.sh
 

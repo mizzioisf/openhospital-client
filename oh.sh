@@ -157,7 +157,7 @@ function script_usage {
 	echo "   -t    test database connection (Client mode only)"
 	echo "   -v    show POH version information"
 	echo "   -D    start POH in Demo mode"
-	echo "   -G    Setup GSM"
+	echo "   -G    setup GSM"
 	echo "   -h    show this help"
 	echo ""
 	exit 0
@@ -556,6 +556,7 @@ while getopts ${OPTSTRING} opt; do
         	echo "Starting Portable Open Hospital in demo mode..."
 		OH_DISTRO=portable
 		DEMO_MODE="on"
+		clean_database;
 		;;
 	v)	# show versions
         	echo "Architecture is $ARCH"
@@ -632,12 +633,12 @@ if [ $OH_DISTRO = portable ]; then
 	fi
 fi
 
-# test database
+# test database connection
 test_database_connection;
 
-# set up configuration files
 if [ $MANUAL_CONFIG != "on" ]; then
 
+# set up configuration files
 echo "Setting up OH configuration files..."
 
 ######## DICOM setup
