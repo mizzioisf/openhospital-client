@@ -143,7 +143,9 @@ If you get this error:
 
 - Start Windows PowerShell with the "Run as Administrator" option. Only members of the Administrators group on the computer can change the execution policy.
 - Enable running unsigned scripts by entering:
-- set-executionpolicy remotesigned
+```
+set-executionpolicy remotesigned
+```
 
 
 # New oh.sh
