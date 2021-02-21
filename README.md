@@ -133,7 +133,8 @@ sudo apt-get install libaio1
 Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit is mandadory.
 
 - Powershell script (oh.ps1) is in beta: give it a try :-)
-If you get:
+
+If you get this error:
 
 ```
 + CategoryInfo : NotSpecified: (:) [], PSSecurityException
