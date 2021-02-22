@@ -440,9 +440,9 @@ function dump_database {
 	if ( ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
 		write-host "Dumping MySQL database..."	
         $SQLCOMMAND=@"
-    --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NaAME
+    --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME
 "@
-        Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -RedirectStandardOutput "$OH_PATH\$BACKUP_DIR\mysqldump_$DATE.sql"-NoNewWindow -Wait	
+        Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$OH_PATH\$BACKUP_DIR\mysqldump_$DATE.sql" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"	
     }
     else {
 	    write-host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
@@ -548,7 +548,7 @@ switch -casesensitive( "$opt" ) {
 			write-host "No SQL file found! Exiting."
 			exit 2
 		}
-        	write-host "Restore ready!"
+        	# normal startup from here
 		}
 
 	"c"	{ # clean

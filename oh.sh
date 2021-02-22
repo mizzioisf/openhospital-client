@@ -496,7 +496,7 @@ while getopts ${OPTSTRING} opt; do
 			echo "No SQL file found! Exiting."
 			exit 2
 		fi
-        	echo "Restore ready!"
+        	# normal startup from here
 		;;
 
 	c)	# clean
