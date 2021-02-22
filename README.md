@@ -146,7 +146,7 @@ If you get this error:
 ```
 set-executionpolicy remotesigned
 ```
-
+Also enable access to oh.ps1 on Windows Firewall.
 
 # New oh.sh
 
