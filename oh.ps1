@@ -584,7 +584,7 @@ switch -casesensitive( "$opt" ) {
 		}
 		}
 	"C"	{ # start in client mode 
-		OH_DISTRO="client"
+		$script:OH_DISTRO="client"
 		}
 	"l"	{ # set language 
 		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt (default is en)"
