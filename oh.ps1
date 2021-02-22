@@ -602,7 +602,7 @@ switch -casesensitive( "$opt" ) {
 		write-host "Setting up GSM..."
 		java_check;
 		java_lib_setup;
-#		cd $OH_PATH\$OH_DIR
+		cd $OH_PATH\$OH_DIR
 		Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM $@ ") -Wait -NoNewWindow
 		exit 0;
 		}
