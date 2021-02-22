@@ -760,4 +760,5 @@ cd $CURRENT_DIR
 
 # exiting
 write-host "Done!"
+Read-Host
 exit 0
