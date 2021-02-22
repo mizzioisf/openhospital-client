@@ -295,7 +295,7 @@ function java_check {
 function mysql_check {
 	if (  !( Test-Path "$OH_PATH\$MYSQL_DIR" ) ) {
 		if ( !( Test-Path "$OH_PATH\$MYSQL_DIR.$EXT" ) ) {
-			write-host "Warning - MySQL not found. Do you want to download it? (630 MB)" -ForegroundColor Yellow
+			write-host "Warning - MySQL not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading mysql binary
             download_file "$MYSQL_URL" "$MYSQL_DIR.$EXT" 
@@ -540,7 +540,7 @@ switch -casesensitive( "$opt" ) {
 	       	write-host "Restoring Portable Open Hospital database...."
 		clean_database;
 		# ask user for database to restore
-		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> "
+		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:BACKUP_DIR subdirectory) -> "
 		if ( Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
 		        write-host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
 			}
