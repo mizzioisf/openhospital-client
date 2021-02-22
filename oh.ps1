@@ -113,7 +113,7 @@ $script:EXT="zip"
 
 ### JRE 11 - openjdk
 $script:JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/"
-$script:JAVA_DISTRO="OpenJDK11U-jre_x86-32_windows_hotspot_11.0.10_9"
+$script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.10_9"
 $script:JAVA_DIR="jdk-11.0.10+9-jre"
 
 ######## JAVA 32bit
