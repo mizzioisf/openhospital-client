@@ -249,12 +249,12 @@ function download_file ($download_url,$download_file){
 	        $wc.DownloadFile("$download_url\$download_file","$OH_PATH\$download_file")
 	    }
 	catch [System.Net.WebException],[System.IO.IOException] {
-        "Unable to download $download_file from $download_url"
-        exit 1;
+           write-host "Unable to download $download_file from $download_url" -ForegroundColor Red
+           exit 1;
 	}
 	catch {
-        "An error occurred. Exiting." -ForegroundColor Red
-        exit 1;
+           write-Host "An error occurred. Exiting." -ForegroundColor Red
+           exit 1;
 	}
 }
 
@@ -276,7 +276,7 @@ function java_check {
         }
         catch {
             write-host "Error unpacking Java. Exiting." -ForegroundColor Red
-		    exit 1
+	    exit 1
 	    }
         write-host "Java unpacked successfully!"
     }
