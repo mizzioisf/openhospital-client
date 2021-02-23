@@ -30,7 +30,7 @@
 # OH_PATH is the directory where Portable OpenHospital files are located
 # OH_PATH=/usr/local/PortableOpenHospital
 
-OH_DISTRO=portable # set distro to portable | client
+OH_DISTRO=client # set distro to portable | client
 DEMO_MODE=off
 
 # Language setting - default set to en
@@ -155,7 +155,7 @@ function script_usage {
 	echo "   -d    start POH in debug mode"
 	echo "   -C    start Open Hospital - Client / Server mode"
 	echo "   -t    test database connection (Client mode only)"
-	echo "   -v    show POH version information"
+	echo "   -v    show OH software version and configuration"
 	echo "   -D    start POH in Demo mode"
 	echo "   -G    setup GSM"
 	echo "   -h    show this help"
@@ -241,7 +241,7 @@ fi
 
 if [ ! -x $JAVA_BIN ]; then
 	if [ ! -f "$OH_PATH/$JAVA_DISTRO.$EXT" ]; then
-		echo "Warning - JAVA not found. Do you want to download it? (50 MB)"
+		echo "Warning - JAVA not found. Do you want to download it?"
 		get_confirmation;
 		# Downloading openjdk binaries
 		echo "Downloading $JAVA_DISTRO..."
@@ -554,21 +554,41 @@ while getopts ${OPTSTRING} opt; do
 		;;
 	D)	# demo mode
         	echo "Starting Portable Open Hospital in demo mode..."
-		OH_DISTRO=portable
+		# exit if OH is configured in Client mode
+		if [ $OH_DISTRO = "client" ]; then
+			echo "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting."
+			exit 1;
+		else OH_DISTRO="portable"
+		fi
 		DEMO_MODE="on"
 		clean_database;
 		;;
 	v)	# show versions
-        	echo "Architecture is $ARCH"
-		echo "Open Hospital is configured in $OH_DISTRO mode"
-		echo "Language is set to $OH_LANGUAGE"
-		echo "Demo mode is set to $DEMO_MODE"
-        	echo "Software versions:"
+        	echo "--------- Software versions ---------"
 		source $OH_PATH/$OH_DIR/rsc/version.properties
         	echo "Open Hospital version" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
         	echo "MySQL version: $MYSQL_DIR"
         	echo "JAVA version:"
 		echo $JAVA_DISTRO
+        	echo ""
+		# show configuration
+        	echo "--------- Configuration ---------"
+        	echo "Architecture is $ARCH"
+		echo "Open Hospital is configured in $OH_DISTRO mode"
+		echo "Language is set to $OH_LANGUAGE"
+		echo "Demo mode is set to $DEMO_MODE"
+		echo "MYSQL_SERVER=$MYSQL_SERVER"
+		echo "MYSQL_PORT=$MYSQL_PORT"
+		echo "DATABASE_NAME=$DATABASE_NAME"
+		echo "DATABASE_USER=$DATABASE_USER"
+		echo "DATABASE_PASSWORD=$DATABASE_PASSWORD"
+		echo "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
+		echo "OH_DIR=$OH_DIR"
+		echo "BACKUP_DIR=$BACKUP_DIR"
+		echo "DICOM_DIR=$DICOM_DIR"
+		echo "DATA_DIR=$DATA_DIR"
+		echo "LOG_DIR=$LOG_DIR"
+        	echo ""
 		exit 0
 		;;
 	?)	# default
@@ -588,6 +608,12 @@ fi
 
 # check for demo mode
 if [ $DEMO_MODE = "on" ]; then
+	# exit if OH is configured in Client mode
+	if [ $OH_DISTRO = "client" ]; then
+		echo "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting."
+		exit 1;
+	fi
+
 	if [ -f $OH_PATH/$SQL_DIR/$DB_DEMO ]; then
 	        echo "Found SQL demo database, starting OH in demo mode..."
 		DB_CREATE_SQL=$DB_DEMO

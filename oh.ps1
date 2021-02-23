@@ -87,7 +87,7 @@ switch ( "$ARCH" ) {
     "x86_64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
     ("486","586","686","x86","i86pc") { $script:JAVA_ARCH=64; $script:MYSQL_ARCH=32 }
 	default {
-	    write-host "Unknown architecture: $ARCH. Exiting."
+	    write-host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
 		exit 1
 	}
 }
@@ -159,7 +159,7 @@ function script_menu {
 	write-host "   C    start Open Hospital - Client / Server mode"
 	write-host "   l    set language: en|fr|it|es|pt [default set to en]"
 	write-host "   t    test database connection (Client mode only)"
-	write-host "   v    show POH version information"
+	write-host "   v    show OH software version and configuration"
 	write-host "   D    start POH in Demo mode"
 	write-host "   G    setup GSM"
 	write-host "   q    quit"
@@ -208,7 +208,7 @@ function set_language {
             break
         }
     default {
-        write-host "Invalid option: $OH_LANGUAGE. Exiting."
+        write-host "Invalid option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
 	    exit 1
         }
     }
@@ -253,7 +253,7 @@ function download_file ($download_url,$download_file){
         exit 1;
 	}
 	catch {
-        "An error occurred. Exiting."
+        "An error occurred. Exiting." -ForegroundColor Red
         exit 1;
 	}
 }
@@ -265,7 +265,7 @@ function java_check {
 
     if ( !( Test-Path $JAVA_BIN ) ) {
         if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT") ) {
-    		write-host "Warning - JAVA not found. Do you want to download it? (50 MB)" -ForegroundColor Yellow
+    		write-host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
 		    get_confirmation;
 		    # Downloading openjdk binaries
             download_file "$JAVA_URL" "$JAVA_DISTRO.$EXT"
@@ -417,7 +417,7 @@ function import_database {
                 Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
                 }
         else {
-                Write-Host "No SQL file found! Exiting."
+                Write-Host "No SQL file found! Exiting." -ForeGroundColor Red
                 shutdown_database;
                 exit 2
         }
@@ -449,7 +449,7 @@ function dump_database {
 	    shutdown_database;
 	    exit 2
     }
-	write-host "MySQL dump file $BACKUP_DIR\mysqldump_$DATE.sql completed!"-ForegroundColor Green
+	write-host "MySQL dump file $BACKUP_DIR\mysqldump_$DATE.sql completed!" -ForegroundColor Green
 }
 
 function shutdown_database {
@@ -545,7 +545,7 @@ switch -casesensitive( "$opt" ) {
 		        write-host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
 			}
 		else {
-			write-host "No SQL file found! Exiting."
+			write-host "No SQL file found! Exiting." -ForegroundColor Red
 			exit 2
 		}
         	# normal startup from here
@@ -592,7 +592,7 @@ switch -casesensitive( "$opt" ) {
 		}
 	"t"	{ # test database connection 
 		if ( $OH_DISTRO -eq "portable" ) {
-			write-host "Only for client mode. Exiting."
+			write-host "Only for client mode. Exiting." -ForegroundColor Red
 			exit 1
 		}
 		test_database_connection;
@@ -608,17 +608,19 @@ switch -casesensitive( "$opt" ) {
 		}
 	"D"	{ # demo mode 
 		write-host "Starting Portable Open Hospital in demo mode..."
-		$OH_DISTRO="portable"
+		# exit if OH is configured in Client mode
+		if (( $OH_DISTRO -eq "client" )) {
+			write-host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
+			exit 1;
+			else { $script:OH_DISTRO="portable" }
+		}
 		$DEMO_MODE="on"
 		clean_database;
 		}
 	"v"	{ # show versions 
-		write-host "Architecture is $ARCH"
-		write-host "Open Hospital is configured in $OH_DISTRO mode"
-		write-host "Language is set to $OH_LANGUAGE"
-		write-host "Demo mode is set to $DEMO_MODE"
-        	write-host "Software versions:"
-	
+
+        	write-host "--------- Software versions ---------"
+        	
 		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 		$var = $_.Split('=',2).Trim()
 		New-Variable -Scope Script -Name $var[0] -Value $var[1]
@@ -627,6 +629,23 @@ switch -casesensitive( "$opt" ) {
 		write-host "MySQL version: $MYSQL_DIR"
 		write-host "JAVA version:"
 		write-host "$JAVA_DISTRO"
+
+		
+		# show configuration
+        	write-host "--------- Configuration ---------"
+		write-host ""
+		write-host "MYSQL_SERVER=$MYSQL_SERVER"
+		write-host "MYSQL_PORT=$MYSQL_PORT"
+		write-host "DATABASE_NAME=$DATABASE_NAME"
+		write-host "DATABASE_USER=$DATABASE_USER"
+		write-host "DATABASE_PASSWORD=$DATABASE_PASSWORD"
+		write-host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
+		write-host "OH_DIR=$OH_DIR"
+		write-h0st "BACKUP_DIR=$BACKUP_DIR"
+		write-host "DICOM_DIR=$DICOM_DIR"
+		write-host "DATA_DIR=$DATA_DIR"
+		write-host "LOG_DIR=$LOG_DIR"
+	
 		exit 0
 		}
 #		default { write-host "Invalid option: $opt. Exiting."; exit 1; }
@@ -643,6 +662,12 @@ if ( !( $OH_DISTRO -eq "portable" ) -And !( $OH_DISTRO -eq "client" ) ) {
 # check demo mode
 
 if ( $DEMO_MODE -eq "on" ) {
+	# exit if OH is configured in Client mode
+	if (( $OH_DISTRO -eq "client" )) {
+		write-host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
+		exit 1;
+		else { $script:OH_DISTRO="portable" }
+	}
 	if ( Test-Path -Path "$OH_PATH\$SQL_DIR\$DB_DEMO" ) {
 	        write-host "Found SQL demo database, starting OH in demo mode..."
 		$DB_CREATE_SQL=$DB_DEMO
