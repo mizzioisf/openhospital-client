@@ -253,7 +253,7 @@ function download_file ($download_url,$download_file){
            exit 1;
 	}
 	catch {
-           write-Host "An error occurred. Exiting." -ForegroundColor Red
+           write-host "An error occurred. Exiting." -ForegroundColor Red
            exit 1;
 	}
 }
