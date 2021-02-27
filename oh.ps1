@@ -26,11 +26,14 @@
 # SET DEBUG mode
 # saner programming env: these switches turn some bugs into errors
 #Set-PSDebug -Strict
+# Clean all variables in IDE
+#Remove-Variable * -ErrorAction SilentlyContinue; Remove-Module *; $error.Clear();
 
 # command line parameters
-param ($lang,$debuglevel)
+param ($lang, $debuglevel, $ohdistro)
 $script:OH_LANGUAGE=$lang
 $script:DEBUG_LEVEL=$debuglevel
+$script:OH_DISTRO=$ohdistro
 
 ######## Open Hospital - Portable Open Hospital Configuration
 # OH_PATH is the directory where Portable OpenHospital files are located
@@ -628,7 +631,7 @@ switch -casesensitive( "$opt" ) {
 	"D"	{ # demo mode 
 		Write-Host "Starting Portable Open Hospital in demo mode..."
 		# exit if OH is configured in Client mode
-		if (( $OH_DISTRO -eq "client" )) {
+		if ( $OH_DISTRO -eq "client" ) {
 			Write-Host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
 			Read-Host;
 			exit 1;
@@ -649,11 +652,10 @@ switch -casesensitive( "$opt" ) {
 		Write-Host "MySQL version: $MYSQL_DIR"
 		Write-Host "JAVA version:"
 		Write-Host "$JAVA_DISTRO"
-
 		
 		# show configuration
-        	Write-Host "--------- Configuration ---------"
 		Write-Host ""
+        	Write-Host "--------- Configuration ---------"
 		Write-Host "MYSQL_SERVER=$MYSQL_SERVER"
 		Write-Host "MYSQL_PORT=$MYSQL_PORT"
 		Write-Host "DATABASE_NAME=$DATABASE_NAME"
@@ -665,6 +667,7 @@ switch -casesensitive( "$opt" ) {
 		Write-Host "DICOM_DIR=$DICOM_DIR"
 		Write-Host "DATA_DIR=$DATA_DIR"
 		Write-Host "LOG_DIR=$LOG_DIR"
+		Write-Host ""
 	
 		Read-Host;
 		exit 0
