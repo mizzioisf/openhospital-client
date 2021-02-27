@@ -182,7 +182,7 @@ function set_path {
 #		echo "Warning: POH_PATH not found - using current directory"
 		OH_PATH=$CURRENT_DIR
 		if [ ! -f $OH_PATH/$SCRIPT_NAME ]; then
-			echo "Error - oh.sh not found in the current PATH. Please cd the directory where Open Hospital was unzipped or set up OH_PATH properly."
+			echo "Error - oh.sh not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
 			exit 1
 		fi
 	fi

@@ -87,13 +87,14 @@ switch ( "$ARCH" ) {
     "x86_64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
     ("486","586","686","x86","i86pc") { $script:JAVA_ARCH=64; $script:MYSQL_ARCH=32 }
 	default {
-	    write-host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
+	    Write-Host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
+	    	Read-Host;
 		exit 1
 	}
 }
 
-write-host "Architecture is set to $ARCH"
-write-host "MYSQL architecture is set to $script:MYSQL_ARCH"
+Write-Host "Architecture is set to $ARCH"
+Write-Host "MYSQL architecture is set to $script:MYSQL_ARCH"
 
 ######## MySQL Software
 # MariaDB
@@ -146,24 +147,24 @@ $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
 
 function script_menu {
 	# show menu
-	Clear-Host
-	write-host ""
-	write-host " Portable Open Hospital Client - OH [$script:OH_LANGUAGE]"
-	write-host ""
-	write-host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] [default set to en]"
-	write-host ""
-	write-host "   s    save OH database"
-	write-host "   r    restore OH database"
-	write-host "   c    clean POH installation"
-	write-host "   d    start POH in debug mode"
-	write-host "   C    start Open Hospital - Client / Server mode"
-	write-host "   l    set language: en|fr|it|es|pt [default set to en]"
-	write-host "   t    test database connection (Client mode only)"
-	write-host "   v    show OH software version and configuration"
-	write-host "   D    start POH in Demo mode"
-	write-host "   G    setup GSM"
-	write-host "   q    quit"
-	write-host ""
+	# Clear-Host # clear console
+	Write-Host ""
+	Write-Host " Portable Open Hospital Client - OH [$script:OH_LANGUAGE]"
+	Write-Host ""
+	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] [default set to en]"
+	Write-Host ""
+	Write-Host "   s    save OH database"
+	Write-Host "   r    restore OH database"
+	Write-Host "   c    clean POH installation"
+	Write-Host "   d    start POH in debug mode"
+	Write-Host "   C    start Open Hospital - Client / Server mode"
+	Write-Host "   l    set language: en|fr|it|es|pt [default set to en]"
+	Write-Host "   t    test database connection (Client mode only)"
+	Write-Host "   v    show OH software version and configuration"
+	Write-Host "   D    start POH in Demo mode"
+	Write-Host "   G    setup GSM"
+	Write-Host "   q    quit"
+	Write-Host ""
 }
 
 ######## Functions
@@ -172,27 +173,25 @@ function get_confirmation {
 	$choice = Read-Host -Prompt "(y/n)? "
 	switch ("$choice") {
 		"y"  { "yes"; break }
-		"n"  { "Exiting."; exit 0 }
-		default { "Invalid choice. Exiting."; exit 1; }
+		"n"  { "Exiting."; Read-Host; exit 0 }
+		default { "Invalid choice. Exiting."; Read-Host; exit 1; }
 	}
 }
 
 function set_path {
 # set current dir
-
-##################################################  FIXME
-
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
 	# set OH_PATH if not defined
 	if ( ! $OH_PATH ) {
-		write-host "Warning: OH_PATH not found - using current directory"
+		Write-Host "Warning: OH_PATH not found - using current directory"
 		$script:OH_PATH=$CURRENT_DIR
 		if ( ! (Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
-			write-host "Error - $SCRIPT_NAME not found in the current PATH. Please cd the directory where POH was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
+			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where POH was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
+			Read-Host; 
 			exit 1
 		}
 	}
-#	$OH_PATH_ESCAPED=$(write-host $OH_PATH | sed -e 's/\//\\\//g'")
+#	$OH_PATH_ESCAPED=$(Write-Host $OH_PATH | sed -e 's/\//\\\//g'")
 #	$OH_PATH_ESCAPED=$OH_PATH
 }
 
@@ -205,13 +204,14 @@ function set_language {
 		{"en","fr","it","es","pt"} {
 			# set database creation script in chosen language
 			$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
-            break
-        }
-    default {
-        write-host "Invalid option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
-	    exit 1
-        }
-    }
+			break
+	        }
+		default {
+	        	Write-Host "Invalid option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
+			Read-Host;
+			exit 1
+	        }
+	}
 }
 
 function java_lib_setup {
@@ -243,17 +243,19 @@ function java_lib_setup {
 }
 
 function download_file ($download_url,$download_file){
-	write-host "Downloading $download_file from $download_url..."
+	Write-Host "Downloading $download_file from $download_url..."
 	try {
         	$wc = new-object System.Net.WebClient
 	        $wc.DownloadFile("$download_url\$download_file","$OH_PATH\$download_file")
 	    }
 	catch [System.Net.WebException],[System.IO.IOException] {
-           write-host "Unable to download $download_file from $download_url" -ForegroundColor Red
+           Write-Host "Unable to download $download_file from $download_url" -ForegroundColor Red
+	   Read-Host;
            exit 1;
 	}
 	catch {
-           write-host "An error occurred. Exiting." -ForegroundColor Red
+           Write-Host "An error occurred. Exiting." -ForegroundColor Red
+	   Read-Host;
            exit 1;
 	}
 }
@@ -265,75 +267,79 @@ function java_check {
 
     if ( !( Test-Path $JAVA_BIN ) ) {
         if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT") ) {
-    		write-host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
+    		Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
 		    get_confirmation;
 		    # Downloading openjdk binaries
             download_file "$JAVA_URL" "$JAVA_DISTRO.$EXT"
 	    }
-	    write-host "Unpacking $JAVA_DISTRO..."
+	    Write-Host "Unpacking $JAVA_DISTRO..."
         try {
             Expand-Archive "$OH_PATH\$JAVA_DISTRO.$EXT" -DestinationPath $OH_PATH\ -Force
         }
         catch {
-            write-host "Error unpacking Java. Exiting." -ForegroundColor Red
+            Write-Host "Error unpacking Java. Exiting." -ForegroundColor Red
+	    Read-Host;
 	    exit 1
 	    }
-        write-host "Java unpacked successfully!"
+        Write-Host "Java unpacked successfully!"
     }
     # check for java binary
     if ( Test-Path "$OH_PATH\$JAVA_DIR\bin\java.exe" ) {
         $script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
     }
     else {
-        write-host "Error: JAVA not found. Exiting." -ForegroundColor Red
+        Write-Host "Error: JAVA not found. Exiting." -ForegroundColor Red
+	Read-Host;
         exit 1
     }
-    write-host "JAVA found!"
-    write-host "Using $JAVA_BIN"
+    Write-Host "JAVA found!"
+    Write-Host "Using $JAVA_BIN"
 }
 
 function mysql_check {
 	if (  !( Test-Path "$OH_PATH\$MYSQL_DIR" ) ) {
 		if ( !( Test-Path "$OH_PATH\$MYSQL_DIR.$EXT" ) ) {
-			write-host "Warning - MySQL not found. Do you want to download it?" -ForegroundColor Yellow
+			Write-Host "Warning - MySQL not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading mysql binary
             download_file "$MYSQL_URL" "$MYSQL_DIR.$EXT" 
 		}
-		write-host "Unpacking $MYSQL_DIR..."
+		Write-Host "Unpacking $MYSQL_DIR..."
         try {
             Expand-Archive "$OH_PATH\$MYSQL_DIR.$EXT" -DestinationPath $OH_PATH\ -Force
         }
         catch {
-	    write-host "Error unpacking MySQL. Exiting." -ForegroundColor Red
+	    Write-Host "Error unpacking MySQL. Exiting." -ForegroundColor Red
+	    Read-Host;
 	    exit 1
 	}
-        write-host "MySQL unpacked successfully!"
+        Write-Host "MySQL unpacked successfully!"
 	}
 	# check for mysql binary
 	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe") {
-        	write-host "MySQL found!"
-		write-host "Using $MYSQL_DIR"
+        	Write-Host "MySQL found!"
+		Write-Host "Using $MYSQL_DIR"
 	}
 	else {
-		write-host "Error: MySQL not found. Exiting." -ForegroundColor Red
+		Write-Host "Error: MySQL not found. Exiting." -ForegroundColor Red
+		Read-Host;
 		exit 1
 	}
 }
 
 function config_database {
 	# Find a free TCP port to run MySQL starting from the default port
-	write-host "Looking for a free TCP port for MySQL database..."
+	Write-Host "Looking for a free TCP port for MySQL database..."
 
 	while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet ) {
-    		write-host "Testing TCP port $MYSQL_PORT...."
+    		Write-Host "Testing TCP port $MYSQL_PORT...."
         	$script:MYSQL_PORT++
 	}
 
-	write-host "Found TCP port $MYSQL_PORT!"
+	Write-Host "Found TCP port $MYSQL_PORT!"
 
 	# Creating MySQL configuration
-	write-host "Generating MySQL config file..."
+	Write-Host "Generating MySQL config file..."
 	if ( Test-Path "$OH_PATH/etc/mysql/my.cnf" ) {
 		mv -Force $OH_PATH/etc/mysql/my.cnf $OH_PATH/etc/mysql/my.cnf.old
 	}
@@ -357,7 +363,7 @@ function inizialize_database {
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DICOM_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
     # Inizialize MySQL
-	write-host "Initializing MySQL database on port $MYSQL_PORT..."
+	Write-Host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
 	    	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
@@ -368,18 +374,20 @@ function inizialize_database {
 	}
 
 #	if ( $? -ne 0 ){
-#		write-host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
+#		Write-Host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
+#		Read-Host;
 #		exit 2
 #	}
 }
 
 function start_database {
-	write-host "Starting MySQL server... "
+	Write-Host "Starting MySQL server... "
 	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\tmp --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
     sleep 2;
 
 #	if ( $? -ne 0 ) {
-#		write-host "Error: Database not started! Exiting." -ForegroundColor Red
+#		Write-Host "Error: Database not started! Exiting." -ForegroundColor Red
+#		Read-Host;
 #		exit 2
 #	}
 
@@ -387,7 +395,7 @@ function start_database {
 	# while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 	# # Wait till the MySQL tcp port is open
 	# until nc -z $MYSQL_SERVER $MYSQL_PORT; do sleep 1; done
-	write-host "MySQL server started! "
+	Write-Host "MySQL server started! "
 }
 
 function set_database_root_pw {
@@ -404,7 +412,7 @@ function set_database_root_pw {
 }
 
 function import_database {
-	write-host "Creating OH Database..."
+	Write-Host "Creating OH Database..."
 	# Create OH database and user
 	
     $SQLCOMMAND=@"
@@ -419,11 +427,12 @@ function import_database {
         else {
                 Write-Host "No SQL file found! Exiting." -ForeGroundColor Red
                 shutdown_database;
+		Read-Host;
                 exit 2
         }
 
 	# Create OH database structure
-	write-host "Importing database schema $DB_CREATE_SQL..."
+	Write-Host "Importing database schema $DB_CREATE_SQL..."
 	
     cd $OH_PATH\$SQL_DIR
 
@@ -432,40 +441,41 @@ function import_database {
 "@
     Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
  
-	write-host "Database imported!"
+	Write-Host "Database imported!"
 }
 
 function dump_database {
 	# Save OH database if existing
 	if ( ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
-		write-host "Dumping MySQL database..."	
+		Write-Host "Dumping MySQL database..."	
         $SQLCOMMAND=@"
     --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME
 "@
         Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$OH_PATH\$BACKUP_DIR\mysqldump_$DATE.sql" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"	
     }
     else {
-	    write-host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
+	    Write-Host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
 	    shutdown_database;
+	    Read-Host;
 	    exit 2
     }
-	write-host "MySQL dump file $BACKUP_DIR\mysqldump_$DATE.sql completed!" -ForegroundColor Green
+	Write-Host "MySQL dump file $BACKUP_DIR\mysqldump_$DATE.sql completed!" -ForegroundColor Green
 }
 
 function shutdown_database {
-	write-host "Shutting down MySQL..."
+	Write-Host "Shutting down MySQL..."
 	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 	# Wait till the MySQL socket file is removed
 #	while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 }
 
 function clean_database {
-	write-host "Warning: do you want to remove all data and database ?"
+	Write-Host "Warning: do you want to remove all data and database ?"
 	get_confirmation;
-	write-host "Killing mysql processes..."
+	Write-Host "Killing mysql processes..."
 	# stop mysqld zombies
 	Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
-	write-host "Removing data..."
+	Write-Host "Removing data..."
 	# remove database files
 	$filetodel="$OH_PATH\$DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$RUN_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
@@ -473,22 +483,23 @@ function clean_database {
 
 function test_database_connection {
 	# Test connection to the OH MySQL database
-	write-host "Testing database connection..."
+	Write-Host "Testing database connection..."
 	try {
 		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD --protocol=tcp -e USE $DATABASE_NAME;" ) -Wait -NoNewWindow
-		write-host "Database connection successfully established!"
+		Write-Host "Database connection successfully established!"
 	}
 	catch {
 		Write-Host "Error: can't connect to database! Exiting." -ForegroundColor Red
+		Read-Host;
 		exit 2
 	}
 }
 
 function clean_files {
 	# clean all generated files - leave only .dist files
-	write-host "Warning: do you want to remove all configuration and log files ?"
+	Write-Host "Warning: do you want to remove all configuration and log files ?"
 	get_confirmation;
-	write-host "Removing files..."
+	Write-Host "Removing files..."
 
     $filetodel="$OH_PATH\etc\mysql\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\etc\mysql\my.cnf.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
@@ -528,7 +539,7 @@ set_language;
 
 script_menu;
 $opt = Read-Host "Please make a selection or press any other key to start Open Hospital"
-write-host ""
+Write-Host ""
 
 # parse_input 
 
@@ -537,31 +548,33 @@ switch -casesensitive( "$opt" ) {
 		exit 0; 
 		}
 	"r"	{ # restore
-	       	write-host "Restoring Portable Open Hospital database...."
+	       	Write-Host "Restoring Portable Open Hospital database...."
 		clean_database;
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:BACKUP_DIR subdirectory) -> "
 		if ( Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
-		        write-host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
+		        Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
 			}
 		else {
-			write-host "No SQL file found! Exiting." -ForegroundColor Red
+			Write-Host "No SQL file found! Exiting." -ForegroundColor Red
+			Read-Host;
 			exit 2
 		}
         	# normal startup from here
 		}
 
 	"c"	{ # clean
-		write-host "Cleaning Portable Open Hospital installation..."
+		Write-Host "Cleaning Portable Open Hospital installation..."
 		clean_files;
 		clean_database;
-		write-host "Done!"
+		Write-Host "Done!"
+		Read-Host;
 		exit 0
 		}
 	"d"	{ # debug 
-           	write-host "Starting Portable Open Hospital in debug mode..."
+           	Write-Host "Starting Portable Open Hospital in debug mode..."
 		$DEBUG_LEVEL="DEBUG"
-		write-host "Debug level set to $DEBUG_LEVEL"
+		Write-Host "Debug level set to $DEBUG_LEVEL"
 		}
 	"s"	{ # save database 
 		# checking if data exist
@@ -572,15 +585,17 @@ switch -casesensitive( "$opt" ) {
 				config_database;
 			}
 			start_database;
-        	write-host "Saving Portable Open Hospital database..."
+        	Write-Host "Saving Portable Open Hospital database..."
 		dump_database;
 		shutdown_database;
-        	write-host "Done!"
+        	Write-Host "Done!"
+		Read-Host;
 		exit 0
 		}
 		else {
-	        	write-host "Error: no data found! Exiting." -ForegroundColor Red
-		exit 1
+	        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
+			Read-Host;
+			exit 1
 		}
 		}
 	"C"	{ # start in client mode 
@@ -592,25 +607,30 @@ switch -casesensitive( "$opt" ) {
 		}
 	"t"	{ # test database connection 
 		if ( $OH_DISTRO -eq "portable" ) {
-			write-host "Only for client mode. Exiting." -ForegroundColor Red
+			Write-Host "Only for client mode. Exiting." -ForegroundColor Red
+			Read-Host;
 			exit 1
 		}
 		test_database_connection;
+		Read-Host;
 		exit 0
 		}
 	"G"	{ # set up GSM 
-		write-host "Setting up GSM..."
+		Write-Host "Setting up GSM..."
 		java_check;
 		java_lib_setup;
 		cd $OH_PATH\$OH_DIR
 		Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM $@ ") -Wait -NoNewWindow
+		cd $CURRENT_DIR
+		Read-Host;
 		exit 0;
 		}
 	"D"	{ # demo mode 
-		write-host "Starting Portable Open Hospital in demo mode..."
+		Write-Host "Starting Portable Open Hospital in demo mode..."
 		# exit if OH is configured in Client mode
 		if (( $OH_DISTRO -eq "client" )) {
-			write-host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
+			Write-Host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
+			Read-Host;
 			exit 1;
 			else { $script:OH_DISTRO="portable" }
 		}
@@ -619,43 +639,45 @@ switch -casesensitive( "$opt" ) {
 		}
 	"v"	{ # show versions 
 
-        	write-host "--------- Software versions ---------"
+        	Write-Host "--------- Software versions ---------"
         	
 		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 		$var = $_.Split('=',2).Trim()
 		New-Variable -Scope Script -Name $var[0] -Value $var[1]
 		}
-		write-host "Open Hospital version" $script:VER_MAJOR $script:VER_MINOR $script:VER_RELEASE
-		write-host "MySQL version: $MYSQL_DIR"
-		write-host "JAVA version:"
-		write-host "$JAVA_DISTRO"
+		Write-Host "Open Hospital version" $script:VER_MAJOR $script:VER_MINOR $script:VER_RELEASE
+		Write-Host "MySQL version: $MYSQL_DIR"
+		Write-Host "JAVA version:"
+		Write-Host "$JAVA_DISTRO"
 
 		
 		# show configuration
-        	write-host "--------- Configuration ---------"
-		write-host ""
-		write-host "MYSQL_SERVER=$MYSQL_SERVER"
-		write-host "MYSQL_PORT=$MYSQL_PORT"
-		write-host "DATABASE_NAME=$DATABASE_NAME"
-		write-host "DATABASE_USER=$DATABASE_USER"
-		write-host "DATABASE_PASSWORD=$DATABASE_PASSWORD"
-		write-host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
-		write-host "OH_DIR=$OH_DIR"
-		write-h0st "BACKUP_DIR=$BACKUP_DIR"
-		write-host "DICOM_DIR=$DICOM_DIR"
-		write-host "DATA_DIR=$DATA_DIR"
-		write-host "LOG_DIR=$LOG_DIR"
+        	Write-Host "--------- Configuration ---------"
+		Write-Host ""
+		Write-Host "MYSQL_SERVER=$MYSQL_SERVER"
+		Write-Host "MYSQL_PORT=$MYSQL_PORT"
+		Write-Host "DATABASE_NAME=$DATABASE_NAME"
+		Write-Host "DATABASE_USER=$DATABASE_USER"
+		Write-Host "DATABASE_PASSWORD=$DATABASE_PASSWORD"
+		Write-Host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
+		Write-Host "OH_DIR=$OH_DIR"
+		Write-Host "BACKUP_DIR=$BACKUP_DIR"
+		Write-Host "DICOM_DIR=$DICOM_DIR"
+		Write-Host "DATA_DIR=$DATA_DIR"
+		Write-Host "LOG_DIR=$LOG_DIR"
 	
+		Read-Host;
 		exit 0
 		}
-#		default { write-host "Invalid option: $opt. Exiting."; exit 1; }
+#		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
 }
 
 ######################## Script start ########################
 
 # check distro
 if ( !( $OH_DISTRO -eq "portable" ) -And !( $OH_DISTRO -eq "client" ) ) {
-	write-host "Error - OH_DISTRO not defined [client - portable]! Exiting." -ForegroundColor Red
+	Write-Host "Error - OH_DISTRO not defined [client - portable]! Exiting." -ForegroundColor Red
+	Read-Host;
 	exit 1
 }
 
@@ -664,23 +686,25 @@ if ( !( $OH_DISTRO -eq "portable" ) -And !( $OH_DISTRO -eq "client" ) ) {
 if ( $DEMO_MODE -eq "on" ) {
 	# exit if OH is configured in Client mode
 	if (( $OH_DISTRO -eq "client" )) {
-		write-host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
-		exit 1;
+		Write-Host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
+		Read-Host; 
+		exit 1
 		else { $script:OH_DISTRO="portable" }
 	}
 	if ( Test-Path -Path "$OH_PATH\$SQL_DIR\$DB_DEMO" ) {
-	        write-host "Found SQL demo database, starting OH in demo mode..."
+	        Write-Host "Found SQL demo database, starting OH in demo mode..."
 		$DB_CREATE_SQL=$DB_DEMO
 	}
 	else {
-	      	write-host "Error: no $DB_DEMO found! Exiting." -ForegroundColor Red
+	      	Write-Host "Error: no $DB_DEMO found! Exiting." -ForegroundColor Red
+		Read-Host;
 		exit 1
 	}
 }
 
-write-host "Starting Open Hospital in $OH_DISTRO mode..."
-write-host "OH_PATH set to $OH_PATH"
-write-host "POH language is set to $OH_LANGUAGE"
+Write-Host "Starting Open Hospital in $OH_DISTRO mode..."
+Write-Host "OH_PATH set to $OH_PATH"
+Write-Host "POH language is set to $OH_LANGUAGE"
 
 # check for java
 java_check;
@@ -718,7 +742,7 @@ test_database_connection;
 
 if ($MANUAL_CONFIG -eq "off" ) {
 # set up configuration files
-write-host "Setting up OH configuration files..."
+Write-Host "Setting up OH configuration files..."
 
 ######## DICOM setup
 if ( Test-Path "$OH_PATH/$OH_DIR/rsc/dicom.properties" ) {
@@ -762,19 +786,19 @@ if ( Test-Path "$OH_PATH/$OH_DIR/rsc/generalData.properties" ) {
 
 ######## Open Hospital start
 
-write-host "Starting Open Hospital..."
+Write-Host "Starting Open Hospital..."
 
 cd $OH_PATH/$OH_DIR
 
-#write-host "----native $NATIVE_LIB_PATH"
-#write-host "----ohclasspath $OH_CLASSPATH"
+#Write-Host "----native $NATIVE_LIB_PATH"
+#Write-Host "----ohclasspath $OH_CLASSPATH"
 
 # OH GUI launch
 Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 
 ###%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 
-write-host "Exiting Open Hospital..."
+Write-Host "Exiting Open Hospital..."
 
 if ( $OH_DISTRO -eq "portable" ) {
 	shutdown_database;
@@ -784,6 +808,6 @@ if ( $OH_DISTRO -eq "portable" ) {
 cd $CURRENT_DIR
 
 # exiting
-write-host "Done!"
+Write-Host "Done!"
 Read-Host
 exit 0
