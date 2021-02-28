@@ -52,7 +52,7 @@ set SQL_DIR=sql
 set DATA_DIR="data\db"
 set LOG_DIR="data\log"
 set DICOM_DIR="data\dicom_storage"
-set RUN_DIR=tmp
+set TMP_DIR=tmp
 set DB_CREATE_SQL="create_all_en.sql"
 REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
 set LOG_FILE="startup.log"
@@ -105,7 +105,7 @@ echo Found TCP port %MYSQL_PORT% for MySQL !
 
 REM # Create log and tmp dir
 mkdir %OH_PATH%\%LOG_DIR%
-mkdir %OH_PATH%\%RUN_DIR%
+mkdir %OH_PATH%\%TMP_DIR%
 
 REM ### Setup MySQL configuration
 echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y > "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -114,7 +114,7 @@ echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y > "
 %REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe MYSQL_DISTRO %MYSQL_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe RUN_DIR %RUN_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe TMP_DIR %TMP_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DATA_DIR %DATA_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe LOG_DIR %LOG_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
@@ -150,11 +150,10 @@ if EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
 	echo Removing data...
  	rmdir /s /q %OH_PATH%\%DATA_DIR%
  	REM # recreate directory structure
- 	mkdir %OH_PATH%\%RUN_DIR%
+ 	mkdir %OH_PATH%\%TMP_DIR%
  	mkdir %OH_PATH%\%DATA_DIR%
 	mkdir %OH_PATH%\%DICOM_DIR%
- 	del /s /q %OH_PATH%\%RUN_DIR%\*
-	del /s /q %OH_PATH%\tmp
+ 	del /s /q %OH_PATH%\%TMP_DIR%\*
 	
 	if %MYSQL_DIR:~0,5% == maria (
 		echo Initializing MariaDB...
@@ -167,7 +166,7 @@ if EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
 	if ERRORLEVEL 1 (goto END)
 
 	echo Starting MySQL server on port %MYSQL_PORT%...
-	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console
+	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
 	if ERRORLEVEL 1 (goto END)
 	timeout /t 2 /nobreak >nul
 	
@@ -192,23 +191,26 @@ if EXIST %OH_PATH%\%SQL_DIR%\%DB_CREATE_SQL% (
 ) else (
 	echo Missing SQL creation script or database already initialized, trying to start...
 	echo Starting MySQL server on port %MYSQL_PORT%...
-	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\tmp --standalone --console
+	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
 	if ERRORLEVEL 1 (goto END)
 )
 
 REM ###### Setup CLASSPATH #####
-set CLASSPATH=%OH_PATH%\%OH_DIR%\lib
+REM set CLASSPATH=%OH_PATH%\%OH_DIR%\lib
+set CLASSPATH=%OH_PATH%\%OH_DIR%\bin\OH-gui.jar
 
 SETLOCAL ENABLEDELAYEDEXPANSION
 
+REM Include all jar files under lib\
 FOR %%A IN (%OH_PATH%\%OH_DIR%\lib\*.jar) DO (
 	set CLASSPATH=!CLASSPATH!;%%A
 )
-set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar
 set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\bundle
 set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\rpt
 set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\rsc
+set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\lib
 
+echo %CLASSPATH%
 REM # Setup native_lib_path for current architecture
 REM # with DICOM workaround - force NATIVE_LIB to 32bit
 

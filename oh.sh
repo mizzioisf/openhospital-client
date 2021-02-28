@@ -57,7 +57,7 @@ DICOM_DIR="data/dicom_storage"
 DATA_DIR="data/db"
 LOG_DIR="data/log"
 BACKUP_DIR=sql
-RUN_DIR=tmp
+TMP_DIR=tmp
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S`
@@ -188,7 +188,7 @@ function set_path {
 	fi
 	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
 	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
-	RUN_DIR_ESCAPED=$(echo $RUN_DIR | sed -e 's/\//\\\//g')
+	TMP_DIR_ESCAPED=$(echo $TMP_DIR | sed -e 's/\//\\\//g')
 	LOG_DIR_ESCAPED=$(echo $LOG_DIR | sed -e 's/\//\\\//g')
 	DICOM_DIR_ESCAPED=$(echo $DICOM_DIR | sed -e 's/\//\\\//g')
 }
@@ -315,14 +315,14 @@ function config_database {
 	echo "Generating MySQL config file..."
 	[ -f $OH_PATH/etc/mysql/my.cnf ] && mv -f $OH_PATH/etc/mysql/my.cnf $OH_PATH/etc/mysql/my.cnf.old
 	sed -e "s/MYSQL_SERVER/$MYSQL_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-	-e "s/RUN_DIR/$RUN_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
+	-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
 	-e "s/MYSQL_PORT/$MYSQL_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $OH_PATH/etc/mysql/my.cnf.dist > $OH_PATH/etc/mysql/my.cnf
 }
 
 function inizialize_database {
 	# Recreate directory structure
 	mkdir -p "$OH_PATH/$DATA_DIR"
-	mkdir -p "$OH_PATH/$RUN_DIR"
+	mkdir -p "$OH_PATH/$TMP_DIR"
 	mkdir -p "$OH_PATH/$LOG_DIR"
 	mkdir -p "$OH_PATH/$DICOM_DIR"
 	mkdir -p "$OH_PATH/$BACKUP_DIR"
@@ -424,7 +424,7 @@ function clean_database {
 	echo "Removing data..."
 	# remove databases
 	rm -rf $OH_PATH/$DATA_DIR/*
-	rm -rf $OH_PATH/$RUN_DIR/*
+	rm -rf $OH_PATH/$TMP_DIR/*
 }
 
 function test_database_connection {

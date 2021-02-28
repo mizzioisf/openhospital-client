@@ -94,7 +94,7 @@ $script:DICOM_DIR="data/dicom_storage"
 $script:LOG_DIR="data/log"
 $script:LOG_FILE="startup.log"
 $script:LOG_FILE_ERR="startup.err"
-$script:RUN_DIR="tmp"
+$script:TMP_DIR="tmp"
 $script:BACKUP_DIR="sql"
 
 $script:DB_DEMO="create_all_demo.sql"
@@ -376,7 +376,7 @@ function config_database {
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("RUN_DIR","$RUN_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("RUN_DIR","$TMP_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 
 #	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $OH_PATH/etc/mysql/my.cnf.dist > $OH_PATH/etc/mysql/my.cnf
@@ -385,7 +385,7 @@ function config_database {
 function inizialize_database {
 	# Recreate directory structure
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR") > $null
-	[System.IO.Directory]::CreateDirectory("$OH_PATH/$RUN_DIR") > $null
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$TMP_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$LOG_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DICOM_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
@@ -409,7 +409,7 @@ function inizialize_database {
 
 function start_database {
 	Write-Host "Starting MySQL server... "
-	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\tmp --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
     sleep 2;
 
 #	if ( $? -ne 0 ) {
@@ -505,7 +505,7 @@ function clean_database {
 	Write-Host "Removing data..."
 	# remove database files
 	$filetodel="$OH_PATH\$DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$RUN_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$TMP_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 function test_database_connection {
