@@ -563,8 +563,8 @@ while getopts ${OPTSTRING} opt; do
 		DEMO_MODE="on"
 		clean_database;
 		;;
-	v)	# show versions
-        	echo "--------- Software versions ---------"
+	v)	# show version
+        	echo "--------- Software version ---------"
 		source $OH_PATH/$OH_DIR/rsc/version.properties
         	echo "Open Hospital version" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
         	echo "MySQL version: $MYSQL_DIR"
