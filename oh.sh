@@ -222,11 +222,15 @@ function java_lib_setup {
 	esac
 
 	# CLASSPATH setup
+	
+	# include OH jar
 	OH_CLASSPATH=$OH_PATH/$OH_DIR/bin/OH-gui.jar
+	# include all needed directories
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/bundle
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rpt
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc
 
+	# include all jar files under lib/
 	DIRLIBS=$OH_PATH/$OH_DIR/lib/*.jar
 	for i in ${DIRLIBS}
 	do

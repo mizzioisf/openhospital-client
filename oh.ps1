@@ -73,6 +73,9 @@ $script:OH_DISTRO="portable"  # set distro to portable | client
 # set debug level to INFO | DEBUG - default set to INFO
 #$script:DEBUG_LEVEL=INFO
 
+# enable / disable DICOM (true|false)
+#set $script:DICOM_ENABLE=false
+
 ######## Software configuration - change at your own risk :-)
 # Database
 $script:MYSQL_SERVER="localhost"
@@ -250,23 +253,20 @@ function java_lib_setup {
 
 	# CLASSPATH setup
 
-	#SETLOCAL ENABLEDELAYEDEXPANSION
+	# include OH jar 
+	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\bin\OH-gui.jar"
 
-#	$jarlist = Get-ChildItem -Path "$OH_PATH\$OH_DIR\lib" | % { $_.FullName } `
-	$jarlist = Get-ChildItem -Path "$OH_PATH\$OH_DIR\lib" | % { $_.FullName } 
-	# Where-Object { $_.PSIsContainer -eq $false -and $_.Extension -eq '.jar' }
-	Where-Object { $_.Extension -eq '.jar' }
-
-	ForEach($n in $jarlist){
-		$script:OH_CLASSPATH="$OH_CLASSPATH;$n"
+	# include all jar files under lib\
+	$script:jarlist= Get-ChildItem "$OH_PATH\$OH_DIR\lib" -Filter *.jar |  % { $_.FullName }
+	ForEach( $n in $jarlist ){
+		$script:OH_CLASSPATH="$n;$OH_CLASSPATH"
 	}
-
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bin\OH-gui.jar"
+	
+	# include all needed directories
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bundle\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rpt\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\lib\"
-
 }
 
 function download_file ($download_url,$download_file){
@@ -815,9 +815,6 @@ if ( Test-Path "$OH_PATH/$OH_DIR/rsc/generalData.properties" ) {
 Write-Host "Starting Open Hospital..."
 
 cd $OH_PATH/$OH_DIR
-
-#Write-Host "----native $NATIVE_LIB_PATH"
-#Write-Host "----ohclasspath $OH_CLASSPATH"
 
 # OH GUI launch
 Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
