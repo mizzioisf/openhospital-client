@@ -376,7 +376,7 @@ function config_database {
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("RUN_DIR","$TMP_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("TMP_DIR","$TMP_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 
 #	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $OH_PATH/etc/mysql/my.cnf.dist > $OH_PATH/etc/mysql/my.cnf
