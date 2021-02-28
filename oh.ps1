@@ -21,7 +21,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-#
+
+<#
+
+.SYNOPSIS
+Open Hospital startup script - oh.ps1
+
+.DESCRIPTION
+The script is used to setup and launch Open Hospital in Portable, Client or Demo mode.
+It can also be used to perform some basic operation like saving or importing a database.
+
+Open Hospital Client | Portable
+Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
+              [ -distro portable|client ]
+              [ -debug INFO|DEBUG ] [default set to INFO]
+
+.EXAMPLE
+./oh.ps1 -lang en
+
+.NOTES
+Developed by Informatici Senza Frontiere
+
+.LINK
+https://www.open-hospital.org
+
+#>
 
 # SET DEBUG mode
 # saner programming env: these switches turn some bugs into errors
@@ -30,10 +54,10 @@
 #Remove-Variable * -ErrorAction SilentlyContinue; Remove-Module *; $error.Clear();
 
 # command line parameters
-param ($lang, $debuglevel, $ohdistro)
+param ($lang, $debuglevel, $distro)
 $script:OH_LANGUAGE=$lang
 $script:DEBUG_LEVEL=$debuglevel
-$script:OH_DISTRO=$ohdistro
+$script:OH_DISTRO=$distro
 
 ######## Open Hospital - Portable Open Hospital Configuration
 # OH_PATH is the directory where Portable OpenHospital files are located
@@ -640,9 +664,8 @@ switch -casesensitive( "$opt" ) {
 		$DEMO_MODE="on"
 		clean_database;
 		}
-	"v"	{ # show versions 
-
-        	Write-Host "--------- Software versions ---------"
+	"v"	{ # show version
+        	Write-Host "--------- Software version ---------"
         	
 		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 		$var = $_.Split('=',2).Trim()
