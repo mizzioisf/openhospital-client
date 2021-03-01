@@ -512,7 +512,7 @@ function test_database_connection {
 	# Test connection to the OH MySQL database
 	Write-Host "Testing database connection..."
 	try {
-		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--host=$MYSQL_SERVER --port=$MYSQL_PORT --user=$DATABASE_USER --password=$DATABASE_PASSWORD --protocol=tcp -e USE $DATABASE_NAME;" ) -Wait -NoNewWindow
+		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e USE $DATABASE_NAME" ) -Wait -NoNewWindow
 		Write-Host "Database connection successfully established!"
 	}
 	catch {
