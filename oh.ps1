@@ -60,8 +60,8 @@ $script:DEBUG_LEVEL=$debuglevel
 $script:OH_DISTRO=$distro
 
 ######## Open Hospital Configuration
-# OH_PATH is the directory where Portable OpenHospital files are located
-# OH_PATH="c:\Users\OpenOspital\PortableOpenHospital"
+# OH_PATH is the directory where Open Hospital files are located
+# OH_PATH="c:\Users\OpenOspital\oh-1.11"
 
 $script:OH_DISTRO="PORTABLE"  # set distro to PORTABLE | CLIENT
 #$script:DEMO_MODE="off"
