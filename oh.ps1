@@ -59,7 +59,7 @@ $script:OH_LANGUAGE=$lang
 $script:DEBUG_LEVEL=$debuglevel
 $script:OH_DISTRO=$distro
 
-######## Open Hospital - Portable Open Hospital Configuration
+######## Open Hospital Configuration
 # OH_PATH is the directory where Portable OpenHospital files are located
 # OH_PATH="c:\Users\OpenOspital\PortableOpenHospital"
 
