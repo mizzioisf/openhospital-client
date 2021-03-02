@@ -51,7 +51,7 @@ cd openhospital-client
 - to see available options, run **./oh.sh -h**
 
 
-**on Windows: (powershell script) **
+**on Windows: (powershell script)**
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
 - select "Unblock"
