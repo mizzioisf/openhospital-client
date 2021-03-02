@@ -28,12 +28,12 @@
 Open Hospital startup script - oh.ps1
 
 .DESCRIPTION
-The script is used to setup and launch Open Hospital in Portable, Client or Demo mode.
+The script is used to setup and launch Open Hospital in PORTABLE, CLIENT or DEMO mode.
 It can also be used to perform some basic operation like saving or importing a database.
 
-Open Hospital Client | Portable
+Open Hospital CLIENT | PORTABLE
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
-              [ -distro portable|client ]
+              [ -distro PORTABLE|CLIENT ]
               [ -debug INFO|DEBUG ] [default set to INFO]
 
 .EXAMPLE
@@ -63,12 +63,11 @@ $script:OH_DISTRO=$distro
 # OH_PATH is the directory where Portable OpenHospital files are located
 # OH_PATH="c:\Users\OpenOspital\PortableOpenHospital"
 
-$script:OH_DISTRO="portable"  # set distro to portable | client
+$script:OH_DISTRO="PORTABLE"  # set distro to PORTABLE | CLIENT
 #$script:DEMO_MODE="off"
 
 # Language setting - default set to en
-#$script:OH_LANGUAGE=en fr es it pt
-#$script:OH_LANGUAGE=it
+#$script:OH_LANGUAGE=en # fr es it pt
 
 # set debug level to INFO | DEBUG - default set to INFO
 #$script:DEBUG_LEVEL=INFO
@@ -123,9 +122,6 @@ switch ( "$ARCH" ) {
 	}
 }
 
-Write-Host "Architecture is set to $ARCH"
-Write-Host "MYSQL architecture is set to $script:MYSQL_ARCH"
-
 ######## MySQL Software
 # MariaDB
 $script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.36/winx64-packages/"
@@ -163,7 +159,7 @@ if ( $JAVA_ARCH -eq "32" ) {
 }
 
 ######## set JAVA_BIN # Uncomment this if you want to use system wide JAVA
-#JAVA_BIN=`which java`
+#JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
 
 # Determine script name and location for PowerShell
 $script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
@@ -178,21 +174,27 @@ $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
 function script_menu {
 	# show menu
 	# Clear-Host # clear console
+	Write-Host " ---------------------------------------------------------"
+	Write-Host "|                                                         |"
+	Write-Host "|                   Open Hospital | OH                    |"
+	Write-Host "|                                                         |"
+	Write-Host " ---------------------------------------------------------"
+	Write-Host " lang $script:OH_LANGUAGE | arch $ARCH"
 	Write-Host ""
-	Write-Host " Portable Open Hospital Client - OH [$script:OH_LANGUAGE]"
-	Write-Host ""
-	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] [default set to en]"
+	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
+        Write-Host "               [ -distro PORTABLE|CLIENT ]"
+        Write-Host "               [ -debug INFO|DEBUG ] "
 	Write-Host ""
 	Write-Host "   s    save OH database"
 	Write-Host "   r    restore OH database"
-	Write-Host "   c    clean POH installation"
-	Write-Host "   d    start POH in debug mode"
-	Write-Host "   C    start Open Hospital - Client / Server mode"
-	Write-Host "   l    set language: en|fr|it|es|pt [default set to en]"
+	Write-Host "   l    set language: en|fr|it|es|pt"
+	Write-Host "   C    start OH - CLIENT mode (Client / Server configuration)"
 	Write-Host "   t    test database connection (Client mode only)"
-	Write-Host "   v    show OH software version and configuration"
-	Write-Host "   D    start POH in Demo mode"
+	Write-Host "   D    start OH in DEMO mode"
+	Write-Host "   d    start OH in DEBUG mode"
+	Write-Host "   c    clean OH installation"
 	Write-Host "   G    setup GSM"
+	Write-Host "   v    show OH software version and configuration"
 	Write-Host "   q    quit"
 	Write-Host ""
 }
@@ -497,7 +499,7 @@ function shutdown_database {
 }
 
 function clean_database {
-	Write-Host "Warning: do you want to remove all data and database ?"
+	Write-Host "Warning: do you want to remove all data and database ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Killing mysql processes..."
 	# stop mysqld zombies
@@ -512,7 +514,7 @@ function test_database_connection {
 	# Test connection to the OH MySQL database
 	Write-Host "Testing database connection..."
 	try {
-		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e USE $DATABASE_NAME" ) -Wait -NoNewWindow
+		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e $([char]34)USE $DATABASE_NAME$([char]34) " ) -Wait -NoNewWindow
 		Write-Host "Database connection successfully established!"
 	}
 	catch {
@@ -524,7 +526,7 @@ function test_database_connection {
 
 function clean_files {
 	# clean all generated files - leave only .dist files
-	Write-Host "Warning: do you want to remove all configuration and log files ?"
+	Write-Host "Warning: do you want to remove all configuration and log files ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Removing files..."
 
@@ -556,7 +558,8 @@ function clean_files {
 # debug level - set default to INFO
 if ( [string]::IsNullOrEmpty($DEBUG_LEVEL) ) {
 	$script:DEBUG_LEVEL="INFO"
-}	
+}
+
 ######## Environment setup
 
 set_path;
@@ -565,7 +568,7 @@ set_language;
 ######## User input
 
 script_menu;
-$opt = Read-Host "Please make a selection or press any other key to start Open Hospital"
+$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_DISTRO mode"
 Write-Host ""
 
 # parse_input 
@@ -626,15 +629,15 @@ switch -casesensitive( "$opt" ) {
 		}
 		}
 	"C"	{ # start in client mode 
-		$script:OH_DISTRO="client"
+		$script:OH_DISTRO="CLIENT"
 		}
 	"l"	{ # set language 
 		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt (default is en)"
 		set_language;
 		}
 	"t"	{ # test database connection 
-		if ( $OH_DISTRO -eq "portable" ) {
-			Write-Host "Only for client mode. Exiting." -ForegroundColor Red
+		if ( !($OH_DISTRO -eq "CLIENT") ) {
+			Write-Host "Only for CLIENT mode. Exiting." -ForegroundColor Red
 			Read-Host;
 			exit 1
 		}
@@ -653,13 +656,13 @@ switch -casesensitive( "$opt" ) {
 		exit 0;
 		}
 	"D"	{ # demo mode 
-		Write-Host "Starting Portable Open Hospital in demo mode..."
-		# exit if OH is configured in Client mode
-		if ( $OH_DISTRO -eq "client" ) {
-			Write-Host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
+		Write-Host "Starting Portable Open Hospital in DEMO mode..."
+		# exit if OH is configured in CLIENT mode
+		if ( $OH_DISTRO -eq "CLIENT" ) {
+			Write-Host "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting." -ForeGroundcolor Red
 			Read-Host;
 			exit 1;
-			else { $script:OH_DISTRO="portable" }
+			else { $script:OH_DISTRO="PORTABLE" }
 		}
 		$DEMO_MODE="on"
 		clean_database;
@@ -701,8 +704,8 @@ switch -casesensitive( "$opt" ) {
 ######################## Script start ########################
 
 # check distro
-if ( !( $OH_DISTRO -eq "portable" ) -And !( $OH_DISTRO -eq "client" ) ) {
-	Write-Host "Error - OH_DISTRO not defined [client - portable]! Exiting." -ForegroundColor Red
+if ( !( $OH_DISTRO -eq "PORTABLE" ) -And !( $OH_DISTRO -eq "CLIENT" ) ) {
+	Write-Host "Error - OH_DISTRO not defined [CLIENT - PORTABLE]! Exiting." -ForegroundColor Red
 	Read-Host;
 	exit 1
 }
@@ -711,14 +714,14 @@ if ( !( $OH_DISTRO -eq "portable" ) -And !( $OH_DISTRO -eq "client" ) ) {
 
 if ( $DEMO_MODE -eq "on" ) {
 	# exit if OH is configured in Client mode
-	if (( $OH_DISTRO -eq "client" )) {
-		Write-Host "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting." -ForeGroundcolor Red
+	if (( $OH_DISTRO -eq "CLIENT" )) {
+		Write-Host "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting." -ForeGroundcolor Red
 		Read-Host; 
 		exit 1
-		else { $script:OH_DISTRO="portable" }
+		else { $script:OH_DISTRO="PORTABLE" }
 	}
 	if ( Test-Path -Path "$OH_PATH\$SQL_DIR\$DB_DEMO" ) {
-	        Write-Host "Found SQL demo database, starting OH in demo mode..."
+	        Write-Host "Found SQL demo database, starting OH in DEMO mode..."
 		$DB_CREATE_SQL=$DB_DEMO
 	}
 	else {
@@ -741,7 +744,7 @@ java_lib_setup;
 ######## Database setup
 
 # Start MySQL and create database
-if ( $OH_DISTRO -eq "portable" ) {
+if ( $OH_DISTRO -eq "PORTABLE" ) {
 	# Check for MySQL software
 	mysql_check;
 	# Config MySQL
@@ -823,7 +826,7 @@ Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PA
 
 Write-Host "Exiting Open Hospital..."
 
-if ( $OH_DISTRO -eq "portable" ) {
+if ( $OH_DISTRO -eq "PORTABLE" ) {
 	shutdown_database;
 }
 
