@@ -23,7 +23,7 @@ REM #
 REM ################### Configuration ###################
 set OH_PATH=%~dps0
 
-REM set OH_DISTRO="portable|client"
+REM set OH_DISTRO="PORTABLE|CLIENT"
 REM set DEMO_MODE="off"
 
 REM # Language setting - default set to en
@@ -86,6 +86,9 @@ set JAVA_DIR="jdk-11.0.10+9-jre"
 set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
+
+REM ######## Script start
+echo Configuring Open Hospital...
 
 REM # Set mysql TCP port
 set startPort=%MYSQL_PORT%
@@ -221,6 +224,9 @@ if %PROCESSOR_ARCHITECTURE%==AMD64 if not %DICOM_ENABLE%==true (
 )
 
 REM ###### Start Open Hospital #####
+
+echo Starting Open Hospital...
+
 cd /d %OH_PATH%\%OH_DIR%
 %JAVA_BIN% -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.menu.gui.Menu
 
@@ -228,6 +234,7 @@ REM # Shutdown MySQL
 start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% shutdown >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 
 REM # Exit
+echo Exiting Open Hospital...
 cd /d %OH_PATH%
 echo Done !
 

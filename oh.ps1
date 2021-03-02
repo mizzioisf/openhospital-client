@@ -578,7 +578,7 @@ switch -casesensitive( "$opt" ) {
 		exit 0; 
 		}
 	"r"	{ # restore
-	       	Write-Host "Restoring Portable Open Hospital database...."
+	       	Write-Host "Restoring Open Hospital database...."
 		clean_database;
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:BACKUP_DIR subdirectory) -> "
@@ -594,7 +594,7 @@ switch -casesensitive( "$opt" ) {
 		}
 
 	"c"	{ # clean
-		Write-Host "Cleaning Portable Open Hospital installation..."
+		Write-Host "Cleaning Open Hospital installation..."
 		clean_files;
 		clean_database;
 		Write-Host "Done!"
@@ -602,7 +602,7 @@ switch -casesensitive( "$opt" ) {
 		exit 0
 		}
 	"d"	{ # debug 
-           	Write-Host "Starting Portable Open Hospital in debug mode..."
+           	Write-Host "Starting Open Hospital in debug mode..."
 		$DEBUG_LEVEL="DEBUG"
 		Write-Host "Debug level set to $DEBUG_LEVEL"
 		}
@@ -615,7 +615,7 @@ switch -casesensitive( "$opt" ) {
 				config_database;
 			}
 			start_database;
-        	Write-Host "Saving Portable Open Hospital database..."
+        	Write-Host "Saving Open Hospital database..."
 		dump_database;
 		shutdown_database;
         	Write-Host "Done!"
@@ -656,7 +656,7 @@ switch -casesensitive( "$opt" ) {
 		exit 0;
 		}
 	"D"	{ # demo mode 
-		Write-Host "Starting Portable Open Hospital in DEMO mode..."
+		Write-Host "Starting Open Hospital in DEMO mode..."
 		# exit if OH is configured in CLIENT mode
 		if ( $OH_DISTRO -eq "CLIENT" ) {
 			Write-Host "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting." -ForeGroundcolor Red
@@ -678,10 +678,15 @@ switch -casesensitive( "$opt" ) {
 		Write-Host "MySQL version: $MYSQL_DIR"
 		Write-Host "JAVA version:"
 		Write-Host "$JAVA_DISTRO"
+		Write-Host ""
 		
 		# show configuration
-		Write-Host ""
         	Write-Host "--------- Configuration ---------"
+                Write-Host "Architecture is $ARCH"
+                Write-Host "Open Hospital is configured in $OH_DISTRO mode"
+                Write-Host "Language is set to $OH_LANGUAGE"
+                Write-Host "DEMO mode is set to $DEMO_MODE"
+		Write-Host ""
 		Write-Host "MYSQL_SERVER=$MYSQL_SERVER"
 		Write-Host "MYSQL_PORT=$MYSQL_PORT"
 		Write-Host "DATABASE_NAME=$DATABASE_NAME"

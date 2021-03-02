@@ -26,11 +26,11 @@
 # saner programming env: these switches turn some bugs into errors
 #set -o errexit -o pipefail -o noclobber -o nounset
 
-######## Open Hospital - Portable Open Hospital Configuration
-# OH_PATH is the directory where Portable OpenHospital files are located
-# OH_PATH=/usr/local/PortableOpenHospital
+######## Open Hospital Configuration
+# OH_PATH is the directory where Open Hospital files are located
+# OH_PATH=/usr/local/OpenHospital/oh-1.11
 
-OH_DISTRO=client # set distro to portable | client
+OH_DISTRO=PORTABLE # set distro to PORTABLE | CLIENT
 DEMO_MODE=off
 
 # Language setting - default set to en
@@ -142,24 +142,34 @@ SCRIPT_NAME=$(basename "$0")
 
 function script_usage {
 	# show help
-	echo ""
-	echo " Portable Open Hospital Client - OH"
-	echo ""
-	echo " Usage: $SCRIPT_NAME [-option]"
-	echo ""
-	echo "   -l    en|fr|it|es|pt   --> set language [default set to en]"
-	echo ""
-	echo "   -s    save OH database"
-	echo "   -r    restore OH database"
-	echo "   -c    clean POH installation"
-	echo "   -d    start POH in debug mode"
-	echo "   -C    start Open Hospital - Client / Server mode"
-	echo "   -t    test database connection (Client mode only)"
-	echo "   -v    show OH software version and configuration"
-	echo "   -D    start POH in Demo mode"
-	echo "   -G    setup GSM"
-	echo "   -h    show this help"
-	echo ""
+
+
+        # show menu
+        # Clear-Host # clear console
+        echo " ---------------------------------------------------------"
+        echo "|                                                         |"
+        echo "|                   Open Hospital | OH                    |"
+        echo "|                                                         |"
+        echo " ---------------------------------------------------------"
+        echo " lang $OH_LANGUAGE | arch $ARCH"
+        echo ""
+        echo " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
+        echo "               [ -distro PORTABLE|CLIENT ]"
+        echo "               [ -debug INFO|DEBUG ] "
+        echo ""
+        echo "   -s    save OH database"
+        echo "   -r    restore OH database"
+        echo "   -l    set language: en|fr|it|es|pt"
+        echo "   -C    start OH - CLIENT mode (Client / Server configuration)"
+        echo "   -t    test database connection (CLIENT mode only)"
+        echo "   -D    start OH in DEMO mode"
+        echo "   -d    start OH in DEBUG mode"
+        echo "   -c    clean OH installation"
+        echo "   -G    setup GSM"
+        echo "   -v    show OH software version and configuration"
+        echo "   -h    show this help"
+        echo "   -q    quit"
+        echo ""
 	exit 0
 }
 
@@ -490,7 +500,7 @@ while getopts ${OPTSTRING} opt; do
 		script_usage;
 		;;
 	r)	# restore 
-        	echo "Restoring Portable Open Hospital database...."
+        	echo "Restoring Open Hospital database...."
 		clean_database;
 		# ask user for database/sql script to restore
 		read -p "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> " DB_CREATE_SQL
@@ -504,14 +514,14 @@ while getopts ${OPTSTRING} opt; do
 		;;
 
 	c)	# clean
-        	echo "Cleaning Portable Open Hospital installation..."
+        	echo "Cleaning Open Hospital installation..."
 		clean_files;
 		clean_database;
         	echo "Done!"
 		exit 0
 		;;
 	d)	# debug
-        	echo "Starting Portable Open Hospital in debug mode..."
+        	echo "Starting Open Hospital in debug mode..."
 		DEBUG_LEVEL=DEBUG
 		echo "Debug level set to $DEBUG_LEVEL"
 		;;
@@ -523,7 +533,7 @@ while getopts ${OPTSTRING} opt; do
 				config_database;
 			fi
 			start_database;
-	        	echo "Saving Portable Open Hospital database..."
+	        	echo "Saving Open Hospital database..."
 			dump_database;
 			shutdown_database;
 	        	echo "Done!"
@@ -533,16 +543,16 @@ while getopts ${OPTSTRING} opt; do
 			exit 1
 		fi
 		;;
-	C)	# start in client mode
-		OH_DISTRO=client
+	C)	# start in CLIENT mode
+		OH_DISTRO=CLIENT
 		;;
 	l)	# set language
 		OH_LANGUAGE=$OPTARG
 		set_language;
 		;;
 	t)	# test database connection
-		if [ $OH_DISTRO = portable ]; then
-			echo "Only for client mode. Exiting."
+		if [ $OH_DISTRO = PORTABLE ]; then
+			echo "Only for CLIENT mode. Exiting."
 			exit 1
 		fi
 		test_database_connection;
@@ -557,12 +567,12 @@ while getopts ${OPTSTRING} opt; do
 		exit 0;
 		;;
 	D)	# demo mode
-        	echo "Starting Portable Open Hospital in demo mode..."
-		# exit if OH is configured in Client mode
-		if [ $OH_DISTRO = "client" ]; then
-			echo "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting."
+        	echo "Starting Open Hospital in demo mode..."
+		# exit if OH is configured in CLIENT mode
+		if [ $OH_DISTRO = "CLIENT" ]; then
+			echo "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting."
 			exit 1;
-		else OH_DISTRO="portable"
+		else OH_DISTRO="PORTABLE"
 		fi
 		DEMO_MODE="on"
 		clean_database;
@@ -580,7 +590,8 @@ while getopts ${OPTSTRING} opt; do
         	echo "Architecture is $ARCH"
 		echo "Open Hospital is configured in $OH_DISTRO mode"
 		echo "Language is set to $OH_LANGUAGE"
-		echo "Demo mode is set to $DEMO_MODE"
+		echo "DEMO mode is set to $DEMO_MODE"
+        	echo ""
 		echo "MYSQL_SERVER=$MYSQL_SERVER"
 		echo "MYSQL_PORT=$MYSQL_PORT"
 		echo "DATABASE_NAME=$DATABASE_NAME"
@@ -606,15 +617,15 @@ done
 
 # check distro
 if [ -z ${OH_DISTRO+x} ]; then
-	echo "Error - OH_DISTRO not defined [client - portable]! Exiting."
+	echo "Error - OH_DISTRO not defined [CLIENT - PORTABLE]! Exiting."
 	exit 1
 fi
 
 # check for demo mode
 if [ $DEMO_MODE = "on" ]; then
-	# exit if OH is configured in Client mode
-	if [ $OH_DISTRO = "client" ]; then
-		echo "Error - OH_DISTRO set to client mode. Cannot run in Demo mode, exiting."
+	# exit if OH is configured in CLIENT mode
+	if [ $OH_DISTRO = "CLIENT" ]; then
+		echo "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting."
 		exit 1;
 	fi
 
@@ -640,7 +651,7 @@ java_lib_setup;
 ######## Database setup
 
 # Start MySQL and create database
-if [ $OH_DISTRO = portable ]; then
+if [ $OH_DISTRO = PORTABLE ]; then
 	# Check for MySQL software
 	mysql_check;
 	# Config MySQL
@@ -705,7 +716,7 @@ $JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -cl
 
 echo "Exiting Open Hospital..."
 
-if [ $OH_DISTRO = portable ]; then
+if [ $OH_DISTRO = PORTABLE ]; then
 	shutdown_database;
 fi
 
