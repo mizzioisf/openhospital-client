@@ -56,7 +56,7 @@ cd openhospital-client
 - right-click on **oh.ps1** -> Properties -> General -> Security
 - select "Unblock"
 - right click on **oh.ps1** and select "Run with Powershell"
-- to see available options and run Open Hospital
+- choose among available options
 
 The script offers an interactive menu that can be used to setup and choose how to run Open Hospital Client.
 Tested on Windows 10 x64.
