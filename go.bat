@@ -1,6 +1,6 @@
 @echo off
 REM # Open Hospital (www.open-hospital.org)
-REM # Copyright © 2006-2020 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
+REM # Copyright © 2006-2021 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
 REM #
 REM # Open Hospital is a free and open source software for healthcare data management.
 REM #
@@ -28,10 +28,7 @@ REM set DEMO_MODE="off"
 
 REM # Language setting - default set to en
 REM set OH_LANGUAGE=en fr es it pt
-set OH_LANGUAGE=en
-
-REM # set debug level to INFO | DEBUG - default set to INFO
-set DEBUG_LEVEL=INFO
+REM set OH_LANGUAGE=en
 
 REM launch powershell script
 
