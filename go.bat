@@ -23,13 +23,6 @@ REM #
 REM ################### Configuration ###################
 set OH_PATH=%~dps0
 
-REM set OH_DISTRO="PORTABLE|CLIENT"
-REM set DEMO_MODE="off"
-
-REM # Language setting - default set to en
-REM set OH_LANGUAGE=en fr es it pt
-REM set OH_LANGUAGE=en
-
 REM launch powershell script
 
 echo Launching oh.ps1...
