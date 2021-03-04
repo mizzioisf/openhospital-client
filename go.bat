@@ -37,4 +37,4 @@ REM launch powershell script
 
 echo Launching oh.ps1...
 
-powershell.exe  -ExecutionPolicy Bypass ./oh.ps1
+powershell.exe  -ExecutionPolicy Bypass -File  ./oh.ps1
