@@ -503,7 +503,7 @@ function shutdown_database {
 }
 
 function clean_database {
-	Write-Host "Warning: do you want to remove all data and database ?" -ForegroundColor Red
+	Write-Host "Warning: do you want to remove all data and databases ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Killing mysql processes..."
 	# stop mysqld zombies

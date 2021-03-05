@@ -428,7 +428,7 @@ function shutdown_database {
 }
 
 function clean_database {
-	echo "Warning: do you want to remove all data and database ?"
+	echo "Warning: do you want to remove all data and databases ?"
 	get_confirmation;
 	echo "Removing data..."
 	# remove databases
