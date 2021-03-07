@@ -25,6 +25,23 @@ set OH_PATH=%~dps0
 
 REM launch powershell script
 
+REM :header
+REM    echo %__NAME% v%__VERSION%
+REM    echo This is Open Hospital launch script
+REM    echo.
+REM    goto :eof
+
+IF "%1"=="legacy" GOTO LEGACY
+
+
 echo Launching oh.ps1...
 
 powershell.exe  -ExecutionPolicy Bypass -File  ./oh.ps1
+
+:LEGACY
+
+echo Starting OH with legacy oh.bat...
+
+:END
+   REM call :cleanup
+    exit /B
