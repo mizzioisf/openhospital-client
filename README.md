@@ -50,10 +50,10 @@ cd openhospital-client
 - start POH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
 
-**on Windows: (cmd batch file)**
+**on Windows: **
 
-- run **oh.bat**
-- to see available options, run **.\oh.bat -h**
+- double click **oh.bat**
+- to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
 
 # Running POH - Quickstart - full distro 
