@@ -42,7 +42,7 @@ goto :init
 :header
 	echo.
 	echo  Open Hospital startup script
-	echo  %__BAT_NAME% v%__VERSION%
+	echo  %__BAT_NAME% v%__SCRIPTVERSION%
 	echo.
 	goto :eof
 
@@ -55,8 +55,7 @@ goto :init
 	goto :eof
 
 :init
-	set "__NAME=%~n0"
-	set "__VERSION=1.0"
+	set "__SCRIPTVERSION=1.0"
 
 	set "__BAT_FILE=%~0"
 	set "__BAT_PATH=%~dp0"
@@ -65,14 +64,14 @@ goto :init
 :parse
 	if "%~1"=="" goto :main
 
-	if /i "%~1"=="/?"         call :header & call :usage & goto :end
-	if /i "%~1"=="-?"         call :header & call :usage & goto :end
-	if /i "%~1"=="-h"         call :header & call :usage & goto :end
-	if /i "%~1"=="--help"     call :header & call :usage & goto :end
+	if /i "%~1"=="/?"	call :header & call :usage & goto :end
+	if /i "%~1"=="-?"	call :header & call :usage & goto :end
+	if /i "%~1"=="-h"	call :header & call :usage & goto :end
+	if /i "%~1"=="--help"	call :header & call :usage & goto :end
 
-	if /i "%~1"=="/legacymode"	call :legacy	& goto :end
-	if /i "%~1"=="-legacymode"	call :legacy	& goto :end
-	if /i "%~1"=="--legacymode"	call :legacy	& goto :end
+	if /i "%~1"=="/legacymode"	call :legacy & goto :end
+	if /i "%~1"=="-legacymode"	call :legacy & goto :end
+	if /i "%~1"=="--legacymode"	call :legacy & goto :end
 
 	shift
 	goto :parse
@@ -84,7 +83,6 @@ goto :init
 	echo Starting OH with oh.ps1...
 
 	REM launch powershell script
-
 	powershell.exe  -ExecutionPolicy Bypass -File  ./oh.ps1
 
 	goto end
@@ -322,8 +320,7 @@ goto end
 :cleanup
 	REM The cleanup function is only really necessary if you
 	REM are _not_ using SETLOCAL.
-	set "__NAME="
-	set "__VERSION="
+	set "__SCRIPTVERSION="
 	set "__BAT_FILE="
 	set "__BAT_PATH="
 	set "__BAT_NAME="
