@@ -298,6 +298,7 @@ cd /d %OH_PATH%\%OH_DIR%
 %JAVA_BIN% -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.menu.gui.Menu
 
 REM # Shutdown MySQL
+echo Shutting down MySQL...
 start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% shutdown >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 
 REM # Exit
