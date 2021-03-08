@@ -50,10 +50,10 @@ cd openhospital-client
 - start POH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
 
-
 **on Windows: (cmd batch file)**
 
 - run **oh.bat**
+- to see available options, run **.\oh.bat -h**
 
 **on Windows, to manually run oh.ps1 (powershell script):**
 
