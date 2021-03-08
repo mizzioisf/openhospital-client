@@ -55,6 +55,16 @@ cd openhospital-client
 - run **oh.bat**
 - to see available options, run **.\oh.bat -h**
 
+
+# Running POH - Quickstart - full distro 
+
+(see poh downloads on sourceforce for full release packages)
+
+- unzip the package in any directory
+- browse to the directory
+- on Linux, start POH by running **./oh.sh**
+- on Windows, start POH by double clicking on the **oh.bat** batch file
+
 **on Windows, to manually run oh.ps1 (powershell script):**
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
@@ -66,18 +76,10 @@ The script offers an interactive menu that can be used to setup and choose how t
 Tested on Windows 10 x64.
 
 
-# Running POH - Quickstart - full distro 
-
-(see poh downloads on sourceforce for full release packages)
-
-- unzip the package in any directory
-- browse to the directory
-- on Linux, start POH by running **./oh.sh**
-- on Windows, start POH by double clicking on the **oh.bat** batch file
-
 # Default directory structure
 
-We don't need to have or pack empty directories anymore: the scripts take care of crating everything, which is also parametric and user adjustable.
+We don't need to have or pack empty directories anymore: the scripts takes care of creating everything.
+iEverything is also parametric and user adjustable in the script.
 The default is now clean, simple and **common to all distros:**
 
 ```
