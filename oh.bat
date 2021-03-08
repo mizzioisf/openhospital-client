@@ -21,11 +21,10 @@ REM # along with this program. If not, see <http://www.gnu.org/licenses/>.
 REM #
 
 REM ################### Configuration ###################
-
+REM
 REM set LEGACYMODE=on to start with legacy oh.bat script
 REM
-REM launch the script with option oh.bat -h
-REM to see available options
+REM launch oh.bat -h to see available options
 REM 
 REM default start is powershell oh.ps1 script
 
@@ -56,7 +55,6 @@ goto :init
 
 :init
 	set "__SCRIPTVERSION=1.0"
-
 	set "__BAT_FILE=%~0"
 	set "__BAT_PATH=%~dp0"
 	set "__BAT_NAME=%~nx0"
@@ -324,7 +322,6 @@ goto end
 	set "__BAT_FILE="
 	set "__BAT_PATH="
 	set "__BAT_NAME="
-
 	set "LEGACYMODE="
 
 	goto :eof
