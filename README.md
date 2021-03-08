@@ -51,7 +51,11 @@ cd openhospital-client
 - to see available options, run **./oh.sh -h**
 
 
-**on Windows: (powershell script)**
+**on Windows: (cmd batch file)**
+
+- run **oh.bat**
+
+**on Windows, to manually run oh.ps1 (powershell script):**
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
 - select "Unblock"
@@ -61,20 +65,6 @@ cd openhospital-client
 The script offers an interactive menu that can be used to setup and choose how to run Open Hospital Client.
 Tested on Windows 10 x64.
 
-
-**on Windows: (cmd batch file)**
-
-- download and unzip java:
-```
-wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
-unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
-```
-- download and unzip mysql:
-```
-wget  https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.31-linux-glibc2.12-win64
-unzip mysql-5.7.31-linux-glibc2.12-win64.zip
-```
-- run **oh.bat**
 
 # Running POH - Quickstart - full distro 
 
@@ -152,6 +142,20 @@ If you get this error:
 set-executionpolicy remotesigned
 ```
 Also enable access to oh.ps1 on Windows Firewall.
+
+
+If you are using the legacy version, you need to download and unzip java ad mysql manually.
+
+- download and unzip mysql:
+```
+wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
+unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
+```
+- download and unzip mysql:
+```
+wget  https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.31-linux-glibc2.12-win64
+unzip mysql-5.7.31-linux-glibc2.12-win64.zip
+```
 
 # New oh.sh
 
