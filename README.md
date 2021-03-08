@@ -58,7 +58,7 @@ cd openhospital-client
 
 # Running POH - Quickstart - full distro 
 
-(see poh downloads on sourceforce for full release packages)
+*(see poh downloads on sourceforce for full release packages)*
 
 - unzip the package in any directory
 - browse to the directory
@@ -71,16 +71,16 @@ cd openhospital-client
 - select "Unblock"
 - right click on **oh.ps1** and select "Run with Powershell"
 - choose among available options
-- to start Open Hospital with legacy batch file (old oh.bat), open a cmd.exe window and run **.\oh.bat -legacymode** 
+- to start Open Hospital with legacy batch file (old oh.bat), open cmd.exe and run **.\oh.bat -legacymode** 
 
-The script offers an interactive menu that can be used to setup and choose how to run Open Hospital Client.
+The script offers an interactive menu that can be used to setup and choose how to run Open Hospital.
 Tested on Windows 10 x64.
 
 
 # Default directory structure
 
-We don't need to have or pack empty directories anymore: the scripts takes care of creating everything.
-iEverything is also parametric and user adjustable in the script.
+The scripts takes care of creating all the need data directories and configuration files
+Everything is also parametric and user adjustable in the script with variables.
 The default is now clean, simple and **common to all distros:**
 
 ```
