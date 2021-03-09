@@ -53,7 +53,6 @@ cd openhospital-client
 
 - start OH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
---------------------
 
 ```
  ---------------------------------------------------------
@@ -79,10 +78,10 @@ cd openhospital-client
 
 ```
 
+--------------------
 **on Windows:**
 
 - double click on the **oh.bat** batch file
-- to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
 ```
  ---------------------------------------------------------"
@@ -90,11 +89,11 @@ cd openhospital-client
 |                   Open Hospital | OH                    |"
 |                                                         |"
  ---------------------------------------------------------"
-lang $script:OH_LANGUAGE | arch $ARCH"
+lang en | arch $ARCH"
 
- Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
-                     [ -distro PORTABLE|CLIENT ]"
-                     [ -debug INFO|DEBUG ] "
+Usage: oh.ps1 [ -lang en|fr|it|es|pt ] "
+              [ -distro PORTABLE|CLIENT ]"
+              [ -debug INFO|DEBUG ] "
 
  C    start OH - CLIENT mode (Client / Server configuration)"
  d    start OH in DEBUG mode"
@@ -109,7 +108,6 @@ lang $script:OH_LANGUAGE | arch $ARCH"
  q    quit"
 ```
 
-
 **on Windows, to manually run oh.ps1 (powershell script):**
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
@@ -117,6 +115,7 @@ lang $script:OH_LANGUAGE | arch $ARCH"
 - right click on **oh.ps1** and select "Run with Powershell"
 - choose among available options
 - to start Open Hospital with legacy batch file (old oh.bat), open cmd.exe and run **.\oh.bat -legacymode** 
+- to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
 The script offers an interactive menu that can be used to setup and choose how to run Open Hospital.
 Tested on Windows 10 x64.
