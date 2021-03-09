@@ -84,6 +84,32 @@ cd openhospital-client
 - double click on the **oh.bat** batch file
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
+```
+ ---------------------------------------------------------"
+|                                                         |"
+|                   Open Hospital | OH                    |"
+|                                                         |"
+ ---------------------------------------------------------"
+lang $script:OH_LANGUAGE | arch $ARCH"
+
+ Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
+                     [ -distro PORTABLE|CLIENT ]"
+                     [ -debug INFO|DEBUG ] "
+
+ C    start OH - CLIENT mode (Client / Server configuration)"
+ d    start OH in DEBUG mode"
+ D    start OH in DEMO mode"
+ G    setup GSM"
+ l    set language: en|fr|it|es|pt"
+ s    save OH database"
+ r    restore OH database"
+ t    test database connection (Client mode only)"
+ v    show OH software version and configuration"
+ X    clean OH installation"
+ q    quit"
+```
+
+
 **on Windows, to manually run oh.ps1 (powershell script):**
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
