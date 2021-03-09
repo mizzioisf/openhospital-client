@@ -53,6 +53,31 @@ cd openhospital-client
 
 - start OH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
+--------------------
+
+```
+ ---------------------------------------------------------
+|                                                         |
+|                   Open Hospital | OH                    |
+|                                                         |
+ ---------------------------------------------------------
+ lang en | arch x86_64
+
+ Usage: oh.sh [ -lang en|fr|it|es|pt ] 
+
+   -C    start OH in CLIENT mode (Client / Server configuration)
+   -d    start OH in DEBUG mode
+   -D    start OH in DEMO mode
+   -G    setup GSM
+   -h    show this help
+   -l    set language: en|fr|it|es|pt
+   -s    save OH database
+   -r    restore OH database
+   -t    test database connection (CLIENT mode only)
+   -v    show OH software version and configuration
+   -X    clean OH installation
+
+```
 
 **on Windows:**
 
@@ -200,31 +225,6 @@ https://github.com/informatici/openhospital-core/pull/241
 
 Comments, suggestions and requests are welcome !
 
---------------------
-
-```
- ---------------------------------------------------------
-|                                                         |
-|                   Open Hospital | OH                    |
-|                                                         |
- ---------------------------------------------------------
- lang en | arch x86_64
-
- Usage: oh.sh [ -lang en|fr|it|es|pt ] 
-
-   -C    start OH in CLIENT mode (Client / Server configuration)
-   -d    start OH in DEBUG mode
-   -D    start OH in DEMO mode
-   -G    setup GSM
-   -h    show this help
-   -l    set language: en|fr|it|es|pt
-   -s    save OH database
-   -r    restore OH database
-   -t    test database connection (CLIENT mode only)
-   -v    show OH software version and configuration
-   -X    clean OH installation
-
-```
 
 
 Bugs, issues and feature requests should be reported on
