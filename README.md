@@ -142,9 +142,10 @@ data/dicom_storage
 ```
 External software package downloaded at first run:
 
-**Mariadb 10.2.37 server**
-
-**OpenJDK JRE 11**
+```
+Mariadb 10.2.37 server
+OpenJDK JRE 11
+```
 
 # Known issues
 
