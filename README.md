@@ -178,34 +178,32 @@ sudo apt-get install libaio1
 
 **Windows**
 
-Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit jre is mandatory.
+- Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit jre is mandatory.
 If you need DICOM on Windows 64 bit set DICOM_ENABLE="true" in the script.
 
-- Powershell script (oh.ps1) is new: give it a try :-)
-
-If you get this error:
+- If you get this error:
 
 ```
 + CategoryInfo : NotSpecified: (:) [], PSSecurityException
 + FullyQualifiedErrorId : RuntimeException or UnauthorizedAccess
 ```
 
-- Start Windows PowerShell with the "Run as Administrator" option. Only members of the Administrators group on the computer can change the execution policy.
-- Enable running unsigned scripts by entering:
+Start Windows PowerShell with the "Run as Administrator" option. Only members of the Administrators group on the computer can change the execution policy.
+Enable running unsigned scripts by entering:
 ```
 set-executionpolicy remotesigned
 ```
 Also enable access to oh.ps1 on Windows Firewall.
 
 
-If you are using the legacy version, you might to download and unzip java ad mysql manually.
+- If you are using the legacy version, you might to download and unzip java ad mysql manually.
 
-- download and unzip Java:
+download and unzip Java:
 ```
 wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
 unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
 ```
-- download and unzip mysql (mariadb):
+download and unzip mysql (mariadb):
 ```
 wget  https://downloads.mariadb.com/MariaDB/mariadb-10.2.37/winx64-packages/mariadb-10.2.37-winx64.zip
 unzip mariadb-10.2.37-winx64.zip
