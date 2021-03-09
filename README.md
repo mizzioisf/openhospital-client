@@ -178,7 +178,8 @@ sudo apt-get install libaio1
 
 **Windows**
 
-Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit is mandadory.
+Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit jre is mandatory.
+See options in the script if you need DICOM on Windows 64 bit.
 
 - Powershell script (oh.ps1) is new: give it a try :-)
 
