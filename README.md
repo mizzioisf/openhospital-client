@@ -1,18 +1,18 @@
 # ![](./oh.ico) OH - Open Hospital Portable | Client 
 
 Open Hospital (https://www.open-hospital.org/en/) is a free and open source
-software for healthcare data management. Its portable version (Portable Open
-Hospital, POH) allows you to take along with you Open Hospital and run it on
-any computer, keeping the data you have saved. With POH, we also hope to
+software for healthcare data management. Its portable version (Open Hospital
+Portable) allows you to take along with you Open Hospital and run it on
+any computer, keeping the data you have saved. With OH, we also hope to
 reach the goal to make Open Hospital easily installable so that even somebody
 with no experience of Java or MySQL can try or use it.
 
 OH allows to use Open Hospital on a computer, easily move the installation on
 another computer or even run it from a USB stick or drive. All you have to do
 is to copy the root installation directory of POH to your favourite path, where
-the program and the data will be kept. POH uses its own version of the Java Virtual
+the program and the data will be kept. OH uses its own version of the Java Virtual
 Machine and the MySQL server and everything is contained in the root
-installation directory. POH is released under the GNU GPL 3.0 License.
+installation directory. OH is released under the GNU GPL 3.0 License.
 
 The Linux version has been tested on different distributions and versions,
 including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 20.10 x64 (64bit).
@@ -36,6 +36,10 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 Common to all architectures:
 
+*(see poh downloads on sourceforce for full release packages)*
+
+**via git - latest version**
+
 - clone the repository
 ```
 git clone https://github.com/mizzioisf/openhospital-client
@@ -47,23 +51,13 @@ cd openhospital-client
 
 **on Linux:**
 
-- start POH by running **./oh.sh**
+- start OH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
 
 **on Windows:**
 
-- double click **oh.bat**
+- double click on the **oh.bat** batch file
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
-
-
-# Running POH - Quickstart - full distro 
-
-*(see poh downloads on sourceforce for full release packages)*
-
-- unzip the package in any directory
-- browse to the directory
-- on Linux, start POH by running **./oh.sh**
-- on Windows, start POH by double clicking on the **oh.bat** batch file
 
 **on Windows, to manually run oh.ps1 (powershell script):**
 
@@ -188,13 +182,9 @@ Description of changes:
 - Added sql subdirectory to organize sql creation scripts
 - Added various checks about correct settings of parameters and startup of services
 - Added security controls (no more _rm -rf_ here and there :-)
-- Added support for **MariaDB** - (tested with mariadb-10.2.36-linux-x86_64) (POH seems faster and more responsive)
+- Added support for **MariaDB** - (tested with mariadb-10.2.36-linux-x86_64) (OH seems faster and more responsive)
 - Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
 - Fixed _a_few_ bugs ;-)
-
-Still working on:
-- Porting to powershell :-)
-
 
 
 For more informations see:
@@ -213,23 +203,26 @@ Comments, suggestions and requests are welcome !
 --------------------
 
 ```
- Portable Open Hospital Client - OH
+ ---------------------------------------------------------
+|                                                         |
+|                   Open Hospital | OH                    |
+|                                                         |
+ ---------------------------------------------------------
+ lang en | arch x86_64
 
- Usage: oh.sh [-option]
+ Usage: oh.sh [ -lang en|fr|it|es|pt ] 
 
-   -l    en|fr|it|es|pt   --> set language [default: oh.sh -l en]
-
+   -C    start OH in CLIENT mode (Client / Server configuration)
+   -d    start OH in DEBUG mode
+   -D    start OH in DEMO mode
+   -G    setup GSM
+   -h    show this help
+   -l    set language: en|fr|it|es|pt
    -s    save OH database
    -r    restore OH database
-   -c    clean POH installation
-   -d    start POH in debug mode
-   -C    start Open Hospital - Client / Server mode
-   -t    test database connection (Client mode only)
-   -v    show POH version information
-   -D    start POH in Demo mode
-   -G    Setup GSM
-   -h    show this help
-
+   -t    test database connection (CLIENT mode only)
+   -v    show OH software version and configuration
+   -X    clean OH installation
 
 ```
 
