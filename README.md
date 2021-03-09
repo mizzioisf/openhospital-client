@@ -197,17 +197,17 @@ set-executionpolicy remotesigned
 Also enable access to oh.ps1 on Windows Firewall.
 
 
-If you are using the legacy version, you need to download and unzip java ad mysql manually.
+If you are using the legacy version, you might to download and unzip java ad mysql manually.
 
-- download and unzip mysql:
+- download and unzip Java:
 ```
 wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
 unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
 ```
-- download and unzip mysql:
+- download and unzip mysql (mariadb):
 ```
-wget  https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.31-linux-glibc2.12-win64
-unzip mysql-5.7.31-linux-glibc2.12-win64.zip
+wget  https://downloads.mariadb.com/MariaDB/mariadb-10.2.37/winx64-packages/mariadb-10.2.37-winx64.zip
+unzip mariadb-10.2.37-winx64.zip
 ```
 
 # New oh.sh / oh.ps1
@@ -266,5 +266,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-last updated: 21 feb 2021
+last updated: 9 mar 2021
 
