@@ -193,7 +193,7 @@ Enable running unsigned scripts by entering:
 ```
 set-executionpolicy remotesigned
 ```
-Also enable access to oh.ps1 on Windows Firewall.
+- You might also be required to enable access to oh.ps1 on Windows Firewall.
 
 
 If you are using the legacy version, you might to download and unzip java ad mysql manually.
