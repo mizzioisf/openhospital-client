@@ -123,8 +123,8 @@ Tested on Windows 10 x64.
 
 # Default directory structure
 
-The scripts takes care of creating all the need data directories and configuration files
-Everything is also parametric and user adjustable in the script with variables.
+The scripts take care of creating all the needed data directories and configuration files
+Everything is also parametric and user adjustable in the scripts with variables (or via command line options).
 The default is now clean, simple and **common to all distros:**
 
 ```
