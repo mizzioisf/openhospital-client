@@ -229,7 +229,7 @@ Description of changes, Linux version (mostly the same is applicable to the wind
 - **New**: Language support (both via variable in the script or user input option: **oh.sh -l fr**)
 - **New**: Demo database support (See oh.sh -D)
 - **New**: Client mode support (see oh.sh -C)
-- **New**: Save / Restore database also for Portable distro !
+- **New**: Save (see oh.sh -s) / Restore (oh.sh -r) database also for Portable distro !
 - **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
 - **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
 - **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for testing
