@@ -507,7 +507,7 @@ while getopts ${OPTSTRING} opt; do
 		OH_DISTRO=CLIENT
 		;;
 	D)	# demo mode
-        	echo "Starting Open Hospital in demo mode..."
+        	echo "Starting Open Hospital in DEMO mode..."
 		# exit if OH is configured in CLIENT mode
 		if [ $OH_DISTRO = "CLIENT" ]; then
 			echo "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting."
