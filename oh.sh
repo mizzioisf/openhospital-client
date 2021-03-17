@@ -191,7 +191,7 @@ function set_path {
 #		echo "Warning: POH_PATH not found - using current directory"
 		OH_PATH=$CURRENT_DIR
 		if [ ! -f $OH_PATH/$SCRIPT_NAME ]; then
-			echo "Error - oh.sh not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
+			echo "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
 			exit 1
 		fi
 	fi
@@ -295,7 +295,7 @@ if [ ! -d "$OH_PATH/$MYSQL_DIR" ]; then
 	tar xf $OH_PATH/$MYSQL_DIR.$EXT -C $OH_PATH/
 	if [ $? -ne 0 ]; then
 		echo "Error unpacking MySQL. Exiting."
-		exit 2
+		exit 1
 	fi
 	echo "MySQL unpacked successfully!"
 	echo "Removing downloaded file..."
@@ -308,7 +308,7 @@ if [ -x $OH_PATH/$MYSQL_DIR/bin/mysqld_safe ]; then
 	echo "Using $MYSQL_DIR"
 else
 	echo "MySQL not found! Exiting."
-	exit 2
+	exit 1
 fi
 }
 
@@ -369,6 +369,11 @@ function set_database_root_pw {
 	# If using MySQL/MariaDB root password need to be set
 	echo "Setting MySQL root password..."
 	$OH_PATH/$MYSQL_DIR/bin/mysql -u root --skip-password --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';" >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
+	
+	if [ $? -ne 0 ]; then
+		echo "Error: MySQL root password not set! Exiting."
+		exit 2
+	fi
 }
 
 
@@ -379,12 +384,17 @@ function import_database {
 	-e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; \
 	CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; \
 	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%' ; " >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
+	
+	if [ $? -ne 0 ]; then
+		echo "Error: Database creation failed! Exiting."
+		exit 2
+	fi
 
 	# Check for database creation script
 	if [ -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
 		echo "Using SQL file $SQL_DIR/$DB_CREATE_SQL..."
 	else
-		echo "No SQL file found! Exiting."
+		echo "Error: No SQL file found! Exiting."
 		shutdown_database;
 		exit 2
 	fi
@@ -684,29 +694,29 @@ test_database_connection;
 
 if [ $MANUAL_CONFIG != "on" ]; then
 
-# set up configuration files
-echo "Setting up OH configuration files..."
+	# set up configuration files
+	echo "Setting up OH configuration files..."
 
-######## DICOM setup
-[ -f $OH_PATH/$OH_DIR/rsc/dicom.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/dicom.properties $OH_PATH/$OH_DIR/rsc/dicom.properties.old
-sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-    -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" $OH_PATH/$OH_DIR/rsc/dicom.properties.dist > $OH_PATH/$OH_DIR/rsc/dicom.properties
+	######## DICOM setup
+	[ -f $OH_PATH/$OH_DIR/rsc/dicom.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/dicom.properties $OH_PATH/$OH_DIR/rsc/dicom.properties.old
+	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
+	    -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" $OH_PATH/$OH_DIR/rsc/dicom.properties.dist > $OH_PATH/$OH_DIR/rsc/dicom.properties
 
-######## log4j.properties setup
-[ -f $OH_PATH/$OH_DIR/rsc/log4j.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/log4j.properties $OH_PATH/$OH_DIR/rsc/log4j.properties.old
-sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
-    -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/g" $OH_PATH/$OH_DIR/rsc/log4j.properties.dist > $OH_PATH/$OH_DIR/rsc/log4j.properties
+	######## log4j.properties setup
+	[ -f $OH_PATH/$OH_DIR/rsc/log4j.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/log4j.properties $OH_PATH/$OH_DIR/rsc/log4j.properties.old
+	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
+	    -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/g" $OH_PATH/$OH_DIR/rsc/log4j.properties.dist > $OH_PATH/$OH_DIR/rsc/log4j.properties
 
-######## database.properties setup 
-[ -f $OH_PATH/$OH_DIR/rsc/database.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old
-sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e"s/DBNAME/$DATABASE_NAME/g" \
-    -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
-$OH_PATH/$OH_DIR/rsc/database.properties.dist > $OH_PATH/$OH_DIR/rsc/database.properties
+	######## database.properties setup 
+	[ -f $OH_PATH/$OH_DIR/rsc/database.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old
+	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e"s/DBNAME/$DATABASE_NAME/g" \
+	    -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
+	$OH_PATH/$OH_DIR/rsc/database.properties.dist > $OH_PATH/$OH_DIR/rsc/database.properties
 
-######## generalData.properties language setup 
-# set language in OH config file
-[ -f $OH_PATH/$OH_DIR/rsc/generalData.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/generalData.properties $OH_PATH/$OH_DIR/rsc/generalData.properties.old
-sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" $OH_PATH/$OH_DIR/rsc/generalData.properties.dist > $OH_PATH/$OH_DIR/rsc/generalData.properties
+	######## generalData.properties language setup 
+	# set language in OH config file
+	[ -f $OH_PATH/$OH_DIR/rsc/generalData.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/generalData.properties $OH_PATH/$OH_DIR/rsc/generalData.properties.old
+	sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" $OH_PATH/$OH_DIR/rsc/generalData.properties.dist > $OH_PATH/$OH_DIR/rsc/generalData.properties
 
 fi
 
@@ -718,6 +728,13 @@ cd $OH_PATH/$OH_DIR
 
 # OH GUI launch
 $JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
+
+if [ $? -ne 0 ]; then
+	echo "Error: MySQL initialization failed! Exiting."
+	echo "An error occurred starting Open Hospital. Exiting."
+	exit 4
+fi
+	
 
 echo "Exiting Open Hospital..."
 
