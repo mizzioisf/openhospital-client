@@ -117,8 +117,7 @@ switch ( "$ARCH" ) {
     ("486","586","686","x86","i86pc") { $script:JAVA_ARCH=64; $script:MYSQL_ARCH=32 }
 	default {
 	    Write-Host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
-	    	Read-Host;
-		exit 1
+	    	Read-Host; exit 1
 	}
 }
 
@@ -218,8 +217,7 @@ function set_path {
 		$script:OH_PATH=$CURRENT_DIR
 		if ( ! (Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where POH was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
-			Read-Host; 
-			exit 1
+			Read-Host; exit 1
 		}
 	}
 #	$OH_PATH_ESCAPED=$(Write-Host $OH_PATH | sed -e 's/\//\\\//g'")
@@ -239,8 +237,7 @@ function set_language {
 	        }
 		default {
 	        	Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
-			Read-Host;
-			exit 1
+			Read-Host; exit 1
 	        }
 	}
 }
@@ -280,16 +277,14 @@ function download_file ($download_url,$download_file){
 	try {
         	$wc = new-object System.Net.WebClient
 	        $wc.DownloadFile("$download_url\$download_file","$OH_PATH\$download_file")
-	    }
+	}
 	catch [System.Net.WebException],[System.IO.IOException] {
-           Write-Host "Unable to download $download_file from $download_url" -ForegroundColor Red
-	   Read-Host;
-           exit 1;
+		Write-Host "Unable to download $download_file from $download_url" -ForegroundColor Red
+		Read-Host; exit 1;
 	}
 	catch {
-           Write-Host "An error occurred. Exiting." -ForegroundColor Red
-	   Read-Host;
-           exit 1;
+		Write-Host "An error occurred. Exiting." -ForegroundColor Red
+		Read-Host; exit 1;
 	}
 }
 
@@ -311,8 +306,7 @@ function java_check {
 		}
 		catch {
 			Write-Host "Error unpacking Java. Exiting." -ForegroundColor Red
-			Read-Host;
-			exit 1
+			Read-Host; exit 1
 		}
 	Write-Host "Java unpacked successfully!"
 	}
@@ -322,8 +316,7 @@ function java_check {
 	}
 	else {
 		Write-Host "Error: JAVA not found. Exiting." -ForegroundColor Red
-		Read-Host;
-		exit 1
+		Read-Host; exit 1
 	}
 	Write-Host "JAVA found!"
 	Write-Host "Using $JAVA_BIN"
@@ -343,8 +336,7 @@ function mysql_check {
 		}
 		catch {
 			Write-Host "Error unpacking MySQL. Exiting." -ForegroundColor Red
-			Read-Host;
-			exit 1
+			Read-Host; exit 1
 		}
 	        Write-Host "MySQL unpacked successfully!"
 	}
@@ -355,8 +347,7 @@ function mysql_check {
 	}
 	else {
 		Write-Host "Error: MySQL not found. Exiting." -ForegroundColor Red
-		Read-Host;
-		exit 1
+		Read-Host; exit 1
 	}
 }
 
@@ -404,8 +395,7 @@ function inizialize_database {
 	        	}
 			catch {
 				Write-Host "Error: MariaDB initialization failed! Exiting." -ForegroundColor Red
-				Read-Host;
-				exit 2
+				Read-Host; exit 2
 			}
 		}
 		"mysql" {
@@ -414,10 +404,9 @@ function inizialize_database {
 			}
 			catch {
 				Write-Host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
-				Read-Host;
-				exit 2
+				Read-Host; exit 2
 			}
- 	       }
+		}
 	}
 }
 
@@ -429,8 +418,7 @@ function start_database {
 	}
 	catch {
 		Write-Host "Error: Database not started! Exiting." -ForegroundColor Red
-		Read-Host;
-		exit 2
+		Read-Host; exit 2
 	}
 
 	# Wait till the MySQL socket file is created -> TO BE IMPLEMENTED
@@ -442,23 +430,22 @@ function start_database {
 }
 
 function set_database_root_pw {
-     # If using MySQL root password need to be set
-     switch -Regex ( $MYSQL_DIR ) {
+	# If using MySQL root password need to be set
+	switch -Regex ( $MYSQL_DIR ) {
 		"mysql" {
 		echo "Setting MySQL root password..."
         $SQLCOMMAND=@"
         -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';"
 "@
-		try {
-			Start-Process -FilePath "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+			try {
+				Start-Process -FilePath "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+			}
+			catch {
+				Write-Host "Error: MySQL root password not set! Exiting." -ForegroundColor Red
+				Read-Host; exit 2
+			}
 		}
-		catch {
-			Write-Host "Error: MySQL root password not set! Exiting." -ForegroundColor Red
-			Read-Host;
-			exit 2
-		}
-       }
-    }
+	}
 }
 
 function import_database {
@@ -468,17 +455,21 @@ function import_database {
     $SQLCOMMAND=@"
     -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
 "@
-	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-    
+	try {
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+ 	}
+	catch {
+		Write-Host "Error: Database creation failed! Exiting." -ForeGroundColor Red
+		Read-Host; exit 2
+	}
 	# Check for database creation script
 	if ( Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
  		Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
 	}
 	else {
-		Write-Host "No SQL file found! Exiting." -ForeGroundColor Red
+		Write-Host "Error: No SQL file found! Exiting." -ForeGroundColor Red
 		shutdown_database;
-		Read-Host;
-		exit 2
+		Read-Host; exit 2
 	}
 
 	# Create OH database structure
@@ -493,9 +484,8 @@ function import_database {
 		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
  	}
 	catch {
-		Write-Host "Database not imported! Exiting." -ForeGroundColor Red
-		Read-Host;
-		exit 2
+		Write-Host "Error: Database not imported! Exiting." -ForeGroundColor Red
+		Read-Host; exit 2
 	}
 	Write-Host "Database imported!"
 }
@@ -507,21 +497,20 @@ function dump_database {
         $SQLCOMMAND=@"
     --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME
 "@
-        Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$OH_PATH\$BACKUP_DIR\mysqldump_$DATE.sql" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"	
-    }
-    else {
-	    Write-Host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
-	    shutdown_database;
-	    Read-Host;
-	    exit 2
-    }
+	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$OH_PATH\$BACKUP_DIR\mysqldump_$DATE.sql" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"	
+	}
+	else {
+		Write-Host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
+		shutdown_database;
+		Read-Host; exit 2
+	}
 	Write-Host "MySQL dump file $BACKUP_DIR\mysqldump_$DATE.sql completed!" -ForegroundColor Green
 }
 
 function shutdown_database {
 	Write-Host "Shutting down MySQL..."
 	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-	# Wait till the MySQL socket file is removed -> to implement
+	# Wait till the MySQL socket file is removed -> TO BE IMPLEMENTED
 	# while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 }
 
@@ -549,8 +538,7 @@ function test_database_connection {
 	}
 	catch {
 		Write-Host "Error: can't connect to database! Exiting." -ForegroundColor Red
-		Read-Host;
-		exit 2
+		Read-Host; exit 2
 	}
 }
 
@@ -560,7 +548,7 @@ function clean_files {
 	get_confirmation;
 	Write-Host "Removing files..."
 
-    $filetodel="$OH_PATH\etc\mysql\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\etc\mysql\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\etc\mysql\my.cnf.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$LOG_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\generalData.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
@@ -855,7 +843,14 @@ Write-Host "Starting Open Hospital..."
 cd $OH_PATH/$OH_DIR
 
 # OH GUI launch
-Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+try {
+	Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+}
+catch {
+	Write-Host "An error occurred starting Open Hospital. Exiting." -ForegroundColor Red
+	Read-Host; exit 4;
+}
+
 
 ###%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 

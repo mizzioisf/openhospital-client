@@ -730,7 +730,6 @@ cd $OH_PATH/$OH_DIR
 $JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 
 if [ $? -ne 0 ]; then
-	echo "Error: MySQL initialization failed! Exiting."
 	echo "An error occurred starting Open Hospital. Exiting."
 	exit 4
 fi
