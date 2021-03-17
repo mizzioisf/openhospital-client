@@ -399,36 +399,40 @@ function inizialize_database {
 	Write-Host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
-	    	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-        	}
+			try {
+		    	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	        	}
+			catch {
+				Write-Host "Error: MariaDB initialization failed! Exiting." -ForegroundColor Red
+				Read-Host;
+				exit 2
+			}
 		"mysql" {
+			try {
 		    Start-Process "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$OH_PATH\$MYSQL_DIR --datadir=$OH_PATH\$DATA_DIR") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"; break
+			}
+			catch {
+				Write-Host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
+			Read-Host;
+			exit 2
+			}
  	       }
 	}
-
-#
-#	ERROR CONTROL TO BE IMPLEMENTED
-#	if ( $? -ne 0 ){
-#		Write-Host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
-#		Read-Host;
-#		exit 2
-#	}
 }
 
 function start_database {
 	Write-Host "Starting MySQL server... "
-	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-    sleep 2;
+	try {
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+		sleep 1;
+	}
+	catch {
+		Write-Host "Error: Database not started! Exiting." -ForegroundColor Red
+		Read-Host;
+		exit 2
+	}
 
-#	ERROR CONTROL TO BE IMPLEMENTED
-#
-#	if ( $? -ne 0 ) {
-#		Write-Host "Error: Database not started! Exiting." -ForegroundColor Red
-#		Read-Host;
-#		exit 2
-#	}
-
-	# Wait till the MySQL socket file is created
+	# Wait till the MySQL socket file is created -> TO BE IMPLEMENTED
 	# while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
 	# # Wait till the MySQL tcp port is open
 	# until nc -z $MYSQL_SERVER $MYSQL_PORT; do sleep 1; done
@@ -440,12 +444,19 @@ function set_database_root_pw {
      # If using MySQL root password need to be set
      switch -Regex ( $MYSQL_DIR ) {
 		"mysql" {
-            echo "Setting MySQL root password..."
+		echo "Setting MySQL root password..."
         $SQLCOMMAND=@"
         -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';"
 "@
-        Start-Process -FilePath "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-        }
+		try {
+			Start-Process -FilePath "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+		}
+		catch {
+			Write-Host "Error: MySQL root password not set! Exiting." -ForegroundColor Red
+			Read-Host;
+			exit 2
+		}
+       }
     }
 }
 
@@ -456,29 +467,35 @@ function import_database {
     $SQLCOMMAND=@"
     -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
 "@
-    Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
     
-    # Check for database creation script
-    if ( Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
-                Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
-                }
-        else {
-                Write-Host "No SQL file found! Exiting." -ForeGroundColor Red
-                shutdown_database;
+	# Check for database creation script
+	if ( Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
+ 		Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
+	}
+	else {
+		Write-Host "No SQL file found! Exiting." -ForeGroundColor Red
+		shutdown_database;
 		Read-Host;
-                exit 2
-        }
+		exit 2
+	}
 
 	# Create OH database structure
 	Write-Host "Importing database schema $DB_CREATE_SQL..."
 	
-    cd $OH_PATH\$SQL_DIR
+	cd $OH_PATH\$SQL_DIR
 
     $SQLCOMMAND=@"
    --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME -e "source $OH_PATH\$SQL_DIR\$DB_CREATE_SQL"
 "@
-    Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
- 
+	try {
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+ 	}
+	catch {
+		Write-Host "Database not imported! Exiting." -ForeGroundColor Red
+		Read-Host;
+		exit 2
+	}
 	Write-Host "Database imported!"
 }
 
