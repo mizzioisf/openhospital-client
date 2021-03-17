@@ -184,7 +184,7 @@ function script_menu {
         Write-Host "               [ -debug INFO|DEBUG ] "
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (Client / Server configuration)"
-	Write-Host "   d    start OH in DEBUG mode"
+	Write-Host "   d    start OH in debug mode"
 	Write-Host "   D    start OH in DEMO mode"
 	Write-Host "   G    setup GSM"
 	Write-Host "   l    set language: en|fr|it|es|pt"
@@ -355,10 +355,8 @@ function config_database {
 	# Find a free TCP port to run MySQL starting from the default port
 	Write-Host "Looking for a free TCP port for MySQL database..."
 
-	#while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet ) {
 	$ProgressPreference = 'SilentlyContinue'
 	while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ) {
-#	while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -WarningAction SilentlyContinue ) {
     		Write-Host "Testing TCP port $MYSQL_PORT...."
         	$script:MYSQL_PORT++
 	}
@@ -417,7 +415,7 @@ function start_database {
 	Write-Host "Starting MySQL server... "
 	try {
 		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-		sleep 1;
+		sleep 2;
 	}
 	catch {
 		Write-Host "Error: Database not started! Exiting." -ForegroundColor Red
@@ -647,8 +645,7 @@ switch -casesensitive( "$opt" ) {
 		}
 		else {
 	        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
-			Read-Host;
-			exit 1
+			Read-Host; exit 1
 		}
 	}
 	"r"	{ # restore
@@ -660,21 +657,18 @@ switch -casesensitive( "$opt" ) {
 		        Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
 			}
 		else {
-			Write-Host "No SQL file found! Exiting." -ForegroundColor Red
-			Read-Host;
-			exit 2
+			Write-Host "Error: No SQL file found! Exiting." -ForegroundColor Red
+			Read-Host; exit 2
 		}
         	# normal startup from here
 	}
 	"t"	{ # test database connection 
 		if ( !($OH_DISTRO -eq "CLIENT") ) {
-			Write-Host "Only for CLIENT mode. Exiting." -ForegroundColor Red
-			Read-Host;
-			exit 1
+			Write-Host "Error: Only for CLIENT mode. Exiting." -ForegroundColor Red
+			Read-Host; exit 1
 		}
 		test_database_connection;
-		Read-Host;
-		exit 0
+		Read-Host; exit 0
 	}
 	"v"	{ # show version
         	Write-Host "--------- Software version ---------"
@@ -846,14 +840,7 @@ Write-Host "Starting Open Hospital..."
 cd $OH_PATH/$OH_DIR
 
 # OH GUI launch
-try {
-	Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-}
-catch {
-	Write-Host "An error occurred starting Open Hospital. Exiting." -ForegroundColor Red
-	Read-Host; exit 4;
-}
-
+Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 
 ###%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 

@@ -158,7 +158,7 @@ function script_usage {
 #        echo "               [ -debug INFO|DEBUG ] "
         echo ""
         echo "   -C    start OH in CLIENT mode (Client / Server configuration)"
-        echo "   -d    start OH in DEBUG mode"
+        echo "   -d    start OH in debug mode"
         echo "   -D    start OH in DEMO mode"
         echo "   -G    setup GSM"
         echo "   -h    show this help"
@@ -560,14 +560,14 @@ while getopts ${OPTSTRING} opt; do
 		if [ -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
 		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
 		else
-			echo "No SQL file found! Exiting."
+			echo "Error: No SQL file found! Exiting."
 			exit 2
 		fi
         	# normal startup from here
 		;;
 	t)	# test database connection
 		if [ $OH_DISTRO = PORTABLE ]; then
-			echo "Only for CLIENT mode. Exiting."
+			echo "Error: Only for CLIENT mode. Exiting."
 			exit 1
 		fi
 		test_database_connection;
