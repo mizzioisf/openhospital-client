@@ -395,26 +395,27 @@ function inizialize_database {
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$LOG_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DICOM_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
-    # Inizialize MySQL
+	# Inizialize MySQL
 	Write-Host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
 			try {
-		    	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+			    	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 	        	}
 			catch {
 				Write-Host "Error: MariaDB initialization failed! Exiting." -ForegroundColor Red
 				Read-Host;
 				exit 2
 			}
+		}
 		"mysql" {
 			try {
-		    Start-Process "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$OH_PATH\$MYSQL_DIR --datadir=$OH_PATH\$DATA_DIR") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"; break
+				Start-Process "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$OH_PATH\$MYSQL_DIR --datadir=$OH_PATH\$DATA_DIR") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"; break
 			}
 			catch {
 				Write-Host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
-			Read-Host;
-			exit 2
+				Read-Host;
+				exit 2
 			}
  	       }
 	}
