@@ -43,7 +43,7 @@ SCRIPT_ARGS=$@
 #SCRIPT_DIR=$(dirname $(readlink -f $0))
 
 # script to launch
-$TARGET_SCRIPT=oh.sh
+TARGET_SCRIPT=oh.sh
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
