@@ -116,13 +116,13 @@ $script:MANUAL_CONFIG="off"
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
 switch ( "$ARCH" ) {	
-    "amd64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
-    "AMD64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
-    "x86_64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
-    ("486","586","686","x86","i86pc") { $script:JAVA_ARCH=64; $script:MYSQL_ARCH=32 }
+	"amd64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
+	"AMD64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
+	"x86_64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
+	("486","586","686","x86","i86pc") { $script:JAVA_ARCH=64; $script:MYSQL_ARCH=32 }
 	default {
-	    Write-Host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
-	    	Read-Host; exit 1
+		Write-Host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
+		Read-Host; exit 1
 	}
 }
 
