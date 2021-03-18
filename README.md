@@ -24,7 +24,7 @@ The Windows version has been tested on Windows 10.
 
 **on Linux:**
 
-To download and launch the Open Hospital package contained in this distribution open a shell and type:
+To download and launch the Open Hospital package contained in this distribution open a shell and type (or copy and paste):
 
 ```
 bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
