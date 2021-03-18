@@ -448,6 +448,7 @@ function set_database_root_pw {
 			}
 			catch {
 				Write-Host "Error: MySQL root password not set! Exiting." -ForegroundColor Red
+				shutdown_database;
 				Read-Host; exit 2
 			}
 		}
@@ -466,6 +467,7 @@ function import_database {
  	}
 	catch {
 		Write-Host "Error: Database creation failed! Exiting." -ForeGroundColor Red
+		shutdown_database;
 		Read-Host; exit 2
 	}
 	# Check for database creation script
@@ -491,6 +493,7 @@ function import_database {
  	}
 	catch {
 		Write-Host "Error: Database not imported! Exiting." -ForeGroundColor Red
+		shutdown_database;
 		Read-Host; exit 2
 	}
 	Write-Host "Database imported!"
@@ -518,6 +521,7 @@ function shutdown_database {
 	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 	# Wait till the MySQL socket file is removed -> TO BE IMPLEMENTED
 	# while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
+	Write-Host "MySQL stopped!"
 }
 
 function clean_database {

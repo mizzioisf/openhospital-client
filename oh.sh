@@ -372,6 +372,7 @@ function set_database_root_pw {
 	
 	if [ $? -ne 0 ]; then
 		echo "Error: MySQL root password not set! Exiting."
+		shutdown_database;
 		exit 2
 	fi
 }
@@ -387,6 +388,7 @@ function import_database {
 	
 	if [ $? -ne 0 ]; then
 		echo "Error: Database creation failed! Exiting."
+		shutdown_database;
 		exit 2
 	fi
 
@@ -435,6 +437,7 @@ function shutdown_database {
 	$OH_PATH/$MYSQL_DIR/bin/mysqladmin -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 	# Wait till the MySQL tcp port is closed
 	until !( nc -z $MYSQL_SERVER $MYSQL_PORT ); do sleep 1; done
+	echo "MySQL stopped!"
 }
 
 function clean_database {
@@ -730,7 +733,7 @@ cd $OH_PATH/$OH_DIR
 $JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 
 if [ $? -ne 0 ]; then
-	echo "An error occurred starting Open Hospital. Exiting."
+	echo "An error occurred while starting Open Hospital. Exiting."
 	exit 4
 fi
 	
