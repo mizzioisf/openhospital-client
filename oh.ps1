@@ -53,6 +53,10 @@ https://www.open-hospital.org
 # Clean all variables in IDE
 #Remove-Variable * -ErrorAction SilentlyContinue; Remove-Module *; $error.Clear();
 
+# global prefernces
+# disable progress bar
+$global:ProgressPreference= 'SilentlyContinue'
+
 # command line parameters
 param ($lang, $debuglevel, $distro)
 $script:OH_LANGUAGE=$lang
