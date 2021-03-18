@@ -733,6 +733,7 @@ $JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -cl
 
 if [ $? -ne 0 ]; then
 	echo "An error occurred while starting Open Hospital. Exiting."
+	shutdown_database;
 	exit 4
 fi
 
