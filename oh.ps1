@@ -735,7 +735,6 @@ if ( !( $OH_DISTRO -eq "PORTABLE" ) -And !( $OH_DISTRO -eq "CLIENT" ) ) {
 }
 
 # check demo mode
-
 if ( $DEMO_MODE -eq "on" ) {
 	# exit if OH is configured in Client mode
 	if (( $OH_DISTRO -eq "CLIENT" )) {
@@ -846,8 +845,6 @@ cd $OH_PATH/$OH_DIR
 
 # OH GUI launch
 Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-
-###%OH_PATH%\%JAVA_DIR%\bin\java.exe -Dlog4j.configuration=%OH_PATH%oh/rsc/log4j.properties -showversion -Dsun.java2d.dpiaware=false -Djava.library.path=%OH_PATH%oh\lib\native\Windows -cp %CLASSPATH% org.isf.menu.gui.Menu
 
 Write-Host "Exiting Open Hospital..."
 
