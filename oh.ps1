@@ -47,21 +47,22 @@ https://www.open-hospital.org
 
 #>
 
-# SET DEBUG mode
+######## SET DEBUG mode
 # saner programming env: these switches turn some bugs into errors
 #Set-PSDebug -Strict
 # Clean all variables in IDE
 #Remove-Variable * -ErrorAction SilentlyContinue; Remove-Module *; $error.Clear();
 
-# global prefernces
-# disable progress bar
-$global:ProgressPreference= 'SilentlyContinue'
 
-# command line parameters
+######## Command line parameters
 param ($lang, $debuglevel, $distro)
 $script:OH_LANGUAGE=$lang
 $script:DEBUG_LEVEL=$debuglevel
 $script:OH_DISTRO=$distro
+
+######## Global preferences
+# disable progress bar
+$global:ProgressPreference= 'SilentlyContinue'
 
 ######## Open Hospital Configuration
 # OH_PATH is the directory where Open Hospital files are located
