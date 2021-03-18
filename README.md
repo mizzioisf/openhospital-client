@@ -32,8 +32,6 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 # Running OH - Quickstart
 
-**Prerequisites** - ncurses and libaio libraries are needed system-wide. See Known Issues for installation.
-
 Common to all architectures:
 
 *(see poh downloads on sourceforce for full release packages)*
