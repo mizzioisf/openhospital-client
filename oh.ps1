@@ -576,12 +576,12 @@ function clean_files {
 ######## Pre-flight checks
 
 # check user running the script
-#Write-Host "Checking for elevated permissions..."
-#if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`[Security.Principal.WindowsBuiltInRole] "Administrator")) {
-#Write-Warning "Cannot run as Administrator user. Exiting";
-#exit 1
+# Write-Host "Checking for elevated permissions..."
+# if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`[Security.Principal.WindowsBuiltInRole] "Administrator")) {
+# Write-Host "Error: Cannot run as Administrator user. Exiting" -ForegroundColor Red
+# exit 1
 #}
-#else {Write-Host "User ok — go on executing the script..." -ForegroundColor Green}
+# else { Write-Host "User ok — go on executing the script..." -ForegroundColor Green }
 
 # debug level - set default to INFO
 if ( [string]::IsNullOrEmpty($DEBUG_LEVEL) ) {
