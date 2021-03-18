@@ -89,21 +89,21 @@ cd openhospital-client
  ---------------------------------------------------------"
 lang en | arch $ARCH"
 
-Usage: oh.ps1 [ -lang en|fr|it|es|pt ] "
-              [ -distro PORTABLE|CLIENT ]"
-              [ -debug INFO|DEBUG ] "
+Usage: oh.ps1 [ -lang en|fr|it|es|pt ] 
+              [ -distro PORTABLE|CLIENT ]
+              [ -debug INFO|DEBUG ] 
 
- C    start OH - CLIENT mode (Client / Server configuration)"
- d    start OH in DEBUG mode"
- D    start OH in DEMO mode"
- G    setup GSM"
- l    set language: en|fr|it|es|pt"
- s    save OH database"
- r    restore OH database"
- t    test database connection (Client mode only)"
- v    show OH software version and configuration"
- X    clean OH installation"
- q    quit"
+ C    start OH - CLIENT mode (Client / Server configuration)
+ d    start OH in DEBUG mode
+ D    start OH in DEMO mode
+ G    setup GSM
+ l    set language: en|fr|it|es|pt
+ s    save OH database
+ r    restore OH database
+ t    test database connection (Client mode only)
+ v    show OH software version and configuration
+ X    clean OH installation
+ q    quit
 ```
 
 **on Windows, to manually run oh.ps1 (powershell script):**
