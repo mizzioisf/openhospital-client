@@ -27,18 +27,13 @@
 #set -o errexit -o pipefail -o noclobber -o nounset
 
 ######## Open Hospital - Portable Open Hospital Configuration
-# POH_PATH is the directory where Portable OpenHospital files are located
-# POH_PATH=/usr/local/PortableOpenHospital
+# OH_PATH is the directory where Portable OpenHospital files are located
+# OH_PATH=/usr/local/PortableOpenHospital
 
 OH_SUBDIR="poh-1.11.beta"
 
-# Language setting - default set to en
-#OH_LANGUAGE=en fr es it pt
-#OH_LANGUAGE=en
-
 ######## Software configuration - change at your own risk :-)
 OH_DIR="oh"
-DATE=`date +%Y-%m-%d_%H-%M-%S`
 
 ######## Define architecture
 
@@ -47,18 +42,21 @@ SCRIPT_NAME=$(basename "$0")
 SCRIPT_ARGS=$@
 #SCRIPT_DIR=$(dirname $(readlink -f $0))
 
+# script to launch
+$TARGET_SCRIPT=oh.sh
+
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
 ######## User input / option parsing
 
 function script_usage {
 	echo ""
-	echo " Portable Hospital Client - Web start - experimental "
+	echo " Open Hospital Client - Web start - experimental "
 	echo ""
 	echo " Usage: $SCRIPT_NAME [-h][-option]"
 	echo ""
-	echo " If the script finds a POH installation in the current dir, launches oh.sh [-params]"
-	echo " Otherwise it downloads a dev copy, all the necessary software libraries, clone the POH installation"
+	echo " If the script finds a OH installation in the current dir, launches $TARGET_SCRIPT [-params]"
+	echo " Otherwise it downloads a dev copy, all the necessary software libraries, clones the OH installation"
 	echo " in a subdirectory (poh-version) and launches oh.sh passing the command line options (go.sh -v -> poh-dev/oh.sh -v)"
 	echo ""
 	echo "   -h    show this help"
@@ -80,16 +78,16 @@ esac
 function set_path {
 	# set current dir
 	CURRENT_DIR=$PWD
-	# set POH_PATH if not defined
-	if [ -z ${POH_PATH+x} ]; then
-		echo "Warning: POH_PATH not found - using current directory"
+	# set OH_PATH if not defined
+	if [ -z ${OH_PATH+x} ]; then
+		echo "Warning: OH_PATH not found - using current directory"
 	fi
-	POH_PATH=$PWD
-	POH_PATH_ESCAPED=$(echo $POH_PATH | sed -e 's/\//\\\//g')
+	OH_PATH=$PWD
+	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
 }
 
 function oh_check_and_go {
-	if [ ! -f "$POH_PATH/$OH_DIR/bin/OH-gui.jar" ]; then
+	if [ ! -f "$OH_PATH/$OH_DIR/bin/OH-gui.jar" ]; then
 		echo "Warning - OH not found in current dir. Do you want to download it? (120 MB)"
 		get_confirmation;
 		read -p "Enter subdirectory for installation (default $OH_SUBDIR) -> " OH_SUBDIR_TMP
@@ -100,25 +98,25 @@ function oh_check_and_go {
 		fi
 		# Downloading oh
 		echo "Downloading Open Hospital"
-		if [ ! -d $POH_PATH/$OH_SUBDIR ]; then
+		if [ ! -d $OH_PATH/$OH_SUBDIR ]; then
 			git clone https://github.com/mizzioisf/openhospital-client $OH_SUBDIR
 		fi
-		# set new POH_PATH
+		# set new OH_PATH
 
-		POH_PATH=$POH_PATH/$OH_SUBDIR/
-                export POH_PATH;
-                cd $POH_PATH
+		OH_PATH=$OH_PATH/$OH_SUBDIR/
+                export OH_PATH;
+                cd $OH_PATH
                 echo "Pulling updates..."
                 git pull;
 		echo "Download completed!"
 	fi
-	if [ -x "$POH_PATH/oh.sh" ]; then
-		echo "oh.sh found!"
-		echo "Starting $POH_PATH/oh.sh..."
-		$POH_PATH/oh.sh $SCRIPT_ARGS
+	if [ -x "$OH_PATH/$TARGET_SCRIPT" ]; then
+		echo "$TARGET_SCRIPT found!"
+		echo "Starting $OH_PATH/$TARGET_SCRIPT.."
+		$OH_PATH/$TARGET_SCRIPT $SCRIPT_ARGS
 		exit 0;
 	fi
-	echo "POH installation not working. Exiting."
+	echo "OH installation not working. Exiting."
 	exit 1;
 }
 
@@ -131,10 +129,6 @@ while getopts ${OPTSTRING} opt; do
 	case ${opt} in
 	h)	# help
 		script_usage;
-		;;
-	t)	# test
-        	echo "Test function"
-		set_path;
 		;;
 	esac
 done

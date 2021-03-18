@@ -263,5 +263,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-last updated: 9 mar 2021
+last updated: 18.03.2021
 
