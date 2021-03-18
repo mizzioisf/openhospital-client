@@ -22,6 +22,8 @@
 #
 #
 
+######################## Configuration ########################
+
 # SET DEBUG mode
 # saner programming env: these switches turn some bugs into errors
 #set -o errexit -o pipefail -o noclobber -o nounset
@@ -138,7 +140,7 @@ SCRIPT_NAME=$(basename "$0")
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
-######## User input / option parsing
+######################## Functions ########################
 
 function script_usage {
 	# show help
@@ -172,15 +174,13 @@ function script_usage {
 	exit 0
 }
 
-######## Functions
-
 function get_confirmation {
-read -p "(y/n)? " choice
-case "$choice" in 
-	y|Y ) echo "yes";;
-	n|N ) echo "Exiting."; exit 0;;
-	* ) echo "Invalid choice. Exiting."; exit 1 ;;
-esac
+	read -p "(y/n)? " choice
+	case "$choice" in 
+		y|Y ) echo "yes";;
+		n|N ) echo "Exiting."; exit 0;;
+		* ) echo "Invalid choice. Exiting."; exit 1 ;;
+	esac
 }
 
 function set_path {
@@ -483,6 +483,8 @@ function clean_files {
 }
 
 
+######################## Script start ########################
+
 ######## Pre-flight checks
 
 # check user running the script
@@ -630,7 +632,7 @@ while getopts ${OPTSTRING} opt; do
 	esac
 done
 
-######################## Script start ########################
+######################## OH start ########################
 
 # check distro
 if [ -z ${OH_DISTRO+x} ]; then

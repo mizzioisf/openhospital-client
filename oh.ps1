@@ -172,6 +172,8 @@ $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
+######################## Functions ########################
+
 ######## User input / option parsing
 
 function script_menu {
@@ -201,8 +203,6 @@ function script_menu {
 	Write-Host "   q    quit"
 	Write-Host ""
 }
-
-######## Functions
 
 function get_confirmation {
 	$choice = Read-Host -Prompt "(y/n)? "
@@ -573,6 +573,8 @@ function clean_files {
 }
 
 
+######################## Script start ########################
+
 ######## Pre-flight checks
 
 # check user running the script
@@ -663,8 +665,8 @@ switch -casesensitive( "$opt" ) {
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:BACKUP_DIR subdirectory) -> "
 		if ( Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
-		        Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
-			}
+			Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
+		}
 		else {
 			Write-Host "Error: No SQL file found! Exiting." -ForegroundColor Red
 			Read-Host; exit 2
@@ -729,7 +731,7 @@ switch -casesensitive( "$opt" ) {
 #		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
 }
 
-######################## Script start ########################
+######################## OH start ########################
 
 # check distro
 if ( !( $OH_DISTRO -eq "PORTABLE" ) -And !( $OH_DISTRO -eq "CLIENT" ) ) {
