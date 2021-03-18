@@ -82,12 +82,12 @@ cd openhospital-client
 - double click on the **oh.bat** batch file
 
 ```
- ---------------------------------------------------------"
-|                                                         |"
-|                   Open Hospital | OH                    |"
-|                                                         |"
- ---------------------------------------------------------"
-lang en | arch $ARCH"
+ ---------------------------------------------------------
+|                                                         |
+|                   Open Hospital | OH                    |
+|                                                         |
+ ---------------------------------------------------------
+lang en | arch $ARCH
 
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] 
               [ -distro PORTABLE|CLIENT ]
