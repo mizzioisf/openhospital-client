@@ -377,7 +377,6 @@ function set_database_root_pw {
 	fi
 }
 
-
 function import_database {
 	echo "Creating OH Database..."
 	# Create OH database and user
@@ -736,7 +735,6 @@ if [ $? -ne 0 ]; then
 	echo "An error occurred while starting Open Hospital. Exiting."
 	exit 4
 fi
-	
 
 echo "Exiting Open Hospital..."
 
