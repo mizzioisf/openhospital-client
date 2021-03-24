@@ -64,6 +64,7 @@ TMP_DIR=tmp
 DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S`
 LOG_FILE=startup.log
+OH_LOG_FILE=openhospital.log
 
 ######## Advanced options
 ## set MANUAL_CONFIG to "on" to setup configuration files manually
@@ -713,7 +714,7 @@ if [ $MANUAL_CONFIG != "on" ]; then
 	######## log4j.properties setup
 	[ -f $OH_PATH/$OH_DIR/rsc/log4j.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/log4j.properties $OH_PATH/$OH_DIR/rsc/log4j.properties.old
 	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
-	    -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/g" $OH_PATH/$OH_DIR/rsc/log4j.properties.dist > $OH_PATH/$OH_DIR/rsc/log4j.properties
+	    -e "s/DEBUG_LEVEL/$DEBUG_LEVEL/g" -e "s/LOG_DIR/$LOG_DEST/g" -e "s/LOG_FILE/$OH_LOG_FILE/g" $OH_PATH/$OH_DIR/rsc/log4j.properties.dist > $OH_PATH/$OH_DIR/rsc/log4j.properties
 
 	######## database.properties setup 
 	[ -f $OH_PATH/$OH_DIR/rsc/database.properties ] && mv -f $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old
