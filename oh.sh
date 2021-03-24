@@ -143,17 +143,16 @@ SCRIPT_NAME=$(basename "$0")
 ######################## Functions ########################
 
 function script_usage {
-	# show help
 
-
-        # show menu
         # Clear-Host # clear console
+        # show help / user options
         echo " ---------------------------------------------------------"
         echo "|                                                         |"
         echo "|                   Open Hospital | OH                    |"
         echo "|                                                         |"
         echo " ---------------------------------------------------------"
-        echo " lang $OH_LANGUAGE | arch $ARCH"
+        echo " lang $OH_LANGUAGE | arch $ARCH | mode $OH_DISTRO"
+        echo " ---------------------------------------------------------"
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l en|fr|it|es|pt ] "
 #        echo "               [ -distro PORTABLE|CLIENT ]"
@@ -188,12 +187,13 @@ function set_path {
 	CURRENT_DIR=$PWD
 	# set OH_PATH if not defined
 	if [ -z ${OH_PATH+x} ]; then
-#		echo "Warning: POH_PATH not found - using current directory"
-		OH_PATH=$CURRENT_DIR
+		OH_PATH=$(dirname $(realpath $0))
+		
 		if [ ! -f $OH_PATH/$SCRIPT_NAME ]; then
 			echo "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
 			exit 1
 		fi
+		# echo "OH_PATH set to $OH_PATH"
 	fi
 	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
 	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
@@ -402,7 +402,7 @@ function import_database {
 
 	# Create OH database structure
 	echo "Importing database schema $DB_CREATE_SQL..."
-	#cd $OH_PATH/$SQL_DIR
+	cd $OH_PATH/$SQL_DIR
 	$OH_PATH/$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME < $OH_PATH/$SQL_DIR/$DB_CREATE_SQL >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 	if [ $? -ne 0 ]; then
 		echo "Error: Database not imported! Exiting."
