@@ -637,9 +637,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host "Setting up GSM..."
 		java_check;
 		java_lib_setup;
-		cd $OH_PATH\$OH_DIR
 		Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM $@ ") -Wait -NoNewWindow
-		cd $CURRENT_DIR
 		Read-Host;
 		exit 0;
 	}
@@ -738,6 +736,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		exit 0; 
 	}
 #		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
+#		default is set to start with OH 
 	}
 }
 
@@ -858,8 +857,6 @@ if ( Test-Path "$OH_PATH/$OH_DIR/rsc/generalData.properties" ) {
 ######## Open Hospital start
 
 Write-Host "Starting Open Hospital..."
-
-cd $OH_PATH/$OH_DIR
 
 # OH GUI launch
 Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
