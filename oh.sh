@@ -402,7 +402,7 @@ function import_database {
 
 	# Create OH database structure
 	echo "Importing database schema $DB_CREATE_SQL..."
-	cd $OH_PATH/$SQL_DIR
+	#cd $OH_PATH/$SQL_DIR
 	$OH_PATH/$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME < $OH_PATH/$SQL_DIR/$DB_CREATE_SQL >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 	if [ $? -ne 0 ]; then
 		echo "Error: Database not imported! Exiting."
@@ -581,7 +581,7 @@ while getopts ${OPTSTRING} opt; do
 		echo "Setting up GSM..."
 		java_check;
 		java_lib_setup;
-		cd $OH_PATH/$OH_DIR
+		#cd $OH_PATH/$OH_DIR
 		$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
 		exit 0;
 		;;
@@ -728,7 +728,7 @@ fi
 
 echo "Starting Open Hospital..."
 
-cd $OH_PATH/$OH_DIR
+#cd $OH_PATH/$OH_DIR
 
 # OH GUI launch
 $JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
@@ -746,7 +746,7 @@ if [ $OH_DISTRO = PORTABLE ]; then
 fi
 
 # go back to starting directory
-cd $CURRENT_DIR
+#cd $CURRENT_DIR
 
 # exiting
 echo "Done!"

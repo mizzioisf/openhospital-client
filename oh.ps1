@@ -106,10 +106,17 @@ $script:DB_DEMO="create_all_demo.sql"
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 ######## Advanced options
+
 ## set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
 $script:MANUAL_CONFIG="off"
+
+## set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
+# interaction meno (script_menu). Useful if automatic startup of OH is needed.
+# In order to use this mode, setup all the OH configuration variables in the script
+# or pass arguments via command line.
+$script:INTERACTIVE_MODE="on"
 
 ######## Define architecture
 
@@ -220,7 +227,7 @@ function set_path {
 	if ( ! $OH_PATH ) {
 		Write-Host "Warning: OH_PATH not found - using current directory"
 		$script:OH_PATH=$CURRENT_DIR
-		if ( ! (Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
+		if ( !(Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where POH was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
 			Read-Host; exit 1
 		}
@@ -298,7 +305,7 @@ function java_check {
 		$script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
 	}
 
-	if ( !( Test-Path $JAVA_BIN ) ) {
+	if ( !(Test-Path $JAVA_BIN) ) {
         	if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT") ) {
     			Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
@@ -328,8 +335,8 @@ function java_check {
 }
 
 function mysql_check {
-	if (  !( Test-Path "$OH_PATH\$MYSQL_DIR" ) ) {
-		if ( !( Test-Path "$OH_PATH\$MYSQL_DIR.$EXT" ) ) {
+	if (  !(Test-Path "$OH_PATH\$MYSQL_DIR") ) {
+		if ( !(Test-Path "$OH_PATH\$MYSQL_DIR.$EXT") ) {
 			Write-Host "Warning - MariaDB/MySQL not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading mysql binary
@@ -346,7 +353,7 @@ function mysql_check {
 	        Write-Host "MySQL unpacked successfully!"
 	}
 	# check for mysql binary
-	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe") {
+	if ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" ) {
         	Write-Host "MySQL found!"
 		Write-Host "Using $MYSQL_DIR"
 	}
@@ -501,7 +508,7 @@ function import_database {
 
 function dump_database {
 	# Save OH database if existing
-	if ( ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" )) {
+	if ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" ) {
 		Write-Host "Dumping MySQL database..."	
         $SQLCOMMAND=@"
     --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME
@@ -597,13 +604,15 @@ set_language;
 
 ######## User input
 
-script_menu;
-$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_DISTRO mode"
-Write-Host ""
+# If INTERACTIVE_MODE is set to "off" don't ask for user input
+if ( INTERACTIVE_MODE -eq "on") {
+	script_menu;
+	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_DISTRO mode"
+	Write-Host ""
 
-# parse_input 
+	# parse_input 
 
-switch -casesensitive( "$opt" ) {
+	switch -casesensitive( "$opt" ) {
 	"C"	{ # start in client mode 
 		$script:OH_DISTRO="CLIENT"
 	}
@@ -683,7 +692,7 @@ switch -casesensitive( "$opt" ) {
 	}
 	"v"	{ # show version
         	Write-Host "--------- Software version ---------"
-        	
+	
 		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 		$var = $_.Split('=',2).Trim()
 		New-Variable -Scope Script -Name $var[0] -Value $var[1]
@@ -693,13 +702,13 @@ switch -casesensitive( "$opt" ) {
 		Write-Host "JAVA version:"
 		Write-Host "$JAVA_DISTRO"
 		Write-Host ""
-		
+
 		# show configuration
-        	Write-Host "--------- Configuration ---------"
-                Write-Host "Architecture is $ARCH"
-                Write-Host "Open Hospital is configured in $OH_DISTRO mode"
-                Write-Host "Language is set to $OH_LANGUAGE"
-                Write-Host "DEMO mode is set to $DEMO_MODE"
+ 		Write-Host "--------- Configuration ---------"
+ 		Write-Host "Architecture is $ARCH"
+ 		Write-Host "Open Hospital is configured in $OH_DISTRO mode"
+		Write-Host "Language is set to $OH_LANGUAGE"
+		Write-Host "DEMO mode is set to $DEMO_MODE"
 		Write-Host ""
 		Write-Host "MYSQL_SERVER=$MYSQL_SERVER"
 		Write-Host "MYSQL_PORT=$MYSQL_PORT"
@@ -729,6 +738,7 @@ switch -casesensitive( "$opt" ) {
 		exit 0; 
 	}
 #		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
+	}
 }
 
 ######################## OH start ########################
@@ -779,7 +789,7 @@ if ( $OH_DISTRO -eq "PORTABLE" ) {
 	# Config MySQL
 	config_database;
 	# Check if OH database already exists
-	if ( ! (Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME" ) ) {
+	if ( !(Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME") ) {
 		# Prepare MySQL
 		inizialize_database;
 		# Start MySQL

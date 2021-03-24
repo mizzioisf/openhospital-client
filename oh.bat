@@ -86,7 +86,7 @@ goto :init
 	goto end
 
 :legacy
-REM ################### Legacy oh.bat ###################
+REM ############################# Legacy oh.bat ############################
 
 echo Legacy mode - Starting OH with oh.bat...
 
@@ -287,9 +287,9 @@ REM # Setup native_lib_path for current architecture
 REM # with DICOM workaround - force NATIVE_LIB to 32bit
 
 if %PROCESSOR_ARCHITECTURE%==AMD64 if not %DICOM_ENABLE%==true (
-  set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Win64
+	set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Win64
 ) else (
-  set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Windows
+	set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Windows
 )
 
 REM ###### Start Open Hospital #####
@@ -307,6 +307,7 @@ REM # Exit
 echo Exiting Open Hospital...
 cd /d %OH_PATH%
 echo Done !
+
 goto end
 
 :error
