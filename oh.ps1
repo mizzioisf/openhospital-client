@@ -605,7 +605,7 @@ set_language;
 ######## User input
 
 # If INTERACTIVE_MODE is set to "off" don't ask for user input
-if ( INTERACTIVE_MODE -eq "on") {
+if ( $INTERACTIVE_MODE -eq "on") {
 	script_menu;
 	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_DISTRO mode"
 	Write-Host ""
@@ -628,8 +628,8 @@ if ( INTERACTIVE_MODE -eq "on") {
 			Write-Host "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting." -ForeGroundcolor Red
 			Read-Host;
 			exit 1;
-			else { $script:OH_DISTRO="PORTABLE" }
 		}
+		else { $script:OH_DISTRO="PORTABLE" }
 		$DEMO_MODE="on"
 		clean_database;
 	}
@@ -642,7 +642,7 @@ if ( INTERACTIVE_MODE -eq "on") {
 		cd $CURRENT_DIR
 		Read-Host;
 		exit 0;
-		}
+	}
 	"l"	{ # set language 
 		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt (default is en)"
 		set_language;
@@ -740,6 +740,8 @@ if ( INTERACTIVE_MODE -eq "on") {
 #		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
 	}
 }
+
+Write-Host "Interactive mode set to $script:INTERACTIVE_MODE"
 
 ######################## OH start ########################
 
