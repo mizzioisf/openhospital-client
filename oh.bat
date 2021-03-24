@@ -119,14 +119,14 @@ set DICOM_MAX_SIZE="4M"
 
 set OH_DIR=oh
 set SQL_DIR=sql
-set DATA_DIR="data\db"
-set LOG_DIR="data\log"
-set DICOM_DIR="data\dicom_storage"
+set DATA_DIR=data\db
+set LOG_DIR=data\log
+set DICOM_DIR=data\dicom_storage
 set TMP_DIR=tmp
-set DB_CREATE_SQL="create_all_en.sql"
+set DB_CREATE_SQL=create_all_en.sql
 REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
-set LOG_FILE="startup.log"
-set OH_LOG_FILE="openhospital.log"
+set LOG_FILE=startup.log
+set OH_LOG_FILE=openhospital.log
 
 REM ######## MySQL Software
 REM # MariaDB 64bit
@@ -153,7 +153,7 @@ REM ### JRE 11 - openjdk
 REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/"
 REM set JAVA_DISTRO="OpenJDK11U-jre_x86-32_windows_hotspot_11.0.10_9.zip"
 
-set JAVA_DIR="jdk-11.0.10+9-jre"
+set JAVA_DIR=jdk-11.0.10+9-jre
 set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
@@ -212,7 +212,7 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\generalData.properties.dist %OH_PATH%\%OH_
 %REPLACE_PATH%\replace.exe OH_SET_LANGUAGE %OH_LANGUAGE% -- %OH_PATH%\%OH_DIR%\rsc\generalData.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
 REM ### Setup log4j.properties
-set OH_LOG_DEST=%OH_PATH%\%OH_DIR%\%LOG_DIR%\%OH_LOG_FILE%
+set OH_LOG_DEST=%OH_PATH%\%LOG_DIR%\%OH_LOG_FILE%
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\rsc\log4j.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBSERVER %MYSQL_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
