@@ -238,6 +238,10 @@ function java_lib_setup {
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/bundle
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rpt
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc
+	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc
+	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/icons/
+	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/images/
+	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/SmsGateway/
 
 	# include all jar files under lib/
 	DIRLIBS=$OH_PATH/$OH_DIR/lib/*.jar
@@ -407,6 +411,7 @@ function import_database {
 	if [ $? -ne 0 ]; then
 		echo "Error: Database not imported! Exiting."
 		shutdown_database;
+		cd $CURRENT_DIR
 		exit 2
 	fi
 	echo "Database imported!"
@@ -581,7 +586,6 @@ while getopts ${OPTSTRING} opt; do
 		echo "Setting up GSM..."
 		java_check;
 		java_lib_setup;
-		#cd $OH_PATH/$OH_DIR
 		$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
 		exit 0;
 		;;
@@ -728,8 +732,6 @@ fi
 
 echo "Starting Open Hospital..."
 
-#cd $OH_PATH/$OH_DIR
-
 # OH GUI launch
 $JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 
@@ -746,7 +748,7 @@ if [ $OH_DISTRO = PORTABLE ]; then
 fi
 
 # go back to starting directory
-#cd $CURRENT_DIR
+cd $CURRENT_DIR
 
 # exiting
 echo "Done!"
