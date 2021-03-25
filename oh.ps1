@@ -269,6 +269,7 @@ function java_lib_setup {
 	}
 
 	# CLASSPATH setup
+	# include OH jar file
 	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\bin\OH-gui.jar"
 
 	# include all jar files under lib\

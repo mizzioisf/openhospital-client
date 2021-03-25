@@ -232,17 +232,17 @@ function java_lib_setup {
 	esac
 
 	# CLASSPATH setup
-	
-	# include OH jar
+	# include OH jar file
 	OH_CLASSPATH=$OH_PATH/$OH_DIR/bin/OH-gui.jar
+	
 	# include all needed directories
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/bundle
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rpt
 	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc
-	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc
-	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/icons/
-	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/images/
-	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/SmsGateway/
+	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/icons
+	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/images
+	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/rsc/SmsGateway
+	OH_CLASSPATH=$OH_CLASSPATH:$OH_PATH/$OH_DIR/lib
 
 	# include all jar files under lib/
 	DIRLIBS=$OH_PATH/$OH_DIR/lib/*.jar
@@ -250,6 +250,16 @@ function java_lib_setup {
 	do
 		OH_CLASSPATH="$i":$OH_CLASSPATH
 	done
+#	DIRLIBS=$OH_PATH/$OH_DIR/rsc/icons/*
+#	for i in ${DIRLIBS}
+#	do
+#		OH_CLASSPATH="$i":$OH_CLASSPATH
+#	done
+#	DIRLIBS=$OH_PATH/$OH_DIR/rsc/images/*
+#	for i in ${DIRLIBS}
+#	do
+#		OH_CLASSPATH="$i":$OH_CLASSPATH
+#	done
 }
 
 function java_check {
