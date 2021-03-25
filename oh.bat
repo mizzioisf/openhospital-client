@@ -214,7 +214,7 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\generalData.properties.dist %OH_PATH%\%OH_
 %REPLACE_PATH%\replace.exe OH_SET_LANGUAGE %OH_LANGUAGE% -- %OH_PATH%\%OH_DIR%\rsc\generalData.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
 REM ### Setup log4j.properties
-# double escape path
+REM # double escape path
 set OH_LOG_DEST=%OH_PATH:\=\\%
 set OH_LOG_DEST=%OH_LOG_DEST%\\%LOG_DIR%\\%OH_LOG_FILE%
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\rsc\log4j.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -270,7 +270,7 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	cd /d %OH_PATH%
 
 ) else (
-	echo Missing SQL creation script or database already initialized, trying to start...
+	echo Database already initialized, trying to start...
 	echo Starting MySQL server on port %MYSQL_PORT%...
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
 	if ERRORLEVEL 1 (goto error)
