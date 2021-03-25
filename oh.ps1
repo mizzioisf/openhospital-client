@@ -269,7 +269,7 @@ function java_lib_setup {
 	}
 
 	# CLASSPATH setup
-	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\lib\"
+	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\bin\OH-gui.jar"
 
 	# include all jar files under lib\
 	$script:jarlist= Get-ChildItem "$OH_PATH\$OH_DIR\lib" -Filter *.jar |  % { $_.FullName }
@@ -284,7 +284,7 @@ function java_lib_setup {
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\icons\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\images\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\SmsGateway\"
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bin\OH-gui.jar"
+	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\lib\"
 }
 
 function download_file ($download_url,$download_file){
