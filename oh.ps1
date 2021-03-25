@@ -503,6 +503,7 @@ function import_database {
 	catch {
 		Write-Host "Error: Database not imported! Exiting." -ForeGroundColor Red
 		shutdown_database;
+		cd $CURRENT_DIR
 		Read-Host; exit 2
 	}
 	Write-Host "Database imported!"
@@ -861,6 +862,7 @@ if ( Test-Path "$OH_PATH/$OH_DIR/rsc/generalData.properties" ) {
 Write-Host "Starting Open Hospital..."
 
 # OH GUI launch
+cd $OH_PATH\$OH_DIR # workaround for hard coded paths
 Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 
 Write-Host "Exiting Open Hospital..."

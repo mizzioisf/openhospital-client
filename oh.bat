@@ -267,8 +267,6 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 	if ERRORLEVEL 1 (goto error)
 	echo Database imported!
-	cd /d %OH_PATH%
-
 ) else (
 	echo Database already initialized, trying to start...
 	echo Starting MySQL server on port %MYSQL_PORT%...
