@@ -51,13 +51,13 @@ TARGET_SCRIPT=oh.sh
 
 function script_usage {
 	echo ""
-	echo " Open Hospital Client - Web start - experimental "
+	echo " Open Hospital Client - Web start - beta "
 	echo ""
 	echo " Usage: $SCRIPT_NAME [-h][-option]"
 	echo ""
-	echo " If the script finds a OH installation in the current dir, launches $TARGET_SCRIPT [-params]"
+	echo " If the script finds an OH installation in the current dir, it launches $TARGET_SCRIPT [-params]"
 	echo " Otherwise it downloads a dev copy, all the necessary software libraries, clones the OH installation"
-	echo " in a subdirectory (poh-version) and launches oh.sh passing the command line options (go.sh -v -> poh-dev/oh.sh -v)"
+	echo " in a subdirectory (poh-version-x.x) and launches $TARGET_SCRIPT passing the command line options (go.sh -v -> poh-dev/oh.sh -v)"
 	echo ""
 	echo "   -h    show this help"
 	echo ""
@@ -97,7 +97,7 @@ function oh_check_and_go {
 			OH_SUBDIR=$OH_SUBDIR_TMP
 		fi
 		# Downloading oh
-		echo "Downloading Open Hospital"
+		echo "Downloading Open Hospital..."
 		if [ ! -d $OH_PATH/$OH_SUBDIR ]; then
 			git clone https://github.com/mizzioisf/openhospital-client $OH_SUBDIR
 		fi
@@ -143,6 +143,8 @@ fi
 ######## Environment setup
 
 set_path;
+
+# start script
 oh_check_and_go;
 
 # go back to starting directory
