@@ -227,7 +227,7 @@ function set_path {
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
 	# set OH_PATH if not defined
 	if ( ! $OH_PATH ) {
-		Write-Host "Warning: OH_PATH not found - using current directory"
+		Write-Host "Info: OH_PATH not set - using current directory"
 		$script:OH_PATH=$CURRENT_DIR
 		if ( !(Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where POH was unzipped or set up OH_PATH properly." -ForegroundColor Yellow

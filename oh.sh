@@ -185,6 +185,7 @@ function set_path {
 	CURRENT_DIR=$PWD
 	# set OH_PATH if not defined
 	if [ -z ${OH_PATH+x} ]; then
+		echo "Info: OH_PATH not set - using current directory"
 		# set OH_PATH to script path
 		OH_PATH=$(dirname $(realpath $0))
 		
