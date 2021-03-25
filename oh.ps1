@@ -119,6 +119,9 @@ $script:MANUAL_CONFIG="off"
 # or pass arguments via command line.
 $script:INTERACTIVE_MODE="on"
 
+# set JAVA_BIN # Uncomment this if you want to use system wide JAVA
+#$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
+
 ######## Define architecture
 
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
@@ -156,6 +159,7 @@ $script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.10_9"
 $script:JAVA_DIR="jdk-11.0.10+9-jre"
 
 ######## JAVA 32bit
+# DICOM workaround - force JAVA_ARCH to 32 bit
 if ( $JAVA_ARCH -eq "32" -Or $DICOM_ENABLE -eq "true" ) {
 	# Setting JRE 32 bit
 	### JRE 8 - zulu 32bit
@@ -169,14 +173,10 @@ if ( $JAVA_ARCH -eq "32" -Or $DICOM_ENABLE -eq "true" ) {
 	$script:JAVA_DIR="zulu11.45.27-ca-jre11.0.10-win_i686"
 }
 
-######## set JAVA_BIN # Uncomment this if you want to use system wide JAVA
-#JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
-
+######## get script info
 # Determine script name and location for PowerShell
 $script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
 $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
-#Write-Host "Current script directory is $SCRIPT_DIR"
-#Write-Host "Current script $SCRIPT_NAME"
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
@@ -223,7 +223,7 @@ function get_confirmation {
 }
 
 function set_path {
-# set current dir
+	# set current dir
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
 	# set OH_PATH if not defined
 	if ( ! $OH_PATH ) {
@@ -392,8 +392,6 @@ function config_database {
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("TMP_DIR","$TMP_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-
-#	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" -e "s/MYSQL_PORT/$MYSQL_PORT/" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $OH_PATH/etc/mysql/my.cnf.dist > $OH_PATH/etc/mysql/my.cnf
 }
 
 function inizialize_database {
@@ -614,8 +612,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_DISTRO mode"
 	Write-Host ""
 
-	# parse_input 
-
+	# parse_input
 	switch -casesensitive( "$opt" ) {
 	"C"	{ # start in client mode 
 		$script:OH_DISTRO="CLIENT"
@@ -740,13 +737,13 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		exit 0; 
 	}
 #		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
-#		default is set to start with OH 
+#		-> default is set to start with OH 
 	}
 }
 
-Write-Host "Interactive mode set to $script:INTERACTIVE_MODE"
+######################### OH start ############################
 
-######################## OH start ########################
+Write-Host "Interactive mode set to $script:INTERACTIVE_MODE"
 
 # check distro
 if ( !( $OH_DISTRO -eq "PORTABLE" ) -And !( $OH_DISTRO -eq "CLIENT" ) ) {
@@ -810,7 +807,7 @@ if ( $OH_DISTRO -eq "PORTABLE" ) {
 	}
 }
 
-# test database connection
+# test if database connection is working
 test_database_connection;
 
 if ($MANUAL_CONFIG -eq "off" ) {

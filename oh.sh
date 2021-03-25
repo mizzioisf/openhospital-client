@@ -72,6 +72,10 @@ OH_LOG_FILE=openhospital.log
 # overwritten if already present
 MANUAL_CONFIG=off 
 
+######## set JAVA_BIN
+# Uncomment this if you want to use system wide JAVA
+#JAVA_BIN=`which java`
+
 ######## Define architecture
 
 ARCH=`uname -m`
@@ -132,11 +136,7 @@ if [ $JAVA_ARCH = 32 ]; then
 	JAVA_DIR=$JAVA_DISTRO
 fi
 
-######## set JAVA_BIN
-# Uncomment this if you want to use system wide JAVA
-#JAVA_BIN=`which java`
-
-# name of this shell script
+######## get name of this shell script
 SCRIPT_NAME=$(basename "$0")
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
@@ -145,7 +145,6 @@ SCRIPT_NAME=$(basename "$0")
 
 function script_usage {
 
-        # Clear-Host # clear console
         # show help / user options
         echo " ---------------------------------------------------------"
         echo "|                                                         |"
@@ -186,6 +185,7 @@ function set_path {
 	CURRENT_DIR=$PWD
 	# set OH_PATH if not defined
 	if [ -z ${OH_PATH+x} ]; then
+		# set OH_PATH to script path
 		OH_PATH=$(dirname $(realpath $0))
 		
 		if [ ! -f $OH_PATH/$SCRIPT_NAME ]; then
@@ -519,9 +519,10 @@ set_language;
 
 ######## User input
 
-# list of arguments expected in user the input
-OPTIND=1 # Reset in case getopts has been used previously in the shell.
-OPTSTRING=":CdDGhl:srtvX?"
+# Reset in case getopts has been used previously in the shell
+OPTIND=1 
+# list of arguments expected in user input (- option)
+OPTSTRING=":CdDGhl:srtvX?" 
 
 # function to parse input
 while getopts ${OPTSTRING} opt; do
@@ -706,7 +707,7 @@ if [ $OH_DISTRO = PORTABLE ]; then
 	fi
 fi
 
-# test database connection
+# test if database connection is working
 test_database_connection;
 
 if [ $MANUAL_CONFIG != "on" ]; then
