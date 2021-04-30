@@ -428,7 +428,7 @@ function inizialize_database {
 function start_database {
 	Write-Host "Starting MySQL server... "
 	try {
-		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$([char]34)$OH_PATH\etc\mysql\my.cnf$([char]34) --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 		sleep 2;
 	}
 	catch {
