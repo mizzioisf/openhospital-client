@@ -230,7 +230,7 @@ function set_path {
 		Write-Host "Info: OH_PATH not set - using current directory"
 		$script:OH_PATH=$CURRENT_DIR
 		if ( !(Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
-			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where POH was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
+			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
 			Read-Host; exit 1
 		}
 	}
@@ -774,7 +774,7 @@ if ( $DEMO_MODE -eq "on" ) {
 
 Write-Host "Starting Open Hospital in $OH_DISTRO mode..."
 Write-Host "OH_PATH set to $OH_PATH"
-Write-Host "POH language is set to $OH_LANGUAGE"
+Write-Host "OH language is set to $OH_LANGUAGE"
 
 # check for java
 java_check;
