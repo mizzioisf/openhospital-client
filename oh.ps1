@@ -234,8 +234,7 @@ function set_path {
 			Read-Host; exit 1
 		}
 	}
-#	$OH_PATH_ESCAPED=$(Write-Host $OH_PATH | sed -e 's/\//\\\//g'")
-#	$OH_PATH_ESCAPED=$OH_PATH
+#	$OH_PATH_ESCAPED=$OH_PATH -replace ' ',`' '
 }
 
 function set_language {
