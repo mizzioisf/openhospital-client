@@ -196,8 +196,8 @@ function script_menu {
 	Write-Host " ---------------------------------------------------------"
 	Write-Host ""
 	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
-        Write-Host "               [ -distro PORTABLE|CLIENT ]"
-        Write-Host "               [ -debug INFO|DEBUG ] "
+	Write-Host "               [ -distro PORTABLE|CLIENT ]"
+	Write-Host "               [ -debug INFO|DEBUG ] "
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (Client / Server configuration)"
 	Write-Host "   d    start OH in debug mode"
@@ -311,7 +311,7 @@ function java_check {
 
 	if ( !(Test-Path $JAVA_BIN) ) {
         	if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT") ) {
-    			Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
+			Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading openjdk binaries
 			download_file "$JAVA_URL" "$JAVA_DISTRO.$EXT"
@@ -428,14 +428,10 @@ function inizialize_database {
 function start_database {
 	Write-Host "Starting MySQL server... "
 	try {
-	$MYSQLCOMMAND=@"
-        --defaults-file=$OH_PATH\etc\mysql\my.cnf --tmpdir=$OH_PATH\$TMP_DIR --standalone"
-"@
-		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("$MYSQLCOMMAND") -NoNewWindow 
 
-#Y		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$([char]34)$OH_PATH\etc\mysql\my.cnf$([char]34) --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-#		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("$STARTCMDMYSQL") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-		sleep 2; read-host;
+#	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$([char]34)$OH_PATH\etc\mysql\my.cnf$([char]34) --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=`"$OH_PATH\etc\mysql\my.cnf`" --tmpdir=`"$OH_PATH\$TMP_DIR`" --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+		sleep 2;
 	}
 	catch {
 		Write-Host "Error: Database not started! Exiting." -ForegroundColor Red
@@ -802,9 +798,9 @@ if ( $OH_DISTRO -eq "PORTABLE" ) {
 		# Prepare MySQL
 		inizialize_database;
 		# Start MySQL
-        start_database;	
-        # Set database root password
-        set_database_root_pw;
+		start_database;	
+		# Set database root password
+		set_database_root_pw;
 		# Create database and load data
 		import_database;
 	}
@@ -869,7 +865,10 @@ Write-Host "Starting Open Hospital..."
 
 # OH GUI launch
 cd $OH_PATH\$OH_DIR # workaround for hard coded paths
-Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Dlog4j.configuration=$OH_PATH\oh\rsc\log4j.properties -Dsun.java2d.dpiaware=false -Djava.library.path='$NATIVE_LIB_PATH' -cp '$OH_CLASSPATH' org.isf.menu.gui.Menu") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+
+$script:JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\oh\rsc\log4j.properties`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`"`' org.isf.menu.gui.Menu"
+
+Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 
 Write-Host "Exiting Open Hospital..."
 
