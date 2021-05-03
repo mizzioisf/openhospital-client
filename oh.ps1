@@ -394,7 +394,7 @@ function config_database {
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 }
 
-function inizialize_database {
+function initialize_database {
 	# Recreate directory structure
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$TMP_DIR") > $null
@@ -406,7 +406,7 @@ function inizialize_database {
 	switch -Regex ( $MYSQL_DIR ) {
 		"mariadb" {
 			try {
-			    	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=$OH_PATH\$DATA_DIR --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+				Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql_install_db.exe" -ArgumentList ("--datadir=`"$OH_PATH\$DATA_DIR`" --password=$MYSQL_ROOT_PW") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 	        	}
 			catch {
 				Write-Host "Error: MariaDB initialization failed! Exiting." -ForegroundColor Red
@@ -415,7 +415,7 @@ function inizialize_database {
 		}
 		"mysql" {
 			try {
-				Start-Process "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=$OH_PATH\$MYSQL_DIR --datadir=$OH_PATH\$DATA_DIR") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"; break
+				Start-Process "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=`"$OH_PATH\$MYSQL_DIR`" --datadir=`"$OH_PATH\$DATA_DIR`" ") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"; break
 			}
 			catch {
 				Write-Host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
@@ -428,13 +428,11 @@ function inizialize_database {
 function start_database {
 	Write-Host "Starting MySQL server... "
 	try {
-
-#	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=$([char]34)$OH_PATH\etc\mysql\my.cnf$([char]34) --tmpdir=$OH_PATH\$TMP_DIR --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=`"$OH_PATH\etc\mysql\my.cnf`" --tmpdir=`"$OH_PATH\$TMP_DIR`" --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=`"$OH_PATH\etc\mysql\my.cnf`" --tmpdir=`"$OH_PATH\$TMP_DIR`" --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 		sleep 2;
 	}
 	catch {
-		Write-Host "Error: Database not started! Exiting." -ForegroundColor Red
+		Write-Host "Error: MySQL server not started! Exiting." -ForegroundColor Red
 		Read-Host; exit 2
 	}
 
@@ -796,7 +794,7 @@ if ( $OH_DISTRO -eq "PORTABLE" ) {
 	# Check if OH database already exists
 	if ( !(Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME") ) {
 		# Prepare MySQL
-		inizialize_database;
+		initialize_database;
 		# Start MySQL
 		start_database;	
 		# Set database root password
