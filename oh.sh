@@ -114,9 +114,9 @@ MYSQL_DIR="mariadb-10.2.37-linux-$ARCH"
 #JAVA_DIR="zulu11.45.27-ca-jre11.0.9-linux_x64"
 
 ### JRE 11 - openjdk
-JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9"
-JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.10_9"
-JAVA_DIR="jdk-11.0.10+9-jre"
+JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9"
+JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.11_9"
+JAVA_DIR="jdk-11.0.11+9-jre"
 
 ######## JAVA 32bit
 if [ $JAVA_ARCH = 32 ]; then
