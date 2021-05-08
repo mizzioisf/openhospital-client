@@ -342,7 +342,7 @@ function config_database {
 	-e "s/MYSQL_PORT/$MYSQL_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" $OH_PATH/etc/mysql/my.cnf.dist > $OH_PATH/etc/mysql/my.cnf
 }
 
-function inizialize_database {
+function initialize_database {
 	# Recreate directory structure
 	mkdir -p "$OH_PATH/$DATA_DIR"
 	mkdir -p "$OH_PATH/$TMP_DIR"
@@ -371,7 +371,7 @@ function start_database {
 	echo "Starting MySQL server... "
 	$OH_PATH/$MYSQL_DIR/bin/mysqld_safe --defaults-file=$OH_PATH/etc/mysql/my.cnf >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1 &
 	if [ $? -ne 0 ]; then
-		echo "Error: Database not started! Exiting."
+		echo "Error: MySQL server not started! Exiting."
 		exit 2
 	fi
 	# Wait till the MySQL tcp port is open
@@ -494,7 +494,6 @@ function clean_files {
 	rm -f $OH_PATH/$OH_DIR/rsc/log4j.properties.old
 	rm -f $OH_PATH/$OH_DIR/rsc/dicom.properties
 	rm -f $OH_PATH/$OH_DIR/rsc/dicom.properties.old
-	rm -f $OH_PATH/$OH_DIR/logs/*
 }
 
 
@@ -695,7 +694,7 @@ if [ $OH_DISTRO = PORTABLE ]; then
 	# Check if OH database already exists
 	if [ ! -d $OH_PATH/$DATA_DIR/$DATABASE_NAME ]; then
 		# Prepare MySQL
-		inizialize_database;
+		initialize_database;
 		# Start MySQL
 		start_database;	
 		# Set database root password
@@ -746,7 +745,7 @@ echo "Starting Open Hospital..."
 
 # OH GUI launch
 cd $OH_PATH/$OH_DIR # workaround for hard coded paths
-$JAVA_BIN -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
+$JAVA_BIN -client -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> $OH_PATH/$LOG_DIR/$LOG_FILE 2>&1
 
 if [ $? -ne 0 ]; then
 	echo "An error occurred while starting Open Hospital. Exiting."
