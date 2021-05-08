@@ -212,9 +212,9 @@ unzip mariadb-10.2.37-winx64.zip
 In order to have a complete, easy to support and extensible solution to run Open Hospital on Linux, oh.sh has been rewritten, also adding a few possible useful user functions.
 For the same reason, a completely new powershell script has been writtend for Windows: oh.ps1 (run by oh.bat).
 
-I have widely tested and they seems to be working well (Ubuntu 20.04 64bit /  Windows 1064bit), solving also a few old outstanding bugs (mysql not always starting or shutting down, wrong socket references, hard coded values, etc. etc.)
+I have widely tested and they seems to be working well (Ubuntu 20.04 64bit /  Windows 10 64bit), solving also a few old outstanding bugs (mysql not always starting or shutting down, wrong socket references, hard coded values, etc. etc.)
 
-Description of changes, Linux version (mostly the same is applicable to the windows oh.ps1 version):
+A short description of changes for the Linux version (mostly the same behavior and options are applicable to the windows oh.ps1 version):
 
 - Complete overhaul of the code, reworked the entire scripts
 - Everything is now based on functions and parametric variables
@@ -225,18 +225,19 @@ Description of changes, Linux version (mostly the same is applicable to the wind
 - **New**: Language support (both via variable in the script or user input option: **oh.sh -l fr**)
 - **New**: Demo database support (See oh.sh -D)
 - **New**: Client mode support (see oh.sh -C)
-- **New**: Save (see oh.sh -s) / Restore (oh.sh -r) database also for Portable distro !
+- **New**: Save (see oh.sh -s) / Restore (oh.sh -r) database, available also for Portable mode !
 - **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
 - **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
 - **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for testing
 - **New**: test database connection option (see oh.sh -t)
-- **New**: version and current configuration display option (see oh.sh -v)
+- **New**: displayes software versions and current configuration (see oh.sh -v)
 - Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
 - More flexible execution and configuration options
-- Automation of configuration files generation
+- Automatic configuration files generation
 - Everything is commented in the code and a brief output all operations is shown in console
-- Startup and database operations are logged to configurable output file
+- Startup, database and OH operations are logged to configurable output file
 - Backward compatible with old versions and installations, no default behaviour change
+- Unified and simplified subdirectories structure
 - Added sql subdirectory to organize sql creation scripts
 - Added various checks about correct settings of parameters and startup of services
 - Added security controls (no more _rm -rf_ here and there :-)
@@ -263,5 +264,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-*last updated: 18.03.2021*
+*last updated: 09.05.2021*
 
