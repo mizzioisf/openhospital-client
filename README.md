@@ -106,19 +106,18 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
  q    quit
 ```
 Note: The oh.bat launches the oh.ps1 startup file automatically.
+The script offers an interactive menu that can be used to setup and choose how to run Open Hospital.
 
-**on Windows, to manually run oh.ps1 (powershell script):**
+**On Windows, to manually run oh.ps1 (powershell script):**
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
 - select "Unblock"
 - right click on **oh.ps1** and select "Run with Powershell"
 - choose among available options
-- to start Open Hospital with legacy batch file (old oh.bat), open cmd.exe and run **.\oh.bat -legacymode** 
+
+It s also possible to start Open Hospital with the legacy batch file (old oh.bat):
+- open cmd.exe and run **.\oh.bat -legacymode** 
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
-
-The script offers an interactive menu that can be used to setup and choose how to run Open Hospital.
-Tested on Windows 10 x64.
-
 
 # Default directory structure
 
