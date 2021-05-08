@@ -79,7 +79,7 @@ cd openhospital-client
 --------------------
 **on Windows:**
 
-- double click on the **oh.bat** batch file
+- double click on the **oh.bat** batch file and choose among available options:
 
 ```
  ---------------------------------------------------------
@@ -87,7 +87,7 @@ cd openhospital-client
 |                   Open Hospital | OH                    |
 |                                                         |
  ---------------------------------------------------------
-lang en | arch $ARCH
+lang en | arch x86_64
 
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] 
               [ -distro PORTABLE|CLIENT ]
@@ -105,6 +105,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
  X    clean OH installation
  q    quit
 ```
+Note: The oh.bat launches the oh.ps1 startup file automatically.
 
 **on Windows, to manually run oh.ps1 (powershell script):**
 
