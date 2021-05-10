@@ -116,7 +116,7 @@ The script offers an interactive menu that can be used to setup and choose how t
 - choose among available options
 
 It s also possible to start Open Hospital with the legacy batch file (old oh.bat):
-- open cmd.exe and run **.\oh.bat -legacymode** 
+- open cmd.exe and run **.\oh.bat -legacymode** *(*)* 
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
 # Default directory structure
@@ -194,7 +194,7 @@ set-executionpolicy remotesigned
 - You might also be required to enable access to oh.ps1 on Windows Firewall.
 
 
-If you are using the legacy version, you might have to download and unzip java ad mysql manually.
+(*) If you are using the legacy version, you might have to download and unzip java ad mysql manually.
 In order to download and unzip Java:
 
 - Visit https://adoptopenjdk.net/
@@ -204,12 +204,8 @@ In order to download and unzip Java:
 - choose operating system: **Windows** and architecture (x86 or x64)
 - download the **JRE - .zip version**
 
-```
-x86 - 32bit: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.11_9.zip
-x64 - 64bit: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9.zip
-
-unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.11.1_1.zip
-```
+**x86 - 32bit:** https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.11_9.zip
+**x64 - 64bit:** https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -221,9 +217,10 @@ In order to download and unzip mysql (mariadb):
 - Select CPU (architecture) **32 / 64**
 - Download the zip file:
 
-```
-https://downloads.mariadb.com/MariaDB/mariadb-10.2.38/winx64-packages/mariadb-10.2.38-winx64.zip
-```
+
+**x86 - 32bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.38/win32-packages/mariadb-10.2.38-win32.zip
+**x64 - 64bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.38/winx64-packages/mariadb-10.2.38-winx64.zip
+
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
 # New oh.sh / oh.ps1
