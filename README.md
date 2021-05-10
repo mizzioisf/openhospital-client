@@ -34,7 +34,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 Common to all architectures:
 
-*(see poh downloads on sourceforce for full release packages)*
+*(see OH downloads on sourceforce for full release packages)*
 
 **via git - latest version**
 
@@ -141,7 +141,7 @@ data/dicom_storage
 External software package downloaded at first run:
 
 ```
-Mariadb 10.2.37 server
+Mariadb 10.2.x server
 OpenJDK JRE 11
 ```
 
@@ -194,18 +194,37 @@ set-executionpolicy remotesigned
 - You might also be required to enable access to oh.ps1 on Windows Firewall.
 
 
-If you are using the legacy version, you might to download and unzip java ad mysql manually.
+If you are using the legacy version, you might have to download and unzip java ad mysql manually.
+In order to download and unzip Java:
 
-- download and unzip Java:
+- Visit https://adoptopenjdk.net/
+- select "Other Platforms"
+- choose a Version: **OpenJDK 11 (LTS)**
+- choose a JVM type: **HotSpot**
+- choose operating system: **Windows** and architecture (x86 or x64)
+- download the **JRE - .zip version**
+
 ```
-wget  https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9.1%2B1/OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
-unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.9.1_1.zip
+x86 - 32bit: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.11_9.zip
+x64 - 64bit: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9.zip
+
+unzip OpenJDK11U-jre_x64_windows_hotspot_11.0.11.1_1.zip
 ```
-- download and unzip mysql (mariadb):
+
+- unzip the downloaded file into the base directory where OpenHospital has been placed.
+
+In order to download and unzip mysql (mariadb):
+
+- Visit https://downloads.mariadb.org/mariadb/10.2/
+- Select the Operating System: **Windows**
+- Select package type: **ZIP file**
+- Select CPU (architecture) **32 / 64**
+- Download the zip file:
+
 ```
-wget  https://downloads.mariadb.com/MariaDB/mariadb-10.2.37/winx64-packages/mariadb-10.2.37-winx64.zip
-unzip mariadb-10.2.37-winx64.zip
+https://downloads.mariadb.com/MariaDB/mariadb-10.2.38/winx64-packages/mariadb-10.2.38-winx64.zip
 ```
+- unzip the downloaded file into the base directory where OpenHospital has been placed.
 
 # New oh.sh / oh.ps1
 
@@ -241,7 +260,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Added sql subdirectory to organize sql creation scripts
 - Added various checks about correct settings of parameters and startup of services
 - Added security controls (no more _rm -rf_ here and there :-)
-- Added support for **MariaDB** - (tested with mariadb-10.2.37) (OH seems faster and more responsive)
+- Added support for **MariaDB** - (tested with version up to mariadb-10.2.38) (OH seems faster and more responsive)
 - Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
 - Fixed _a_few_ bugs ;-)
 
@@ -264,5 +283,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-*last updated: 09.05.2021*
+*last updated: 10.05.2021*
 

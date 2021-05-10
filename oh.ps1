@@ -139,8 +139,8 @@ switch ( "$ARCH" ) {
 
 ######## MySQL Software
 # MariaDB
-$script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.37/winx64-packages/"
-$script:MYSQL_DIR="mariadb-10.2.37-win$script:MYSQL_ARCH"
+$script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-10.2.38/winx64-packages/"
+$script:MYSQL_DIR="mariadb-10.2.38-win$script:MYSQL_ARCH"
 # MySQL
 #$script:MYSQL_DIR="mysql-5.7.32-win$script:MYSQL_ARCH"
 #$script:MYSQL_URL=" https://downloads.mysql.com/archives/get/p/23/file"
@@ -154,9 +154,9 @@ $script:EXT="zip"
 #$script:JAVA_DIR="zulu11.45.27-ca-jre11.0.10-win_i686"
 
 ### JRE 11 - openjdk
-$script:JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.10%2B9/"
-$script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.10_9"
-$script:JAVA_DIR="jdk-11.0.10+9-jre"
+$script:JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/"
+$script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9"
+$script:JAVA_DIR="jdk-11.0.11+9-jre"
 
 ######## JAVA 32bit
 # DICOM workaround - force JAVA_ARCH to 32 bit
