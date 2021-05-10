@@ -193,6 +193,7 @@ set-executionpolicy remotesigned
 ```
 - You might also be required to enable access to oh.ps1 on Windows Firewall.
 
+**Windows - legacy mode**
 
 (*) If you are using the legacy version, you might have to download and unzip java ad mysql manually.
 In order to download and unzip Java:
@@ -205,6 +206,7 @@ In order to download and unzip Java:
 - download the **JRE - .zip version**
 
 **x86 - 32bit:** https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.11_9.zip
+
 **x64 - 64bit:** https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
