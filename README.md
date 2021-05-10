@@ -121,7 +121,7 @@ It s also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 # Default directory structure
 
-The scripts take care of creating all the needed data directories and configuration files
+The scripts takes care of creating all the needed data directories and configuration files.
 Everything is also parametric and user adjustable in the scripts with variables (or via command line options).
 The default is now clean, simple and **common to all distros:**
 
