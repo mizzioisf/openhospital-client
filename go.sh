@@ -30,7 +30,7 @@
 # OH_PATH is the directory where Portable OpenHospital files are located
 # OH_PATH=/usr/local/PortableOpenHospital
 
-OH_SUBDIR="poh-1.11.beta"
+OH_SUBDIR="oh-1.11.beta"
 
 ######## Software configuration - change at your own risk :-)
 OH_DIR="oh"
@@ -57,7 +57,7 @@ function script_usage {
 	echo ""
 	echo " If the script finds an OH installation in the current dir, it launches $TARGET_SCRIPT [-params]"
 	echo " Otherwise it downloads a dev copy, all the necessary software libraries, clones the OH installation"
-	echo " in a subdirectory (poh-version-x.x) and launches $TARGET_SCRIPT passing the command line options (go.sh -v -> poh-dev/oh.sh -v)"
+	echo " in a subdirectory (oh-version-x.x) and launches $TARGET_SCRIPT passing the command line options (go.sh -v -> oh-dev/oh.sh -v)"
 	echo ""
 	echo "   -h    show this help"
 	echo ""
