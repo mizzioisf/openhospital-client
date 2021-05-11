@@ -260,6 +260,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Added various checks about correct settings of parameters and startup of services
 - Added security controls (no more _rm -rf_ here and there :-)
 - Added support for **MariaDB** - (tested with version up to mariadb-10.2.38) (OH seems faster and more responsive)
+- Windows -> addedd support for path with spaces / special characters 
 - Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
 - Fixed _a_few_ bugs ;-)
 
