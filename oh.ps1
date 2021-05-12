@@ -227,7 +227,7 @@ function set_path {
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
 	# set OH_PATH if not defined
 	if ( ! $OH_PATH ) {
-		Write-Host "Info: OH_PATH not set - using current directory"
+		Write-Host "Info: OH_PATH not defined"
 		$script:OH_PATH=$CURRENT_DIR
 		if ( !(Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
@@ -534,7 +534,7 @@ function shutdown_database {
 }
 
 function clean_database {
-	Write-Host "Warning: do you want to remove all data and databases ?" -ForegroundColor Red
+	Write-Host "Warning: do you want to remove all existing data and databases ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
 	Write-Host "--->>> Are you sure ?" -ForegroundColor Red
@@ -563,7 +563,7 @@ function test_database_connection {
 
 function clean_files {
 	# clean all generated files - leave only .dist files
-	Write-Host "Warning: do you want to remove all configuration and log files ?" -ForegroundColor Red
+	Write-Host "Warning: do you want to remove all existing configuration and log files ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Removing files..."
 
@@ -632,7 +632,6 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		}
 		else { $script:OH_DISTRO="PORTABLE" }
 		$DEMO_MODE="on"
-		clean_database;
 	}
 	"G"	{ # set up GSM 
 		Write-Host "Setting up GSM..."
@@ -647,7 +646,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		set_language;
 	}
 	"s"	{ # save database 
-		# checking if data exist
+		# check if database already exists
 	        Write-host "$OH_PATH\$DATA_DIR\$DATABASE_NAME"
 		if ( Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
 			mysql_check;
@@ -761,6 +760,10 @@ if ( $DEMO_MODE -eq "on" ) {
 		exit 1
 		else { $script:OH_DISTRO="PORTABLE" }
 	}
+	
+	# reset database if exists
+	clean_database;
+
 	if ( Test-Path -Path "$OH_PATH\$SQL_DIR\$DB_DEMO" ) {
 	        Write-Host "Found SQL demo database, starting OH in DEMO mode..."
 		$DB_CREATE_SQL=$DB_DEMO
@@ -792,6 +795,7 @@ if ( $OH_DISTRO -eq "PORTABLE" ) {
 	config_database;
 	# Check if OH database already exists
 	if ( !(Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME") ) {
+		Write-Host "OH database not found, starting from scratch..."
 		# Prepare MySQL
 		initialize_database;
 		# Start MySQL
@@ -802,6 +806,7 @@ if ( $OH_DISTRO -eq "PORTABLE" ) {
 		import_database;
 	}
 	else {
+		Write-Host "OH database found!"
 		# Starting MySQL
 		start_database;
 	}
