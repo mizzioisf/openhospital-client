@@ -317,7 +317,7 @@ function java_check {
 		}
 		Write-Host "Unpacking $JAVA_DISTRO..."
 		try {
-			Expand-Archive "$OH_PATH\$JAVA_DISTRO.$EXT" -DestinationPath "$OH_PATH"\ -Force
+			Expand-Archive "$OH_PATH\$JAVA_DISTRO.$EXT" -DestinationPath "$OH_PATH\" -Force
 		}
 		catch {
 			Write-Host "Error unpacking Java. Exiting." -ForegroundColor Red
