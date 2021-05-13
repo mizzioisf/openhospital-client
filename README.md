@@ -72,7 +72,7 @@ cd openhospital-client
    -r    restore OH database
    -t    test database connection (CLIENT mode only)
    -v    show OH software version and configuration
-   -X    clean OH installation
+   -X    clean/reset OH installation
 
 ```
 
@@ -102,7 +102,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
  r    restore OH database
  t    test database connection (Client mode only)
  v    show OH software version and configuration
- X    clean OH installation
+ X    clean/reset OH installation
  q    quit
 ```
 Note: The oh.bat launches the oh.ps1 startup file automatically.
@@ -283,5 +283,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-*last updated: 10.05.2021*
+*last updated: 13.05.2021*
 
