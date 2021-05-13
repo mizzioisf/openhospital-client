@@ -381,7 +381,7 @@ function config_database {
 	# Creating MySQL configuration
 	Write-Host "Generating MySQL config file..."
 	if ( Test-Path "$OH_PATH/etc/mysql/my.cnf" ) {
-		mv -Force $"OH_PATH/etc/mysql/my.cnf" "$OH_PATH/etc/mysql/my.cnf.old"
+		mv -Force "$OH_PATH/etc/mysql/my.cnf" "$OH_PATH/etc/mysql/my.cnf.old"
 	}
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("OH_PATH_SUBSTITUTE","$OH_PATH") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
