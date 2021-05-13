@@ -562,7 +562,7 @@ function test_database_connection {
 }
 
 function clean_files {
-	# clean all generated files - leave only .dist files
+	# clean all generated configuration files - leave only distribution .dist files
 	Write-Host "Warning: do you want to remove all existing configuration and log files ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Removing files..."
@@ -654,12 +654,12 @@ if ( $INTERACTIVE_MODE -eq "on") {
 				config_database;
 			}
 			start_database;
-        	Write-Host "Saving Open Hospital database..."
-		dump_database;
-		shutdown_database;
-        	Write-Host "Done!"
-		Read-Host;
-		exit 0
+			Write-Host "Saving Open Hospital database..."
+			dump_database;
+			shutdown_database;
+			Write-Host "Done!"
+			Read-Host;
+			exit 0
 		}
 		else {
 	        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
@@ -668,17 +668,29 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	}
 	"r"	{ # restore
 	       	Write-Host "Restoring Open Hospital database...."
-		clean_database;
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:BACKUP_DIR subdirectory) -> "
 		if ( Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" ) {
 			Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
+			# reset database if exists
+			clean_database;
+			mysql_check;
+			if ($MANUAL_CONFIG -eq "on" ) {
+				config_database;
+			}
+			initialize_database;
+			start_database;	
+			set_database_root_pw;
+			import_database;
+			shutdown_database;
+			echo "Done!"
+			exit 0
 		}
 		else {
 			Write-Host "Error: No SQL file found! Exiting." -ForegroundColor Red
 			Read-Host; exit 2
 		}
-        	# normal startup from here
+        	Read-Host; exit 0
 	}
 	"t"	{ # test database connection 
 		if ( !($OH_DISTRO -eq "CLIENT") ) {
