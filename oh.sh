@@ -166,7 +166,7 @@ function script_usage {
         echo "   -r    restore OH database"
         echo "   -t    test database connection (CLIENT mode only)"
         echo "   -v    show OH software version and configuration"
-        echo "   -X    clean OH installation"
+        echo "   -X    clean/reset OH installation"
         echo ""
 	exit 0
 }

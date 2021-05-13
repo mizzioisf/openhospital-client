@@ -208,7 +208,7 @@ function script_menu {
 	Write-Host "   r    restore OH database"
 	Write-Host "   t    test database connection (Client mode only)"
 	Write-Host "   v    show OH software version and configuration"
-	Write-Host "   X    clean OH installation"
+	Write-Host "   X    clean/reset OH installation"
 	Write-Host "   q    quit"
 	Write-Host ""
 }
