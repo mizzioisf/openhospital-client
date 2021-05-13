@@ -486,8 +486,8 @@ function clean_files {
 	rm -f ./etc/mysql/my.cnf
 	rm -f ./etc/mysql/my.cnf.old
 	rm -f ./$LOG_DIR/*
-	rm -f ./$OH_DIR/rsc/generalData.properties
-	rm -f ./$OH_DIR/rsc/generalData.properties.old
+	rm -f ./$OH_DIR/rsc/settings.properties
+	rm -f ./$OH_DIR/rsc/settings.properties.old
 	rm -f ./$OH_DIR/rsc/database.properties
 	rm -f ./$OH_DIR/rsc/database.properties.old
 	rm -f ./$OH_DIR/rsc/log4j.properties
@@ -752,10 +752,10 @@ if [ $MANUAL_CONFIG != "on" ]; then
 	    -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 	./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
 
-	######## generalData.properties language setup 
+	######## settings.properties language setup 
 	# set language in OH config file
-	[ -f ./$OH_DIR/rsc/generalData.properties ] && mv -f ./$OH_DIR/rsc/generalData.properties ./$OH_DIR/rsc/generalData.properties.old
-	sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" ./$OH_DIR/rsc/generalData.properties.dist > ./$OH_DIR/rsc/generalData.properties
+	[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
+	sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
 
 fi
 
