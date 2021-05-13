@@ -317,7 +317,7 @@ function java_check {
 		}
 		Write-Host "Unpacking $JAVA_DISTRO..."
 		try {
-			Expand-Archive "$OH_PATH\$JAVA_DISTRO.$EXT" -DestinationPath $OH_PATH\ -Force
+			Expand-Archive "$OH_PATH\$JAVA_DISTRO.$EXT" -DestinationPath "$OH_PATH"\ -Force
 		}
 		catch {
 			Write-Host "Error unpacking Java. Exiting." -ForegroundColor Red
@@ -347,7 +347,7 @@ function mysql_check {
 		}
 		Write-Host "Unpacking $MYSQL_DIR..."
 		try {
-			Expand-Archive "$OH_PATH\$MYSQL_DIR.$EXT" -DestinationPath $OH_PATH\ -Force
+			Expand-Archive "$OH_PATH\$MYSQL_DIR.$EXT" -DestinationPath "$OH_PATH\" -Force
 		}
 		catch {
 			Write-Host "Error unpacking MySQL. Exiting." -ForegroundColor Red
@@ -381,7 +381,7 @@ function config_database {
 	# Creating MySQL configuration
 	Write-Host "Generating MySQL config file..."
 	if ( Test-Path "$OH_PATH/etc/mysql/my.cnf" ) {
-		mv -Force $OH_PATH/etc/mysql/my.cnf $OH_PATH/etc/mysql/my.cnf.old
+		mv -Force $"OH_PATH/etc/mysql/my.cnf" "$OH_PATH/etc/mysql/my.cnf.old"
 	}
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
 	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("OH_PATH_SUBSTITUTE","$OH_PATH") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
@@ -491,7 +491,7 @@ function import_database {
 	# Create OH database structure
 	Write-Host "Importing database schema $DB_CREATE_SQL..."
 	
-	cd $OH_PATH\$SQL_DIR
+	cd "$OH_PATH\$SQL_DIR"
 
     $SQLCOMMAND=@"
    --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME -e "source $OH_PATH\$SQL_DIR\$DB_CREATE_SQL"
@@ -502,7 +502,7 @@ function import_database {
 	catch {
 		Write-Host "Error: Database not imported! Exiting." -ForeGroundColor Red
 		shutdown_database;
-		cd $CURRENT_DIR
+		cd "$CURRENT_DIR"
 		Read-Host; exit 2
 	}
 	Write-Host "Database imported!"
@@ -878,7 +878,7 @@ if ( Test-Path "$OH_PATH/$OH_DIR/rsc/generalData.properties" ) {
 Write-Host "Starting Open Hospital..."
 
 # OH GUI launch
-cd $OH_PATH\$OH_DIR # workaround for hard coded paths
+cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths
 
 $JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\oh\rsc\log4j.properties`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
 
@@ -891,7 +891,7 @@ if ( $OH_DISTRO -eq "PORTABLE" ) {
 }
 
 # go back to starting directory
-cd $CURRENT_DIR
+cd "$CURRENT_DIR"
 
 # exiting
 Write-Host "Done!"
