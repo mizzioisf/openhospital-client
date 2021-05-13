@@ -562,7 +562,7 @@ function test_database_connection {
 }
 
 function clean_files {
-	# clean all generated configuration files - leave only distribution .dist files
+	# clean all configuration files - leave only .dist files
 	Write-Host "Warning: do you want to remove all existing configuration and log files ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Removing files..."
