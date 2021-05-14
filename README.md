@@ -123,7 +123,7 @@ It s also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 - **C**     start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)a
 - **d**     start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
-- *D**     start OH in DEMO mode - loads demo data in order to test the software 
+- **D**     start OH in DEMO mode - loads demo data in order to test the software 
 - **G**     setup GSM modem to enable sms interaction
 - **l**     set local language: en|fr|it|es|pt
 - **s**     save / dump the Open Hospital database in sql format
@@ -145,10 +145,16 @@ Some options can also be setup manually by editing the script and setting the sp
 OH_DISTRO=PORTABLE # set distro to PORTABLE | CLIENT
 DEMO_MODE=off
 
+- Interface and software language:
+
+```
 # Language setting - default set to en
 #OH_LANGUAGE=en fr es it pt
+```
 
-# set debug level to INFO | DEBUG - default set to INFO
+- Set software logging level
+```
+# set log level to INFO | DEBUG - default set to INFO
 #DEBUG_LEVEL=INFO
 ```
 

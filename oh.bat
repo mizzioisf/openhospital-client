@@ -100,7 +100,7 @@ REM # Language setting - default set to en
 REM set OH_LANGUAGE=en fr es it pt
 set OH_LANGUAGE=en
 
-REM # set debug level to INFO | DEBUG - default set to INFO
+REM # set log level to INFO | DEBUG - default set to INFO
 set DEBUG_LEVEL=INFO
 
 REM # enable / disable DICOM (true|false)

@@ -39,7 +39,7 @@ DEMO_MODE=off
 #OH_LANGUAGE=en fr es it pt
 #OH_LANGUAGE=it
 
-# set debug level to INFO | DEBUG - default set to INFO
+# set log level to INFO | DEBUG - default set to INFO
 #DEBUG_LEVEL=INFO
 
 ######## Software configuration - change at your own risk :-)
@@ -507,7 +507,7 @@ if [ $(id -u) -eq 0 ]; then
 	exit 1
 fi
 
-# debug level - set default to INFO
+# log level - set default to INFO
 if [ -z ${DEBUG_LEVEL+x} ]; then
 	DEBUG_LEVEL=INFO
 fi	

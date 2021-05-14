@@ -74,7 +74,7 @@ $script:OH_DISTRO="PORTABLE"  # set distro to PORTABLE | CLIENT
 # Language setting - default set to en
 #$script:OH_LANGUAGE=en # fr es it pt
 
-# set debug level to INFO | DEBUG - default set to INFO
+# set log level to INFO | DEBUG - default set to INFO
 #$script:DEBUG_LEVEL=INFO
 
 # enable / disable DICOM (true|false)
@@ -594,7 +594,7 @@ function clean_files {
 #}
 # else { Write-Host "User ok — go on executing the script..." -ForegroundColor Green }
 
-# debug level - set default to INFO
+# log level - set default to INFO
 if ( [string]::IsNullOrEmpty($DEBUG_LEVEL) ) {
 	$script:DEBUG_LEVEL="INFO"
 }
