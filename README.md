@@ -210,7 +210,7 @@ MANUAL_CONFIG=off
 
 ```
 
-- (Windows only) enable / disable DICOM feature
+- (Windows only) enable / disable DICOM features
 ```
 # enable / disable DICOM (true|false)
 #$script:DICOM_ENABLE="false"
