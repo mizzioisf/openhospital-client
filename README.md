@@ -119,7 +119,7 @@ It s also possible to start Open Hospital with the legacy batch file (old oh.bat
 - open cmd.exe and run **.\oh.bat -legacymode** *(*)* 
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
-**Options - common to all architecture**
+# Options - common to all architecture
 
 - **C**     start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)a
 - **d**     start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
@@ -166,10 +166,10 @@ DEMO_MODE=off
 # Database
 MYSQL_SERVER=localhost
 MYSQL_PORT=3306
-MYSQL_ROOT_PW="root2020oh111"
+MYSQL_ROOT_PW="xxxxxxx"
 DATABASE_NAME=oh
 DATABASE_USER=isf
-DATABASE_PASSWORD=isf123
+DATABASE_PASSWORD="xxxxxxx"
 
 DICOM_MAX_SIZE="4M"
 ```
