@@ -160,7 +160,7 @@ DEMO_MODE=off
 #DEBUG_LEVEL=INFO
 ```
 
-- Database and software configuration
+- Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a Client/Server / LAN environment
 
 ```
 ######## Software configuration - change at your own risk :-)
