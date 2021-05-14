@@ -119,19 +119,20 @@ It s also possible to start Open Hospital with the legacy batch file (old oh.bat
 - open cmd.exe and run **.\oh.bat -legacymode** *(*)* 
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
-# Options - common to all architecture
+# Options - common to all architectures
 
-- **C**     start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)a
-- **d**     start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
-- **D**     start OH in DEMO mode - loads demo data in order to test the software 
-- **G**     setup GSM modem to enable sms interaction
-- **l**     set local language: en|fr|it|es|pt
-- **s**     save / dump the Open Hospital database in sql format
-- **r**     restore Open Hospital database from backup or external sql file
-- **t**     test database connection to the configured database server (Client mode only)
-- **v**     show Open Hospital externalsoftware version and configuration
-- **X**     clean/reset OH installation by deleting all data and configuration files **use with caution**
-- **q**    quit
+- **C**		start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)a
+- **d**		start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
+- **D**		start OH in DEMO mode - loads demo data in order to test the software 
+- **G**		setup GSM modem to enable sms interaction
+- **l**		set local language: en|fr|it|es|pt
+- **s**		save / dump the Open Hospital database in sql format
+- **r**		restore Open Hospital database from backup or external sql file
+- **t**		test database connection to the configured database server (Client mode only)
+- **v**		show Open Hospital externalsoftware version and configuration
+- **X**		clean/reset OH installation by deleting all data and configuration files **use with caution**
+- **q**		quit (windows only)
+- **h**		help (linux only)
 
 Note: The oh.bat launches the oh.ps1 startup file automatically.
 
