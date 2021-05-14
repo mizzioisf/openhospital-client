@@ -119,6 +119,22 @@ It s also possible to start Open Hospital with the legacy batch file (old oh.bat
 - open cmd.exe and run **.\oh.bat -legacymode** *(*)* 
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
+**Options - common to all architecture**
+
+- C     start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)a
+- d     start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
+- D     start OH in DEMO mode - loads demo data in order to test the software 
+- G     setup GSM modem to enable sms interaction
+- l     set local language: en|fr|it|es|pt
+- s     save / dump the Open Hospital database in sql format
+- r     restore Open Hospital database from backup or external sql file
+- t     test database connection to the configured database server (Client mode only)
+- v     show Open Hospital externalsoftware version and configuration
+- X     clean/reset OH installation by deleting all data and configuration files **use with caution**
+- q    quit
+```
+Note: The oh.bat launches the oh.ps1 startup file automatically.
+
 # Default directory structure
 
 The scripts takes care of creating all the needed data directories and configuration files.
@@ -225,7 +241,7 @@ In order to download and unzip mysql (mariadb):
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
-# New oh.sh / oh.ps1
+# oh.sh / oh.ps1 - features and development
 
 In order to have a complete, easy to support and extensible solution to run Open Hospital on Linux, oh.sh has been rewritten, also adding a few possible useful user functions.
 For the same reason, a completely new powershell script has been writtend for Windows: oh.ps1 (run by oh.bat).
