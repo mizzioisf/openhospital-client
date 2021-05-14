@@ -144,6 +144,7 @@ Some options can also be setup manually by editing the script and setting the sp
 ```
 OH_DISTRO=PORTABLE # set distro to PORTABLE | CLIENT
 DEMO_MODE=off
+```
 
 - Interface and software language:
 
@@ -151,8 +152,8 @@ DEMO_MODE=off
 # Language setting - default set to en
 #OH_LANGUAGE=en fr es it pt
 ```
-
 - Set software logging level
+
 ```
 # set log level to INFO | DEBUG - default set to INFO
 #DEBUG_LEVEL=INFO
