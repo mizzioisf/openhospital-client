@@ -121,19 +121,87 @@ It s also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 **Options - common to all architecture**
 
-- C     start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)a
-- d     start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
-- D     start OH in DEMO mode - loads demo data in order to test the software 
-- G     setup GSM modem to enable sms interaction
-- l     set local language: en|fr|it|es|pt
-- s     save / dump the Open Hospital database in sql format
-- r     restore Open Hospital database from backup or external sql file
-- t     test database connection to the configured database server (Client mode only)
-- v     show Open Hospital externalsoftware version and configuration
-- X     clean/reset OH installation by deleting all data and configuration files **use with caution**
-- q    quit
-```
+- **C**     start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)a
+- **d**     start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
+- *D**     start OH in DEMO mode - loads demo data in order to test the software 
+- **G**     setup GSM modem to enable sms interaction
+- **l**     set local language: en|fr|it|es|pt
+- **s**     save / dump the Open Hospital database in sql format
+- **r**     restore Open Hospital database from backup or external sql file
+- **t**     test database connection to the configured database server (Client mode only)
+- **v**     show Open Hospital externalsoftware version and configuration
+- **X**     clean/reset OH installation by deleting all data and configuration files **use with caution**
+- **q**    quit
+
 Note: The oh.bat launches the oh.ps1 startup file automatically.
+
+**Advanced options - common to all architecture**
+
+Some options can also be setup manually by editing the script and setting the specific script variables.
+
+- Distribution type, language and debug level:
+
+```
+OH_DISTRO=PORTABLE # set distro to PORTABLE | CLIENT
+DEMO_MODE=off
+
+# Language setting - default set to en
+#OH_LANGUAGE=en fr es it pt
+
+# set debug level to INFO | DEBUG - default set to INFO
+#DEBUG_LEVEL=INFO
+```
+
+- Database and software configuration
+
+```
+######## Software configuration - change at your own risk :-)
+# Database
+MYSQL_SERVER=localhost
+MYSQL_PORT=3306
+MYSQL_ROOT_PW="root2020oh111"
+DATABASE_NAME=oh
+DATABASE_USER=isf
+DATABASE_PASSWORD=isf123
+
+DICOM_MAX_SIZE="4M"
+```
+
+
+- File names and directory structure:
+```
+OH_DIR=oh
+SQL_DIR=sql
+DICOM_DIR="data/dicom_storage"
+DATA_DIR="data/db"
+LOG_DIR="data/log"
+BACKUP_DIR="data/dump"
+TMP_DIR=tmp
+#DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
+DB_DEMO="create_all_demo.sql"
+DATE=`date +%Y-%m-%d_%H-%M-%S`
+LOG_FILE=startup.log
+OH_LOG_FILE=openhospital.log
+```
+
+- Manual config: it is also possibile to manually adapt the configuration files and set the script so they are not regenerated and overwritten:
+
+```
+######## Advanced options
+## set MANUAL_CONFIG to "on" to setup configuration files manually
+# my.cnf and all oh/rsc/*.properties files will not be generated or
+# overwritten if already present
+MANUAL_CONFIG=off
+```
+
+- Enable system wide JAVA:
+```
+######## set JAVA_BIN
+# Uncomment this if you want to use system wide JAVA
+#JAVA_BIN=`which java`
+
+```
+
 
 # Default directory structure
 
