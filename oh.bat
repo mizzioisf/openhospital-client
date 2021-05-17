@@ -65,6 +65,7 @@ goto :init
 	if /i "%~1"=="/?"	call :header & call :usage & goto :end
 	if /i "%~1"=="-?"	call :header & call :usage & goto :end
 	if /i "%~1"=="-h"	call :header & call :usage & goto :end
+	if /i "%~1"=="-help"	call :header & call :usage & goto :end
 	if /i "%~1"=="--help"	call :header & call :usage & goto :end
 
 	if /i "%~1"=="/legacymode"	call :legacy & goto :end
