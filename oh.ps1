@@ -530,6 +530,7 @@ function shutdown_database {
 	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 	# Wait till the MySQL socket file is removed -> TO BE IMPLEMENTED
 	# while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
+	Start-Sleep -Seconds 3
 	Write-Host "MySQL stopped!"
 }
 
