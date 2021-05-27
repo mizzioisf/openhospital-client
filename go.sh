@@ -31,6 +31,7 @@
 # OH_PATH=/usr/local/PortableOpenHospital
 
 OH_SUBDIR="oh-1.11.beta"
+OH_REPO="https://github.com/mizzioisf/openhospital-client"
 
 ######## Software configuration - change at your own risk :-)
 OH_DIR="oh"
@@ -99,7 +100,7 @@ function oh_check_and_go {
 		# Downloading oh
 		echo "Downloading Open Hospital..."
 		if [ ! -d $OH_PATH/$OH_SUBDIR ]; then
-			git clone https://github.com/mizzioisf/openhospital-client $OH_SUBDIR
+			git clone $OH_REPO $OH_SUBDIR
 		fi
 		# set new OH_PATH
 
@@ -112,6 +113,8 @@ function oh_check_and_go {
 	fi
 	if [ -x "$OH_PATH/$TARGET_SCRIPT" ]; then
 		echo "$TARGET_SCRIPT found!"
+		echo "Do you want to start OH?"
+	        get_confirmation;
 		echo "Starting $OH_PATH/$TARGET_SCRIPT.."
 		$OH_PATH/$TARGET_SCRIPT $SCRIPT_ARGS
 		exit 0;
