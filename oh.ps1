@@ -428,7 +428,7 @@ function start_database {
 	Write-Host "Starting MySQL server... "
 	try {
 		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=`"$OH_PATH\etc\mysql\my.cnf`" --tmpdir=`"$OH_PATH\$TMP_DIR`" --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-		sleep 2;
+		Start-Sleep -Seconds 2
 	}
 	catch {
 		Write-Host "Error: MySQL server not started! Exiting." -ForegroundColor Red
