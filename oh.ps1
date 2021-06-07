@@ -84,7 +84,7 @@ $script:OH_DISTRO="PORTABLE"  # set distro to PORTABLE | CLIENT
 # Database
 $script:MYSQL_SERVER="localhost"
 $script:MYSQL_PORT=3306
-$script:MYSQL_ROOT_PW="root123isfPS1"
+$script:MYSQL_ROOT_PW="tmp2021oh111"
 $script:DATABASE_NAME="oh"
 $script:DATABASE_USER="isf"
 $script:DATABASE_PASSWORD="isf123"

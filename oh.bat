@@ -111,7 +111,7 @@ REM ### Software configuration - change at your own risk :-)
 REM # Database
 set MYSQL_SERVER=localhost
 set MYSQL_PORT=3306
-set MYSQL_ROOT_PW=root2021oh915
+set MYSQL_ROOT_PW=tmp2021oh111
 set DATABASE_NAME=oh
 set DATABASE_USER=isf
 set DATABASE_PASSWORD=isf123
