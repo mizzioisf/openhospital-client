@@ -96,8 +96,8 @@ esac
 EXT="tar.gz"
 # MariaDB
 MYSQL_VERSION="10.2.39"
-MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-$MYSQL_VER/bintar-linux-x86_64"
-MYSQL_DIR="mariadb-$MYSQL_VER-linux-$ARCH"
+MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-$MYSQL_VERSION/bintar-linux-x86_64"
+MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$ARCH"
 # MySQL
 #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
 #MYSQL_DIR="mysql-5.7.32-linux-glibc2.12-$ARCH"
