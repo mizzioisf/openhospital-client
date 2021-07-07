@@ -317,8 +317,8 @@ In order to download and unzip mysql (mariadb):
 - Download the zip file:
 
 
-**x86 - 32bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.38/win32-packages/mariadb-10.2.38-win32.zip
-**x64 - 64bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.38/winx64-packages/mariadb-10.2.38-winx64.zip
+**x86 - 32bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.39/win32-packages/mariadb-10.2.39-win32.zip
+**x64 - 64bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.39/winx64-packages/mariadb-10.2.39-winx64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -380,5 +380,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-*last updated: 13.05.2021*
+*last updated: 07.07.2021*
 
