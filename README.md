@@ -35,9 +35,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 *(see OH downloads on sourceforce for full release packages)*
 
-**via git - latest version**
-
-- clone the repository
+- clone the repository with git:
 ```
 git clone https://github.com/mizzioisf/openhospital-client
 ```
