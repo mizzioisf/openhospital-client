@@ -1,11 +1,10 @@
 # ![](./oh.ico) OH - Open Hospital Portable | Client 
 
 OH - Open Hospital (https://www.open-hospital.org/en/) is a free and open source
-software for healthcare data management. Its portable version (Open Hospital
-Portable) allows you to take along with you Open Hospital and run it on
-any computer, keeping the data you have saved. With this distribution we also hope to
-reach the goal to make Open Hospital easily installable so that even somebody
-with no experience of Java or MySQL can try or use it.
+software for healthcare data management. Its portable version allows you to take
+along with you Open Hospital and run it on any computer, keeping the data you have saved.
+With this distribution we also hope to reach the goal to make Open Hospital easily installable
+so that even somebody with no experience of Java or MySQL can try or use it.
 
 Open Hospital can run on any computer and it is easily possible to move the installation on
 another computer or even run it from a USB stick or drive. All you have to do
@@ -122,7 +121,7 @@ It s also possible to start Open Hospital with the legacy batch file (old oh.bat
 # Options - common to all architectures
 
 - **C**    start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)
-- **d**    start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
+- **d**    start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations to log file
 - **D**    start OH in DEMO mode - loads demo data in order to test the software 
 - **G**    setup GSM modem to enable sms interaction
 - **l**    set local language: en|fr|it|es|pt
