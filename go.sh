@@ -57,7 +57,7 @@ function script_usage {
 	echo " Usage: $SCRIPT_NAME [-h][-option]"
 	echo ""
 	echo " If the script finds an OH installation in the current dir, it launches $TARGET_SCRIPT [-params]"
-	echo " Otherwise it downloads a dev copy, all the necessary software libraries, clones the OH installation"
+	echo " Otherwise it downloads an OpenHospital dev distribution with all the necessary software libraries"
 	echo " in a subdirectory (oh-version-x.x) and launches $TARGET_SCRIPT passing the command line options (go.sh -v -> oh-version-x.x/oh.sh -v)"
 	echo ""
 	echo "   -h    show this help"
