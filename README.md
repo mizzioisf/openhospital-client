@@ -127,7 +127,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 - **s**    save / dump the Open Hospital database in sql format
 - **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
 - **t**    test database connection to the configured database server (Client mode only)
-- **v**    show Open Hospital externalsoftware version and configuration
+- **v**    show Open Hospital external software version and configuration
 - **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
 - **q**    quit (windows only)
 - **h**    help (linux only)
