@@ -112,7 +112,7 @@ On Windows, to manually run oh.ps1 (powershell script):
 - right click on **oh.ps1** and select "Run with Powershell"
 - choose among available options
 
-It s also possible to start Open Hospital with the legacy batch file (old oh.bat):
+It's also possible to start Open Hospital with the legacy batch file (old oh.bat):
 - open cmd.exe and run **.\oh.bat -legacymode**
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
