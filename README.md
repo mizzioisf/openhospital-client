@@ -105,7 +105,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
 Note: The oh.bat launches the oh.ps1 startup file automatically.
 The script presents the interactive menu that can be used to setup and choose how to run Open Hospital.
 
-**On Windows, to manually run oh.ps1 (powershell script):**
+On Windows, to manually run oh.ps1 (powershell script):
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
 - select "Unblock"
