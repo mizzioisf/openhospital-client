@@ -125,10 +125,10 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 - **G**    setup GSM modem to enable sms interaction
 - **l**    set local language: en|fr|it|es|pt
 - **s**    save / dump the Open Hospital database in sql format
-- **r**    restore Open Hospital database from backup or external sql file
+- **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
 - **t**    test database connection to the configured database server (Client mode only)
 - **v**    show Open Hospital externalsoftware version and configuration
-- **X**    clean/reset OH installation by deleting all data and configuration files **use with caution**
+- **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
 - **q**    quit (windows only)
 - **h**    help (linux only)
 
