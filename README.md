@@ -1,21 +1,21 @@
 # ![](./oh.ico) OH - Open Hospital Portable | Client 
 
-Open Hospital (https://www.open-hospital.org/en/) is a free and open source
+OH - Open Hospital (https://www.open-hospital.org/en/) is a free and open source
 software for healthcare data management. Its portable version (Open Hospital
 Portable) allows you to take along with you Open Hospital and run it on
-any computer, keeping the data you have saved. With OH, we also hope to
+any computer, keeping the data you have saved. With this distribution we also hope to
 reach the goal to make Open Hospital easily installable so that even somebody
 with no experience of Java or MySQL can try or use it.
 
-OH allows to use Open Hospital on a computer, easily move the installation on
+Open Hospital can run on any computer and it is easily possible to move the installation on
 another computer or even run it from a USB stick or drive. All you have to do
-is to copy the root installation directory of POH to your favourite path, where
+is to copy the root installation directory of OH to your favourite path, where
 the program and the data will be kept. OH uses its own version of the Java Virtual
 Machine and the MySQL server and everything is contained in the root
 installation directory. OH is released under the GNU GPL 3.0 License.
 
 The Linux version has been tested on different distributions and versions,
-including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 20.10 x64 (64bit).
+including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 21.04 x64 (64bit).
 The Windows version has been tested on Windows 10.
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
@@ -106,7 +106,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
  q    quit
 ```
 Note: The oh.bat launches the oh.ps1 startup file automatically.
-The script offers an interactive menu that can be used to setup and choose how to run Open Hospital.
+The script presents the interactive menu that can be used to setup and choose how to run Open Hospital.
 
 **On Windows, to manually run oh.ps1 (powershell script):**
 
@@ -116,13 +116,13 @@ The script offers an interactive menu that can be used to setup and choose how t
 - choose among available options
 
 It s also possible to start Open Hospital with the legacy batch file (old oh.bat):
-- open cmd.exe and run **.\oh.bat -legacymode** *(*)* 
+- open cmd.exe and run **.\oh.bat -legacymode** ** 
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
 # Options - common to all architectures
 
-- **C**		start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)a
-- **d**		start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
+- **C** - 		start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)
+- **d**	- 	start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
 - **D**		start OH in DEMO mode - loads demo data in order to test the software 
 - **G**		setup GSM modem to enable sms interaction
 - **l**		set local language: en|fr|it|es|pt
