@@ -121,7 +121,7 @@ It s also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 # Options - common to all architectures
 
-- **C** - 		start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)
+- **C** -> 		start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)
 - **d**	- 	start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations
 - **D**		start OH in DEMO mode - loads demo data in order to test the software 
 - **G**		setup GSM modem to enable sms interaction
