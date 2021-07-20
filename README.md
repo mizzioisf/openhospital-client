@@ -31,7 +31,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 # Running OH - Quickstart
 
-Common to all architectures:
+**Common to all architectures:**
 
 *(see OH downloads on sourceforce for full release packages)*
 
