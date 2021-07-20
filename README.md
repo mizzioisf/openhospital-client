@@ -113,7 +113,7 @@ The script presents the interactive menu that can be used to setup and choose ho
 - choose among available options
 
 It s also possible to start Open Hospital with the legacy batch file (old oh.bat):
-- open cmd.exe and run **.\oh.bat -legacymode** ** 
+- open cmd.exe and run **.\oh.bat -legacymode**
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
 # Options - common to all architectures
