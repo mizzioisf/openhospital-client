@@ -137,6 +137,7 @@ Note: The oh.bat launches the oh.ps1 startup file automatically.
 **Advanced options - common to all architecture**
 
 Some options can also be setup manually by editing the script and setting the specific script variables.
+This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
 
 - Distribution type, language and debug level:
 
