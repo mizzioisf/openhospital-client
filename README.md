@@ -110,6 +110,7 @@ On Windows, to manually run oh.ps1 (powershell script):
 - right-click on **oh.ps1** -> Properties -> General -> Security
 - select "Unblock"
 - right click on **oh.ps1** and select "Run with Powershell"
+- if asked for permission permession to execute the script select "Allow"
 - choose among available options
 
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat):
