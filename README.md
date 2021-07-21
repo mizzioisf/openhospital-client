@@ -113,6 +113,9 @@ On Windows, to manually run oh.ps1 (powershell script):
 - if asked for permission to execute the script select "Allow"
 - choose among available options
 
+It might be necessary to set the correct permissions / exclusions also in the Windows Security Center, for example allowing OH to communicate on
+the MySQL / MariaDB local TCP port.
+
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat):
 - open cmd.exe and run **.\oh.bat -legacymode**
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
