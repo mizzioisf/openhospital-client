@@ -535,7 +535,7 @@ while getopts ${OPTSTRING} opt; do
 	d)	# debug
         	echo "Starting Open Hospital in debug mode..."
 		LOG_LEVEL=DEBUG
-		echo "Debug level set to $LOG_LEVEL"
+		echo "Log level set to $LOG_LEVEL"
 		;;
 	C)	# start in CLIENT mode
 		OH_DISTRO=CLIENT

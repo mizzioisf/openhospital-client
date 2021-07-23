@@ -622,7 +622,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	"d"	{ # debug 
            	Write-Host "Starting Open Hospital in debug mode..."
 		$LOG_LEVEL="DEBUG"
-		Write-Host "Debug level set to $LOG_LEVEL"
+		Write-Host "Log level set to $LOG_LEVEL"
 	}
 	"D"	{ # demo mode 
 		Write-Host "Starting Open Hospital in DEMO mode..."
