@@ -120,7 +120,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 - open cmd.exe and run **.\oh.bat -legacymode**
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
 
-# Options - common to all architectures
+# Options 
 
 - **C**    start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)
 - **d**    start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations to log file
