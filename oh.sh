@@ -95,12 +95,12 @@ esac
 ######## MySQL Software
 EXT="tar.gz"
 # MariaDB
-MYSQL_VERSION="10.2.39"
+MYSQL_VERSION="10.2.40"
 MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-$MYSQL_VERSION/bintar-linux-x86_64"
 MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$ARCH"
 # MySQL
 #MYSQL_URL="https://downloads.mysql.com/archives/get/p/23/file"
-#MYSQL_DIR="mysql-5.7.34-linux-glibc2.12-$ARCH"
+#MYSQL_DIR="mysql-5.7.35-linux-glibc2.12-$ARCH"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
@@ -109,15 +109,15 @@ MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$ARCH"
 #JAVA_URL="https://builds.openlogic.com/downloadJDK/openlogic-openjdk-jre/8u262-b10/"
 #JAVA_DIR="openlogic-openjdk-jre-8u262-b10-linux-64"
 
-### JRE 11 - zulu
+### JRE 11 - zulu distribution
 #JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-linux_x64"
 #JAVA_URL="https://cdn.azul.com/zulu/bin"
 #JAVA_DIR="zulu11.45.27-ca-jre11.0.9-linux_x64"
 
-### JRE 11 - openjdk
-JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9"
-JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.11_9"
-JAVA_DIR="jdk-11.0.11+9-jre"
+### JRE 11 - openjdk distribution
+JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.12%2B7"
+JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.12_7"
+JAVA_DIR="jdk-11.0.12+7-jre"
 
 ######## JAVA 32bit
 if [ $JAVA_ARCH = 32 ]; then
@@ -182,9 +182,11 @@ function get_confirmation {
 }
 
 function set_path {
+	# get current directory
+	CURRENT_DIR=$PWD
 	# set OH_PATH if not defined
 	if [ -z ${OH_PATH+x} ]; then
-		echo "Info: OH_PATH not defined"
+		echo "Info: OH_PATH not defined - setting to script path"
 
 		# set OH_PATH to script path
 		OH_PATH=$(dirname "$(realpath "$0")")
@@ -193,7 +195,6 @@ function set_path {
 			echo "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
 			exit 1
 		fi
-		# echo "OH_PATH set to $OH_PATH"
 	fi
 	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
 	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
@@ -263,7 +264,7 @@ function java_lib_setup {
 
 function java_check {
 if [ -z ${JAVA_BIN+x} ]; then
-	JAVA_BIN=./$JAVA_DIR/bin/java
+	JAVA_BIN="$OH_PATH/$JAVA_DIR/bin/java"
 fi
 
 if [ ! -x $JAVA_BIN ]; then
@@ -286,8 +287,8 @@ if [ ! -x $JAVA_BIN ]; then
 		echo "Done!"
 	fi
 # check for java binary
-if [ -x ./$JAVA_DIR/bin/java ]; then
-	JAVA_BIN=./$JAVA_DIR/bin/java
+if [ -x "$OH_PATH/$JAVA_DIR/bin/java" ]; then
+	JAVA_BIN="$OH_PATH/$JAVA_DIR/bin/java"
 	echo "JAVA found!"
 	echo "Using $JAVA_DIR"
 else 
@@ -416,11 +417,12 @@ function import_database {
 
 	# Create OH database structure
 	echo "Importing database schema $DB_CREATE_SQL..."
-	cd ./$SQL_DIR
+	cd "./$SQL_DIR"
 	../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
 	if [ $? -ne 0 ]; then
 		echo "Error: Database not imported! Exiting."
 		shutdown_database;
+		cd "$CURRENT_DIR"
 		exit 2
 	fi
 	echo "Database imported!"
@@ -429,18 +431,20 @@ function import_database {
 
 function dump_database {
 	# Save OH database if existing
-	if [ -x "./$MYSQL_DIR/bin/mysqldump" ]; then
+	if [ -x ./$MYSQL_DIR/bin/mysqldump ]; then
 		mkdir -p "$OH_PATH/$BACKUP_DIR"
 		echo "Dumping MySQL database..."
 		./$MYSQL_DIR/bin/mysqldump --skip-extended-insert -u root --password=$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME > ./$BACKUP_DIR/mysqldump_$DATE.sql
 		if [ $? -ne 0 ]; then
 			echo "Error: Database not dumped! Exiting."
+			cd "$CURRENT_DIR"
 			shutdown_database;
 			exit 2
 		fi
 	else
 		echo "Error: No mysqldump utility found! Exiting."
 		shutdown_database;
+		cd "$CURRENT_DIR"
 		exit 2
 	fi
 	echo "MySQL dump file $BACKUP_DIR/mysqldump_$DATE.sql completed!"
@@ -518,9 +522,8 @@ fi
 set_path;
 set_language;
 
-# set working dir to oh base dir
+# set working dir to OH base dir
 cd "$OH_PATH"
-
 
 ######## User input
 
@@ -766,12 +769,14 @@ fi
 echo "Starting Open Hospital..."
 
 # OH GUI launch
-cd "$OH_DIR" # workaround for hard coded paths
-../$JAVA_BIN -client -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
+cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+
+$JAVA_BIN -client -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
 
 if [ $? -ne 0 ]; then
 	echo "An error occurred while starting Open Hospital. Exiting."
 	shutdown_database;
+	cd "$CURRENT_DIR"
 	exit 4
 fi
 
@@ -780,6 +785,9 @@ echo "Exiting Open Hospital..."
 if [ $OH_DISTRO = PORTABLE ]; then
 	shutdown_database;
 fi
+
+# go back to starting directory
+cd "$CURRENT_DIR"
 
 # exiting
 echo "Done!"

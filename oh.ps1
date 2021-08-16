@@ -139,11 +139,11 @@ switch ( "$ARCH" ) {
 
 ######## MySQL Software
 # MariaDB
-$script:MYSQL_VERSION="10.2.39"
+$script:MYSQL_VERSION="10.2.40"
 $script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-$script:MYSQL_VERSION/winx64-packages/"
 $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
 # MySQL
-#$script:MYSQL_DIR="mysql-5.7.34-win$script:MYSQL_ARCH"
+#$script:MYSQL_DIR="mysql-5.7.35-win$script:MYSQL_ARCH"
 #$script:MYSQL_URL=" https://downloads.mysql.com/archives/get/p/23/file"
 $script:EXT="zip"
 
@@ -155,20 +155,20 @@ $script:EXT="zip"
 #$script:JAVA_DIR="zulu11.45.27-ca-jre11.0.10-win_i686"
 
 ### JRE 11 - openjdk
-$script:JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/"
-$script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9"
-$script:JAVA_DIR="jdk-11.0.11+9-jre"
+$script:JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.12%2B7/"
+$script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.12_7"
+$script:JAVA_DIR="jdk-11.0.12+7-jre"
 
 ######## JAVA 32bit
 # DICOM workaround - force JAVA_ARCH to 32 bit
 if ( $JAVA_ARCH -eq "32" -Or $DICOM_ENABLE -eq "true" ) {
 	# Setting JRE 32 bit
-	### JRE 8 - zulu 32bit
+	### JRE 8 32bit - zulu distribution
 	#$script:JAVA_DISTRO="zulu8.52.0.23-ca-jre8.0.282-win_i686"
 	#$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 	#$script:JAVA_DIR="zulu8.52.0.23-ca-jre8.0.282-win_i686"
 
-	### JRE 11 32bit
+	### JRE 11 32bit - zulu distribution
 	$script:JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-win_i686"
 	$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 	$script:JAVA_DIR="zulu11.45.27-ca-jre11.0.10-win_i686"
@@ -224,18 +224,17 @@ function get_confirmation {
 }
 
 function set_path {
-	# set current dir
+	# get current directory
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
 	# set OH_PATH if not defined
 	if ( ! $OH_PATH ) {
-		Write-Host "Info: OH_PATH not defined"
-		$script:OH_PATH=$CURRENT_DIR
+		Write-Host "Info: OH_PATH not defined - setting to script path"
+		$script:OH_PATH=$PSScriptRoot
 		if ( !(Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
 			Read-Host; exit 1
 		}
 	}
-#	$OH_PATH_ESCAPED=$OH_PATH -replace ' ',`' '
 }
 
 function set_language {
@@ -492,7 +491,7 @@ function import_database {
 	# Create OH database structure
 	Write-Host "Importing database schema $DB_CREATE_SQL..."
 	
-	cd "$OH_PATH\$SQL_DIR"
+	cd "./$SQL_DIR"
 
     $SQLCOMMAND=@"
    --local-infile=1 -u root -p$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME -e "source $OH_PATH\$SQL_DIR\$DB_CREATE_SQL"
@@ -507,6 +506,7 @@ function import_database {
 		Read-Host; exit 2
 	}
 	Write-Host "Database imported!"
+	cd "$OH_PATH"
 }
 
 function dump_database {
@@ -521,6 +521,7 @@ function dump_database {
 	else {
 		Write-Host "Error: No mysqldump utility found! Exiting." -ForegroundColor Red
 		shutdown_database;
+		cd "$CURRENT_DIR"
 		Read-Host; exit 2
 	}
 	Write-Host "MySQL dump file $BACKUP_DIR\mysqldump_$DATE.sql completed!" -ForegroundColor Green
@@ -605,6 +606,9 @@ if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
 
 set_path;
 set_language;
+
+# set working dir to OH base dir
+cd "$OH_PATH" # workaround for hard coded paths
 
 ######## User input
 
