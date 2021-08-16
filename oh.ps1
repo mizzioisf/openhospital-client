@@ -512,6 +512,7 @@ function import_database {
 function dump_database {
 	# Save OH database if existing
 	if ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" ) {
+		[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
 		Write-Host "Dumping MySQL database..."	
         $SQLCOMMAND=@"
     --skip-extended-insert -u root --password=$MYSQL_ROOT_PW -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME
