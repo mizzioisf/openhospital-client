@@ -100,7 +100,7 @@ $script:LOG_FILE="startup.log"
 $script:LOG_FILE_ERR="startup.err"
 $script:OH_LOG_FILE="openhospital.log"
 $script:TMP_DIR="tmp"
-$script:BACKUP_DIR="sql"
+$script:BACKUP_DIR="data/dump"
 
 $script:DB_DEMO="create_all_demo.sql"
 # date +%Y-%m-%d_%H-%M-%S
