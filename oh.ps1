@@ -662,6 +662,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 				if ($MANUAL_CONFIG -eq "off" ) {
 					config_database;
 				}
+			}
 			else {
 		        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
 				Read-Host; exit 1
