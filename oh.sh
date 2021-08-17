@@ -32,7 +32,7 @@
 # OH_PATH is the directory where Open Hospital files are located
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
-OH_DISTRO=PORTABLE # set distro to PORTABLE | CLIENT
+OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT
 DEMO_MODE=off
 
 # Language setting - default set to en
@@ -152,7 +152,7 @@ function script_usage {
         echo "|                   Open Hospital | OH                    |"
         echo "|                                                         |"
         echo " ---------------------------------------------------------"
-        echo " lang $OH_LANGUAGE | arch $ARCH | mode $OH_DISTRO        "
+        echo " lang $OH_LANGUAGE | arch $ARCH | mode $OH_MODE           "
         echo " ---------------------------------------------------------"
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l en|fr|it|es|pt ] "
@@ -541,15 +541,15 @@ while getopts ${OPTSTRING} opt; do
 		echo "Log level set to $LOG_LEVEL"
 		;;
 	C)	# start in CLIENT mode
-		OH_DISTRO=CLIENT
+		OH_MODE="CLIENT"
 		;;
 	D)	# demo mode
         	echo "Starting Open Hospital in DEMO mode..."
 		# exit if OH is configured in CLIENT mode
-		if [ $OH_DISTRO = "CLIENT" ]; then
-			echo "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting."
+		if [ $OH_MODE = "CLIENT" ]; then
+			echo "Error - OH_MODE set to CLIENT mode. Cannot run in DEMO mode, exiting."
 			exit 1;
-		else OH_DISTRO="PORTABLE"
+		else OH_MODE="PORTABLE"
 		fi
 		DEMO_MODE="on"
 		;;
@@ -562,7 +562,7 @@ while getopts ${OPTSTRING} opt; do
 		;;
 	s)	# save database
 		# check if portable mode is on
-		if [ $OH_DISTRO = "PORTABLE" ]; then
+		if [ $OH_MODE = "PORTABLE" ]; then
 			# check if database already exists
 			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 				mysql_check;
@@ -613,7 +613,7 @@ while getopts ${OPTSTRING} opt; do
         	# normal startup from here
 		;;
 	t)	# test database connection
-		if [ $OH_DISTRO = PORTABLE ]; then
+		if [ $OH_MODE = "PORTABLE" ]; then
 			echo "Error: Only for CLIENT mode. Exiting."
 			exit 1
 		fi
@@ -638,7 +638,7 @@ while getopts ${OPTSTRING} opt; do
 		# show configuration
         	echo "--------- Configuration ---------"
         	echo "Architecture is $ARCH"
-		echo "Open Hospital is configured in $OH_DISTRO mode"
+		echo "Open Hospital is configured in $OH_MODE mode"
 		echo "Language is set to $OH_LANGUAGE"
 		echo "DEMO mode is set to $DEMO_MODE"
         	echo ""
@@ -676,17 +676,17 @@ done
 
 ######################## OH start ########################
 
-# check distro
-if [ -z ${OH_DISTRO+x} ]; then
-	echo "Error - OH_DISTRO not defined [CLIENT - PORTABLE]! Exiting."
+# check mode
+if [ -z ${OH_MODE+x} ]; then
+	echo "Error - OH_MODE not defined [CLIENT - PORTABLE]! Exiting."
 	exit 1
 fi
 
 # check for demo mode
 if [ $DEMO_MODE = "on" ]; then
 	# exit if OH is configured in CLIENT mode
-	if [ $OH_DISTRO = "CLIENT" ]; then
-		echo "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting."
+	if [ $OH_MODE = "CLIENT" ]; then
+		echo "Error - OH_MODE set to CLIENT mode. Cannot run in DEMO mode, exiting."
 		exit 1;
 	fi
 
@@ -702,7 +702,7 @@ if [ $DEMO_MODE = "on" ]; then
 	fi
 fi
 
-echo "Starting Open Hospital in $OH_DISTRO mode..."
+echo "Starting Open Hospital in $OH_MODE mode..."
 echo "OH_PATH set to $OH_PATH"
 echo "OH language is set to $OH_LANGUAGE"
 
@@ -715,7 +715,7 @@ java_lib_setup;
 ######## Database setup
 
 # Start MySQL and create database
-if [ $OH_DISTRO = PORTABLE ]; then
+if [ $OH_MODE = "PORTABLE" ]; then
 	# Check for MySQL software
 	mysql_check;
 	# Config MySQL
@@ -791,7 +791,7 @@ fi
 
 echo "Exiting Open Hospital..."
 
-if [ $OH_DISTRO = PORTABLE ]; then
+if [ $OH_MODE = "PORTABLE" ]; then
 	shutdown_database;
 fi
 

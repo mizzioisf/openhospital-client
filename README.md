@@ -87,7 +87,7 @@ cd openhospital-client
 lang en | arch x86_64
 
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] 
-              [ -distro PORTABLE|CLIENT ]
+              [ -mode PORTABLE|CLIENT ]
               [ -debug INFO|DEBUG ] 
 
  C    start OH - CLIENT mode (Client / Server configuration)
@@ -145,7 +145,7 @@ This might also be useful to set different combinations of options (language, de
 - Distribution type, language and debug level:
 
 ```
-OH_DISTRO=PORTABLE # set distro to PORTABLE | CLIENT
+OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT
 DEMO_MODE=off
 ```
 
@@ -344,7 +344,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **New**: Language support (both via variable in the script or user input option: **oh.sh -l fr**)
 - **New**: Demo database support (See oh.sh -D)
 - **New**: Client mode support (see oh.sh -C)
-- **New**: Save (see oh.sh -s) / Restore (oh.sh -r) database, available also for Portable mode !
+- **New**: Save (see oh.sh -s) / Restore (oh.sh -r) database, available both for CLIENT and PORTABLE mode !
 - **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
 - **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
 - **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for testing
@@ -384,5 +384,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-*last updated: 2021.08.16*
+*last updated: 2021.08.17*
 

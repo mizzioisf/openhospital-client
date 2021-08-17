@@ -94,9 +94,6 @@ echo Legacy mode - Starting OH with oh.bat...
 REM ################### Configuration ###################
 set OH_PATH=%~dps0
 
-REM set OH_DISTRO="PORTABLE|CLIENT"
-REM set DEMO_MODE="off"
-
 REM # Language setting - default set to en
 REM set OH_LANGUAGE=en fr es it pt
 set OH_LANGUAGE=en

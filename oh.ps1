@@ -33,7 +33,7 @@ It can also be used to perform some basic operation like saving or importing a d
 
 Open Hospital CLIENT | PORTABLE
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
-              [ -distro PORTABLE|CLIENT ]
+              [ -mode PORTABLE|CLIENT ]
               [ -debug INFO|DEBUG ] [default set to INFO]
 
 .EXAMPLE
@@ -55,10 +55,10 @@ https://www.open-hospital.org
 
 
 ######## Command line parameters
-param ($lang, $debuglevel, $distro)
+param ($lang, $debuglevel, $mode)
 $script:OH_LANGUAGE=$lang
 $script:LOG_LEVEL=$debuglevel
-$script:OH_DISTRO=$distro
+$script:OH_MODE=$mode
 
 ######## Global preferences
 # disable progress bar
@@ -68,7 +68,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 # OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 
-$script:OH_DISTRO="PORTABLE"  # set distro to PORTABLE | CLIENT
+$script:OH_MODE="PORTABLE"  # set functioning mode to PORTABLE | CLIENT
 #$script:DEMO_MODE="off"
 
 # Language setting - default set to en
@@ -193,11 +193,11 @@ function script_menu {
 	Write-Host "|                   Open Hospital | OH                    |"
 	Write-Host "|                                                         |"
 	Write-Host " ---------------------------------------------------------"
-	Write-Host " lang $script:OH_LANGUAGE | arch $ARCH | mode $OH_DISTRO"
+	Write-Host " lang $script:OH_LANGUAGE | arch $ARCH | mode $OH_MODE"
 	Write-Host " ---------------------------------------------------------"
 	Write-Host ""
 	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
-	Write-Host "               [ -distro PORTABLE|CLIENT ]"
+	Write-Host "               [ -mode PORTABLE|CLIENT ]"
 	Write-Host "               [ -debug INFO|DEBUG ] "
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (Client / Server configuration)"
@@ -616,13 +616,13 @@ cd "$OH_PATH" # workaround for hard coded paths
 # If INTERACTIVE_MODE is set to "off" don't ask for user input
 if ( $INTERACTIVE_MODE -eq "on") {
 	script_menu;
-	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_DISTRO mode"
+	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_MODE mode"
 	Write-Host ""
 
 	# parse_input
 	switch -casesensitive( "$opt" ) {
 	"C"	{ # start in client mode 
-		$script:OH_DISTRO="CLIENT"
+		$script:OH_MODE="CLIENT"
 	}
 	"d"	{ # debug 
            	Write-Host "Starting Open Hospital in debug mode..."
@@ -632,12 +632,12 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	"D"	{ # demo mode 
 		Write-Host "Starting Open Hospital in DEMO mode..."
 		# exit if OH is configured in CLIENT mode
-		if ( $OH_DISTRO -eq "CLIENT" ) {
-			Write-Host "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting." -ForeGroundcolor Red
+		if ( $OH_MODE -eq "CLIENT" ) {
+			Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run in DEMO mode, exiting." -ForeGroundcolor Red
 			Read-Host;
 			exit 1;
 		}
-		else { $script:OH_DISTRO="PORTABLE" }
+		else { $script:OH_MODE="PORTABLE" }
 		$DEMO_MODE="on"
 	}
 	"G"	{ # set up GSM 
@@ -655,7 +655,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	"s"	{ # save database 
 		# check if portable mode is on
 
-		if ( $OH_DISTRO -eq "PORTABLE" ) {
+		if ( $OH_MODE -eq "PORTABLE" ) {
 			# check if database already exists
 			if ( Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
 				mysql_check;
@@ -709,7 +709,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
         	Read-Host; exit 0
 	}
 	"t"	{ # test database connection 
-		if ( !($OH_DISTRO -eq "CLIENT") ) {
+		if ( !($OH_MODE -eq "CLIENT") ) {
 			Write-Host "Error: Only for CLIENT mode. Exiting." -ForegroundColor Red
 			Read-Host; exit 1
 		}
@@ -732,7 +732,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		# show configuration
  		Write-Host "--------- Configuration ---------"
  		Write-Host "Architecture is $ARCH"
- 		Write-Host "Open Hospital is configured in $OH_DISTRO mode"
+ 		Write-Host "Open Hospital is configured in $OH_MODE mode"
 		Write-Host "Language is set to $OH_LANGUAGE"
 		Write-Host "DEMO mode is set to $DEMO_MODE"
 		Write-Host ""
@@ -772,9 +772,9 @@ if ( $INTERACTIVE_MODE -eq "on") {
 
 Write-Host "Interactive mode set to $script:INTERACTIVE_MODE"
 
-# check distro
-if ( !( $OH_DISTRO -eq "PORTABLE" ) -And !( $OH_DISTRO -eq "CLIENT" ) ) {
-	Write-Host "Error - OH_DISTRO not defined [CLIENT - PORTABLE]! Exiting." -ForegroundColor Red
+# check mode 
+if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) ) {
+	Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE]! Exiting." -ForegroundColor Red
 	Read-Host;
 	exit 1
 }
@@ -782,11 +782,11 @@ if ( !( $OH_DISTRO -eq "PORTABLE" ) -And !( $OH_DISTRO -eq "CLIENT" ) ) {
 # check demo mode
 if ( $DEMO_MODE -eq "on" ) {
 	# exit if OH is configured in Client mode
-	if (( $OH_DISTRO -eq "CLIENT" )) {
-		Write-Host "Error - OH_DISTRO set to CLIENT mode. Cannot run in DEMO mode, exiting." -ForeGroundcolor Red
+	if (( $OH_MODE -eq "CLIENT" )) {
+		Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run in DEMO mode, exiting." -ForeGroundcolor Red
 		Read-Host; 
 		exit 1
-		else { $script:OH_DISTRO="PORTABLE" }
+		else { $script:OH_MODE="PORTABLE" }
 	}
 	
 	# reset database if exists
@@ -803,7 +803,7 @@ if ( $DEMO_MODE -eq "on" ) {
 	}
 }
 
-Write-Host "Starting Open Hospital in $OH_DISTRO mode..."
+Write-Host "Starting Open Hospital in $OH_MODE mode..."
 Write-Host "OH_PATH set to $OH_PATH"
 Write-Host "OH language is set to $OH_LANGUAGE"
 
@@ -816,7 +816,7 @@ java_lib_setup;
 ######## Database setup
 
 # Start MySQL and create database
-if ( $OH_DISTRO -eq "PORTABLE" ) {
+if ( $OH_MODE -eq "PORTABLE" ) {
 	# Check for MySQL software
 	mysql_check;
 	# Config MySQL
@@ -903,7 +903,7 @@ Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow 
 
 Write-Host "Exiting Open Hospital..."
 
-if ( $OH_DISTRO -eq "PORTABLE" ) {
+if ( $OH_MODE -eq "PORTABLE" ) {
 	shutdown_database;
 }
 
