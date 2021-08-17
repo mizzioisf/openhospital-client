@@ -70,7 +70,7 @@ OH_LOG_FILE=openhospital.log
 ## set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
-MANUAL_CONFIG=off 
+MANUAL_CONFIG=off
 
 ######## set JAVA_BIN
 # Uncomment this if you want to use system wide JAVA
@@ -561,22 +561,31 @@ while getopts ${OPTSTRING} opt; do
 		set_language;
 		;;
 	s)	# save database
-		# check if database already exists
-		if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
-			mysql_check;
-			if [ $MANUAL_CONFIG != "on" ]; then
-				config_database;
+		# check if portable mode is on
+		if [ $OH_DISTRO = "PORTABLE" ]; then
+			# check if database already exists
+			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
+				mysql_check;
+				if [ $MANUAL_CONFIG = "off" ]; then
+					config_database;
+				fi
+			else
+	        		echo "Error: no data found! Exiting."
+				exit 1
 			fi
 			start_database;
-	        	echo "Saving Open Hospital database..."
+			echo "Saving Open Hospital database..."
 			dump_database;
 			shutdown_database;
 	        	echo "Done!"
 			exit 0
-		else
-	        	echo "Error: no data found! Exiting."
-			exit 1
 		fi
+		# Dump remote database for CLIENT mode configuration
+		test_database_connection;
+		echo "Saving Open Hospital database..."
+		dump_database;
+        	echo "Done!"
+		exit 0
 		;;
 	r)	# restore 
         	echo "Restoring Open Hospital database...."
@@ -587,7 +596,7 @@ while getopts ${OPTSTRING} opt; do
 			# reset database if exists
 			clean_database;
 			mysql_check;
-			if [ $MANUAL_CONFIG != "on" ]; then
+			if [ $MANUAL_CONFIG = "off" ]; then
 				config_database;
 			fi
 			initialize_database;
@@ -710,7 +719,7 @@ if [ $OH_DISTRO = PORTABLE ]; then
 	# Check for MySQL software
 	mysql_check;
 	# Config MySQL
-	if [ $MANUAL_CONFIG != "on" ]; then
+	if [ $MANUAL_CONFIG = "off" ]; then
 		config_database;
 	fi
 	# Check if OH database already exists
@@ -734,7 +743,7 @@ fi
 # test if database connection is working
 test_database_connection;
 
-if [ $MANUAL_CONFIG != "on" ]; then
+if [ $MANUAL_CONFIG = "off" ]; then
 
 	# set up configuration files
 	echo "Setting up OH configuration files..."

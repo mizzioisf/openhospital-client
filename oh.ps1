@@ -653,12 +653,18 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		set_language;
 	}
 	"s"	{ # save database 
-		# check if database already exists
-	        Write-host "$OH_PATH\$DATA_DIR\$DATABASE_NAME"
-		if ( Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
-			mysql_check;
-			if ($MANUAL_CONFIG -eq "on" ) {
-				config_database;
+		# check if portable mode is on
+
+		if ( $OH_DISTRO -eq "PORTABLE" ) {
+			# check if database already exists
+			if ( Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
+				mysql_check;
+				if ($MANUAL_CONFIG -eq "off" ) {
+					config_database;
+				}
+			else {
+		        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
+				Read-Host; exit 1
 			}
 			start_database;
 			Write-Host "Saving Open Hospital database..."
@@ -668,10 +674,12 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			Read-Host;
 			exit 0
 		}
-		else {
-	        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
-			Read-Host; exit 1
-		}
+		# Dump remote database for CLIENT mode configuration
+		test_database_connection;
+		echo "Saving Open Hospital database..."
+		dump_database;
+		Write-Host "Done!"
+                exit 0
 	}
 	"r"	{ # restore
 	       	Write-Host "Restoring Open Hospital database...."
@@ -682,7 +690,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			# reset database if exists
 			clean_database;
 			mysql_check;
-			if ($MANUAL_CONFIG -eq "on" ) {
+			if ($MANUAL_CONFIG -eq "off" ) {
 				config_database;
 			}
 			initialize_database;
