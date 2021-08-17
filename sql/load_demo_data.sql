@@ -1728,6 +1728,9 @@ INSERT INTO `groupmenu` VALUES (135,'admin','dicomtype',1,NULL,NULL,NULL,NULL);
 INSERT INTO `groupmenu` VALUES (136,'admin','btnopdnewoperation',1,NULL,NULL,NULL,NULL);
 INSERT INTO `groupmenu` VALUES (137,'admin','btnopdeditoperation',1,NULL,NULL,NULL,NULL);
 INSERT INTO `groupmenu` VALUES (138,'admin','worksheet',1,NULL,NULL,NULL,NULL);
+INSERT INTO `groupmenu` VALUES (139,'admin','cashiersfilter', 1,NULL,NULL,NULL,NULL);
+INSERT INTO `groupmenu` VALUES (140,'admin','editclosedbills', 1,NULL,NULL,NULL,NULL);
+
 /*!40000 ALTER TABLE `groupmenu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3101,7 +3104,7 @@ INSERT INTO `menuitem` VALUES ('admission','angal.menu.btn.admission','angal.men
 INSERT INTO `menuitem` VALUES ('admtype','angal.menu.btn.admtype','angal.menu.admtype','x','A','types','org.isf.admtype.gui.AdmissionTypeBrowser','N',0);
 INSERT INTO `menuitem` VALUES ('deliverytype','angal.menu.btn.deliverytype','angal.menu.deliverytype','x','L','types','org.isf.dlvrtype.gui.DeliveryTypeBrowser','N',3);
 INSERT INTO `menuitem` VALUES ('delresulttype','angal.menu.btn.delresulttype','angal.menu.delresulttype','x','R','types','org.isf.dlvrrestype.gui.DeliveryResultTypeBrowser','N',2);
-INSERT INTO `menuitem` VALUES ('disctype','angal.menu.btn.disctype','angal.menu.disctype','x','R','types','org.isf.disctype.gui.DischargeTypeBrowser','N',1);
+INSERT INTO `menuitem` VALUES ('disctype','angal.menu.btn.disctype','angal.menu.disctype','x','H','types','org.isf.disctype.gui.DischargeTypeBrowser','N',1);
 INSERT INTO `menuitem` VALUES ('disease','angal.menu.btn.disease','angal.menu.disease','x','D','generaldata','org.isf.disease.gui.DiseaseBrowser','N',3);
 INSERT INTO `menuitem` VALUES ('diseaselist','angal.menu.btn.diseaselist','angal.menu.diseaselist','x','D','printing','org.isf.stat.gui.DiseasesListLauncher','N',2);
 INSERT INTO `menuitem` VALUES ('diseasetype','angal.menu.btn.diseasetype','angal.menu.diseasetype','x','D','types','org.isf.distype.gui.DiseaseTypeBrowser','N',4);
@@ -3157,10 +3160,10 @@ INSERT INTO `menuitem` VALUES ('btnlaboratorydel','angal.common.delete','angal.c
 INSERT INTO `menuitem` VALUES ('btnlaboratoryedit','angal.common.edit','angal.common.edit','x','E','laboratory','none','N',1);
 INSERT INTO `menuitem` VALUES ('btnlaboratorynew','angal.common.new.btn','angal.common.new.btn','x','N','laboratory','none','N',0);
 INSERT INTO `menuitem` VALUES ('btnadmtherapy','angal.admission.therapy','angal.admission.therapy','x','T','admission','none','N',6);
-INSERT INTO `menuitem` VALUES ('btnbillnew','angal.billbrowser.newbill.btn','angal.billbrowser.newbill.btn','x','N','billsmanager','none','N',0);
-INSERT INTO `menuitem` VALUES ('btnbilledit','angal.billbrowser.editbill.btn','angal.billbrowser.editbill.btn','x','N','billsmanager','none','N',1);
-INSERT INTO `menuitem` VALUES ('btnbilldelete','angal.billbrowser.deletebill.btn','angal.billbrowser.deletebill.btn','x','N','billsmanager','none','N',2);
-INSERT INTO `menuitem` VALUES ('btnbillreport','angal.billbrowser.report','angal.billbrowser.report','x','N','billsmanager','none','N',3);
+INSERT INTO `menuitem` VALUES ('btnbillnew','angal.billbrowser.newbill.btn','angal.billbrowser.newbill.btn','x','N','billsmanager','none','N',1);
+INSERT INTO `menuitem` VALUES ('btnbilledit','angal.billbrowser.editbill.btn','angal.billbrowser.editbill.btn','x','N','billsmanager','none','N',2);
+INSERT INTO `menuitem` VALUES ('btnbilldelete','angal.billbrowser.deletebill.btn','angal.billbrowser.deletebill.btn','x','N','billsmanager','none','N',4);
+INSERT INTO `menuitem` VALUES ('btnbillreport','angal.billbrowser.report','angal.billbrowser.report','x','N','billsmanager','none','N',5);
 INSERT INTO `menuitem` VALUES ('vaccinetype','angal.menu.btn.vaccinetype','angal.menu.vaccinetype','x','V','types','org.isf.vactype.gui.VaccineTypeBrowser','N',12);
 INSERT INTO `menuitem` VALUES ('patientvaccine','angal.menu.btn.patientvaccine','angal.menu.patientvaccine','x','V','main','org.isf.patvac.gui.PatVacBrowser','N',7);
 INSERT INTO `menuitem` VALUES ('btnpatientvaccinenew','angal.common.new.btn','angal.common.new.btn','x','N','patientvaccine','none','N',0);
@@ -3168,7 +3171,7 @@ INSERT INTO `menuitem` VALUES ('btnpatientvaccineedit','angal.common.edit','anga
 INSERT INTO `menuitem` VALUES ('btnpatientvaccinedel','angal.common.delete','angal.common.delete','x','D','patientvaccine','none','N',2);
 INSERT INTO `menuitem` VALUES ('communication','angal.menu.btn.chat','angal.menu.chat','x','M','main','org.isf.xmpp.gui.CommunicationFrame','N',10);
 INSERT INTO `menuitem` VALUES ('btnadmbill','angal.menu.btn.btnadmbill','angal.menu.btnadmbill','x','R','admission','none','N',4);
-INSERT INTO `menuitem` VALUES ('btnbillreceipt','angal.menu.btn.btnbillreceipt','angal.menu.btnbillreceipt','x','R','billsmanager','none','N',4);
+INSERT INTO `menuitem` VALUES ('btnbillreceipt','angal.menu.btn.btnbillreceipt','angal.menu.btnbillreceipt','x','R','billsmanager','none','N',6);
 INSERT INTO `menuitem` VALUES ('btnadmpatientfolder','angal.admission.patientfolder','angal.admission.patientfolder','x','P','admission','none','Y',6);
 INSERT INTO `menuitem` VALUES ('btnopdnewexamination','angal.opd.examination','angal.opd.examination','x','A','btnopdnew','none','N',1);
 INSERT INTO `menuitem` VALUES ('btnopdeditexamination','angal.opd.examination','angal.opd.examination','x','A','btnopdedit','none','N',1);
@@ -3189,6 +3192,8 @@ INSERT INTO `menuitem` VALUES ('dicomtype','angal.menu.btn.dicomtype','angal.men
 INSERT INTO `menuitem` VALUES ('btnopdnewoperation','angal.opd.operation','angal.opd.operation','x','A','btnopdnew','none','N',2);
 INSERT INTO `menuitem` VALUES ('btnopdeditoperation','angal.opd.operation','angal.opd.operation','x','A','btnopdedit','none','N',2);
 INSERT INTO `menuitem` VALUES ('worksheet','angal.menu.btn.worksheet','angal.menu.worksheet','x','W','main','org.isf.visits.gui.VisitView','N',8);
+INSERT INTO `menuitem` VALUES ('cashiersfilter', 'angal.menu.accounting.cashiersfilter', 'angal.menu.accounting.cashiersfilter', 'x', 'X', 'billsmanager', 'none', 'N', '0');
+INSERT INTO `menuitem` VALUES ('editclosedbills', 'angal.menu.accounting.editclosedbills', 'angal.menu.accounting.editclosedbills', 'x', 'E', 'billsmanager', 'none', 'N', '3');
 /*!40000 ALTER TABLE `menuitem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4373,7 +4378,7 @@ CREATE TABLE `patientexamination` (
   `PEX_BOWEL_DESC` varchar(45) DEFAULT NULL COMMENT 'Bowel Function: regular, irregular, constipation, diarrheal',
   `PEX_RR` int(11) DEFAULT NULL COMMENT 'Respiratory rate in bpm',
   `PEX_AUSC` varchar(50) DEFAULT NULL COMMENT 'Auscultation: normal, wheezes, rhonchi, crackles, stridor, bronchial',
-  `PEX_NOTE` varchar(300) DEFAULT NULL,
+  `PEX_NOTE` varchar(2000) DEFAULT NULL,
   `PEX_CREATED_BY` varchar(50) DEFAULT NULL,
   `PEX_CREATED_DATE` datetime DEFAULT NULL,
   `PEX_LAST_MODIFIED_BY` varchar(50) DEFAULT NULL,
