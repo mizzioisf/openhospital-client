@@ -87,7 +87,7 @@ case $ARCH in
 		;;
 	i[3456789]86|x86|i86pc)
 		JAVA_ARCH=32
-		MYSQL_ARCH=32
+		MYSQL_ARCH=x86
 		MYSQL_PACKAGE_ARCH=i686
 		;;
 	*)
