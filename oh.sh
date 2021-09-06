@@ -574,7 +574,7 @@ while getopts ${OPTSTRING} opt; do
 	        	echo "Done!"
 			exit 0
 		fi
-		# Dump remote database for CLIENT mode configuration
+		# dump remote database for CLIENT mode configuration
 		test_database_connection;
 		echo "Saving Open Hospital database..."
 		dump_database;

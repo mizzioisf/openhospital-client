@@ -229,7 +229,7 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
  	REM # Remove database files
 	echo Removing data...
 	rmdir /s /q %OH_PATH%\%DATA_DIR%
-	REM # recreate directory structure
+	REM # Create directories
 	mkdir %OH_PATH%\%DATA_DIR%
 	mkdir %OH_PATH%\%TMP_DIR%
 	mkdir %OH_PATH%\%LOG_DIR%

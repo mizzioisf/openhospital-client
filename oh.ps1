@@ -686,7 +686,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			Read-Host;
 			exit 0
 		}
-		# Dump remote database for CLIENT mode configuration
+		# dump remote database for CLIENT mode configuration
 		test_database_connection;
 		echo "Saving Open Hospital database..."
 		dump_database;
