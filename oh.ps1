@@ -267,6 +267,14 @@ function set_language {
 	}
 }
 
+function initialize_dir_structure {
+	# Create directory structure
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$TMP_DIR") > $null
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$LOG_DIR") > $null
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DICOM_DIR") > $null
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
+}
+
 function java_lib_setup {
 	# NATIVE LIB setup
 	switch ( "$JAVA_ARCH" ) {
@@ -401,12 +409,8 @@ function config_database {
 }
 
 function initialize_database {
-	# Recreate directory structure
+	# Create data dir
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR") > $null
-	[System.IO.Directory]::CreateDirectory("$OH_PATH/$TMP_DIR") > $null
-	[System.IO.Directory]::CreateDirectory("$OH_PATH/$LOG_DIR") > $null
-	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DICOM_DIR") > $null
-	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
 	# Inizialize MySQL
 	Write-Host "Initializing MySQL database on port $MYSQL_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
@@ -701,6 +705,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			if ($MANUAL_CONFIG -eq "off" ) {
 				config_database;
 			}
+			initialize_dir_structure;
 			initialize_database;
 			start_database;	
 			set_database_root_pw;
@@ -819,6 +824,9 @@ java_check;
 
 # setup java lib
 java_lib_setup;
+
+# create directories
+initialize_dir_structure;
 
 ######## Database setup
 
