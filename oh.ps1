@@ -127,19 +127,19 @@ $script:INTERACTIVE_MODE="on"
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
 switch ( "$ARCH" ) {	
-	"amd64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
-	"AMD64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
-	"x86_64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64" }
-	("486","586","686","x86","i86pc") { $script:JAVA_ARCH=32; $script:MYSQL_ARCH=32 }
+	"amd64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64"; Break }
+	"AMD64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64"; Break }
+	"x86_64" { $script:JAVA_ARCH=64; $script:MYSQL_ARCH="x64"; Break }
+	("486","586","686","x86","i86pc") { $script:JAVA_ARCH=32; $script:MYSQL_ARCH=32; Break }
 	default {
 		Write-Host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
 		Read-Host; exit 1
 	}
 
-	# Workaround to force 32bit JAVA in order to have DICOM working on 64bit arch
-	if ( $DICOM_ENABLE -eq "on" ) {
-		$script:JAVA_ARCH=32
-	}
+}
+# Workaround to force 32bit JAVA in order to have DICOM working on 64bit arch
+if ( $DICOM_ENABLE -eq "on" ) {
+	$script:JAVA_ARCH=32
 }
 	
 # Workaround to force 32bit JAVA in order to have DICOM working
