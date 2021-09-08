@@ -2,6 +2,7 @@
 
 .*Open Hospital download matrix*
 |===
+.7+|*Open Hospital download matrix*
 |*OH version* |Operating system |O.S. Arch |Download link |Md5sum |Note
 
 |*1.11.0* | test |*11.0.11*|multiarch | any | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |*v* |*?* |*v*
