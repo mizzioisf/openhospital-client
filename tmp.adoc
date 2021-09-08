@@ -1,11 +1,10 @@
 [width="99%",cols="^16%,^14%,^14%,^14,^14%,^14%,^14%,^14%,^14%",options="header"]
 |===
-9+|*Open Hospital download matrix*
+7+|*Open Hospital download matrix*
 
-.2+|*OH version* .2+|O.S. .2+|O.S. Arch .2+|JAVA/JRE arch 3+|Special Features
-|DICOM |SMS |Webcam
+.2+|*OH version* .2+|O.S. .2+|O.S. Arch .2+|JAVA/JRE arch 3+|Note
 
-.4+|*1.11.0* .4+| test .4+|*11.0.11*|multiarch | any | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |*v* |*?* |*v*
+.2+|*1.11.0* .4+| test .4+|*11.0.11*|multiarch | any | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |*v* |*?* |*v*
 |Windows 7/10 | 32bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |x |*v* |*v*
 |Windows 7/10 | 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |x |*v* |*v*
 |Linux        | 32bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |x |*v* |*v*
