@@ -4,34 +4,22 @@
 
 |*OH version* |Operating system |O.S. Arch |Download link |Md5sum |Note
 
-.5+|*1.11.0* .2+| Windows 7/10 |32bit| https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |4a445abee2a5bf904e5f7b12c222b4ee |
+.5+|*1.11.0* .2+| Windows 7/10 |32bit| https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip |4a445abee2a5bf904e5f7b12c222b4ee |
+| 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip | 3c53d0635bfd8ed5099f046b95c5b687|
+.2+|Linux        | 32bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip |95d427364813cfac9d1510abea6e681a |
+| 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip |3c53d0635bfd8ed5099f046b95c5b687 |
+|Any        | multi | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip |95d427364813cfac9d1510abea6e681a |
+
+.5+|*1.10.0* .2+| Windows 7/10 |32bit| https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |4a445abee2a5bf904e5f7b12c222b4ee |
 | 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip | 3c53d0635bfd8ed5099f046b95c5b687|
 .2+|Linux        | 32bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |95d427364813cfac9d1510abea6e681a |
 | 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |3c53d0635bfd8ed5099f046b95c5b687 |
-|Any        | multi | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |95d427364813cfac9d1510abea6e681a |
 
-|*1.10.0* | 5.1.x | 1.8 | Ubuntu 20.04 | x64 | 64bit |*v* |*?* |*v*
-|Windows 7/10 | x64 | 64bit |x |*v* |*v*
-|Windows 7/10 | x64 | 32bit |*v* |*v* |*v*
-|Windows 7/10 | i386 | 32bit |*v* |*v* |*v*
-|Ubuntu 18.04 | i386 | 32bit |*v* |*?* |*?*
-|*1.9.1* | 5.0.x | 1.6 | Ubuntu 20.04 | x64 | 64bit |*v* |*?* |*v*
-|Windows 7/10 | x64 | 64bit |x |*v* |*v*
-|Windows 7/10 | x64 | 32bit |*v* |*v* |*v*
-|Windows 7/10 | i386 | 32bit |*v* |*v* |*v*
-|Ubuntu 18.04 | i386 | 32bit |*v* |*?* |*?*
-|===
 
-[width="60%",cols="30%,70%",]
 |===
 |*v* |_working_ 
 |*x* |_not working_ 
 |*?* |_not tested_ 
 |n/a |_not applicable_ 
-|_last update_ |_2021.08.23_
+|_last update_ |_2021.09.08_
 |===
-4a445abee2a5bf904e5f7b12c222b4ee  OpenHospital-v1.11.0-linux_i686-portable.tar.gz
-95d427364813cfac9d1510abea6e681a  OpenHospital-v1.11.0-linux_x86_64-portable.tar.gz
-3c53d0635bfd8ed5099f046b95c5b687  OpenHospital-v1.11.0-multiarch-client.zip
-2df1a28ce4d504f50a11845e67389c06  OpenHospital-v1.11.0-windows_i686-portable.zip
-4eff27cd609e0dd714098b7c63d6fbba  OpenHospital-v1.11.0-windows_x86_64-portable.zip
