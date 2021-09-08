@@ -2,7 +2,7 @@
 |===
 7+|*Open Hospital download matrix*
 
-.2+|*OH version* .2+|Operating system .2+|O.S. Arch .2+|Download link .2+|Md5sum 2+|Note
+.2+|*OH version* .2+|Operating system .2+|O.S. Arch .2+|Download link .2+|Md5sum .2+|Note
 
 .3+|*1.11.0* .3+| test .3+|*11.0.11*|multiarch | any | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |*v* |*?* |*v*
 |Windows 7/10 | 32bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |x |*v* |*v*
