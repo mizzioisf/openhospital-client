@@ -17,9 +17,5 @@
 
 
 |===
-|*v* |_working_ 
-|*x* |_not working_ 
-|*?* |_not tested_ 
-|n/a |_not applicable_ 
 |_last update_ |_2021.09.08_
 |===
