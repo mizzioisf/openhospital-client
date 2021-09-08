@@ -5,7 +5,7 @@
 |*OH version* |Operating system |O.S. Arch |Download link |Md5sum |Note
 
 .5+|*1.11.0* .2+| Windows 7/10 |32bit| https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip |4a445abee2a5bf904e5f7b12c222b4ee |
-| 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip | 3c53d0635bfd8ed5099f046b95c5b687|
+| 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip | 3c53d0635bfd8ed5099f046b95c5b687|**DICOM not working**
 .2+|Linux        | 32bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip |95d427364813cfac9d1510abea6e681a |
 | 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip |3c53d0635bfd8ed5099f046b95c5b687 |
 |Any        | multi | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0.zip |95d427364813cfac9d1510abea6e681a |
