@@ -1,6 +1,6 @@
 [width="99%",cols="^16%,^14%,^14%,^14,^14%,^14%,^14%",options="header"]
 |===
-|*Open Hospital download matrix*
+.*Open Hospital download matrix*
 
 |*OH version* |Operating system |O.S. Arch |Download link |Md5sum |Note
 
