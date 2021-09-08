@@ -30,6 +30,7 @@ link:https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenH
 File							ARCH	MD5SUM					Download link
 
 https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip[OpenHospital-v1.11.0-linux_i686-portable.tar.gz]	32bit	4a445abee2a5bf904e5f7b12c222b4ee
+
 https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip[OpenHospital-v1.11.0-linux_x86_64-portable.tar.gz]	64bit	95d427364813cfac9d1510abea6e681a
 
 **Windows:**
@@ -37,6 +38,7 @@ https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospit
 File							ARCH	MD5SUM					Download link
 
 https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip[OpenHospital-v1.11.0-windows_i686-portable.zip]	32bit	2df1a28ce4d504f50a11845e67389c06
+
 https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip[OpenHospital-v1.11.0-windows_x86_64-portable.zip]	64bit	4eff27cd609e0dd714098b7c63d6fbba
 
 ```
