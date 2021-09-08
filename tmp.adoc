@@ -1,21 +1,21 @@
-[width="99%",cols="^16%,^14%,^14%,^14,^14%,^14%",options="header"]
+[width="99%",cols="^16%,^14%,^14%,^14,^14%,^14%,^14%",options="header"]
 |===
-7+|*Open Hospital download matrix*
+|*Open Hospital download matrix*
 
-.2+|*OH version* .2+|Operating system .2+|O.S. Arch .2+|Download link .2+|Md5sum .2+|Note
+|*OH version* |Operating system |O.S. Arch |Download link |Md5sum |Note
 
-.3+|*1.11.0* .3+| test .3+|*11.0.11*|multiarch | any | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |*v* |*?* |*v*
+|*1.11.0* | test |*11.0.11*|multiarch | any | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |*v* |*?* |*v*
 |Windows 7/10 | 32bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |x |*v* |*v*
 |Windows 7/10 | 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |x |*v* |*v*
 |Linux        | 32bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |x |*v* |*v*
 |Linux        | 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip |x |*v* |*v*
 
-.4+|*1.10.0* .4+| 5.1.x .4+| 1.8 | Ubuntu 20.04 | x64 | 64bit |*v* |*?* |*v*
+|*1.10.0* | 5.1.x | 1.8 | Ubuntu 20.04 | x64 | 64bit |*v* |*?* |*v*
 |Windows 7/10 | x64 | 64bit |x |*v* |*v*
 |Windows 7/10 | x64 | 32bit |*v* |*v* |*v*
 |Windows 7/10 | i386 | 32bit |*v* |*v* |*v*
 |Ubuntu 18.04 | i386 | 32bit |*v* |*?* |*?*
-.5+|*1.9.1* .5+| 5.0.x .5+| 1.6 | Ubuntu 20.04 | x64 | 64bit |*v* |*?* |*v*
+|*1.9.1* | 5.0.x | 1.6 | Ubuntu 20.04 | x64 | 64bit |*v* |*?* |*v*
 |Windows 7/10 | x64 | 64bit |x |*v* |*v*
 |Windows 7/10 | x64 | 32bit |*v* |*v* |*v*
 |Windows 7/10 | i386 | 32bit |*v* |*v* |*v*
