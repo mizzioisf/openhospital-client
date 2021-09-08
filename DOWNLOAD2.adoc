@@ -12,8 +12,8 @@
 
 .5+|*1.10.0* .2+| Windows 7/10 |32bit| https://sourceforge.net/projects/openhospital/files/v1.10.0/OpenHospital-1.10.0.zip/download |4a445abee2a5bf904e5f7b12c222b4ee |
 | 64bit | https://sourceforge.net/projects/openhospital/files/v1.10.0/OpenHospital-1.10.0.zip/download | 3c53d0635bfd8ed5099f046b95c5b687|
-.2+|Linux        | 32bit | https://sourceforge.net/projects/openhospital/files/v1.10.0/OpenHospital-1.10.0.zip/download |95d427364813cfac9d1510abea6e681a |
-| 64bit | https://sourceforge.net/projects/openhospital/files/v1.10.0/OpenHospital-1.10.0.zip/download |3c53d0635bfd8ed5099f046b95c5b687 |
+.2+|Linux        | 32bit | https://sourceforge.net/projects/openhospital/files/v1.10.0/poh-linux-x32-0.0.6-core-1.10.0.tar.gz/download |95d427364813cfac9d1510abea6e681a |
+| 64bit | https://sourceforge.net/projects/openhospital/files/v1.10.0/poh-linux-x64-0.0.6-core-1.10.0.tar.gz/download |3c53d0635bfd8ed5099f046b95c5b687 |
 
 
 |===
