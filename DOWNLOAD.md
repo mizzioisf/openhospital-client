@@ -21,9 +21,9 @@ The Windows version has been tested on Windows 10.
 
 **Multiplatform**
 
-link:https://github.com[OH]	any	3c53d0635bfd8ed5099f046b95c5b687
-
+https://github.com[OH]
 link:https://github.com[OH]
+link:https://github.com[OH]	any	3c53d0635bfd8ed5099f046b95c5b687
 
 link:https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.10.0.zip[OpenHospital-v1.11.0-multiarch-client.zip]	any	3c53d0635bfd8ed5099f046b95c5b687
 
