@@ -17,6 +17,6 @@
 
 
 |===
-|_ default language set to EN_
+|_default language set to EN_
 |_last update_ |_2021.09.08_
 |===
