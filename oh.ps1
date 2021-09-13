@@ -155,6 +155,9 @@ if ( $DICOM_ENABLE -eq "on" ) {
 # workaround to force 32bit JAVA and MySQL in order to have DICOM working
 #$script:JAVA_ARCH=32; $script:MYSQL_ARCH=32; $script:JAVA_PACKAGE_ARCH="i686";
 
+# archive file extension
+$script:EXT="zip"
+
 ######## MySQL Software
 # MariaDB
 $script:MYSQL_VERSION="10.2.40"
@@ -163,7 +166,6 @@ $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
 # MySQL
 #$script:MYSQL_DIR="mysql-5.7.35-win$script:MYSQL_ARCH"
 #$script:MYSQL_URL=" https://downloads.mysql.com/archives/get/p/23/file"
-$script:EXT="zip"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
@@ -183,26 +185,6 @@ $script:JAVA_DISTRO="zulu8.56.0.21-ca-jre8.0.302-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 $script:JAVA_DIR=$JAVA_DISTRO
 
-
-######## JAVA 32bit
-##if ( $JAVA_ARCH -eq "32" ) {
-	# set JRE 32 bit
-	### JRE 8 32bit - openjdk distribution
-	# https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/OpenJDK8U-jre_x86-32_windows_hotspot_8u292b10.zip
-	#$script:JAVA_DISTRO="OpenJDK8U-jre_x86-32_windows_hotspot_8u292b10"
-	#$script:JAVA_URL="https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u292-b10/"
-	#$script:JAVA_DIR="jdk8u292-b10-jre"
-	### JRE 8 32bit - zulu distribution
-
-##	$script:JAVA_DISTRO="zulu8.56.0.21-ca-jre8.0.302-win_i686"
-##	$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
-##	$script:JAVA_DIR="$JAVA_DISTRO"
-
-	### JRE 11 32bit - zulu distribution
-	#$script:JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-win_i686"
-	#$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
-	#$script:JAVA_DIR="zulu11.45.27-ca-jre11.0.10-win_i686"
-##}
 
 ######## get script info
 # determine script name and location for PowerShell
