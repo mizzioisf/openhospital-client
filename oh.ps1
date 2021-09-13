@@ -181,7 +181,7 @@ $script:EXT="zip"
 #$script:JAVA_DISTRO="zulu8.56.0.21-ca-jre8.0.302-win_x64"
 $script:JAVA_DISTRO="zulu8.56.0.21-ca-jre8.0.302-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
-$script:JAVA_DIR="JAVA_DISTRO"
+$script:JAVA_DIR=$JAVA_DISTRO
 
 
 ######## JAVA 32bit
