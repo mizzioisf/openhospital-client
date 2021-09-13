@@ -129,13 +129,13 @@ $script:INTERACTIVE_MODE="on"
 
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
-switch ( "$ARCH" ) {	
-	("amd64","AMD64","x86_64") {
+switch ( "$ARCH" ){	
+	{"amd64","AMD64","x86_64"} {
 		$script:JAVA_ARCH=64;
 		$script:MYSQL_ARCH="x64";
 		$script:JAVA_PACKAGE_ARCH="x64";
 		Break }
-	("486","586","686","x86","i86pc") {
+	{"486","586","686","x86","i86pc"} {
 		$script:JAVA_ARCH=32;
 		$script:MYSQL_ARCH=32;
 		$script:JAVA_PACKAGE_ARCH="i686";
