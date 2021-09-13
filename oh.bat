@@ -92,6 +92,14 @@ REM ############################# Legacy oh.bat ############################
 echo Legacy mode - Starting OH with oh.bat...
 
 REM ################### Configuration ###################
+REM #                                                   
+REM #                   ___Warning___                   
+REM #
+REM # __this configuration parameters work ONLY for legacy mode__
+REM #                                                   
+REM # _for normal startup, please edit oh.ps1__
+REM #
+REM ###################
 set OH_PATH=%~dps0
 
 REM # Language setting - default set to en
@@ -117,9 +125,9 @@ set DICOM_MAX_SIZE="4M"
 
 set OH_DIR=oh
 set SQL_DIR=sql
-set DATA_DIR=data\db
-set LOG_DIR=data\log
-set DICOM_DIR=data\dicom_storage
+set DATA_DIR="data\db"
+set LOG_DIR="data\log"
+set DICOM_DIR="data\dicom_storage"
 set TMP_DIR=tmp
 set DB_CREATE_SQL=create_all_en.sql
 REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
