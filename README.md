@@ -29,6 +29,11 @@ To download and launch the Open Hospital package contained in this distribution 
 bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 ```
 
+# Dowloading OH - releases
+
+include::./oh_software_compatibility_matrix.adoc[]
+
+
 # Running OH - Quickstart
 
 **Common to all Operating Systems / architectures:**
