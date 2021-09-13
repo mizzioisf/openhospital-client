@@ -166,7 +166,7 @@ REM # JRE 8 32bit - i686 - default
 REM set JAVA_URL="https://cdn.azul.com/zulu/bin/zulu11.50.19-ca-jre11.0.12-win_i686.zip"
 REM set JAVA_DISTRO="zulu11.50.19-ca-jre11.0.12-win_i686"
 
-set JAVA_DIR=zulu11.50.19-ca-jre11.0.12-win_i686
+set JAVA_DIR=zulu8.56.0.23-ca-fx-jre8.0.302-win_i686
 set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
@@ -281,6 +281,7 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	cd /d %OH_PATH%\%SQL_DIR%
 	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 	if ERRORLEVEL 1 (goto error)
+	cd /d %OH_PATH%
 	echo Database imported!
 ) else (
 	echo Database already initialized, trying to start...
