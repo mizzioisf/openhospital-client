@@ -175,13 +175,11 @@ $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
 #$script:JAVA_DIR="jdk-11.0.11+9-jre"
 
 ### JRE 11 - zulu
-#$script:JAVA_DISTRO="zulu11.45.27-ca-jre11.0.10-win_i686"
+#$script:JAVA_DISTRO="zulu11.50.19-ca-fx-jre11.0.12-win_i686.zip"
 #$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
-#$script:JAVA_DIR="zulu11.45.27-ca-jre11.0.10-win_i686"
 
 ### JRE 8 - zulu
-#$script:JAVA_DISTRO="zulu8.56.0.21-ca-jre8.0.302-win_x64"
-$script:JAVA_DISTRO="zulu8.56.0.23-ca-jre8.0.302-win_$JAVA_PACKAGE_ARCH"
+$script:JAVA_DISTRO="zulu8.56.0.23-ca-fx-jre8.0.302-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 $script:JAVA_DIR=$JAVA_DISTRO
 

@@ -158,14 +158,15 @@ REM # JRE 11 64bit - x86_64
 REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/"
 REM set JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9.zip"
 
-REM # JRE 11 32bit - i686
+REM # JRE 11 32bit - i686 - openjdk
 REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/"
 REM set JAVA_DISTRO="OpenJDK11U-jre_x86-32_windows_hotspot_11.0.11_9.zip"
 
-REM # JRE 8 32bit - i686 - default
-REM set JAVA_URL="https://cdn.azul.com/zulu/bin/zulu11.50.19-ca-jre11.0.12-win_i686.zip"
-REM set JAVA_DISTRO="zulu11.50.19-ca-jre11.0.12-win_i686"
+REM # JRE 11 32bit - i686 - zulu
+REM set JAVA_URL="https://cdn.azul.com/zulu/bin/zulu11.50.19-ca-fx-jre11.0.12-win_i686.zip"
+REM set JAVA_DISTRO=zulu11.50.19-ca-fx-jre11.0.12-win_i686.zip
 
+REM # JRE 8 32bit - i686 - zulu - default
 set JAVA_DIR=zulu8.56.0.23-ca-fx-jre8.0.302-win_i686
 set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
