@@ -109,8 +109,8 @@ set OH_LANGUAGE=en
 REM # set log level to INFO | DEBUG - default set to INFO
 set LOG_LEVEL=INFO
 
-REM # enable / disable DICOM (true|false)
-set DICOM_ENABLE=false
+REM # enable / disable DICOM (on|off)
+set DICOM_ENABLE=on
 
 REM ### Software configuration - change at your own risk :-)
 REM # Database
@@ -310,7 +310,7 @@ set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar
 REM # Setup native_lib_path for current architecture
 REM # with DICOM workaround - force NATIVE_LIB to 32bit
 
-if %PROCESSOR_ARCHITECTURE%==AMD64 if not %DICOM_ENABLE%==true if not %ARCH%==32 (
+if %PROCESSOR_ARCHITECTURE%==AMD64 if not %DICOM_ENABLE%==on if not %ARCH%==32 (
 	set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Win64
 ) else (
 	set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Windows
