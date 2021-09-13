@@ -193,8 +193,8 @@ if "%ERRORLEVEL%" equ "0" (
 echo Found TCP port %MYSQL_PORT% for MySQL !
 
 REM # Create tmp and log dir
-mkdir -p %OH_PATH%\%TMP_DIR%
-mkdir -p %OH_PATH%\%LOG_DIR%
+mkdir -p "%OH_PATH%\%TMP_DIR%"
+mkdir -p "%OH_PATH%\%LOG_DIR%"
 
 echo Generating MySQL config file...
 REM ### Setup MySQL configuration
@@ -246,10 +246,10 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	echo Removing data...
 	rmdir /s /q %OH_PATH%\%DATA_DIR%
 	REM # Create directories
-	mkdir -p %OH_PATH%\%DATA_DIR%
-	mkdir -p %OH_PATH%\%TMP_DIR%
-	mkdir -p  %OH_PATH%\%LOG_DIR%
-	mkdir -p %OH_PATH%\%DICOM_DIR%
+	mkdir -p "%OH_PATH%\%DATA_DIR%"
+	mkdir -p "%OH_PATH%\%TMP_DIR%"
+	mkdir -p "%OH_PATH%\%LOG_DIR%"
+	mkdir -p "%OH_PATH%\%DICOM_DIR%"
 	del /s /q %OH_PATH%\%TMP_DIR%\*
 
 	if %MYSQL_DIR:~0,5% == maria (
