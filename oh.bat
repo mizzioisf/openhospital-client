@@ -125,9 +125,9 @@ set DICOM_MAX_SIZE="4M"
 
 set OH_DIR=oh
 set SQL_DIR=sql
-set DATA_DIR="data\db"
-set LOG_DIR="data\log"
-set DICOM_DIR="data\dicom_storage"
+set DATA_DIR=data\db
+set LOG_DIR=data\log
+set DICOM_DIR=data\dicom_storage
 set TMP_DIR=tmp
 set DB_CREATE_SQL=create_all_en.sql
 REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
@@ -193,8 +193,8 @@ if "%ERRORLEVEL%" equ "0" (
 echo Found TCP port %MYSQL_PORT% for MySQL !
 
 REM # Create tmp and log dir
-mkdir %OH_PATH%\%TMP_DIR%
-mkdir %OH_PATH%\%LOG_DIR%
+mkdir -p %OH_PATH%\%TMP_DIR%
+mkdir -p %OH_PATH%\%LOG_DIR%
 
 echo Generating MySQL config file...
 REM ### Setup MySQL configuration
@@ -246,10 +246,10 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	echo Removing data...
 	rmdir /s /q %OH_PATH%\%DATA_DIR%
 	REM # Create directories
-	mkdir %OH_PATH%\%DATA_DIR%
-	mkdir %OH_PATH%\%TMP_DIR%
-	mkdir %OH_PATH%\%LOG_DIR%
-	mkdir %OH_PATH%\%DICOM_DIR%
+	mkdir -p %OH_PATH%\%DATA_DIR%
+	mkdir -p %OH_PATH%\%TMP_DIR%
+	mkdir -p  %OH_PATH%\%LOG_DIR%
+	mkdir -p %OH_PATH%\%DICOM_DIR%
 	del /s /q %OH_PATH%\%TMP_DIR%\*
 
 	if %MYSQL_DIR:~0,5% == maria (
