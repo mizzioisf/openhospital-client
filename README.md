@@ -164,7 +164,7 @@ DEMO_MODE=off
 
 ```
 # set log level to INFO | DEBUG - default set to INFO
-#DEBUG_LEVEL=INFO
+#LOG_LEVEL=INFO
 ```
 
 - Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a Client/Server / LAN environment
