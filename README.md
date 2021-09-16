@@ -22,7 +22,7 @@ The Windows version has been tested on Windows 10.
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.11.0 Open Hospital release **
+**New ! Updated to 1.11.0 Open Hospital release!**
 
 # Running OH - Ultra-quickstart
 
@@ -308,16 +308,15 @@ set-executionpolicy remotesigned
 
 (*) If you are using the legacy version, you might have to download and unzip java ad mysql manually.
 
-
-In order to download and unzip Java - Zulu 8
+To download and unzip Java - Zulu 8:
 
 - Visit https://cdn.azul.com/zulu/bin/
 - Download:
 
-**x86 - 32bit: ** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_i686.zip **
-**x64 - 64bit: ** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_x64.zip **
+**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_i686.zip
+**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_x64.zip
 
-In order to download and unzip Java - OpenJDK 11
+To download and unzip Java - OpenJDK 11:
 
 - Visit https://adoptopenjdk.net/
 - select "Other Platforms"
