@@ -1,23 +1,28 @@
 # ![](./oh.ico) OH - Open Hospital Portable | Client 
 
-OH - Open Hospital (https://www.open-hospital.org/en/) is a free and open source
-software for healthcare data management. Its portable version allows you to take
-along with you Open Hospital and run it on any computer, keeping the data you have saved.
-With this distribution we also hope to reach the goal to make Open Hospital easily installable
-so that even somebody with no experience of Java or MySQL can try or use it.
+# OH - Open Hospital Portable | Client 
 
-Open Hospital can run on any computer and it is easily possible to move the installation on
-another computer or even run it from a USB stick or drive. All you have to do
-is to copy the root installation directory of OH to your favourite path, where
-the program and the data will be kept. OH uses its own version of the Java Virtual
-Machine and the MySQL server and everything is contained in the root
-installation directory. OH is released under the GNU GPL 3.0 License.
+OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Electronic Health Record (EHR) software application.
+Open Hospital is deployed as a desktop application that can be used in a standalone, single user mode (PORTABLE mode)
+or in a client / server network configuration (CLIENT mode), where multiple clients and users connect to the same database server.
+
+OH is developed in Java and it is based on open-source tools and libraries; it runs on any computer, requires low resources and is designed to work without an internet connection.
+
+Open Hospital is the first of a set of software products that ISF - Informatici Senza Frontiere (https://www.informaticisenzafrontiere.org) has developed to support the information management and the activities of hospitals and health centers in the simplest manner possible, by providing tools for the hospital administrative operations (like registering patients, manage laboratory analysis and pharmaceutical stocks) and to produce detailed statistics and reports.
+It was first deployed in 2006 at the St. Luke Hospital in Angal (Uganda) and it is now used in dozens of different locations around the world.
+
+When OH is used in PORTABLE mode, it is easily possible to move the installation on another computer or even run it from a USB stick or drive.
+All you have to do is to copy the root installation directory of OH to your favourite folder, where the program and all the data are kept.
+OH uses its own version of the Java Virtual Machine (JRE) and the MariaDB/MySQL server.
+OH is released under the GNU GPL 3.0 License.
 
 The Linux version has been tested on different distributions and versions,
 including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 21.04 x64 (64bit).
 The Windows version has been tested on Windows 10.
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
+
+**New ! Updated to 1.11.0 Open Hospital release **
 
 # Running OH - Ultra-quickstart
 
@@ -302,7 +307,17 @@ set-executionpolicy remotesigned
 **Windows - legacy mode**
 
 (*) If you are using the legacy version, you might have to download and unzip java ad mysql manually.
-In order to download and unzip Java:
+
+
+In order to download and unzip Java - Zulu 8
+
+- Visit https://cdn.azul.com/zulu/bin/
+- Download:
+
+**x86 - 32bit: ** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_i686.zip **
+**x64 - 64bit: ** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_x64.zip **
+
+In order to download and unzip Java - OpenJDK 11
 
 - Visit https://adoptopenjdk.net/
 - select "Other Platforms"
@@ -389,5 +404,5 @@ Comments, suggestions and requests are welcome !
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-*last updated: 2021.08.17*
+*last updated: 2021.09.17*
 
