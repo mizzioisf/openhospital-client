@@ -308,15 +308,16 @@ set-executionpolicy remotesigned
 
 (*) If you are using the legacy version, you might have to download and unzip java ad mysql manually.
 
-To download and unzip Java - Zulu 8:
+To download Java JRE - Zulu 8:
 
 - Visit https://cdn.azul.com/zulu/bin/
 - Download:
 
 **x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_i686.zip
+
 **x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_x64.zip
 
-To download and unzip Java - OpenJDK 11:
+To download Java JRE - OpenJDK 11:
 
 - Visit https://adoptopenjdk.net/
 - select "Other Platforms"
