@@ -36,7 +36,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 # Dowloading OH - releases
 
-include::./oh_software_compatibility_matrix.adoc[]
+include::./OH_download_matrix.adoc[]
 
 
 # Running OH - Quickstart
