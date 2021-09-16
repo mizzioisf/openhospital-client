@@ -5,7 +5,7 @@
 |*OH version* |Operating system |O.S. Arch |Download link |Md5sum |Note
 
 .5+|*1.11.0*
-|Any        | multi | https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-multiarch-client.zip[OpenHospital-v1.11.0-multiarch-client.zip] |xxxxxxxxxxxxxx |
+|any        | any | https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-multiarch-client.zip[OpenHospital-v1.11.0-multiarch-client.zip] |xxxxxxxxxxxxxx |
 .2+| Windows 7/10 |32bit| https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-1.11.0-windows_i686.zip[OpenHospital-1.11.0-windows_i686.zip] |xxxxxxxxxxxxxxx |
 | 64bit | https://github.com/informatici/openhospital/releases/download/v1.10.0/OpenHospital-1.11.0-windows_x86_64.zip[OpenHospital-1.11.0-windows_x86_64.zip] |xxxxxxxxxxxxxx|
 .2+|Linux        | 32bit | https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-linux_i686-portable.tar.gz[OpenHospital-v1.11.0-linux_i686-portable.tar.gz] | xxxxxxxxxxxxxxx|
