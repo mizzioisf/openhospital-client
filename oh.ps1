@@ -563,7 +563,7 @@ function clean_database {
 
 function test_database_connection {
 	# test if mysql client is available
-		if ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" ) {
+	if ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" ) {
 
 		# test connection to the OH MySQL database
 		Write-Host "Testing database connection..."
@@ -576,7 +576,7 @@ function test_database_connection {
 			Read-Host; exit 2
 		}
 	}
-	Write-Host "Can't test database connection, ..." -ForegroundColor Yellow
+	Write-Host "Can't test database connection..." 
 }
 
 function clean_files {
