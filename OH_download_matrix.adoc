@@ -6,8 +6,8 @@
 
 .5+|*1.11.0*
 |any        | any | https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-multiarch-client.zip[OpenHospital-v1.11.0-multiarch-client.zip] |xxxxxxxxxxxxxx |
-.2+| Windows 7/10 |32bit| https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-windows_i686-portable.zip[OpenHospital-v1.11.0-windows_i686-portable.zip] |xxxxxxxxxxxxxxx |
-| 64bit | https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-windows_x86_64-portable.zip[OpenHospital-v1.11.0-windows_x86_64-portable.zip] |xxxxxxxxxxxxxx
+.2+| Windows 7/10 |32bit| https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-windows_i686-portable.zip[OpenHospital-v1.11.0-windows_i686-portable.zip] |xxxxxxxxxxxxxx |
+| 64bit | https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-windows_x86_64-portable.zip[OpenHospital-v1.11.0-windows_x86_64-portable.zip] |xxxxxxxxxxxxxx |
 .2+|Linux        | 32bit | https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-linux_i686-portable.tar.gz[OpenHospital-v1.11.0-linux_i686-portable.tar.gz] | xxxxxxxxxxxxxxx|
 | 64bit | https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-linux_x86_64-portable.tar.gz[OpenHospital-v1.11.0-linux_x86_64-portable.tar.gz] |xxxxxxxxxxxxxxx |
 .5+|*1.10.0* .2+| Windows 7/10 |32bit| https://sourceforge.net/projects/openhospital/files/v1.10.0/OpenHospital-1.10.0.zip/download[OpenHospital-1.10.0.zip] |4a445abee2a5bf904e5f7b12c222b4ee |
