@@ -707,7 +707,6 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host "Done!"
 		Read-Host;
 		exit 0;
-		;;
 	"G"	{ # set up GSM 
 		Write-Host "Setting up GSM..."
 		java_check;
