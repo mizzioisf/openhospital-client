@@ -134,7 +134,6 @@ SCRIPT_NAME=$(basename "$0")
 ######################## Functions ########################
 
 function script_usage {
-
         # show help / user options
         echo " ---------------------------------------------------------"
         echo "|                                                         |"
@@ -146,7 +145,7 @@ function script_usage {
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l en|fr|it|es|pt ] "
         echo ""
-        echo "   -C    start OH in CLIENT mode (Client / Server configuration)"
+        echo "   -C    start OH in CLIENT mode (client / server configuration)"
         echo "   -d    start OH in debug mode"
         echo "   -D    start OH in DEMO mode"
         echo "   -G    setup GSM"
@@ -154,6 +153,7 @@ function script_usage {
         echo "   -l    set language: en|fr|it|es|pt"
         echo "   -s    save OH database"
         echo "   -r    restore OH database"
+        echo "   -g    generate config files"
         echo "   -t    test database connection (CLIENT mode only)"
         echo "   -v    show OH software version and configuration"
         echo "   -X    clean/reset OH installation"
@@ -488,6 +488,33 @@ function clean_files {
 	rm -f ./$OH_DIR/rsc/dicom.properties.old
 }
 
+function generate_config_files {
+	# set up configuration files
+	echo "Generating OH configuration files..."
+	######## DICOM setup
+	[ -f ./$OH_DIR/rsc/dicom.properties ] && mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
+	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
+	-e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
+
+	######## log4j.properties setup
+	OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
+	[ -f ./$OH_DIR/rsc/log4j.properties ] && mv -f ./$OH_DIR/rsc/log4j.properties ./$OH_DIR/rsc/log4j.properties.old
+	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
+	-e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
+	./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
+
+	######## database.properties setup 
+	[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
+	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
+	-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
+	./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
+
+	######## settings.properties language setup 
+	# set language in OH config file
+	[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
+	sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
+}
+
 
 ######################## Script start ########################
 
@@ -517,18 +544,18 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CdDGhl:srtvX?" 
+OPTSTRING=":CdDgGhl:srtvX?" 
 
 # function to parse input
 while getopts ${OPTSTRING} opt; do
 	case ${opt} in
+	C)	# start in CLIENT mode
+		OH_MODE="CLIENT"
+		;;
 	d)	# debug
         	echo "Starting Open Hospital in debug mode..."
 		LOG_LEVEL=DEBUG
 		echo "Log level set to $LOG_LEVEL"
-		;;
-	C)	# start in CLIENT mode
-		OH_MODE="CLIENT"
 		;;
 	D)	# demo mode
         	echo "Starting Open Hospital in DEMO mode..."
@@ -539,6 +566,18 @@ while getopts ${OPTSTRING} opt; do
 		else OH_MODE="PORTABLE"
 		fi
 		DEMO_MODE="on"
+		;;
+	g)	# generate config files and exit
+		generate_config_files;
+		echo "Done!"
+		exit 0;
+		;;
+	G)	# set up GSM
+		echo "Setting up GSM..."
+		java_check;
+		java_lib_setup;
+		$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
+		exit 0;
 		;;
 	h)	# help
 		script_usage;
@@ -564,7 +603,7 @@ while getopts ${OPTSTRING} opt; do
 			echo "Saving Open Hospital database..."
 			dump_database;
 			shutdown_database;
-	        	echo "Done!"
+			echo "Done!"
 			exit 0
 		fi
 		# dump remote database for CLIENT mode configuration
@@ -607,13 +646,6 @@ while getopts ${OPTSTRING} opt; do
 		fi
 		test_database_connection;
 		exit 0
-		;;
-	G)	# set up GSM
-		echo "Setting up GSM..."
-		java_check;
-		java_lib_setup;
-		$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
-		exit 0;
 		;;
 	v)	# show version
         	echo "--------- Software version ---------"
@@ -734,34 +766,9 @@ fi
 # test if database connection is working
 test_database_connection;
 
+# generate config files
 if [ $MANUAL_CONFIG = "off" ]; then
-
-	# set up configuration files
-	echo "Setting up OH configuration files..."
-
-	######## DICOM setup
-	[ -f ./$OH_DIR/rsc/dicom.properties ] && mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
-	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-	    -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
-
-	######## log4j.properties setup
-	OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
-	[ -f ./$OH_DIR/rsc/log4j.properties ] && mv -f ./$OH_DIR/rsc/log4j.properties ./$OH_DIR/rsc/log4j.properties.old
-	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
-	    -e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
-	    ./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
-
-	######## database.properties setup 
-	[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
-	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
-	    -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
-	./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
-
-	######## settings.properties language setup 
-	# set language in OH config file
-	[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
-	sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
-
+	generate_config_files;
 fi
 
 ######## Open Hospital start
