@@ -702,11 +702,12 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		else { $script:OH_MODE="PORTABLE" }
 		$DEMO_MODE="on"
 	}
-	"g"	# generate config files and exit
+	"g"	{ # generate config files and exit
 		generate_config_files;
 		Write-Host "Done!"
 		Read-Host;
 		exit 0;
+	}
 	"G"	{ # set up GSM 
 		Write-Host "Setting up GSM..."
 		java_check;
