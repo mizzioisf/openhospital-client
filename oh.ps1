@@ -215,7 +215,7 @@ function script_menu {
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (client / server configuration)"
 	Write-Host "   d    start OH in debug mode"
-	Write-Host "   D    start OH in Demo mode"
+	Write-Host "   D    start OH with Demo data"
 	Write-Host "   g    generate configuration files"
 	Write-Host "   G    setup GSM"
 	Write-Host "   l    set language: en|fr|it|es|pt"
