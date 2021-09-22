@@ -466,8 +466,9 @@ function test_database_connection {
 			echo "Error: can't connect to database! Exiting."
 			exit 2
 		fi
+	else
+		echo "Can't test database connection..."
 	fi
-	echo "Can't test database connection..."
 }
 
 function clean_files {

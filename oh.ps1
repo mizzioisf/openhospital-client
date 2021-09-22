@@ -565,7 +565,6 @@ function clean_database {
 function test_database_connection {
 	# test if mysql client is available
 	if ( Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" ) {
-
 		# test connection to the OH MySQL database
 		Write-Host "Testing database connection..."
 		try {
@@ -577,7 +576,9 @@ function test_database_connection {
 			Read-Host; exit 2
 		}
 	}
-	Write-Host "Can't test database connection..." 
+	else {
+		Write-Host "Can't test database connection..." 
+	}
 }
 
 function generate_config_files {
