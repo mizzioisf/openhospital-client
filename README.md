@@ -8,7 +8,7 @@ or in a client / server network configuration (CLIENT mode), where multiple clie
 
 OH is developed in Java and it is based on open-source tools and libraries; it runs on any computer, requires low resources and is designed to work without an internet connection.
 
-Open Hospital is the first of a set of software products that ISF - Informatici Senza Frontiere (https://www.informaticisenzafrontiere.org) has developed to support the information management and the activities of hospitals and health centers in the simplest manner possible, by providing tools for administrative operations (like registering patients, manage laboratory analysis and pharmaceutical stocks) and to produce detailed statistics and reports.
+Open Hospital is the first of a set of applications products that ISF - Informatici Senza Frontiere (https://www.informaticisenzafrontiere.org/) has developed to support the information management and the activities of hospitals and health centers in the simplest manner possible, by providing tools for administrative operations (like registering patients, manage laboratory analysis and pharmaceutical stocks) and to produce detailed statistics and reports.
 It was first deployed in 2006 at the St. Luke Hospital in Angal (Uganda) and it is now used in dozens of different locations around the world.
 
 When OH is used in PORTABLE mode, it is easily possible to move the installation on another computer or even run it from a USB stick or drive.
@@ -65,13 +65,14 @@ cd openhospital-client
 |                   Open Hospital | OH                    |
 |                                                         |
  ---------------------------------------------------------
- lang en | arch x86_64
+ lang en | arch x86_64 | mode PORTABLE/CLIENT
 
  Usage: oh.sh [ -lang en|fr|it|es|pt ] 
 
    -C    start OH in CLIENT mode (Client / Server configuration)
    -d    start OH in DEBUG mode
-   -D    start OH in DEMO mode
+   -D    start OH with Demo data
+   -g    generate configuration files
    -G    setup GSM
    -h    show this help
    -l    set language: en|fr|it|es|pt
@@ -94,15 +95,16 @@ cd openhospital-client
 |                   Open Hospital | OH                    |
 |                                                         |
  ---------------------------------------------------------
-lang en | arch x86_64
+ lang en | arch x86_64 | mode PORTABLE/CLIENT
 
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] 
               [ -mode PORTABLE|CLIENT ]
-              [ -debug INFO|DEBUG ] 
+              [ -loglevel INFO|DEBUG ] 
 
- C    start OH - CLIENT mode (Client / Server configuration)
- d    start OH in DEBUG mode
- D    start OH in DEMO mode
+ C    start OH - CLIENT mode (client / server configuration)
+ d    start OH in debug mode
+ D    start OH in Demo mode
+ g    generate configuration files
  G    setup GSM
  l    set language: en|fr|it|es|pt
  s    save OH database
@@ -112,7 +114,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
  X    clean/reset OH installation
  q    quit
 ```
-Note: The oh.bat launches the oh.ps1 startup file automatically.
+Note: The **oh.bat** launches the **oh.ps1** startup file automatically.
 The script presents the interactive menu that can be used to setup and choose how to run Open Hospital.
 
 On Windows, to manually run oh.ps1 (powershell script):
@@ -123,7 +125,7 @@ On Windows, to manually run oh.ps1 (powershell script):
 - if asked for permission to execute the script select "Allow"
 - choose among available options
 
-It might be necessary to set the correct permissions / exclusions also in the Windows Security Center, for example allowing OH to communicate on
+It might be necessary to set the correct permissions / exclusions also in the Windows Security Center, to allow OH to communicate on
 the MySQL / MariaDB local TCP port.
 
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat):
@@ -134,7 +136,8 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 - **C**    start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)
 - **d**    start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations to log file
-- **D**    start OH in DEMO mode - loads demo data in order to test the software 
+- **D**    start OH with Demo data - loads a demo database in order to test the software 
+- **g**    generate OH configuration files (oh/rsc/\*.properties) and exit
 - **G**    setup GSM modem to enable sms interaction
 - **l**    set local language: en|fr|it|es|pt
 - **s**    save / dump the Open Hospital database in sql format
@@ -149,33 +152,43 @@ Note: The oh.bat launches the oh.ps1 startup file automatically.
 
 **Advanced options - common to all architecture**
 
-Some options can also be setup manually by editing the script and setting the specific script variables.
+Some options can also be setup manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
 This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
 
 - Distribution type, language and debug level:
 
 ```
-OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT
-DEMO_MODE=off
+OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT # linux
+$script:OH_MODE="PORTABLE" # windows
+
+# set DEMO_DATA to on to enable Demo data loading
+# Warning -> __requires deletion of all portable data__
+DEMO_DATA=off # linux
+#$script:DEMO_DATA="off" # windows
 ```
 
 - Interface and software language:
 
 ```
 # Language setting - default set to en
-#OH_LANGUAGE=en fr es it pt
+#OH_LANGUAGE=en fr es it pt # linux
+#$script:OH_LANGUAGE=en # fr es it pt # windows
 ```
 - Set software logging level
 
 ```
 # set log level to INFO | DEBUG - default set to INFO
-#LOG_LEVEL=INFO
+#LOG_LEVEL=INFO # linux
+#$script:LOG_LEVEL=INFO # windows
 ```
 
-- Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a Client/Server / LAN environment
+- Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
 
 ```
 ######## Software configuration - change at your own risk :-)
+#
+# linux version - windows version requires "$script:" in front of any variable)
+#
 # Database
 MYSQL_SERVER=localhost
 MYSQL_PORT=3306
@@ -186,7 +199,6 @@ DATABASE_PASSWORD="xxxxxxx"
 
 DICOM_MAX_SIZE="4M"
 ```
-
 
 - File names and directory structure:
 ```
@@ -199,7 +211,7 @@ BACKUP_DIR="data/dump"
 TMP_DIR=tmp
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
-DATE=`date +%Y-%m-%d_%H-%M-%S`
+DATE=`date +%Y-%m-%d_%H-%M-%S` # linux
 LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 ```
@@ -211,28 +223,39 @@ OH_LOG_FILE=openhospital.log
 ## set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
-MANUAL_CONFIG=off
+MANUAL_CONFIG=off # linux
+$script:MANUAL_CONFIG="off" # windows
 ```
 
 - Enable system wide JAVA:
 ```
 ######## set JAVA_BIN
 # Uncomment this if you want to use system wide JAVA
-#JAVA_BIN=`which java`
-
+#JAVA_BIN=`which java` # linux
+#$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
 
-- (Windows only) enable / disable DICOM features
+- **(Windows only)** enable / disable DICOM features
 ```
 # enable / disable DICOM (on|off)
-#$script:DICOM_ENABLE="on"
+#$script:DICOM_ENABLE="off"
+```
+
+- **(Windows only)** set interactive mode
+```
+# Interactive mode
+# set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
+# interaction meno (script_menu). Useful if automatic startup of OH is needed.
+# In order to use this mode, setup all the OH configuration variables in the script
+# or pass arguments via command line.
+$script:INTERACTIVE_MODE="on"
 ```
 
 # Default directory structure
 
 The scripts takes care of creating all the needed data directories and configuration files.
 Everything is also parametric and user adjustable in the scripts with variables (or via command line options).
-The default is now clean, simple and **common to all distros:**
+The default folder structure is now clean, simple and **common to all distros:**
 
 ```
 /oh -> Open Hospital distribution
@@ -251,7 +274,7 @@ External software package downloaded at first run:
 
 ```
 Mariadb 10.2.x server
-OpenJDK JRE 11
+Java JRE, Zulu or OpenJDK distribution
 ```
 
 # Known issues
@@ -307,32 +330,18 @@ set-executionpolicy remotesigned
 **Windows - legacy mode**
 
 (*) If you are using the legacy version, you might have to download and unzip java ad mysql manually.
+In order to download and unzip Java:
 
-To download Java JRE - Zulu 8:
-
-- Visit https://cdn.azul.com/zulu/bin/
-- Download:
-
-**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_i686.zip
-
-**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu8.56.0.21-ca-jre8.0.302-win_x64.zip
-
-To download Java JRE - OpenJDK 11:
-
-- Visit https://adoptopenjdk.net/
-- select "Other Platforms"
-- choose a Version: **OpenJDK 11 (LTS)**
-- choose a JVM type: **HotSpot**
-- choose operating system: **Windows** and architecture (x86 or x64)
+- Visit  https://cdn.azul.com/zulu/bin/
 - download the **JRE - .zip version**
 
-**x86 - 32bit:** https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.11_9.zip
+**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu8.56.0.23-ca-fx-jre8.0.302-win_i686.zip
 
-**x64 - 64bit:** https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9/OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9.zip
+**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu8.56.0.23-ca-fx-jre8.0.302-win_x64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
-In order to download and unzip mysql (mariadb):
+In order to download and unzip mariadb:
 
 - Visit https://downloads.mariadb.org/mariadb/10.2/
 - Select the Operating System: **Windows**
@@ -369,7 +378,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
 - **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for testing
 - **New**: test database connection option (see oh.sh -t)
-- **New**: displayes software versions and current configuration (see oh.sh -v)
+- **New**: displays software versions and current configuration (see oh.sh -v)
 - Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
 - More flexible execution and configuration options
 - Automatic configuration files generation
@@ -386,23 +395,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-For more informations see:
-https://github.com/informatici/openhospital/pull/149
-
-https://github.com/informatici/openhospital/pull/143
-
-https://github.com/informatici/openhospital/pull/142
-
-And also:
-https://github.com/informatici/openhospital-core/pull/241
-
-
-Comments, suggestions and requests are welcome !
-
-
-
-Bugs, issues and feature requests should be reported on
-our repository on GitHub: https://github.com/informatici/openhospital
-
-*last updated: 2021.09.17*
+*last updated: 2021.09.22*
 
