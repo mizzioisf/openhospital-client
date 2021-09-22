@@ -28,5 +28,5 @@ https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospit
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-*last updated: 2021.09.08*
+*last updated: 2021.09.22*
 
