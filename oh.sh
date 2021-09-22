@@ -282,7 +282,7 @@ if [ -x "$OH_PATH/$JAVA_DIR/bin/java" ]; then
 	echo "JAVA found!"
 	echo "Using $JAVA_DIR"
 else 
-	echo "JAVA not found! Exiting."
+	echo "Error: JAVA not found! Please download it or set JAVA_BIN in the script. Exiting."
 	exit 1
 fi
 }
