@@ -147,7 +147,7 @@ function script_usage {
         echo ""
         echo "   -C    start OH in CLIENT mode (client / server configuration)"
         echo "   -d    start OH in debug mode"
-        echo "   -D    start OH in DEMO mode"
+        echo "   -D    start OH in Demo mode"
         echo "   -g    generate configuration files"
         echo "   -G    setup GSM"
         echo "   -h    show this help"
