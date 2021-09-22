@@ -259,7 +259,7 @@ fi
 
 if [ ! -x $JAVA_BIN ]; then
 	if [ ! -f "./$JAVA_DISTRO.$EXT" ]; then
-		echo "Warning - JAVA not found. Do you want to download it?"
+		echo "Warning - JAVA_BIN not set or JAVA not found. Do you want to download it?"
 		get_confirmation;
 		# download java binaries
 		echo "Download $JAVA_DISTRO..."
