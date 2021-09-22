@@ -34,7 +34,7 @@ It can also be used to perform some basic operation like saving or importing a d
 Open Hospital CLIENT | PORTABLE
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
               [ -mode PORTABLE|CLIENT ]
-              [ -debug INFO|DEBUG ] [default set to INFO]
+              [ -loglevel INFO|DEBUG ] [default set to INFO]
 
 .EXAMPLE
 ./oh.ps1 -lang en
@@ -55,9 +55,9 @@ https://www.open-hospital.org
 
 
 ######## Command line parameters
-param ($lang, $debuglevel, $mode)
+param ($lang, $loglevel, $mode)
 $script:OH_LANGUAGE=$lang
-$script:LOG_LEVEL=$debuglevel
+$script:LOG_LEVEL=$loglevel
 $script:OH_MODE=$mode
 
 ######## Global preferences
@@ -208,11 +208,11 @@ function script_menu {
 	Write-Host ""
 	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
 	Write-Host "               [ -mode PORTABLE|CLIENT ]"
-	Write-Host "               [ -debug INFO|DEBUG ] "
+	Write-Host "               [ -loglevel INFO|DEBUG ] "
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (client / server configuration)"
 	Write-Host "   d    start OH in debug mode"
-	Write-Host "   D    start OH in DEMO mode"
+	Write-Host "   D    start OH in Demo mode"
 	Write-Host "   g    generate configuration files"
 	Write-Host "   G    setup GSM"
 	Write-Host "   l    set language: en|fr|it|es|pt"
