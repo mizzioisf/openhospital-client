@@ -707,6 +707,9 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		$DEMO_DATA="on"
 	}
 	"g"	{ # generate config files and exit
+		if ( Test-Path "$OH_PATH/rsc/dicom.properties.dist" ) {
+			$script:OH_DIR="."
+		}
 		generate_config_files;
 		Write-Host "Done!"
 		Read-Host;

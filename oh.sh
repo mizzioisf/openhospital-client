@@ -572,6 +572,8 @@ while getopts ${OPTSTRING} opt; do
 		DEMO_DATA="on"
 		;;
 	g)	# generate config files and exit
+		# setting $OH_DIR
+		[ -f ./rsc/settings.properties.dist ] && OH_DIR=".";
 		generate_config_files;
 		echo "Done!"
 		exit 0;
