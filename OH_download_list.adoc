@@ -4,23 +4,23 @@
 
 File							ARCH	MD5SUM					Download link
 
-https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-multiarch-client.zip[OpenHospital-v1.11.0-multiarch-client.zip]	any	3c53d0635bfd8ed5099f046b95c5b687
+https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-multiarch-client.zip[OpenHospital-v1.11.0-multiarch-client.zip]	any	f5794a68ad42e207f920ba71f30bc6eca011eb1d0caf460316052a90f9e57b05
 
 **Linux:**
 
 File							ARCH	MD5SUM					Download link
 
-https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-linux_i686-portable.tar.gz[OpenHospital-v1.11.0-linux_i686-portable.tar.gz]	32bit	4a445abee2a5bf904e5f7b12c222b4ee
+https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-linux_i686-portable.tar.gz[OpenHospital-v1.11.0-linux_i686-portable.tar.gz]	32bit	e8171c00249302c242a0af1a866a41873fe740c321bcf24aabe2abd06a943fb8
 
-https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-linux_x86_64-portable.tar.gz[OpenHospital-v1.11.0-linux_x86_64-portable.tar.gz]	64bit	95d427364813cfac9d1510abea6e681a
+https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-linux_x86_64-portable.tar.gz[OpenHospital-v1.11.0-linux_x86_64-portable.tar.gz]	64bit	2ee78a00de65bb72901c0ac72c80a3577c1440dca07755037bbc6e422c5d4024
 
 **Windows:**
 
 File							ARCH	MD5SUM					Download link
 
-https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-windows_i686-portable.zip[OpenHospital-v1.11.0-windows_i686-portable.zip]	32bit	2df1a28ce4d504f50a11845e67389c06
+https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-windows_i686-portable.zip[OpenHospital-v1.11.0-windows_i686-portable.zip]	32bit	a0a6c18e53952c8254fcc51b9f29c4c53c5bab0db73f4133b72c7aafdc701f80
 
-https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-windows_x86_64-portable.zip[OpenHospital-v1.11.0-windows_x86_64-portable.zip]	64bit	4eff27cd609e0dd714098b7c63d6fbba
+https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospital-v1.11.0-windows_x86_64-portable.zip[OpenHospital-v1.11.0-windows_x86_64-portable.zip]	64bit	663d724d108e072443de3c7487d020def75814c90d73d3e98b0013ed73f645fe
 
 ```
 ```
@@ -28,5 +28,5 @@ https://github.com/informatici/openhospital/releases/download/v1.11.0/OpenHospit
 Bugs, issues and feature requests should be reported on
 our repository on GitHub: https://github.com/informatici/openhospital
 
-*last updated: 2021.09.22*
+*last updated: 2021.09.24*
 
