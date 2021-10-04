@@ -75,10 +75,10 @@ $script:OH_MODE="PORTABLE"  # set functioning mode to PORTABLE | CLIENT
 #$script:DEMO_DATA="off"
 
 # language setting - default set to en
-#$script:OH_LANGUAGE=en # fr es it pt
+#$script:OH_LANGUAGE="en" # fr es it pt
 
 # set log level to INFO | DEBUG - default set to INFO
-#$script:LOG_LEVEL=INFO
+#$script:LOG_LEVEL="INFO"
 
 # enable / disable DICOM (on|off)
 #$script:DICOM_ENABLE="off"
