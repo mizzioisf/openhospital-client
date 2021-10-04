@@ -811,6 +811,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
  		Write-Host "Open Hospital is configured in $OH_MODE mode"
 		Write-Host "Language is set to $OH_LANGUAGE"
 		Write-Host "Demo data is set to $DEMO_DATA"
+		Write-Host "Log level is set to $LOG_LEVEL"
 		Write-Host ""
 		Write-Host "MYSQL_SERVER=$MYSQL_SERVER"
 		Write-Host "MYSQL_PORT=$MYSQL_PORT"

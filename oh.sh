@@ -667,6 +667,7 @@ while getopts ${OPTSTRING} opt; do
 		echo "Open Hospital is configured in $OH_MODE mode"
 		echo "Language is set to $OH_LANGUAGE"
 		echo "Demo data is set to $DEMO_DATA"
+		echo "Log level is set to $LOG_LEVEL"
         	echo ""
 		echo "MYSQL_SERVER=$MYSQL_SERVER"
 		echo "MYSQL_PORT=$MYSQL_PORT"
