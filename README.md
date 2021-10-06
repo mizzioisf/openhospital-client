@@ -34,7 +34,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 # Dowloading OH - releases
 
-[DOWNLOAD](./OH_download_matrix.adoc)
+[DOWNLOAD PAGE](./OH_download_matrix.adoc)
 
 # Dowloading OH - this repo
 
