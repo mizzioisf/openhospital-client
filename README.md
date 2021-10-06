@@ -128,6 +128,12 @@ On Windows, to manually run oh.ps1 (powershell script):
 It might be necessary to set the correct permissions / exclusions also in the Windows Security Center, to allow OH to communicate on
 the MySQL / MariaDB local TCP port.
 
+To run oh.ps1 from command line:
+
+```
+powershell.exe  -ExecutionPolicy Bypass -File  ./oh.ps1 -lang it
+```
+
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat):
 - open cmd.exe and run **.\oh.bat -legacymode**
 - to see available options, open a cmd.exe window and run **.\oh.bat -h**
@@ -395,5 +401,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.09.22*
+*last updated: 2021.10.06*
 
