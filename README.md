@@ -113,7 +113,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
 Note: The **oh.bat** launches the **oh.ps1** startup file automatically.
 The script presents the interactive menu that can be used to setup and choose how to run Open Hospital.
 
-On Windows, to manually run oh.ps1 (powershell script):
+-> To manually run oh.ps1 (powershell script):
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
 - select "Unblock"
@@ -124,10 +124,10 @@ On Windows, to manually run oh.ps1 (powershell script):
 It might be necessary to set the correct permissions / exclusions also in the Windows Security Center, to allow OH to communicate on
 the MySQL / MariaDB local TCP port.
 
-To run oh.ps1 from command line:
+-> To run oh.ps1 directly from command line:
 
 ```
-powershell.exe  -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
+powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 ```
 
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat):
