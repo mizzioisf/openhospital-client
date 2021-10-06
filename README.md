@@ -172,14 +172,14 @@ DEMO_DATA=off # linux
 ```
 # Language setting - default set to en
 #OH_LANGUAGE=en fr es it pt # linux
-#$script:OH_LANGUAGE=en # fr es it pt # windows
+#$script:OH_LANGUAGE="en" # fr es it pt # windows
 ```
 - Set software logging level
 
 ```
 # set log level to INFO | DEBUG - default set to INFO
 #LOG_LEVEL=INFO # linux
-#$script:LOG_LEVEL=INFO # windows
+#$script:LOG_LEVEL="INFO" # windows
 ```
 
 - Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.

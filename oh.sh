@@ -22,13 +22,14 @@
 #
 #
 
-######################## Configuration ########################
+#################### Script configuration #####################
 
-# SET DEBUG mode
+# set script DEBUG mode
 # saner programming env: these switches turn some bugs into errors
 #set -o errexit -o pipefail -o noclobber -o nounset
 
-######## Open Hospital Configuration
+################# Open Hospital Configuration #################
+
 # OH_PATH is the directory where Open Hospital files are located
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
@@ -38,7 +39,7 @@ OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT
 # Warning -> __requires deletion of all portable data__
 DEMO_DATA=off
 
-# Language setting - default set to en
+# language setting - default set to en
 #OH_LANGUAGE=en fr es it pt
 #OH_LANGUAGE=it
 
@@ -75,7 +76,7 @@ OH_LOG_FILE=openhospital.log
 # overwritten if already present
 MANUAL_CONFIG=off
 
-# Set JAVA_BIN
+# set JAVA_BIN
 # Uncomment this if you want to use system wide JAVA
 #JAVA_BIN=`which java`
 

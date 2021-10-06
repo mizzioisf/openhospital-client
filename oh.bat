@@ -20,17 +20,18 @@ REM # You should have received a copy of the GNU General Public License
 REM # along with this program. If not, see <http://www.gnu.org/licenses/>.
 REM #
 
-REM ################### Configuration ###################
+REM ################### Script configuration ###################
 REM
 REM set LEGACYMODE=on to start with legacy oh.bat script
 REM
 REM launch oh.bat -h to see available options
 REM 
-REM default start is powershell oh.ps1 script
+REM -> default startup script called is oh.ps1 (powershell) <-
+REM 
 
 set LEGACYMODE="off"
 
-REM ##############################################
+REM ############################################################
 REM check for legacy mode
 
 if %LEGACYMODE%=="on" goto legacy
@@ -77,13 +78,12 @@ goto :init
 
 :main
 	REM ################### oh.ps1 ###################
-	REM default start: oh.ps1
+	REM default startup script called: oh.ps1
 
 	echo Starting OH with oh.ps1...
 
 	REM launch powershell script
 	powershell.exe  -ExecutionPolicy Bypass -File  ./oh.ps1
-
 	goto end
 
 :legacy
@@ -91,7 +91,7 @@ REM ############################# Legacy oh.bat ############################
 
 echo Legacy mode - Starting OH with oh.bat...
 
-REM ################### Configuration ###################
+REM ################### Open Hospital Configuration ###################
 REM #                                                   
 REM #                   ___Warning___                   
 REM #

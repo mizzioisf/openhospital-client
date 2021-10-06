@@ -37,22 +37,26 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
               [ -loglevel INFO|DEBUG ] [default set to INFO]
 
 .EXAMPLE
-./oh.ps1 -lang en
+./oh.ps1 -lang en -mode PORTABLE -loglevel DEBUG
 
 .NOTES
-Developed by Informatici Senza Frontiere
+Developed by Informatici Senza Frontiere - 2021
 
 .LINK
 https://www.open-hospital.org
 
 #>
 
-######## SET DEBUG mode
+#################### Script configuration #####################
+
+######## set script DEBUG mode
 # saner programming env: these switches turn some bugs into errors
 #Set-PSDebug -Strict
 # Clean all variables in IDE
 #Remove-Variable * -ErrorAction SilentlyContinue; Remove-Module *; $error.Clear();
 
+######## set minimum PowerShell version 
+#Requires -Version 5.1
 
 ######## Command line parameters
 param ($lang, $loglevel, $mode)
@@ -64,8 +68,9 @@ $script:OH_MODE=$mode
 # disable progress bar
 $global:ProgressPreference= 'SilentlyContinue'
 
-######## Open Hospital Configuration
-# OH_PATH is the directory where Open Hospital files are located
+################# Open Hospital Configuration #################
+
+# -> OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 
 $script:OH_MODE="PORTABLE"  # set functioning mode to PORTABLE | CLIENT
@@ -124,7 +129,7 @@ $script:MANUAL_CONFIG="off"
 # or pass arguments via command line.
 $script:INTERACTIVE_MODE="on"
 
-# Set JAVA_BIN 
+# set JAVA_BIN 
 # Uncomment this if you want to use system wide JAVA
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
 
@@ -252,7 +257,7 @@ function set_path {
 }
 
 function set_language {
-	# Set OH interface language - set default to en
+	# set OH interface language - default to en
 	if ( ! $OH_LANGUAGE ) {
 		$script:OH_LANGUAGE="en"
 	}	
