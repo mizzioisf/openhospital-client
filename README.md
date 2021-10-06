@@ -1,7 +1,5 @@
 # ![](./oh.ico) OH - Open Hospital Portable | Client 
 
-# OH - Open Hospital Portable | Client 
-
 OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Electronic Health Record (EHR) software application.
 Open Hospital is deployed as a desktop application that can be used in a standalone, single user mode (PORTABLE mode)
 or in a client / server network configuration (CLIENT mode), where multiple clients and users connect to the same database server.
@@ -131,7 +129,7 @@ the MySQL / MariaDB local TCP port.
 To run oh.ps1 from command line:
 
 ```
-powershell.exe  -ExecutionPolicy Bypass -File  ./oh.ps1 -lang it
+powershell.exe  -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 ```
 
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat):
