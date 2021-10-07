@@ -223,6 +223,7 @@ function script_menu {
 	Write-Host "   D    start OH with Demo data"
 	Write-Host "   g    generate configuration files"
 	Write-Host "   G    setup GSM"
+	Write-Host "   i    initialize/install OH database"
 	Write-Host "   l    set language: en|fr|it|es|pt"
 	Write-Host "   s    save OH database"
 	Write-Host "   r    restore OH database"
@@ -465,7 +466,7 @@ function set_database_root_pw {
 	# if using MySQL root password need to be set
 	switch -Regex ( $MYSQL_DIR ) {
 		"mysql" {
-		echo "Setting MySQL root password..."
+		Write-Host "Setting MySQL root password..."
         $SQLCOMMAND=@"
         -u root --skip-password -h $MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';"
 "@
@@ -547,13 +548,23 @@ function dump_database {
 }
 
 function shutdown_database {
-	Write-Host "Shutting down MySQL..."
-	Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
-	# wait till the MySQL socket file is removed -> TO BE IMPLEMENTED
-	# while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
-	Start-Sleep -Seconds 3
-	Write-Host "MySQL stopped!"
+	if ( $OH_MODE -eq "PORTABLE" ) {
+		Write-Host "Shutting down MySQL..."
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+		# wait till the MySQL socket file is removed -> TO BE IMPLEMENTED
+		# while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
+		Start-Sleep -Seconds 3
+		Write-Host "MySQL stopped!"
+	}
+
+	else {
+	}
 }
+
+function clean_database {
+	echo "Warning: do you want to remove all existing data and databases ?"
+	get_confirmation;
+
 
 function clean_database {
 	Write-Host "Warning: do you want to remove all existing data and databases ?" -ForegroundColor Red
@@ -728,6 +739,30 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Read-Host;
 		exit 0;
 	}
+	"i"	{ # initialize OH database
+		# setting mode to CLIENT
+		OH_MODE="CLIENT"
+		Write-Host "Do you want to initialize/install OH database on:"
+		Write-Host ""
+		Write-Host " Server -> $MYSQL_SERVER"
+		Write-Host " TCP port -> $MYSQL_PORT"
+		Write-Host " Database root password -> $MYSQL_ROOT_PW"
+		Write-Host ""
+		get_confirmation;
+		set_language;
+		initialize_dir_structure;
+		mysql_check;
+		Write-Host "Installing database....."
+		Write-Host ""
+		Write-Host " Database name -> $DATABASE_NAME"
+		Write-Host " Database user -> $DATABASE_USER"
+		Write-Host " Database password -> $DATABASE_PASSWORD"
+		Write-Host ""
+		import_database;
+		test_database_connection;
+		Write-Host "Done!"
+		exit 0
+	}
 	"l"	{ # set language 
 		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt (default is en)"
 		set_language;
@@ -757,7 +792,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		}
 		# dump remote database for CLIENT mode configuration
 		test_database_connection;
-		echo "Saving Open Hospital database..."
+		Write-Host "Saving Open Hospital database..."
 		dump_database;
 		Write-Host "Done!"
                 exit 0
@@ -780,7 +815,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			set_database_root_pw;
 			import_database;
 			shutdown_database;
-			echo "Done!"
+			Write-Host "Done!"
 			exit 0
 		}
 		else {
@@ -950,9 +985,7 @@ Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow 
 
 Write-Host "Exiting Open Hospital..."
 
-if ( $OH_MODE -eq "PORTABLE" ) {
-	shutdown_database;
-}
+shutdown_database;
 
 # go back to starting directory
 cd "$CURRENT_DIR"

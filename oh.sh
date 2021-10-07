@@ -51,9 +51,9 @@ DEMO_DATA=off
 MYSQL_SERVER=localhost
 MYSQL_PORT=3306
 MYSQL_ROOT_PW="tmp2021oh111"
-DATABASE_NAME=oh
-DATABASE_USER=isf
-DATABASE_PASSWORD="isf123"
+DATABASE_NAME=oh4
+DATABASE_USER=isf4
+DATABASE_PASSWORD="isf1234"
 
 DICOM_MAX_SIZE="4M"
 
@@ -155,6 +155,7 @@ function script_usage {
         echo "   -g    generate configuration files"
         echo "   -G    setup GSM"
         echo "   -h    show this help"
+        echo "   -i    initialize/install OH database"
         echo "   -l    set language: en|fr|it|es|pt"
         echo "   -s    save OH database"
         echo "   -r    restore OH database"
@@ -162,7 +163,6 @@ function script_usage {
         echo "   -v    show OH software version and configuration"
         echo "   -X    clean/reset OH installation"
         echo ""
-	exit 0
 }
 
 function get_confirmation {
@@ -438,12 +438,16 @@ function dump_database {
 }
 
 function shutdown_database {
-	echo "Shutting down MySQL..."
-	cd "$OH_PATH"
-	./$MYSQL_DIR/bin/mysqladmin -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown >> ./$LOG_DIR/$LOG_FILE 2>&1
-	# wait till the MySQL tcp port is closed
-	until !( nc -z $MYSQL_SERVER $MYSQL_PORT ); do sleep 1; done
-	echo "MySQL stopped!"
+	if [ $OH_MODE = "PORTABLE" ]; then
+		echo "Shutting down MySQL..."
+		cd "$OH_PATH"
+		./$MYSQL_DIR/bin/mysqladmin -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown >> ./$LOG_DIR/$LOG_FILE 2>&1
+		# wait till the MySQL tcp port is closed
+		until !( nc -z $MYSQL_SERVER $MYSQL_PORT ); do sleep 1; done
+		echo "MySQL stopped!"
+	else
+		exit 1
+	fi
 }
 
 function clean_database {
@@ -549,7 +553,7 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CdDgGhl:srtvX?" 
+OPTSTRING=":CdDgGhil:srtvX?" 
 
 # function to parse input
 while getopts ${OPTSTRING} opt; do
@@ -588,6 +592,31 @@ while getopts ${OPTSTRING} opt; do
 		;;
 	h)	# help
 		script_usage;
+		exit 0
+		;;
+	i)	# initialize OH database
+		# setting mode to CLIENT
+		OH_MODE="CLIENT"
+		echo "Do you want to initialize/install OH database on:"
+		echo ""
+		echo " Server -> $MYSQL_SERVER"
+		echo " TCP port -> $MYSQL_PORT" 
+		echo " Database root password -> $MYSQL_ROOT_PW"
+		echo ""
+		get_confirmation;
+		set_language;
+		initialize_dir_structure;
+		mysql_check;
+		echo "Installing database....."
+		echo ""
+		echo " Database name -> $DATABASE_NAME"
+		echo " Database user -> $DATABASE_USER"
+		echo " Database password -> $DATABASE_PASSWORD"
+		echo ""
+		import_database;
+		test_database_connection;
+		echo "Done!"
+		exit 0
 		;;
 	l)	# set language
 		OH_LANGUAGE=$OPTARG
@@ -796,9 +825,7 @@ fi
 
 echo "Exiting Open Hospital..."
 
-if [ $OH_MODE = "PORTABLE" ]; then
-	shutdown_database;
-fi
+shutdown_database;
 
 # go back to starting directory
 cd "$CURRENT_DIR"
