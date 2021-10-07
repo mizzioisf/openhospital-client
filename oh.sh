@@ -594,8 +594,8 @@ while getopts ${OPTSTRING} opt; do
 		script_usage;
 		exit 0
 		;;
-	i)	# initialize OH database
-		# setting mode to CLIENT
+	i)	# initialize/install OH database
+		# set mode to CLIENT
 		OH_MODE="CLIENT"
 		echo "Do you want to initialize/install OH database on:"
 		echo ""

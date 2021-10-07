@@ -734,9 +734,9 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Read-Host;
 		exit 0;
 	}
-	"i"	{ # initialize OH database
-		# setting mode to CLIENT
-		OH_MODE="CLIENT"
+	"i"	{ # initialize/install OH database
+		# set mode to CLIENT
+		$OH_MODE="CLIENT"
 		Write-Host "Do you want to initialize/install OH database on:"
 		Write-Host ""
 		Write-Host " Server -> $MYSQL_SERVER"

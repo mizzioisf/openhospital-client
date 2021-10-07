@@ -71,6 +71,7 @@ cd openhospital-client
    -g    generate configuration files
    -G    setup GSM
    -h    show this help
+   -i    initialize / install OH database
    -l    set language: en|fr|it|es|pt
    -s    save OH database
    -r    restore OH database
@@ -102,6 +103,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
  D    start OH in Demo mode
  g    generate configuration files
  G    setup GSM
+ i    initialize / install OH database
  l    set language: en|fr|it|es|pt
  s    save OH database
  r    restore OH database
@@ -141,6 +143,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 - **D**    start OH with Demo data - loads a demo database in order to test the software 
 - **g**    generate OH configuration files (oh/rsc/\*.properties) and exit
 - **G**    setup GSM modem to enable sms interaction
+- **i**    initialize / install OH database
 - **l**    set local language: en|fr|it|es|pt
 - **s**    save / dump the Open Hospital database in sql format
 - **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
