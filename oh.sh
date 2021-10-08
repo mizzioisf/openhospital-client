@@ -53,7 +53,7 @@ MYSQL_PORT=3306
 MYSQL_ROOT_PW="tmp2021oh111"
 DATABASE_NAME=oh
 DATABASE_USER=isf
-DATABASE_PASSWORD="isf1234"
+DATABASE_PASSWORD="isf123"
 
 DICOM_MAX_SIZE="4M"
 
@@ -601,12 +601,14 @@ while getopts ${OPTSTRING} opt; do
 		echo ""
 		echo " Server -> $MYSQL_SERVER"
 		echo " TCP port -> $MYSQL_PORT" 
-		echo " Database root password -> $MYSQL_ROOT_PW"
 		echo ""
 		get_confirmation;
 		set_language;
 		initialize_dir_structure;
 		mysql_check;
+		# ask user for database root password
+		read -p "Please insert MySQL / MariaDB database root password (root@$MYSQL_SERVER) -> " MYSQL_ROOT_PW
+		echo ""
 		echo "Installing database....."
 		echo ""
 		echo " Database name -> $DATABASE_NAME"

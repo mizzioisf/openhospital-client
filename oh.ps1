@@ -741,12 +741,13 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host ""
 		Write-Host " Server -> $MYSQL_SERVER"
 		Write-Host " TCP port -> $MYSQL_PORT"
-		Write-Host " Database root password -> $MYSQL_ROOT_PW"
 		Write-Host ""
 		get_confirmation;
 		set_language;
 		initialize_dir_structure;
 		mysql_check;
+		# ask user for database root password
+		$script:MYSQL_ROOT_PW = Read-Host "Please insert MySQL / MariaDB database root password (root@$MYSQL_SERVER) -> "
 		Write-Host "Installing database....."
 		Write-Host ""
 		Write-Host " Database name -> $DATABASE_NAME"
