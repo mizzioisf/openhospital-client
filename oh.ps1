@@ -78,7 +78,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 
 # set DEMO_DATA to on to enable Demo data loading
 # Warning -> __requires deletion of all portable data__
-#$script:DEMO_DATA="off"
+#$script:DEMO_DATA="on"
 
 # language setting - default set to en
 #$script:OH_LANGUAGE="en" # fr es it pt
@@ -691,7 +691,7 @@ if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
 	$script:LOG_LEVEL="INFO"
 }
 
-# interactive mode - set default to ON
+# interactive mode - set default to on
 if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
 	$script:INTERACTIVE_MODE="on"
 }
@@ -718,8 +718,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		$script:OH_MODE="CLIENT"
 	}
 	"d"	{ # debug 
-           	Write-Host "Starting Open Hospital in debug mode..."
-		$LOG_LEVEL="DEBUG"
+		$script:LOG_LEVEL="DEBUG"
 		Write-Host "Log level set to $LOG_LEVEL"
 	}
 	"D"	{ # demo mode 
@@ -933,8 +932,9 @@ if ( $DEMO_DATA -eq "on" ) {
 }
 
 Write-Host "Starting Open Hospital in $OH_MODE mode..."
-Write-Host "OH_PATH set to $OH_PATH"
+Write-Host "OH_PATH is set to $OH_PATH"
 Write-Host "OH language is set to $OH_LANGUAGE"
+Write-Host "OH log level is set to $LOG_LEVEL"
 
 # check for java
 java_check;

@@ -33,7 +33,7 @@
 # OH_PATH is the directory where Open Hospital files are located
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
-OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT
+#OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT
 
 # set DEMO_DATA to on to enable Demo data loading
 # Warning -> __requires deletion of all portable data__
@@ -535,10 +535,15 @@ if [ $(id -u) -eq 0 ]; then
 	exit 1
 fi
 
+# OH mode - set default to PORTABLE
+if [ -z ${OH_MODE+x} ]; then
+	OH_MODE="PORTABLE"
+fi
+
 # log level - set default to INFO
 if [ -z ${LOG_LEVEL+x} ]; then
 	LOG_LEVEL=INFO
-fi	
+fi
 
 ######## Environment setup
 
@@ -562,7 +567,6 @@ while getopts ${OPTSTRING} opt; do
 		OH_MODE="CLIENT"
 		;;
 	d)	# debug
-        	echo "Starting Open Hospital in debug mode..."
 		LOG_LEVEL=DEBUG
 		echo "Log level set to $LOG_LEVEL"
 		;;
@@ -761,8 +765,9 @@ if [ $DEMO_DATA = "on" ]; then
 fi
 
 echo "Starting Open Hospital in $OH_MODE mode..."
-echo "OH_PATH set to $OH_PATH"
+echo "OH_PATH is set to $OH_PATH"
 echo "OH language is set to $OH_LANGUAGE"
+echo "OH log level is set to $LOG_LEVEL"
 
 # check for java
 java_check;
