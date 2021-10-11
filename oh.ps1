@@ -59,10 +59,11 @@ https://www.open-hospital.org
 #Requires -Version 5.1
 
 ######## Command line parameters
-param ($lang, $loglevel, $mode)
+param ($lang, $loglevel, $mode, $interactive)
 $script:OH_LANGUAGE=$lang
 $script:LOG_LEVEL=$loglevel
 $script:OH_MODE=$mode
+$script:INTERACTIVE_MODE=$interactive
 
 ######## Global preferences
 # disable progress bar
@@ -73,7 +74,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 # -> OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 
-$script:OH_MODE="PORTABLE"  # set functioning mode to PORTABLE | CLIENT
+#$script:OH_MODE="PORTABLE"  # set functioning mode to PORTABLE | CLIENT
 
 # set DEMO_DATA to on to enable Demo data loading
 # Warning -> __requires deletion of all portable data__
@@ -217,6 +218,7 @@ function script_menu {
 	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
 	Write-Host "               [ -mode PORTABLE|CLIENT ]"
 	Write-Host "               [ -loglevel INFO|DEBUG ] "
+	Write-Host "               [ -interactive ON|OFF ] "
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (client / server configuration)"
 	Write-Host "   d    start OH in debug mode"
@@ -674,6 +676,14 @@ function clean_files {
 # exit 1
 #}
 # else { Write-Host "User ok — go on executing the script..." -ForegroundColor Green }
+
+
+######## set defaults
+
+# OH mode - set default to PORTABLE
+if ( [string]::IsNullOrEmpty($OH_MODE) ) {
+	$script:OH_MODE="PORTABLE"
+}
 
 # log level - set default to INFO
 if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
