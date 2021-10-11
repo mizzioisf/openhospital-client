@@ -22,13 +22,13 @@
 #
 #
 
-#################### Script configuration #####################
+#################### Script configuration - Do not edit #####################
 
 # set script DEBUG mode
 # saner programming env: these switches turn some bugs into errors
 #set -o errexit -o pipefail -o noclobber -o nounset
 
-################# Open Hospital Configuration #################
+############## OH general configuration - change at your own risk :-) ##############
 
 # OH_PATH is the directory where Open Hospital files are located
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
@@ -46,7 +46,17 @@ DEMO_DATA=off
 # set log level to INFO | DEBUG - default set to INFO
 #LOG_LEVEL=INFO
 
-######## Software configuration - change at your own risk :-)
+######## Advanced options
+# set MANUAL_CONFIG to "on" to setup configuration files manually
+# my.cnf and all oh/rsc/*.properties files will not be generated or
+# overwritten if already present
+MANUAL_CONFIG=off
+
+# set JAVA_BIN
+# Uncomment this if you want to use system wide JAVA
+#JAVA_BIN=`which java`
+
+############## OH local configuration - change at your own risk :-) ##############
 # Database
 MYSQL_SERVER=localhost
 MYSQL_PORT=3306
@@ -69,16 +79,6 @@ DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S`
 LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
-
-######## Advanced options
-# set MANUAL_CONFIG to "on" to setup configuration files manually
-# my.cnf and all oh/rsc/*.properties files will not be generated or
-# overwritten if already present
-MANUAL_CONFIG=off
-
-# set JAVA_BIN
-# Uncomment this if you want to use system wide JAVA
-#JAVA_BIN=`which java`
 
 ######## Define architecture
 
@@ -144,7 +144,7 @@ function script_usage {
         echo "|                   Open Hospital | OH                    |"
         echo "|                                                         |"
         echo " ---------------------------------------------------------"
-        echo " lang $OH_LANGUAGE | arch $ARCH | mode $OH_MODE           "
+        echo " lang $OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL "
         echo " ---------------------------------------------------------"
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l en|fr|it|es|pt ] "

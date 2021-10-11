@@ -47,7 +47,7 @@ https://www.open-hospital.org
 
 #>
 
-#################### Script configuration #####################
+#################### Script configuration - Do not edit #####################
 
 ######## set script DEBUG mode
 # saner programming env: these switches turn some bugs into errors
@@ -69,7 +69,7 @@ $script:INTERACTIVE_MODE=$interactive
 # disable progress bar
 $global:ProgressPreference= 'SilentlyContinue'
 
-################# Open Hospital Configuration #################
+############## OH general configuration - change at your own risk :-) ##############
 
 # -> OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
@@ -89,7 +89,27 @@ $global:ProgressPreference= 'SilentlyContinue'
 # enable / disable DICOM (on|off)
 #$script:DICOM_ENABLE="off"
 
-######## Software configuration - change at your own risk :-)
+######## Advanced options
+#
+# Manual config
+# set MANUAL_CONFIG to "on" to setup configuration files manually
+# my.cnf and all oh/rsc/*.properties files will not be generated or
+# overwritten if already present
+#$script:MANUAL_CONFIG="off"
+
+# Interactive mode
+# set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
+# interaction meno (script_menu). Useful if automatic startup of OH is needed.
+# In order to use this mode, setup all the OH configuration variables in the script
+# or pass arguments via command line.
+#$script:INTERACTIVE_MODE="off"
+
+# set JAVA_BIN 
+# Uncomment this if you want to use system wide JAVA
+#$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
+
+
+############## OH local configuration - change at your own risk :-) ##############
 # Database
 $script:MYSQL_SERVER="localhost"
 $script:MYSQL_PORT=3306
@@ -114,25 +134,6 @@ $script:BACKUP_DIR="data/dump"
 $script:DB_DEMO="create_all_demo.sql"
 # date +%Y-%m-%d_%H-%M-%S
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-
-######## Advanced options
-#
-# Manual config
-# set MANUAL_CONFIG to "on" to setup configuration files manually
-# my.cnf and all oh/rsc/*.properties files will not be generated or
-# overwritten if already present
-$script:MANUAL_CONFIG="off"
-
-# Interactive mode
-# set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
-# interaction meno (script_menu). Useful if automatic startup of OH is needed.
-# In order to use this mode, setup all the OH configuration variables in the script
-# or pass arguments via command line.
-$script:INTERACTIVE_MODE="on"
-
-# set JAVA_BIN 
-# Uncomment this if you want to use system wide JAVA
-#$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
 
 ######## Define architecture
 
@@ -212,7 +213,7 @@ function script_menu {
 	Write-Host "|                   Open Hospital | OH                    |"
 	Write-Host "|                                                         |"
 	Write-Host " ---------------------------------------------------------"
-	Write-Host " lang $script:OH_LANGUAGE | arch $ARCH | mode $OH_MODE"
+	Write-Host " lang $script:OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL "
 	Write-Host " ---------------------------------------------------------"
 	Write-Host ""
 	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
@@ -688,6 +689,11 @@ if ( [string]::IsNullOrEmpty($OH_MODE) ) {
 # log level - set default to INFO
 if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
 	$script:LOG_LEVEL="INFO"
+}
+
+# interactive mode - set default to ON
+if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
+	$script:INTERACTIVE_MODE="on"
 }
 
 ######## Environment setup
