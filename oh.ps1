@@ -144,12 +144,12 @@ switch ( "$ARCH" ){
 		$script:JAVA_ARCH=64;
 		$script:MYSQL_ARCH="x64";
 		$script:JAVA_PACKAGE_ARCH="x64";
-		Break }
+		}
 	{"486","586","686","x86","i86pc"} {
 		$script:JAVA_ARCH=32;
 		$script:MYSQL_ARCH=32;
 		$script:JAVA_PACKAGE_ARCH="i686";
-		Break }
+		}
 	default {
 		Write-Host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
 		Read-Host; exit 1
@@ -269,7 +269,6 @@ function set_language {
 		{"en","fr","it","es","pt"} {
 			# set database creation script in chosen language
 			$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
-			break
 	        }
 		default {
 	        	Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
@@ -436,7 +435,7 @@ function initialize_database {
 		}
 		"mysql" {
 			try {
-				Start-Process "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=`"$OH_PATH\$MYSQL_DIR`" --datadir=`"$OH_PATH\$DATA_DIR`" ") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"; break
+				Start-Process "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--initialize-insecure --basedir=`"$OH_PATH\$MYSQL_DIR`" --datadir=`"$OH_PATH\$DATA_DIR`" ") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"; 
 			}
 			catch {
 				Write-Host "Error: MySQL initialization failed! Exiting." -ForegroundColor Red
