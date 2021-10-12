@@ -262,18 +262,18 @@ function set_path {
 
 function set_language {
 	# set OH interface language - default to en
-	if ( ! $OH_LANGUAGE ) {
+	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
 		$script:OH_LANGUAGE="en"
-	}	
+	}
 	switch ( "$OH_LANGUAGE" ) {
 		{"en","fr","it","es","pt"} {
 			# set database creation script in chosen language
 			$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
-	        }
+		}
 		default {
-	        	Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
+			Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
 			Read-Host; exit 1
-	        }
+		}
 	}
 }
 
