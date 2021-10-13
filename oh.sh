@@ -22,18 +22,27 @@
 #
 #
 
-#################### Script configuration - Do not edit #####################
-
+#################### Script info and configuration - Do not edit #####################
 # set script DEBUG mode
 # saner programming env: these switches turn some bugs into errors
 #set -o errexit -o pipefail -o noclobber -o nounset
+
+######## get name of this shell script
+SCRIPT_NAME=$(basename "$0")
+
+############## Script startup configuration - change at your own risk :-) ##############
+# set MANUAL_CONFIG to "on" to setup configuration files manually
+# my.cnf and all oh/rsc/*.properties files will not be generated or
+# overwritten if already present
+MANUAL_CONFIG=off
 
 ############## OH general configuration - change at your own risk :-) ##############
 
 # OH_PATH is the directory where Open Hospital files are located
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
-#OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT
+# set OH functioning mode to PORTABLE | CLIENT
+#OH_MODE=PORTABLE #
 
 # set DEMO_DATA to on to enable Demo data loading
 # Warning -> __requires deletion of all portable data__
@@ -45,12 +54,6 @@ DEMO_DATA=off
 
 # set log level to INFO | DEBUG - default set to INFO
 #LOG_LEVEL=INFO
-
-######## Advanced options
-# set MANUAL_CONFIG to "on" to setup configuration files manually
-# my.cnf and all oh/rsc/*.properties files will not be generated or
-# overwritten if already present
-MANUAL_CONFIG=off
 
 # set JAVA_BIN
 # Uncomment this if you want to use system wide JAVA
@@ -82,6 +85,8 @@ OH_LOG_FILE=openhospital.log
 
 # downloaded file extension
 EXT="tar.gz"
+
+################ Architecture and external software ################
 
 ######## Define architecture
 
@@ -131,9 +136,6 @@ MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$MYSQL_PACKAGE_ARCH"
 JAVA_DISTRO="zulu8.56.0.21-ca-fx-jre8.0.302-linux_$JAVA_PACKAGE_ARCH"
 JAVA_URL="https://cdn.azul.com/zulu/bin/"
 JAVA_DIR=$JAVA_DISTRO
-
-######## get name of this shell script
-SCRIPT_NAME=$(basename "$0")
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 

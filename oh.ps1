@@ -47,7 +47,7 @@ https://www.open-hospital.org
 
 #>
 
-#################### Script configuration - Do not edit #####################
+#################### Script info and configuration - Do not edit #####################
 
 ######## set script DEBUG mode
 # saner programming env: these switches turn some bugs into errors
@@ -65,31 +65,16 @@ $script:LOG_LEVEL=$loglevel
 $script:OH_MODE=$mode
 $script:INTERACTIVE_MODE=$interactive
 
+######## get script info
+# determine script name and location for PowerShell
+$script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
+$script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
+
 ######## Global preferences
 # disable progress bar
 $global:ProgressPreference= 'SilentlyContinue'
 
-############## OH general configuration - change at your own risk :-) ##############
-
-# -> OH_PATH is the directory where Open Hospital files are located
-# OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
-
-#$script:OH_MODE="PORTABLE"  # set functioning mode to PORTABLE | CLIENT
-
-# set DEMO_DATA to on to enable Demo data loading
-# Warning -> __requires deletion of all portable data__
-#$script:DEMO_DATA="on"
-
-# language setting - default set to en
-#$script:OH_LANGUAGE="en" # fr es it pt
-
-# set log level to INFO | DEBUG - default set to INFO
-#$script:LOG_LEVEL="INFO"
-
-# enable / disable DICOM (on|off)
-#$script:DICOM_ENABLE="off"
-
-######## Advanced options
+############## Script startup configuration - change at your own risk :-) ##############
 #
 # Manual config
 # set MANUAL_CONFIG to "on" to setup configuration files manually
@@ -103,6 +88,27 @@ $global:ProgressPreference= 'SilentlyContinue'
 # In order to use this mode, setup all the OH configuration variables in the script
 # or pass arguments via command line.
 #$script:INTERACTIVE_MODE="off"
+
+############## OH general configuration - change at your own risk :-) ##############
+
+# -> OH_PATH is the directory where Open Hospital files are located
+# OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
+
+# set OH functioning mode to PORTABLE | CLIENT
+#$script:OH_MODE="PORTABLE"
+
+# set DEMO_DATA to on to enable Demo data loading
+# Warning -> __requires deletion of all portable data__
+#$script:DEMO_DATA="on"
+
+# language setting - default set to en
+#$script:OH_LANGUAGE="en" # fr es it pt
+
+# set log level to INFO | DEBUG - default set to INFO
+#$script:LOG_LEVEL="INFO"
+
+# enable / disable DICOM (on|off)
+#$script:DICOM_ENABLE="off"
 
 # set JAVA_BIN 
 # Uncomment this if you want to use system wide JAVA
@@ -138,8 +144,12 @@ $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 # downloaded file extension
 $script:EXT="zip"
 
-######## Define architecture
+# available languages - do not modify
+$script:languagearray= @("en","fr","it","es","pt") 
 
+############## Architecture and external software ##############
+
+######## Define architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
 $32archarray=@("386","486","586","686","x86","i86pc")
@@ -191,12 +201,6 @@ $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
 $script:JAVA_DISTRO="zulu8.56.0.23-ca-fx-jre8.0.302-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 $script:JAVA_DIR=$JAVA_DISTRO
-
-
-######## get script info
-# determine script name and location for PowerShell
-$script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
-$script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
@@ -260,13 +264,12 @@ function set_path {
 }
 
 function set_language {
-	$languagearray= @("en","fr","it","es","pt") 
 	# set OH interface language - default to en
 	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
 		$script:OH_LANGUAGE="en"
 	}
 	# check for valid language selection
-	if ($languagearray -contains "$OH_LANGUAGE") {
+	if ($script:languagearray -contains "$OH_LANGUAGE") {
 		# set database creation script in chosen language
 		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 	}
