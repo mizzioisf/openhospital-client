@@ -974,7 +974,7 @@ if ( $OH_MODE -eq "PORTABLE" ) {
 test_database_connection;
 
 # generate config files
-if ($MANUAL_CONFIG -eq "off" ) {
+if ( $MANUAL_CONFIG -ne "on" ) {
 	generate_config_files;
 }
 
