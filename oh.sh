@@ -80,6 +80,9 @@ DATE=`date +%Y-%m-%d_%H-%M-%S`
 LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 
+# downloaded file extension
+EXT="tar.gz"
+
 ######## Define architecture
 
 ARCH=`uname -m`
@@ -103,7 +106,6 @@ case $ARCH in
 esac
 
 ######## MySQL Software
-EXT="tar.gz"
 # MariaDB
 MYSQL_VERSION="10.2.40"
 MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-$MYSQL_VERSION/bintar-linux-$MYSQL_ARCH"
@@ -197,10 +199,11 @@ function set_path {
 }
 
 function set_language {
-	# set OH interface language - set default to en
+	# set OH interface language - default to en
 	if [ -z ${OH_LANGUAGE+x} ]; then
 		OH_LANGUAGE=en
 	fi
+	# check for valid language selection
 	case $OH_LANGUAGE in 
 		en|fr|it|es|pt) 
 			# set database creation script in chosen language

@@ -135,12 +135,15 @@ $script:DB_DEMO="create_all_demo.sql"
 # date +%Y-%m-%d_%H-%M-%S
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
+# downloaded file extension
+$script:EXT="zip"
+
 ######## Define architecture
 
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
 $32archarray=@("386","486","586","686","x86","i86pc")
-$64archarray= @("amd64","AMD64","x86_64")
+$64archarray=@("amd64","AMD64","x86_64")
 
 if ($64archarray -contains "$ARCH") {
 	$script:JAVA_ARCH=64;
@@ -161,13 +164,8 @@ else {
 if ( $DICOM_ENABLE -eq "on" ) {
 	$script:JAVA_ARCH=32;
 	$script:JAVA_PACKAGE_ARCH="i686";
+	#$script:MYSQL_ARCH=32;
 }
-	
-# workaround to force 32bit JAVA and MySQL in order to have DICOM working
-#$script:JAVA_ARCH=32; $script:MYSQL_ARCH=32; $script:JAVA_PACKAGE_ARCH="i686";
-
-# archive file extension
-$script:EXT="zip"
 
 ######## MySQL Software
 # MariaDB
@@ -262,11 +260,12 @@ function set_path {
 }
 
 function set_language {
+	$languagearray= @("en","fr","it","es","pt") 
 	# set OH interface language - default to en
 	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
 		$script:OH_LANGUAGE="en"
 	}
-	$languagearray= @("en","fr","it","es","pt") 
+	# check for valid language selection
 	if ($languagearray -contains "$OH_LANGUAGE") {
 		# set database creation script in chosen language
 		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
