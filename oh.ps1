@@ -139,20 +139,22 @@ $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
-switch ( "$ARCH" ){	
-	{"amd64","AMD64","x86_64"} {
-		$script:JAVA_ARCH=64;
-		$script:MYSQL_ARCH="x64";
-		$script:JAVA_PACKAGE_ARCH="x64";
-		}
-	{"486","586","686","x86","i86pc"} {
-		$script:JAVA_ARCH=32;
-		$script:MYSQL_ARCH=32;
-		$script:JAVA_PACKAGE_ARCH="i686";
-		}
-	default {
-		Write-Host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
-		Read-Host; exit 1
+$32archarray=@("386","486","586","686","x86","i86pc")
+$64archarray= @("amd64","AMD64","x86_64")
+
+if ($64archarray -contains "$ARCH") {
+	$script:JAVA_ARCH=64;
+	$script:MYSQL_ARCH="x64";
+	$script:JAVA_PACKAGE_ARCH="x64";
+}
+elseif ($32archarray -contains "$ARCH") {
+	$script:JAVA_ARCH=32;
+	$script:MYSQL_ARCH=32;
+	$script:JAVA_PACKAGE_ARCH="i686";
+}
+else {
+	Write-Host "Unknown architecture: $ARCH. Exiting." -ForegroundColor Red
+	Read-Host; exit 1
 	}
 }
 
@@ -266,14 +268,14 @@ function set_language {
 		$script:OH_LANGUAGE="en"
 	}
 	switch ( "$OH_LANGUAGE" ) {
-		{"en","fr","it","es","pt"} {
-			# set database creation script in chosen language
-			$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
-		}
-		default {
-			Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
-			Read-Host; exit 1
-		}
+	$languagearray= @("en","fr","it","es","pt") 
+	if ($languagearray -contains "$OH_LANGUAGE") {
+		# set database creation script in chosen language
+		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
+	}
+	else {
+		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
+		Read-Host; exit 1
 	}
 }
 
