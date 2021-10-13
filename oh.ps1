@@ -266,7 +266,6 @@ function set_language {
 	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
 		$script:OH_LANGUAGE="en"
 	}
-	switch ( "$OH_LANGUAGE" ) {
 	$languagearray= @("en","fr","it","es","pt") 
 	if ($languagearray -contains "$OH_LANGUAGE") {
 		# set database creation script in chosen language
