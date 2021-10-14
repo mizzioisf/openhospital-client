@@ -687,6 +687,16 @@ function clean_files {
 
 ######## set defaults
 
+# interactive mode - set default to on
+if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
+	$script:INTERACTIVE_MODE="on"
+}
+
+# manual config - set default to off
+if ( [string]::IsNullOrEmpty($MANUAL_CONFIG) ) {
+	$script:MANUAL_CONFIG="off"
+}
+
 # OH mode - set default to PORTABLE
 if ( [string]::IsNullOrEmpty($OH_MODE) ) {
 	$script:OH_MODE="PORTABLE"
@@ -695,11 +705,6 @@ if ( [string]::IsNullOrEmpty($OH_MODE) ) {
 # log level - set default to INFO
 if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
 	$script:LOG_LEVEL="INFO"
-}
-
-# interactive mode - set default to on
-if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
-	$script:INTERACTIVE_MODE="on"
 }
 
 ######## Environment setup
@@ -937,6 +942,8 @@ if ( $DEMO_DATA -eq "on" ) {
 	}
 }
 
+# display running configuration
+Write-Host "Manual config is set to $MANUAL_CONFIG"
 Write-Host "Starting Open Hospital in $OH_MODE mode..."
 Write-Host "OH_PATH is set to $OH_PATH"
 Write-Host "OH language is set to $OH_LANGUAGE"

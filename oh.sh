@@ -35,7 +35,7 @@ SCRIPT_NAME=$(basename "$0")
 # set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
-MANUAL_CONFIG=off
+#MANUAL_CONFIG=on
 
 ############## OH general configuration - change at your own risk :-) ##############
 
@@ -540,6 +540,13 @@ if [ $(id -u) -eq 0 ]; then
 	exit 1
 fi
 
+######## set defaults
+
+# manual config - set default to off
+if [ -z ${MANUAL_CONFIG+x} ]; then
+	MANUAL_CONFIG="off"
+fi
+
 # OH mode - set default to PORTABLE
 if [ -z ${OH_MODE+x} ]; then
 	OH_MODE="PORTABLE"
@@ -769,6 +776,8 @@ if [ $DEMO_DATA = "on" ]; then
 	fi
 fi
 
+# display running configuration
+echo "Manual config is set to $MANUAL_CONFIG"
 echo "Starting Open Hospital in $OH_MODE mode..."
 echo "OH_PATH is set to $OH_PATH"
 echo "OH language is set to $OH_LANGUAGE"
