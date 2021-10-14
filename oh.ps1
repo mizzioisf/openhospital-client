@@ -403,7 +403,7 @@ function config_database {
 	#}
 
 	do {
-		$socktest = (New-Object System.Net.Sockets.TcpClient).ConnectAsync("$MYSQL_SERVER", $MYSQL_PORT).Wait(1000) ) 
+		$socktest = New-Object (System.Net.Sockets.TcpClient).ConnectAsync("$MYSQL_SERVER", $MYSQL_PORT).Wait(1000) 
 		Write-Host "Testing TCP port $MYSQL_PORT...."
 		$script:MYSQL_PORT++
 	}
