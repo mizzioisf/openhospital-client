@@ -58,7 +58,7 @@ https://www.open-hospital.org
 ######## set minimum PowerShell version 
 #Requires -Version 5.1
 
-######## Command line parameters
+######## command line parameters
 param ($lang, $loglevel, $mode, $interactive)
 $script:OH_LANGUAGE=$lang
 $script:LOG_LEVEL=$loglevel
@@ -70,13 +70,12 @@ $script:INTERACTIVE_MODE=$interactive
 $script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
 $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
 
-######## Global preferences
+######## global preferences
 # disable progress bar
 $global:ProgressPreference= 'SilentlyContinue'
 
 ############## Script startup configuration - change at your own risk :-) ##############
 #
-# Manual config
 # set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
@@ -114,7 +113,6 @@ $global:ProgressPreference= 'SilentlyContinue'
 # Uncomment this if you want to use system wide JAVA
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
 
-
 ############## OH local configuration - change at your own risk :-) ##############
 # Database
 $script:MYSQL_SERVER="localhost"
@@ -149,7 +147,7 @@ $script:languagearray= @("en","fr","it","es","pt")
 
 ############## Architecture and external software ##############
 
-######## Define architecture
+######## define architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
 $32archarray=@("386","486","586","686","x86","i86pc")
@@ -177,7 +175,7 @@ if ( $DICOM_ENABLE -eq "on" ) {
 	#$script:MYSQL_ARCH=32;
 }
 
-######## MySQL Software
+######## MySQL/MariaDB Software
 # MariaDB
 $script:MYSQL_VERSION="10.2.40"
 $script:MYSQL_URL="http://ftp.bme.hu/pub/mirrors/mariadb/mariadb-$script:MYSQL_VERSION/win$script:MYSQL_ARCH-packages/"
@@ -398,7 +396,14 @@ function config_database {
 	Write-Host "Looking for a free TCP port for MySQL database..."
 
 	$ProgressPreference = 'SilentlyContinue'
-	while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ) {
+#	while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ) {
+#    		Write-Host "Testing TCP port $MYSQL_PORT...."
+#        	$script:MYSQL_PORT++
+#	}
+
+#	while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ) {
+
+	while ( (New-Object System.Net.Sockets.TcpClient).ConnectAsync($MYSQL_SERVER, $MYSQL_PORT).Wait(1000){
     		Write-Host "Testing TCP port $MYSQL_PORT...."
         	$script:MYSQL_PORT++
 	}
@@ -786,7 +791,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			# check if database already exists
 			if ( Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME" ) {
 				mysql_check;
-				if ($MANUAL_CONFIG -eq "off" ) {
+				if ( $MANUAL_CONFIG -ne "on" ) {
 					config_database;
 				}
 			}
@@ -818,7 +823,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			# reset database if exists
 			clean_database;
 			mysql_check;
-			if ($MANUAL_CONFIG -eq "off" ) {
+			if ( $MANUAL_CONFIG -ne "on" ) {
 				config_database;
 			}
 			initialize_dir_structure;
