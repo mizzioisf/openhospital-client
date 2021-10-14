@@ -396,23 +396,23 @@ function config_database {
 	Write-Host "Looking for a free TCP port for MySQL database..."
 
 	$ProgressPreference = 'SilentlyContinue'
-	# windows 10 only
-	#while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ) {
+
+	### windows 10 only ####
+	#while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ){
 	#	Write-Host "Testing TCP port $MYSQL_PORT...."
 	#      	$script:MYSQL_PORT++
 	#}
-	# end windows 10 only
+	### end windows 10 only ###
 
-	# windows 7/10
+	### windows 7/10 ###
 	do {
 		$socktest = (New-Object System.Net.Sockets.TcpClient).ConnectAsync("$MYSQL_SERVER", $MYSQL_PORT).Wait(1000) 
 		Write-Host "Testing TCP port $MYSQL_PORT...."
 		$script:MYSQL_PORT++
 	}
 	while ( $socktest )
-	
 	$script:MYSQL_PORT--
-	# end windows 7/10
+	### end windows 7/10 ###
 
 	Write-Host "Found TCP port $MYSQL_PORT!"
 
@@ -568,11 +568,11 @@ function shutdown_database {
 		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 		# wait till the MySQL socket file is removed -> TO BE IMPLEMENTED
 		# while ( -e $OH_PATH/$MYSQL_SOCKET ); do sleep 1; done
-		Start-Sleep -Seconds 3
+		Start-Sleep -Seconds 2
 		Write-Host "MySQL stopped!"
 	}
 
-	else {
+	else { # do nothing
 	}
 }
 
