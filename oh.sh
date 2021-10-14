@@ -31,6 +31,7 @@
 SCRIPT_NAME=$(basename "$0")
 
 ############## Script startup configuration - change at your own risk :-) ##############
+#
 # set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
@@ -42,15 +43,14 @@ MANUAL_CONFIG=off
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
 # set OH functioning mode to PORTABLE | CLIENT
-#OH_MODE=PORTABLE #
+#OH_MODE=PORTABLE 
 
 # set DEMO_DATA to on to enable Demo data loading
 # Warning -> __requires deletion of all portable data__
 DEMO_DATA=off
 
 # language setting - default set to en
-#OH_LANGUAGE=en fr es it pt
-#OH_LANGUAGE=it
+#OH_LANGUAGE=en # fr es it pt
 
 # set log level to INFO | DEBUG - default set to INFO
 #LOG_LEVEL=INFO
@@ -88,7 +88,7 @@ EXT="tar.gz"
 
 ################ Architecture and external software ################
 
-######## Define architecture
+######## define architecture
 
 ARCH=`uname -m`
 case $ARCH in
@@ -110,7 +110,7 @@ case $ARCH in
 		;;
 esac
 
-######## MySQL Software
+######## MySQL/MariaDB Software
 # MariaDB
 MYSQL_VERSION="10.2.40"
 MYSQL_URL="https://downloads.mariadb.com/MariaDB/mariadb-$MYSQL_VERSION/bintar-linux-$MYSQL_ARCH"
@@ -639,7 +639,7 @@ while getopts ${OPTSTRING} opt; do
 			# check if database already exists
 			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 				mysql_check;
-				if [ $MANUAL_CONFIG = "off" ]; then
+				if [ $MANUAL_CONFIG != "on" ]; then
 					config_database;
 				fi
 			else
@@ -669,7 +669,7 @@ while getopts ${OPTSTRING} opt; do
 			# reset database if exists
 			clean_database;
 			mysql_check;
-			if [ $MANUAL_CONFIG = "off" ]; then
+			if [ $MANUAL_CONFIG != "on" ]; then
 				config_database;
 			fi
 			initialize_dir_structure;
@@ -790,7 +790,7 @@ if [ $OH_MODE = "PORTABLE" ]; then
 	# check for MySQL software
 	mysql_check;
 	# config MySQL
-	if [ $MANUAL_CONFIG = "off" ]; then
+	if [ $MANUAL_CONFIG != "on" ]; then
 		config_database;
 	fi
 	# check if OH database already exists
@@ -815,7 +815,7 @@ fi
 test_database_connection;
 
 # generate config files
-if [ $MANUAL_CONFIG = "off" ]; then
+if [ $MANUAL_CONFIG != "on" ]; then
 	generate_config_files;
 fi
 
