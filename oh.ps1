@@ -115,7 +115,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 
 ############## OH local configuration - change at your own risk :-) ##############
 # Database
-$script:MYSQL_SERVER="localhost"
+$script:MYSQL_SERVER="127.0.0.1"
 $script:MYSQL_PORT=3306
 $script:MYSQL_ROOT_PW="tmp2021oh111"
 $script:DATABASE_NAME="oh"
@@ -401,7 +401,9 @@ function config_database {
 	#	Write-Host "Testing TCP port $MYSQL_PORT...."
 	#      	$script:MYSQL_PORT++
 	#}
+	# end windows 10 only
 
+	# windows 7/10
 	do {
 		$socktest = (New-Object System.Net.Sockets.TcpClient).ConnectAsync("$MYSQL_SERVER", $MYSQL_PORT).Wait(1000) 
 		Write-Host "Testing TCP port $MYSQL_PORT...."
@@ -410,6 +412,8 @@ function config_database {
 	while ( $socktest )
 	
 	$script:MYSQL_PORT--
+	# end windows 7/10
+
 	Write-Host "Found TCP port $MYSQL_PORT!"
 
 	# create MySQL configuration
