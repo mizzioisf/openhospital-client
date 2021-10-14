@@ -396,18 +396,20 @@ function config_database {
 	Write-Host "Looking for a free TCP port for MySQL database..."
 
 	$ProgressPreference = 'SilentlyContinue'
-#	while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ) {
-#    		Write-Host "Testing TCP port $MYSQL_PORT...."
-#        	$script:MYSQL_PORT++
-#	}
+	# windows 10 only
+	#while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ) {
+	#	Write-Host "Testing TCP port $MYSQL_PORT...."
+	#      	$script:MYSQL_PORT++
+	#}
 
-#	while ( Test-NetConnection $script:MYSQL_SERVER -Port $MYSQL_PORT -InformationLevel Quiet -ErrorAction SilentlyContinue -WarningAction SilentlyContinue ) {
-
-	while ( (New-Object System.Net.Sockets.TcpClient).ConnectAsync($MYSQL_SERVER, $MYSQL_PORT).Wait(1000) ) {
-    		Write-Host "Testing TCP port $MYSQL_PORT...."
-        	$script:MYSQL_PORT++
+	do {
+		$socktest = (New-Object System.Net.Sockets.TcpClient).ConnectAsync("$MYSQL_SERVER", $MYSQL_PORT).Wait(1000) ) 
+		Write-Host "Testing TCP port $MYSQL_PORT...."
+		$script:MYSQL_PORT++
 	}
-
+	while ( $socktest )
+	
+	$script:MYSQL_PORT--
 	Write-Host "Found TCP port $MYSQL_PORT!"
 
 	# create MySQL configuration
