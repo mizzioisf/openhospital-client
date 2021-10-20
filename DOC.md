@@ -16,6 +16,14 @@ OH is developed in Java and it is based on open-source tools and libraries; it r
 ![SourceForge](https://img.shields.io/sourceforge/dt/openhospital/v1.10.0?color=33ccff&label=latest&logoColor=33ccff)
 [ [**Download latest (mirror)**](https://sourceforge.net/projects/openhospital/) ] [ [All releases (mirror)](https://sourceforge.net/projects/openhospital/files/) ]
 
+## Documentation
+
+OH Documentation is available at the following links:
+
+ - [User][user-man] and [Admin][admin-man] manuals
+ - [wiki]
+ - [FAQ][faq]
+
 
 ## Development
 
@@ -36,14 +44,6 @@ There are several ways to contribute to Open Hospital:
 - request new features or report issues on [JIRA][jira] ([here][good-first]'s a list of *good-first-issues*)
 - improve the [documentation][doc]
 - contribute code patches to one of the components
-
-## Documentation
-
-Read on about Open Hospital:
-
- - [User][user-man] and [Admin][admin-man] manuals
- - [wiki]
- - [FAQ][faq]
 
 ## Community
 
