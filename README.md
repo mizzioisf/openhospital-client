@@ -16,7 +16,7 @@ OH is released under the GNU GPL 3.0 License.
 
 The Linux version has been tested on different distributions and versions,
 including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 21.04 x64 (64bit).
-The Windows version has been tested on Windows 10 (32/64/bit)
+The Windows version has been tested on Windows 10/11 (64/bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
@@ -365,7 +365,7 @@ In order to download and unzip mariadb:
 In order to have a complete, easy to support and extensible solution to run Open Hospital on Linux, oh.sh has been rewritten, also adding a few possible useful user functions.
 For the same reason, a completely new powershell script has been writtend for Windows: oh.ps1 (run by oh.bat).
 
-I have widely tested and they seems to be working well (Ubuntu 20.04 64bit /  Windows 10 64bit), solving also a few old outstanding bugs (mysql not always starting or shutting down, wrong socket references, hard coded values, etc. etc.)
+I have widely tested and they seems to be working well (Ubuntu 20.04 64bit /  Windows 11/10 64bit), solving also a few old outstanding bugs (mysql not always starting or shutting down, wrong socket references, hard coded values, etc. etc.)
 
 A short description of changes for the Linux version (mostly the same behavior and options are applicable to the windows oh.ps1 version):
 
