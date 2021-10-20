@@ -103,11 +103,11 @@ $global:ProgressPreference= 'SilentlyContinue'
 # language setting - default set to en
 #$script:OH_LANGUAGE="en" # fr es it pt
 
+# enable DICOM (default to off)
+#$script:DICOM_ENABLE="on"
+
 # set log level to INFO | DEBUG - default set to INFO
 #$script:LOG_LEVEL="INFO"
-
-# enable / disable DICOM (on|off)
-#$script:DICOM_ENABLE="off"
 
 # set JAVA_BIN 
 # Uncomment this if you want to use system wide JAVA
@@ -170,6 +170,7 @@ else {
 
 # workaround to force 32bit JAVA in order to have DICOM working on 64bit arch
 if ( $DICOM_ENABLE -eq "on" ) {
+	Write-Host "DICOM_ENABLE=on, forcing JAVA architecture to 32bit" 
 	$script:JAVA_ARCH=32;
 	$script:JAVA_PACKAGE_ARCH="i686";
 	#$script:MYSQL_ARCH=32;
