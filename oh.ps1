@@ -35,6 +35,8 @@ Open Hospital CLIENT | PORTABLE
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
               [ -mode PORTABLE|CLIENT ]
               [ -loglevel INFO|DEBUG ] [default set to INFO]
+              [ -dicom on|off ]
+              [ -manual_config on|off ]
               [ -interactive on|off ]
 
 .EXAMPLE
@@ -60,10 +62,12 @@ https://www.open-hospital.org
 #Requires -Version 5.1
 
 ######## command line parameters
-param ($lang, $loglevel, $mode, $interactive)
+param ($lang, $loglevel, $mode, $dicom, $manual_config, $interactive)
 $script:OH_LANGUAGE=$lang
 $script:LOG_LEVEL=$loglevel
 $script:OH_MODE=$mode
+$script:DICOM_ENABLE=$dicom
+$script:MANUAL_CONFIG=$manual_config
 $script:INTERACTIVE_MODE=$interactive
 
 ######## get script info
@@ -222,7 +226,9 @@ function script_menu {
 	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
 	Write-Host "               [ -mode PORTABLE|CLIENT ]"
 	Write-Host "               [ -loglevel INFO|DEBUG ] "
+	Write-Host "               [ -dicom on|off ] "
 	Write-Host "               [ -interactive on|off ] "
+	Write-Host "               [ -manual_config on|off ] "
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (client / server configuration)"
 	Write-Host "   d    start OH in debug mode"
