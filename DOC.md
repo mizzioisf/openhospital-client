@@ -9,11 +9,11 @@ or in a client / server network configuration (CLIENT mode), where multiple clie
 
 ![GitHub all releases](https://img.shields.io/github/downloads/informatici/openhospital/total?label=GitHub%20Downloads)
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/informatici/openhospital/latest/total?label=latest)
-[ [Download latest](https://github.com/informatici/openhospital/releases/latest) ] [ [**All releases**](https://github.com/informatici/openhospital/releases) ]
+[ [**Download latest**](https://github.com/informatici/openhospital/releases/latest) ] [ [All releases](https://github.com/informatici/openhospital/releases) ]
 
 ![SourceForge](https://img.shields.io/sourceforge/dt/openhospital?color=33ccff&label=SourceForge%20Downloads)
 ![SourceForge](https://img.shields.io/sourceforge/dt/openhospital/v1.10.0?color=33ccff&label=latest&logoColor=33ccff)
-[ [Download latest (mirror)](https://sourceforge.net/projects/openhospital/) ] [ [All releases (mirror)](https://sourceforge.net/projects/openhospital/files/) ]
+[ [**Download latest (mirror)**](https://sourceforge.net/projects/openhospital/) ] [ [All releases (mirror)](https://sourceforge.net/projects/openhospital/files/) ]
 
 
 ## Development
