@@ -9,7 +9,7 @@ or in a client / server network configuration (CLIENT mode), where multiple clie
 
 ![GitHub all releases](https://img.shields.io/github/downloads/informatici/openhospital/total?label=GitHub%20Downloads)
 ![GitHub release (latest by date)](https://img.shields.io/github/downloads/informatici/openhospital/latest/total?label=latest)
-[ [Download latest](https://github.com/informatici/openhospital/releases/latest) ] [ [All releases](https://github.com/informatici/openhospital/releases) ]
+[ [Download latest](https://github.com/informatici/openhospital/releases/latest) ] [ [**All releases**](https://github.com/informatici/openhospital/releases) ]
 
 ![SourceForge](https://img.shields.io/sourceforge/dt/openhospital?color=33ccff&label=SourceForge%20Downloads)
 ![SourceForge](https://img.shields.io/sourceforge/dt/openhospital/v1.10.0?color=33ccff&label=latest&logoColor=33ccff)
@@ -29,7 +29,7 @@ This repository is used to assemble the portable (or all-in-one) packages of Ope
 
 ## How to contribute
 
-There are several ways in which you can contribute to Open Hospital:
+There are several ways to contribute to Open Hospital:
 
 - try the [desktop application][releases] or the early versions of the [web UI][ui]
 - request new features or report issues on [JIRA][jira] ([here][good-first]'s a list of *good-first-issues*)
@@ -40,7 +40,7 @@ There are several ways in which you can contribute to Open Hospital:
 
 Read on about Open Hospital:
 
- - [user][user-man] and [admin][admin-man] manuals
+ - [User][user-man] and [Admin][admin-man] manuals
  - [wiki]
  - [FAQ][faq]
 
