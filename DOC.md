@@ -28,7 +28,7 @@ Open Hospital is composed by the following components, hosted in separated repos
 
 This repository is used to assemble the portable (or all-in-one) packages of Open Hospital, which you can download [here][releases].
 
-# How to contribute
+### How to contribute
 
 There are several ways to contribute to Open Hospital:
 
