@@ -916,7 +916,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 
 ######################### OH start ############################
 
-Write-Host "Interactive mode set to $script:INTERACTIVE_MODE"
+Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
 
 # check mode 
 if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) ) {
@@ -929,7 +929,7 @@ if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) ) {
 if ( $DEMO_DATA -eq "on" ) {
 	# exit if OH is configured in Client mode
 	if (( $OH_MODE -eq "CLIENT" )) {
-		Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data, exiting." -ForeGroundcolor Red
+		Write-Host "Error - OH_MODE is set to CLIENT mode. Cannot run with Demo data, exiting." -ForeGroundcolor Red
 		Read-Host; 
 		exit 1
 		else { $script:OH_MODE="PORTABLE" }
