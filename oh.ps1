@@ -35,6 +35,7 @@ Open Hospital CLIENT | PORTABLE
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
               [ -mode PORTABLE|CLIENT ]
               [ -loglevel INFO|DEBUG ] [default set to INFO]
+              [ -interactive on|off ]
 
 .EXAMPLE
 ./oh.ps1 -lang en -mode PORTABLE -loglevel DEBUG
@@ -221,7 +222,7 @@ function script_menu {
 	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
 	Write-Host "               [ -mode PORTABLE|CLIENT ]"
 	Write-Host "               [ -loglevel INFO|DEBUG ] "
-	Write-Host "               [ -interactive ON|OFF ] "
+	Write-Host "               [ -interactive on|off ] "
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (client / server configuration)"
 	Write-Host "   d    start OH in debug mode"
@@ -724,7 +725,7 @@ cd "$OH_PATH" # workaround for hard coded paths
 
 ######## User input
 
-# If INTERACTIVE_MODE is set to "off" don't ask for user input
+# If INTERACTIVE_MODE is set to "off" don't show menu for user input
 if ( $INTERACTIVE_MODE -eq "on") {
 	script_menu;
 	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_MODE mode"
