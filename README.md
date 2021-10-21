@@ -36,6 +36,8 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 [DOWNLOAD PAGE](./OH_download_matrix.adoc)
 
+[**Download latest**](https://github.com/informatici/openhospital/releases/latest) 
+
 # Dowloading OH - this repo
 
 - clone the repository with git:
@@ -97,6 +99,10 @@ cd openhospital-client
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] 
               [ -mode PORTABLE|CLIENT ]
               [ -loglevel INFO|DEBUG ] 
+              [ -dicom on|off ]
+              [ -interactive on|off ]
+              [ -manual_config on|off ]
+
 
  C    start OH - CLIENT mode (client / server configuration)
  d    start OH in debug mode
@@ -130,6 +136,12 @@ the MySQL / MariaDB local TCP port.
 
 ```
 powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
+```
+
+-> To run oh.ps1 with command line options (example):
+
+```
+./oh.ps1 -lang it -dicom off -interactive off -manual_config on
 ```
 
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat):
