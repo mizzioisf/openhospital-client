@@ -101,9 +101,11 @@ $global:ProgressPreference= 'SilentlyContinue'
 # set OH mode to PORTABLE | CLIENT - default set to PORTABLE
 #$script:OH_MODE="PORTABLE"
 
-# set DEMO_DATA to on to enable Demo data loading
-# Warning -> __requires deletion of all portable data__
-$script:DEMO_DATA="off"
+# set DEMO_DATA to on to enable demo database loading - default set to off
+#
+# -> Warning -> __requires deletion of all portable data__
+#
+#$script:DEMO_DATA="off"
 
 # language setting - default set to en
 #$script:OH_LANGUAGE="en" # fr es it pt
@@ -252,6 +254,34 @@ function get_confirmation {
 		"y"  { "yes"; break }
 		"n"  { "Exiting."; Read-Host; exit 0 }
 		default { "Invalid choice. Exiting."; Read-Host; exit 1; }
+	}
+}
+
+function set_defaults {
+        # set default values for script variables
+	# interactive mode - set default to on
+	if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
+		$script:INTERACTIVE_MODE="on"
+	}
+
+	# manual config - set default to off
+	if ( [string]::IsNullOrEmpty($MANUAL_CONFIG) ) {
+		$script:MANUAL_CONFIG="off"
+	}
+
+	# OH mode - set default to PORTABLE
+	if ( [string]::IsNullOrEmpty($OH_MODE) ) {
+		$script:OH_MODE="PORTABLE"
+	}
+
+	# log level - set default to INFO
+	if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
+		$script:LOG_LEVEL="INFO"
+	}
+	
+	# demo data - set default to off
+	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
+		$script:DEMO_DATA="off"
 	}
 }
 
@@ -699,30 +729,9 @@ function clean_files {
 # else { Write-Host "User ok — go on executing the script..." -ForegroundColor Green }
 
 
-######## set defaults
-
-# interactive mode - set default to on
-if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
-	$script:INTERACTIVE_MODE="on"
-}
-
-# manual config - set default to off
-if ( [string]::IsNullOrEmpty($MANUAL_CONFIG) ) {
-	$script:MANUAL_CONFIG="off"
-}
-
-# OH mode - set default to PORTABLE
-if ( [string]::IsNullOrEmpty($OH_MODE) ) {
-	$script:OH_MODE="PORTABLE"
-}
-
-# log level - set default to INFO
-if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
-	$script:LOG_LEVEL="INFO"
-}
-
 ######## Environment setup
 
+set_defaults;
 set_path;
 set_language;
 

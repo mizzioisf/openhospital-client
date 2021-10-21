@@ -45,8 +45,10 @@ SCRIPT_NAME=$(basename "$0")
 # set OH mode to PORTABLE | CLIENT - default set to PORTABLE
 #OH_MODE=PORTABLE 
 
-# set DEMO_DATA to on to enable Demo data loading
-# Warning -> __requires deletion of all portable data__
+# set DEMO_DATA to on to enable demo database loading - default set to off
+#
+# -> Warning -> __requires deletion of all portable data__
+#
 #DEMO_DATA=off
 
 # language setting - default set to en
@@ -773,12 +775,12 @@ if [ $DEMO_DATA = "on" ]; then
 	fi
 
 	if [ -f ./$SQL_DIR/$DB_DEMO ]; then
-	        echo "Found SQL demo database, starting OH in demo mode..."
+		echo "Found SQL demo database, starting OH in demo mode..."
 		DB_CREATE_SQL=$DB_DEMO
 		# reset database if exists
 		clean_database;
 	else
-	      	echo "Error: no $DB_DEMO found! Exiting."
+		echo "Error: no $DB_DEMO found! Exiting."
 		exit 1
 	fi
 fi
