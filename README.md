@@ -34,9 +34,10 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 # Dowloading OH - releases
 
-[DOWNLOAD PAGE](./OH_download_matrix.adoc)
+[**Download latest release from github**](https://github.com/informatici/openhospital/releases/latest) 
 
-[**Download latest**](https://github.com/informatici/openhospital/releases/latest) 
+[**Download page**](./OH_download_matrix.adoc)
+
 
 # Dowloading OH - this repo
 
@@ -396,6 +397,8 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for testing
 - **New**: test database connection option (see oh.sh -t)
 - **New**: displays software versions and current configuration (see oh.sh -v)
+- **New**: generate config files (see oh.sh -g)
+- **New**: install database (see oh.sh -i)
 - Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
 - More flexible execution and configuration options
 - Automatic configuration files generation
@@ -412,5 +415,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.10.06*
+*last updated: 2021.10.21*
 
