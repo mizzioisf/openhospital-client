@@ -47,7 +47,7 @@ SCRIPT_NAME=$(basename "$0")
 
 # set DEMO_DATA to on to enable Demo data loading
 # Warning -> __requires deletion of all portable data__
-DEMO_DATA=off
+#DEMO_DATA=off
 
 # language setting - default set to en
 #OH_LANGUAGE=en # fr es it pt
@@ -176,6 +176,29 @@ function get_confirmation {
 		n|N ) echo "Exiting."; exit 0;;
 		* ) echo "Invalid choice. Exiting."; exit 1 ;;
 	esac
+}
+
+function set_defaults {
+	# set default values for script variables
+	# manual config - set default to off
+	if [ -z ${MANUAL_CONFIG+x} ]; then
+		MANUAL_CONFIG="off"
+	fi
+
+	# OH mode - set default to PORTABLE
+	if [ -z ${OH_MODE+x} ]; then
+		OH_MODE="PORTABLE"
+	fi
+
+	# log level - set default to INFO
+	if [ -z ${LOG_LEVEL+x} ]; then
+		LOG_LEVEL=INFO
+	fi
+
+	# demo data - set default to off
+	if [ -z ${DEMO_DATA+x} ]; then
+		DEMO_DATA=off
+	fi
 }
 
 function set_path {
@@ -540,25 +563,9 @@ if [ $(id -u) -eq 0 ]; then
 	exit 1
 fi
 
-######## set defaults
-
-# manual config - set default to off
-if [ -z ${MANUAL_CONFIG+x} ]; then
-	MANUAL_CONFIG="off"
-fi
-
-# OH mode - set default to PORTABLE
-if [ -z ${OH_MODE+x} ]; then
-	OH_MODE="PORTABLE"
-fi
-
-# log level - set default to INFO
-if [ -z ${LOG_LEVEL+x} ]; then
-	LOG_LEVEL=INFO
-fi
-
 ######## Environment setup
 
+set_defaults;
 set_path;
 set_language;
 
