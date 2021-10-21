@@ -98,17 +98,17 @@ $global:ProgressPreference= 'SilentlyContinue'
 # -> OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 
-# set OH functioning mode to PORTABLE | CLIENT
+# set OH mode to PORTABLE | CLIENT - default set to PORTABLE
 #$script:OH_MODE="PORTABLE"
 
 # set DEMO_DATA to on to enable Demo data loading
 # Warning -> __requires deletion of all portable data__
-#$script:DEMO_DATA="on"
+$script:DEMO_DATA="off"
 
 # language setting - default set to en
 #$script:OH_LANGUAGE="en" # fr es it pt
 
-# enable DICOM (default to off)
+# enable DICOM (default set to off)
 #$script:DICOM_ENABLE="on"
 
 # set log level to INFO | DEBUG - default set to INFO

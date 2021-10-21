@@ -42,7 +42,7 @@ SCRIPT_NAME=$(basename "$0")
 # OH_PATH is the directory where Open Hospital files are located
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
-# set OH functioning mode to PORTABLE | CLIENT
+# set OH mode to PORTABLE | CLIENT - default set to PORTABLE
 #OH_MODE=PORTABLE 
 
 # set DEMO_DATA to on to enable Demo data loading
