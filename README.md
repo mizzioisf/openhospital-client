@@ -142,7 +142,7 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 -> To run oh.ps1 with command line options (example):
 
 ```
-./oh.ps1 -lang it -dicom off -interactive off -manual_config on
+./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -manual_config on
 ```
 
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat):

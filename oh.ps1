@@ -40,7 +40,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
               [ -interactive on|off ]
 
 .EXAMPLE
-./oh.ps1 -lang en -mode PORTABLE -loglevel DEBUG
+./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -manual_config on
 
 .NOTES
 Developed by Informatici Senza Frontiere - 2021
