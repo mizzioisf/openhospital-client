@@ -62,10 +62,10 @@ https://www.open-hospital.org
 #Requires -Version 5.1
 
 ######## command line parameters
-param ($lang, $loglevel, $mode, $dicom, $manual_config, $interactive)
+param ($lang, $mode, $loglevel, $dicom, $manual_config, $interactive)
 $script:OH_LANGUAGE=$lang
-$script:LOG_LEVEL=$loglevel
 $script:OH_MODE=$mode
+$script:LOG_LEVEL=$loglevel
 $script:DICOM_ENABLE=$dicom
 $script:MANUAL_CONFIG=$manual_config
 $script:INTERACTIVE_MODE=$interactive
@@ -229,8 +229,8 @@ function script_menu {
 	Write-Host "               [ -mode PORTABLE|CLIENT ]"
 	Write-Host "               [ -loglevel INFO|DEBUG ] "
 	Write-Host "               [ -dicom on|off ] "
-	Write-Host "               [ -interactive on|off ] "
 	Write-Host "               [ -manual_config on|off ] "
+	Write-Host "               [ -interactive on|off ] "
 	Write-Host ""
 	Write-Host "   C    start OH - CLIENT mode (client / server configuration)"
 	Write-Host "   d    start OH in debug mode"
