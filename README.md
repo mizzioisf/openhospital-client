@@ -20,7 +20,7 @@ The Windows version has been tested on Windows 10/11 (64/bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.11.0 Open Hospital release!**
+**New ! Updated to 1.11.1 Open Hospital release!**
 
 # Running OH - Ultra-quickstart
 
@@ -64,24 +64,24 @@ cd openhospital-client
 |                   Open Hospital | OH                    |
 |                                                         |
  ---------------------------------------------------------
- lang en | arch x86_64 | mode PORTABLE/CLIENT
+ lang en | arch x86_64 | mode PORTABLE | log level INFO 
+ ---------------------------------------------------------
 
- Usage: oh.sh [ -lang en|fr|it|es|pt ] 
+ Usage: oh.sh [ -l en|fr|it|es|pt ] 
 
-   -C    start OH in CLIENT mode (Client / Server configuration)
-   -d    start OH in DEBUG mode
+   -C    start OH in CLIENT mode (client / server configuration)
+   -d    start OH in debug mode
    -D    start OH with Demo data
    -g    generate configuration files
    -G    setup GSM
    -h    show this help
-   -i    initialize / install OH database
+   -i    initialize/install OH database
    -l    set language: en|fr|it|es|pt
    -s    save OH database
    -r    restore OH database
    -t    test database connection (CLIENT mode only)
    -v    show OH software version and configuration
    -X    clean/reset OH installation
-
 ```
 
 --------------------
@@ -95,7 +95,7 @@ cd openhospital-client
 |                   Open Hospital | OH                    |
 |                                                         |
  ---------------------------------------------------------
- lang en | arch x86_64 | mode PORTABLE/CLIENT
+ lang en | arch x86_64 | mode PORTABLE/CLIENT | log level INFO
 
 Usage: oh.ps1 [ -lang en|fr|it|es|pt ] 
               [ -mode PORTABLE|CLIENT ]
@@ -415,5 +415,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.10.21*
+*last updated: 2021.11.03*
 
