@@ -32,7 +32,7 @@ To download and launch the Open Hospital package contained in this distribution 
 bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
 ```
 
-# Dowloading OH - releases
+# Dowloading OH - Releases
 
 [**Download latest release from github**](https://github.com/informatici/openhospital/releases/latest) 
 
