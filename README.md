@@ -379,8 +379,6 @@ In order to download and unzip mariadb:
 In order to have a complete, easy to support and extensible solution to run Open Hospital on Linux, oh.sh has been rewritten, also adding a few possible useful user functions.
 For the same reason, a completely new powershell script has been writtend for Windows: oh.ps1 (run by oh.bat).
 
-I have widely tested and they seems to be working well (Ubuntu 20.04 64bit /  Windows 7/10/11 64bit), solving also a few old outstanding bugs (mysql not always starting or shutting down, wrong socket references, hard coded values, etc. etc.)
-
 A short description of changes for the Linux version (mostly the same behavior and options are applicable to the windows oh.ps1 version):
 
 - Complete overhaul of the code, reworked the entire scripts
