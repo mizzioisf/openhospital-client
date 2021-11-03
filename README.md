@@ -343,7 +343,8 @@ Enable running unsigned scripts by entering:
 ```
 set-executionpolicy remotesigned
 ```
-- You might also be required to enable access to oh.ps1 on Windows Firewall.
+- You might also be required to enable access on Windows Firewall to oh.ps1 and/or to the TCP port used for the local database (PORTABLE mode).
+
 
 **Windows - legacy mode**
 
