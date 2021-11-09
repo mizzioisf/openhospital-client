@@ -70,6 +70,7 @@ cd openhospital-client
  Usage: oh.sh [ -l en|fr|it|es|pt ] 
 
    -C    start OH in CLIENT mode (client / server configuration)
+   -P    start OH in PORTABLE mode
    -d    start OH in debug mode
    -D    start OH with Demo data
    -g    generate configuration files
@@ -105,7 +106,8 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
               [ -manual_config on|off ]
 
 
- C    start OH - CLIENT mode (client / server configuration)
+ C    start OH in CLIENT mode (client / server configuration)
+ P    start OH in PORTABLE mode
  d    start OH in debug mode
  D    start OH in Demo mode
  g    generate configuration files
@@ -151,7 +153,8 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 # Options 
 
-- **C**    start Open Hospital in CLIENT mode, usually when you have an external database server (Client / Server configuration)
+- **C**    start Open Hospital in CLIENT mode, usually when an external database server is used (Client / Server configuration)
+- **P**    start Open Hospital in PORTABLE mode, where data is saved locally
 - **d**    start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations to log file
 - **D**    start OH with Demo data - loads a demo database in order to test the software 
 - **g**    generate OH configuration files (oh/rsc/\*.properties) and exit
@@ -348,7 +351,7 @@ set-executionpolicy remotesigned
 
 **Windows - legacy mode**
 
-(*) If you are using the legacy version, you might have to download and unzip java ad mysql manually.
+(*) If you are using oh.bat in legacy mode, you might have to download and unzip java ad mysql manually.
 In order to download and unzip Java:
 
 - Visit  https://cdn.azul.com/zulu/bin/
@@ -414,5 +417,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.11.03*
+*last updated: 2021.11.09*
 
