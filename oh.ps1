@@ -204,7 +204,7 @@ $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
 #$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 
 ### JRE 8 - zulu
-$script:JAVA_DISTRO="zulu8.56.0.23-ca-fx-jre8.0.302-win_$JAVA_PACKAGE_ARCH"
+$script:JAVA_DISTRO="JAVA_DIR=zulu8.58.0.13-ca-fx-jdk8.0.312-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 $script:JAVA_DIR=$JAVA_DISTRO
 

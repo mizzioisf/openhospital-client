@@ -167,7 +167,7 @@ REM set JAVA_URL="https://cdn.azul.com/zulu/bin/zulu11.50.19-ca-fx-jre11.0.12-wi
 REM set JAVA_DISTRO=zulu11.50.19-ca-fx-jre11.0.12-win_i686.zip
 
 REM # JRE 8 32bit - i686 - zulu - default
-set JAVA_DIR=zulu8.56.0.23-ca-fx-jre8.0.302-win_i686
+set JAVA_DIR=zulu8.58.0.13-ca-fx-jdk8.0.312-win_i686
 set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
