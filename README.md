@@ -54,9 +54,9 @@ cd openhospital-client
 
 ## Common to all Operating Systems / architectures
 
-Download Open Hospital package
-Unzip the package
-Browse to the extracted folder.
+- Download Open Hospital package
+- Unzip the package
+- Browse to the extracted folder.
 
 ## Linux
 
