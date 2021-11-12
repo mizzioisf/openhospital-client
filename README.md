@@ -169,8 +169,6 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 - **q**    quit (windows only)
 - **h**    help (linux only)
 
-Note: The oh.bat launches the oh.ps1 startup file automatically.
-
 # Configuration
 
 Some advanced options can be configured manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
@@ -297,6 +295,10 @@ External software package downloaded at first run:
 Mariadb 10.2.x server
 Java JRE, Zulu or OpenJDK distribution
 ```
+
+# Documentation
+
+Administrator and User manuals are available in the **doc** folder.
 
 # Known issues
 
