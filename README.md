@@ -239,7 +239,9 @@ DATE=`date +%Y-%m-%d_%H-%M-%S` # linux
 LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 ```
-### Manual config: it is also possibile to manually adapt the configuration files and set the script so they are not regenerated and overwritten:
+### Manual config
+
+It is also possibile to manually adapt the configuration files and set the script so they are not regenerated and overwritten:
 
 ```
 ######## Advanced options
