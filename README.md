@@ -190,7 +190,6 @@ $script:OH_MODE="PORTABLE" # windows
 DEMO_DATA=off # linux
 #$script:DEMO_DATA="off" # windows
 ```
-
 ### Interface and software language:
 
 ```
@@ -198,7 +197,6 @@ DEMO_DATA=off # linux
 #OH_LANGUAGE=en fr es it pt # linux
 #$script:OH_LANGUAGE="en" # fr es it pt # windows
 ```
-
 ### Set software logging level
 
 ```
@@ -206,7 +204,6 @@ DEMO_DATA=off # linux
 #LOG_LEVEL=INFO # linux
 #$script:LOG_LEVEL="INFO" # windows
 ```
-
 ### Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
 
 ```
@@ -224,7 +221,6 @@ DATABASE_PASSWORD="xxxxxxx"
 
 DICOM_MAX_SIZE="4M"
 ```
-
 ### File names and directory structure:
 
 ```
@@ -241,7 +237,6 @@ DATE=`date +%Y-%m-%d_%H-%M-%S` # linux
 LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 ```
-
 ### Manual config: it is also possibile to manually adapt the configuration files and set the script so they are not regenerated and overwritten:
 
 ```
@@ -252,7 +247,6 @@ OH_LOG_FILE=openhospital.log
 MANUAL_CONFIG=off # linux
 $script:MANUAL_CONFIG="off" # windows
 ```
-
 ### Enable system wide JAVA:
 
 ```
@@ -261,14 +255,12 @@ $script:MANUAL_CONFIG="off" # windows
 #JAVA_BIN=`which java` # linux
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
-
 ### (Windows only) enable / disable DICOM features
 
 ```
 # enable / disable DICOM (on|off)
 #$script:DICOM_ENABLE="off"
 ```
-
 ### (Windows only) set interactive mode
 
 ```
