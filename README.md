@@ -54,9 +54,9 @@ cd openhospital-client
 
 ## Common to all Operating Systems / architectures
 
-- Download Open Hospital package
-- Unzip the package
-- Browse to the extracted folder.
+- Download Open Hospital package for the desired architecture
+- Unzip/untar the package
+- Browse to the extracted folder
 
 ## Linux
 
@@ -179,7 +179,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 Some advanced options can be configured manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
 This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
 
-- Distribution type, language and debug level:
+### Distribution type, language and debug level:
 
 ```
 OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT # linux
