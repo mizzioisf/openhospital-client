@@ -331,6 +331,8 @@ sudo apt-get install libaio1
 
 **Windows**
 
+Powershell Version 5.1 is required.
+
 Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit jre is mandatory.
 If you need DICOM on Windows 64 bit set **DICOM_ENABLE="on"** in the script.
 
@@ -417,5 +419,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.11.09*
+*last updated: 2021.11.12*
 
