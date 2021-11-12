@@ -198,7 +198,7 @@ DEMO_DATA=off # linux
 #OH_LANGUAGE=en fr es it pt # linux
 #$script:OH_LANGUAGE="en" # fr es it pt # windows
 ```
-### Set software logging level
+### Log level / debug mode
 ```
 # set log level to INFO | DEBUG - default set to INFO
 #LOG_LEVEL=INFO # linux
