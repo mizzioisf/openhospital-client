@@ -302,7 +302,7 @@ Mariadb 10.2.x server
 Java JRE, Zulu or OpenJDK distribution
 ```
 
-## Documentation
+# Documentation
 
 Administrator and User manuals are available in the **doc** folder.
 
