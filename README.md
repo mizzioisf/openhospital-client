@@ -222,7 +222,7 @@ DATABASE_PASSWORD="xxxxxxx"
 
 DICOM_MAX_SIZE="4M"
 ```
-### File names and directory structure:
+### File names and directory structure
 ```
 OH_DIR=oh
 SQL_DIR=sql
