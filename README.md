@@ -52,13 +52,13 @@ cd openhospital-client
 
 # Running OH - Quickstart
 
-##Common to all Operating Systems / architectures
+## Common to all Operating Systems / architectures
 
 Download Open Hospital package
 Unzip the package
 Browse to the extracted folder.
 
-##Linux
+## Linux
 
 - start OH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
@@ -91,7 +91,7 @@ Browse to the extracted folder.
 ```
 
 --------------------
-##Windows
+## Windows
 
 - double click on the **oh.bat** batch file and choose among available options:
 
