@@ -249,19 +249,19 @@ It is also possibile to manually adapt the configuration files and set the scrip
 MANUAL_CONFIG=off # linux
 $script:MANUAL_CONFIG="off" # windows
 ```
-### Enable system wide JAVA:
+### Enable system wide JAVA
 ```
 ######## set JAVA_BIN
 # Uncomment this if you want to use system wide JAVA
 #JAVA_BIN=`which java` # linux
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
-### (Windows only) enable / disable DICOM features
+### (Windows only) Enable / disable DICOM features
 ```
 # enable / disable DICOM (on|off)
 #$script:DICOM_ENABLE="off"
 ```
-### (Windows only) set interactive mode
+### (Windows only) Enable interactive mode
 ```
 # Interactive mode
 # set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
