@@ -204,7 +204,9 @@ DEMO_DATA=off # linux
 #LOG_LEVEL=INFO # linux
 #$script:LOG_LEVEL="INFO" # windows
 ```
-### Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
+### Database and software configuration
+
+If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
 
 ```
 ######## Software configuration - change at your own risk :-)
