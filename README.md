@@ -89,7 +89,6 @@ cd openhospital-client
    -v    show OH software version and configuration
    -X    clean/reset OH installation
 ```
-
 --------------------
 ## Windows
 
@@ -126,10 +125,11 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
  X    clean/reset OH installation
  q    quit
 ```
+--------------------
 Note: The **oh.bat** launches the **oh.ps1** startup file automatically.
 The script presents the interactive menu that can be used to setup and choose how to run Open Hospital.
 
--> To manually run oh.ps1 (powershell script):
+-> To manually run **oh.ps1** (powershell script):
 
 - right-click on **oh.ps1** -> Properties -> General -> Security
 - select "Unblock"
