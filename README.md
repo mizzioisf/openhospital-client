@@ -191,14 +191,15 @@ DEMO_DATA=off # linux
 #$script:DEMO_DATA="off" # windows
 ```
 
-- Interface and software language:
+### Interface and software language:
 
 ```
 # Language setting - default set to en
 #OH_LANGUAGE=en fr es it pt # linux
 #$script:OH_LANGUAGE="en" # fr es it pt # windows
 ```
-- Set software logging level
+
+### Set software logging level
 
 ```
 # set log level to INFO | DEBUG - default set to INFO
@@ -206,7 +207,7 @@ DEMO_DATA=off # linux
 #$script:LOG_LEVEL="INFO" # windows
 ```
 
-- Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
+### Database and software configuration. If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
 
 ```
 ######## Software configuration - change at your own risk :-)
@@ -224,7 +225,8 @@ DATABASE_PASSWORD="xxxxxxx"
 DICOM_MAX_SIZE="4M"
 ```
 
-- File names and directory structure:
+### File names and directory structure:
+
 ```
 OH_DIR=oh
 SQL_DIR=sql
@@ -240,7 +242,7 @@ LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 ```
 
-- Manual config: it is also possibile to manually adapt the configuration files and set the script so they are not regenerated and overwritten:
+### Manual config: it is also possibile to manually adapt the configuration files and set the script so they are not regenerated and overwritten:
 
 ```
 ######## Advanced options
@@ -251,7 +253,8 @@ MANUAL_CONFIG=off # linux
 $script:MANUAL_CONFIG="off" # windows
 ```
 
-- Enable system wide JAVA:
+### Enable system wide JAVA:
+
 ```
 ######## set JAVA_BIN
 # Uncomment this if you want to use system wide JAVA
@@ -259,13 +262,15 @@ $script:MANUAL_CONFIG="off" # windows
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
 
-- **(Windows only)** enable / disable DICOM features
+### (Windows only) enable / disable DICOM features
+
 ```
 # enable / disable DICOM (on|off)
 #$script:DICOM_ENABLE="off"
 ```
 
-- **(Windows only)** set interactive mode
+### (Windows only) set interactive mode
+
 ```
 # Interactive mode
 # set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
