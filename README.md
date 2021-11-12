@@ -171,9 +171,9 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 Note: The oh.bat launches the oh.ps1 startup file automatically.
 
-**Advanced options - common to all architecture**
+# Configuration
 
-Some options can also be setup manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
+Some advanced options can be configured manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
 This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
 
 - Distribution type, language and debug level:
