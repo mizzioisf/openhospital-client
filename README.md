@@ -309,7 +309,7 @@ Administrator and User manuals are available in the **doc** folder.
 
 If you experience problems in starting up the script, avoid long folder path and path with special characters / spaces in it.
 
-**Linux**
+## Linux
 
 - If you get this error:
 
@@ -336,7 +336,7 @@ sudo apt-get install libaio1
 
 - If you select languages en-fr-it, a ICD10 patologies subset is loaded at startup, languages es-pt don't.
 
-**Windows**
+## Windows
 
 Powershell minimun version 5.1 is required to run oh.ps1.
 
@@ -358,7 +358,7 @@ set-executionpolicy remotesigned
 - You might also be required to enable access on Windows Firewall to oh.ps1 and/or to the TCP port used for the local database (PORTABLE mode).
 
 
-**Windows - legacy mode**
+## Windows - legacy mode
 
 (*) If you are using oh.bat in legacy mode, you might have to download and unzip java ad mysql manually.
 In order to download and unzip Java:
