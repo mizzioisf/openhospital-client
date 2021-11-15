@@ -553,7 +553,7 @@ function generate_config_files {
 	######## settings.properties setup
 	# set language and DOC_DIR in OH config file
 	[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
-	sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s/OH_DOC_DIR/$OH_DOC_DIR/g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
+	sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
 }
 
 
