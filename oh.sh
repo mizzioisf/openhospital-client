@@ -73,6 +73,7 @@ DATABASE_PASSWORD="isf123"
 DICOM_MAX_SIZE="4M"
 
 OH_DIR=oh
+OH_DOC_DIR="../doc"
 SQL_DIR=sql
 DICOM_DIR="data/dicom_storage"
 DATA_DIR="data/db"
@@ -549,10 +550,12 @@ function generate_config_files {
 	-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 	./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
 
-	######## settings.properties language setup 
+	######## settings.properties setup
 	# set language in OH config file
 	[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
-	sed -e "s/OH_SET_LANGUAGE/$OH_LANGUAGE/g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
+	sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
+	# set DOC_DIR in OH config file
+	sed -e "s/OH_DOC_DIR/$OH_DOC_DIR/g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
 }
 
 

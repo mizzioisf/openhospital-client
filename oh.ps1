@@ -132,6 +132,7 @@ $script:DATABASE_PASSWORD="isf123"
 $script:DICOM_MAX_SIZE="4M"
 
 $script:OH_DIR="oh"
+$script:OH_DOC_DIR="../doc"
 $script:SQL_DIR="sql"
 $script:DATA_DIR="data/db"
 $script:DICOM_DIR="data/dicom_storage"
@@ -688,12 +689,14 @@ function generate_config_files {
 	#Add-Content -Path $OH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.username=$DATABASE_USER"
 	#Add-Content -Path $OH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.password=$DATABASE_PASSWORD"
 
-	######## settings.properties language setup 
+	######## settings.properties setup
 	# set language in OH config file
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" ) {
 		mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old
 	}
-	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_SET_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	# set DOC_DIR in OH config file
+	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 }
 
 function clean_files {
