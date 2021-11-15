@@ -72,6 +72,7 @@ DATABASE_PASSWORD="isf123"
 
 DICOM_MAX_SIZE="4M"
 
+CONF_DIR="data/conf"
 OH_DIR=oh
 OH_DOC_DIR="../doc"
 SQL_DIR=sql
@@ -360,10 +361,10 @@ function config_database {
 
 	# create MySQL configuration
 	echo "Generating MySQL config file..."
-	[ -f ./etc/mysql/my.cnf ] && mv -f ./etc/mysql/my.cnf ./etc/mysql/my.cnf.old
+	[ -f ./$CONF_DIR/my.cnf ] && mv -f ./$CONF_DIR/my.cnf ./$CONF_DIR/my.cnf.old
 	sed -e "s/MYSQL_SERVER/$MYSQL_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
 	-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
-	-e "s/MYSQL_PORT/$MYSQL_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./etc/mysql/my.cnf.dist > ./etc/mysql/my.cnf
+	-e "s/MYSQL_PORT/$MYSQL_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/my.cnf
 }
 
 function initialize_database {
@@ -389,7 +390,7 @@ function initialize_database {
 
 function start_database {
 	echo "Starting MySQL server... "
-	./$MYSQL_DIR/bin/mysqld_safe --defaults-file=./etc/mysql/my.cnf >> ./$LOG_DIR/$LOG_FILE 2>&1 &
+	./$MYSQL_DIR/bin/mysqld_safe --defaults-file=./$CONF_DIR/my.cnf >> ./$LOG_DIR/$LOG_FILE 2>&1 &
 	if [ $? -ne 0 ]; then
 		echo "Error: MySQL server not started! Exiting."
 		exit 2
@@ -516,8 +517,8 @@ function clean_files {
 	echo "Warning: do you want to remove all existing configuration and log files ?"
 	get_confirmation;
 	echo "Removing files..."
-	rm -f ./etc/mysql/my.cnf
-	rm -f ./etc/mysql/my.cnf.old
+	rm -f ./$CONF_DIR/my.cnf
+	rm -f ./$CONF_DIR/my.cnf.old
 	rm -f ./$LOG_DIR/*
 	rm -f ./$OH_DIR/rsc/settings.properties
 	rm -f ./$OH_DIR/rsc/settings.properties.old
