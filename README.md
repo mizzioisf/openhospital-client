@@ -279,7 +279,7 @@ The default folder structure is now clean, simple and **common to all distros:**
 
 ```
 /oh -> Open Hospital distribution
-/sql -> containing the SQL creation scripta
+/sql -> containing the SQL creation scripts
 /etc -> configuration files for database (MySQL)
 ```
 Created at runtime:
