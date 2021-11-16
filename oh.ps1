@@ -146,7 +146,6 @@ $script:LOG_FILE_ERR="startup.err"
 $script:OH_LOG_FILE="openhospital.log"
 
 $script:DB_DEMO="create_all_demo.sql"
-# date +%Y-%m-%d_%H-%M-%S
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 # downloaded file extension
@@ -924,7 +923,8 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host "TMP_DIR=$TMP_DIR"
 		Write-Host ""
 		Write-Host "LOG_FILE=$LOG_FILE"
-		Write-Host "OH_LOG_DIR=$OH_LOG_DIR"
+		Write-Host "LOG_FILE_ERR=$LOG_FILE_ERR"
+		Write-Host "OH_LOG_FILE=$OH_LOG_FILE"
 		Write-Host ""
 	
 		Read-Host;
