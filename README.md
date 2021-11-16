@@ -241,7 +241,7 @@ OH_LOG_FILE=openhospital.log
 It is also possibile to manually adapt the configuration files and set the script so they are not regenerated and overwritten:
 
 ```
-######## Advanced options
+############## OH general configuration - change at your own risk :-) ##############
 ## set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
