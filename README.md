@@ -208,6 +208,11 @@ DEMO_DATA=off # linux
 #OH_LANGUAGE=en fr es it pt # linux
 #$script:OH_LANGUAGE="en" # fr es it pt # windows
 ```
+### (Windows only) Enable / disable DICOM features
+```
+# enable / disable DICOM (on|off)
+#$script:DICOM_ENABLE="off"
+```
 ### Log level / debug mode
 ```
 # set log level to INFO | DEBUG - default set to INFO
@@ -264,11 +269,6 @@ It is also possibile to manually adapt the configuration files and set the scrip
 # overwritten if already present
 MANUAL_CONFIG=off # linux
 $script:MANUAL_CONFIG="off" # windows
-```
-### (Windows only) Enable / disable DICOM features
-```
-# enable / disable DICOM (on|off)
-#$script:DICOM_ENABLE="off"
 ```
 ### (Windows only) Enable interactive mode
 ```
