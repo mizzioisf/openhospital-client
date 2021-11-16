@@ -179,8 +179,9 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 Some advanced options can be configured manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
 This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
 
-### OH Path
+### OH directory ath
 ```
+############## OH general configuration - change at your own risk :-) ##############
 # -> OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 ```
@@ -210,6 +211,13 @@ DEMO_DATA=off # linux
 # set log level to INFO | DEBUG - default set to INFO
 #LOG_LEVEL=INFO # linux
 #$script:LOG_LEVEL="INFO" # windows
+```
+### Enable system wide JAVA
+```
+# set JAVA_BIN 
+# Uncomment this if you want to use system wide JAVA
+#JAVA_BIN=`which java` # linux
+#$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
 ### Database and software configuration
 
@@ -254,13 +262,6 @@ It is also possibile to manually adapt the configuration files and set the scrip
 # overwritten if already present
 MANUAL_CONFIG=off # linux
 $script:MANUAL_CONFIG="off" # windows
-```
-### Enable system wide JAVA
-```
-######## set JAVA_BIN
-# Uncomment this if you want to use system wide JAVA
-#JAVA_BIN=`which java` # linux
-#$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
 ### (Windows only) Enable / disable DICOM features
 ```
