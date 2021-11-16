@@ -236,7 +236,7 @@ If a database server hostname/address is specified (other then localhost), OH ca
 # Database
 MYSQL_SERVER=localhost
 MYSQL_PORT=3306
-MYSQL_ROOT_PW="xxxxxxxx"
+MYSQL_ROOT_PW="xxxxxxxxxx"
 DATABASE_NAME=oh
 DATABASE_USER=isf
 DATABASE_PASSWORD="xxxxx"
