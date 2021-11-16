@@ -249,9 +249,9 @@ TMP_DIR="tmp"
 LOG_FILE=startup.log
 
 DB_DEMO="create_all_demo.sql"
-DATE=`date +%Y-%m-%d_%H-%M-%S` # linux
 LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
+
 ```
 ### Manual config
 
