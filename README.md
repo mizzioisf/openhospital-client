@@ -179,9 +179,16 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 Some advanced options can be configured manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
 This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
 
+### OH Path
+```
+# -> OH_PATH is the directory where Open Hospital files are located
+# OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
+```
+
 ### Distribution type - CLIENT | PORTABLE
 
 ```
+############## OH general configuration - change at your own risk :-) ##############
 OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT # linux
 $script:OH_MODE="PORTABLE" # windows
 ```
@@ -241,7 +248,7 @@ OH_LOG_FILE=openhospital.log
 It is also possibile to manually adapt the configuration files and set the script so they are not regenerated and overwritten:
 
 ```
-############## OH general configuration - change at your own risk :-) ##############
+############## Script startup configuration - change at your own risk :-) ##############
 ## set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
