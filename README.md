@@ -208,30 +208,29 @@ DEMO_DATA=off # linux
 
 If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
 ```
-######## Software configuration - change at your own risk :-)
-#
-# linux version - windows version requires "$script:" in front of any variable)
-#
+############## OH local configuration - change at your own risk :-) ##############
 # Database
 MYSQL_SERVER=localhost
 MYSQL_PORT=3306
-MYSQL_ROOT_PW="xxxxxxx"
+MYSQL_ROOT_PW="tmp2021oh111"
 DATABASE_NAME=oh
 DATABASE_USER=isf
-DATABASE_PASSWORD="xxxxxxx"
+DATABASE_PASSWORD="isf123"
 
 DICOM_MAX_SIZE="4M"
-```
-### File names and directory structure
-```
-OH_DIR=oh
-SQL_DIR=sql
-DICOM_DIR="data/dicom_storage"
+
+OH_DIR="oh"
+OH_DOC_DIR="../doc"
+CONF_DIR="data/conf"
 DATA_DIR="data/db"
-LOG_DIR="data/log"
+DICOM_DIR="data/dicom_storage"
 BACKUP_DIR="data/dump"
-TMP_DIR=tmp
-#DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
+LOG_DIR="data/log"
+SQL_DIR="sql"
+TMP_DIR="tmp"
+
+LOG_FILE=startup.log
+
 DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S` # linux
 LOG_FILE=startup.log
@@ -280,12 +279,11 @@ The default folder structure is now clean, simple and **common to all distros:**
 ```
 /oh -> Open Hospital distribution
 /sql -> containing the SQL creation scripts
-/etc -> configuration files for database (MySQL)
+/data/conf -> configuration files for database (MySQL)
 ```
 Created at runtime:
 ```
 /tmp 
-/data
 data/db
 data/log
 data/dicom_storage
