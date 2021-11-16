@@ -234,10 +234,10 @@ If a database server hostname/address is specified (other then localhost), OH ca
 # Database
 MYSQL_SERVER=localhost
 MYSQL_PORT=3306
-MYSQL_ROOT_PW="tmp2021oh111"
+MYSQL_ROOT_PW="xxxxxxxx"
 DATABASE_NAME=oh
 DATABASE_USER=isf
-DATABASE_PASSWORD="isf123"
+DATABASE_PASSWORD="xxxxx"
 
 DICOM_MAX_SIZE="4M"
 

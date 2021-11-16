@@ -146,10 +146,12 @@ $script:LOG_FILE_ERR="startup.err"
 $script:OH_LOG_FILE="openhospital.log"
 
 $script:DB_DEMO="create_all_demo.sql"
-$script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 # downloaded file extension
 $script:EXT="zip"
+
+# date format
+$script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 # available languages - do not modify
 $script:languagearray= @("en","fr","it","es","pt") 

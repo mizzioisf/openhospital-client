@@ -87,10 +87,12 @@ OH_LOG_FILE=openhospital.log
 
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
-DATE=`date +%Y-%m-%d_%H-%M-%S`
 
 # downloaded file extension
 EXT="tar.gz"
+
+# date format
+DATE=`date +%Y-%m-%d_%H-%M-%S`
 
 ################ Architecture and external software ################
 
