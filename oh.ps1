@@ -135,9 +135,9 @@ $script:OH_DIR="oh"
 $script:OH_DOC_DIR="../doc"
 $script:CONF_DIR="data/conf"
 $script:DATA_DIR="data/db"
-$script:LOG_DIR="data/log"
 $script:DICOM_DIR="data/dicom_storage"
 $script:BACKUP_DIR="data/dump"
+$script:LOG_DIR="data/log"
 $script:SQL_DIR="sql"
 $script:TMP_DIR="tmp"
 
@@ -895,8 +895,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		}
 		Write-Host "Open Hospital version" $script:VER_MAJOR $script:VER_MINOR $script:VER_RELEASE
 		Write-Host "MySQL version: $MYSQL_DIR"
-		Write-Host "JAVA version:"
-		Write-Host "$JAVA_DISTRO"
+		Write-Host "JAVA version: $JAVA_DISTRO"
 		Write-Host ""
 
 		# show configuration
@@ -913,11 +912,19 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host "DATABASE_USER=$DATABASE_USER"
 		Write-Host "DATABASE_PASSWORD=$DATABASE_PASSWORD"
 		Write-Host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
-		Write-Host "OH_DIR=$OH_DIR"
-		Write-Host "BACKUP_DIR=$BACKUP_DIR"
 		Write-Host "DICOM_DIR=$DICOM_DIR"
+		Write-Host "OH_DIR=$OH_DIR"
+		Write-Host "OH_DOC_DIR=$OH_DOC_DIR"
+		Write-Host "CONF_DIR=$CONF_DIR"
 		Write-Host "DATA_DIR=$DATA_DIR"
+		Write-Host "DICOM_DIR=$DICOM_DIR"
+		Write-Host "BACKUP_DIR=$BACKUP_DIR"
 		Write-Host "LOG_DIR=$LOG_DIR"
+		Write-Host "SQL_DIR=$SQL_DIR"
+		Write-Host "TMP_DIR=$TMP_DIR"
+		Write-Host ""
+		Write-Host "LOG_FILE=$LOG_FILE"
+		Write-Host "OH_LOG_DIR=$OH_LOG_DIR"
 		Write-Host ""
 	
 		Read-Host;

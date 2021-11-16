@@ -76,9 +76,9 @@ OH_DIR="oh"
 OH_DOC_DIR="../doc"
 CONF_DIR="data/conf"
 DATA_DIR="data/db"
-LOG_DIR="data/log"
 DICOM_DIR="data/dicom_storage"
 BACKUP_DIR="data/dump"
+LOG_DIR="data/log"
 SQL_DIR="sql"
 TMP_DIR="tmp"
 
@@ -719,21 +719,20 @@ while getopts ${OPTSTRING} opt; do
 		exit 0
 		;;
 	v)	# show version
-        	echo "--------- Software version ---------"
+		echo "--------- Software version ---------"
 		source "./$OH_DIR/rsc/version.properties"
-        	echo "Open Hospital version" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
-        	echo "MySQL version: $MYSQL_DIR"
-        	echo "JAVA version:"
-		echo $JAVA_DISTRO
-        	echo ""
+		echo "Open Hospital version" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
+		echo "MySQL version: $MYSQL_DIR"
+		echo "JAVA version: $JAVA_DISTRO"
+		echo ""
 		# show configuration
-        	echo "--------- Configuration ---------"
-        	echo "Architecture is $ARCH"
+		echo "--------- Configuration ---------"
+		echo "Architecture is $ARCH"
 		echo "Open Hospital is configured in $OH_MODE mode"
 		echo "Language is set to $OH_LANGUAGE"
 		echo "Demo data is set to $DEMO_DATA"
 		echo "Log level is set to $LOG_LEVEL"
-        	echo ""
+		echo ""
 		echo "MYSQL_SERVER=$MYSQL_SERVER"
 		echo "MYSQL_PORT=$MYSQL_PORT"
 		echo "DATABASE_NAME=$DATABASE_NAME"
@@ -741,11 +740,18 @@ while getopts ${OPTSTRING} opt; do
 		echo "DATABASE_PASSWORD=$DATABASE_PASSWORD"
 		echo "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
 		echo "OH_DIR=$OH_DIR"
-		echo "BACKUP_DIR=$BACKUP_DIR"
-		echo "DICOM_DIR=$DICOM_DIR"
+		echo "OH_DOC_DIR=$OH_DOC_DIR"
+		echo "CONF_DIR=$CONF_DIR"
 		echo "DATA_DIR=$DATA_DIR"
+		echo "DICOM_DIR=$DICOM_DIR"
+		echo "BACKUP_DIR=$BACKUP_DIR"
 		echo "LOG_DIR=$LOG_DIR"
-        	echo ""
+		echo "SQL_DIR=$SQL_DIR"
+		echo "TMP_DIR=$TMP_DIR"
+		echo ""
+		echo "LOG_FILE=$LOG_FILE"
+		echo "OH_LOG_FILE=$OH_LOG_FILE"
+		echo ""
 		exit 0
 		;;
 	X)	# clean
