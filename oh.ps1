@@ -133,15 +133,17 @@ $script:DICOM_MAX_SIZE="4M"
 
 $script:OH_DIR="oh"
 $script:OH_DOC_DIR="../doc"
-$script:SQL_DIR="sql"
+$script:CONF_DIR="data/conf"
 $script:DATA_DIR="data/db"
-$script:DICOM_DIR="data/dicom_storage"
 $script:LOG_DIR="data/log"
+$script:DICOM_DIR="data/dicom_storage"
+$script:BACKUP_DIR="data/dump"
+$script:SQL_DIR="sql"
+$script:TMP_DIR="tmp"
+
 $script:LOG_FILE="startup.log"
 $script:LOG_FILE_ERR="startup.err"
 $script:OH_LOG_FILE="openhospital.log"
-$script:TMP_DIR="tmp"
-$script:BACKUP_DIR="data/dump"
 
 $script:DB_DEMO="create_all_demo.sql"
 # date +%Y-%m-%d_%H-%M-%S

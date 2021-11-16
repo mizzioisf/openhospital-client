@@ -72,20 +72,22 @@ DATABASE_PASSWORD="isf123"
 
 DICOM_MAX_SIZE="4M"
 
-CONF_DIR="data/conf"
-OH_DIR=oh
+OH_DIR="oh"
 OH_DOC_DIR="../doc"
-SQL_DIR=sql
-DICOM_DIR="data/dicom_storage"
+CONF_DIR="data/conf"
 DATA_DIR="data/db"
 LOG_DIR="data/log"
+DICOM_DIR="data/dicom_storage"
 BACKUP_DIR="data/dump"
-TMP_DIR=tmp
+SQL_DIR="sql"
+TMP_DIR="tmp"
+
+LOG_FILE=startup.log
+OH_LOG_FILE=openhospital.log
+
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
 DATE=`date +%Y-%m-%d_%H-%M-%S`
-LOG_FILE=startup.log
-OH_LOG_FILE=openhospital.log
 
 # downloaded file extension
 EXT="tar.gz"

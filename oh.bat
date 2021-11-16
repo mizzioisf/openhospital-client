@@ -123,17 +123,20 @@ set DATABASE_PASSWORD=isf123
 
 set DICOM_MAX_SIZE="4M"
 
-set OH_DIR=oh
+set OH_DIR="oh"
 set OH_DOC_DIR="..\doc"
-set SQL_DIR=sql
+set CONF_DIR="data\conf"
 set DATA_DIR="data\db"
 set LOG_DIR="data\log"
 set DICOM_DIR="data\dicom_storage"
-set TMP_DIR=tmp
-set DB_CREATE_SQL=create_all_en.sql
-REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
+set SQL_DIR="sql"
+set TMP_DIR="tmp"
+
 set LOG_FILE=startup.log
 set OH_LOG_FILE=openhospital.log
+
+set DB_CREATE_SQL=create_all_en.sql
+REM #-> DB_CREATE_SQL default is set to create_all_en.sql - set to "create_all_demo.sql" for demo or create_all_[lang].sql for language
 
 REM ######## Architecture
 REM # ARCH can be set to 32 or x64
