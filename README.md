@@ -179,7 +179,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 Some advanced options can be configured manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
 This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
 
-### OH directory ath
+### OH directory path
 ```
 ############## OH general configuration - change at your own risk :-) ##############
 # -> OH_PATH is the directory where Open Hospital files are located
@@ -195,8 +195,10 @@ $script:OH_MODE="PORTABLE" # windows
 ```
 ### Demo mode
 ```
-# set DEMO_DATA to on to enable Demo data loading
-# Warning -> __requires deletion of all portable data__
+# set DEMO_DATA to on to enable demo database loading - default set to off
+#
+# -> Warning -> __requires deletion of all portable data__
+#
 DEMO_DATA=off # linux
 #$script:DEMO_DATA="off" # windows
 ```
