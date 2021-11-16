@@ -460,17 +460,17 @@ function config_database {
 
 	# create MySQL configuration
 	Write-Host "Generating MySQL config file..."
-	if ( Test-Path "$OH_PATH/etc/mysql/my.cnf" ) {
-		mv -Force "$OH_PATH/etc/mysql/my.cnf" "$OH_PATH/etc/mysql/my.cnf.old"
+	if ( Test-Path "$OH_PATH/$CONF_DIR/my.cnf" ) {
+		mv -Force "$OH_PATH/$CONF_DIR/my.cnf" "$OH_PATH/$CONF_DIR/my.cnf.old"
 	}
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("OH_PATH_SUBSTITUTE","$OH_PATH") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("MYSQL_SERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("TMP_DIR","$TMP_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
-	(Get-Content "$OH_PATH/etc/mysql/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/etc/mysql/my.cnf"
+	(Get-Content "$OH_PATH/$CONF_DIR/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
+	(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("OH_PATH_SUBSTITUTE","$OH_PATH") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
+	(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("MYSQL_SERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
+	(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("MYSQL_PORT","$MYSQL_PORT") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
+	(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
+	(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
+	(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("TMP_DIR","$TMP_DIR") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
+	(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
 }
 
 function initialize_database {
@@ -503,7 +503,7 @@ function initialize_database {
 function start_database {
 	Write-Host "Starting MySQL server... "
 	try {
-		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=`"$OH_PATH\etc\mysql\my.cnf`" --tmpdir=`"$OH_PATH\$TMP_DIR`" --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=`"$OH_PATH\$CONF_DIR\my.cnf`" --tmpdir=`"$OH_PATH\$TMP_DIR`" --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 		Start-Sleep -Seconds 2
 	}
 	catch {
@@ -707,8 +707,8 @@ function clean_files {
 	get_confirmation;
 	Write-Host "Removing files..."
 
-	$filetodel="$OH_PATH\etc\mysql\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\etc\mysql\my.cnf.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$CONF_DIR\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$CONF_DIR\my.cnf.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$LOG_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }

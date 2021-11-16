@@ -202,15 +202,15 @@ mkdir "%OH_PATH%\%LOG_DIR%"
 
 echo Generating MySQL config file...
 REM ### Setup MySQL configuration
-echo f | xcopy %OH_PATH%\etc\mysql\my.cnf.dist %OH_PATH%\etc\mysql\my.cnf /y > "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\etc\mysql\my.cnf  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe MYSQL_SERVER %MYSQL_SERVER% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe MYSQL_DISTRO %MYSQL_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe TMP_DIR %TMP_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe DATA_DIR %DATA_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe LOG_DIR %LOG_DIR% -- %OH_PATH%\etc\mysql\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+echo f | xcopy %OH_PATH%\%CONF_DIR%\my.cnf.dist %OH_PATH%\%CONF_DIR%\my.cnf /y > "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH% -- %OH_PATH%\%CONF_DIR%\my.cnf  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe MYSQL_SERVER %MYSQL_SERVER% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe MYSQL_DISTRO %MYSQL_DIR% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe TMP_DIR %TMP_DIR% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DATA_DIR %DATA_DIR% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe LOG_DIR %LOG_DIR% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
 echo Generating OH configuration files...
 REM ### Setup dicom.properties
@@ -268,7 +268,7 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	if ERRORLEVEL 1 (goto error)
 
 	echo Starting MySQL server on port %MYSQL_PORT%...
-	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
+	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\%CONF_DIR%\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
 	if ERRORLEVEL 1 (goto error)
 	timeout /t 2 /nobreak >nul
 
@@ -292,7 +292,7 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 ) else (
 	echo Database already initialized, trying to start...
 	echo Starting MySQL server on port %MYSQL_PORT%...
-	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\etc\mysql\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
+	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\%CONF_DIR%\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
 	if ERRORLEVEL 1 (goto error)
 )
 
