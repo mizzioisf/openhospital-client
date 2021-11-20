@@ -93,7 +93,7 @@ For the OH database creation refer to the chapter <<ohdatabase-creation,Open Hos
 
 For the Open Hospital installation on the clients, it is sufficient to copy and extract the zip package in the desired folder.
 
-For the Open Hospital configuration refer to the chapter <<config-files,Configuration Files>>.
+For the Open Hospital configuration refer to the chapter <<configuration,Configuration>>.
 
 
 ==== 4.1.1 Prerequisites - Software compatibility matrix
@@ -480,7 +480,7 @@ Depending on the choosen operating system and architecture, the needed external 
 
 <<<
 
-[#config-files]
+[#configuration]
 == 5 Configuration
 
 Customization of Open Hospital depends on settings set in text files called “properties files”. Open Hospital comes with 8 main properties files:
@@ -1863,7 +1863,7 @@ NOTE: Following instructions only apply between “official releases”.
 Minor releases (if not otherwise specified) do not need changes to the database structure, so the working copy can be replaced on each client with the new one and then connect to the same DB
 (see <<database-properties,database.properties>> and <<log4j-properties,log4j.properties>>).
 
-It is important to keep/preserve files that have been created or modified, especially configuration/settings and data files (see <<config-files,Configuration Files>>).
+It is important to keep/preserve files that have been created or modified, especially configuration/settings and data files (see <<configuration,Configuration>>).
 The easiest way is to backup the working copy and re-apply those settings in the new installation
 (see the <<backup-restore,Backup & Restore>> chapter).
 
@@ -2001,7 +2001,7 @@ https://sourceforge.net/p/openhospital/support-requests/
 . If everything is successful, replace the working copy on each client with the new one and connect it to the same DB
 (see <<database-properties,database.properties>> and <log4j-properties,log4j.properties>>).
 Remember to keep files that have been changed, especially any changes to the configuration settings
-(see <<config-files,Configuration Files>>). The most common way is to backup the working copy and re-apply those
+(see <<configuration,Configuration>>). The most common way is to backup the working copy and re-apply those
 settings in the new one (see <<backup-restore,Backup & Restore>>).
 . Start the program and check the log files (data/logs) to ensure that the new version is running and has no error messages.
 
