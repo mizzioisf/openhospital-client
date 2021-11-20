@@ -59,7 +59,7 @@ All the information needed to use the application software is not included; plea
 
 Open Hospital official releases can be downloaded at the following link:
 
-[**Download latest release from github**](https://github.com/informatici/openhospital/releases/latest)
+**Download latest release from github**: https://github.com/informatici/openhospital/releases/latest
 
 More information can be found on the Open Hospital website: https://www.open-hospital.org/download/
 
@@ -479,7 +479,7 @@ Depending on the choosen operating system and architecture, the needed external 
 <<<
 
 [#config-files]
-== 5 Configuration Files
+== 5 Configuration
 
 Customization of Open Hospital depends on settings set in text files called “properties files”. Open Hospital comes with 8 main properties files:
 
@@ -1845,13 +1845,11 @@ log4j.properties as explained in the chapter <<log4j-properties,log4j.properties
 
 === 8.1 Update Open Hospital (CLIENT mode)
 
-NOTE: Following instructions only applies between “official releases” downloaded from the SourceForge website.
+NOTE: Following instructions only applies between “official releases”.
 
-New releases, as well as this Manual and the User Manual, are regularly released on SourceForge/GitHub:
+New releases, as well as this Admin Manual and the User Manual, are regularly released on Github/SourceForge.
 
-https://github.com/informatici/openhospital/releases
-
-https://sourceforge.net/projects/openhospital/files/
+See the <<Download,Download>> section for more details.
 
 There are two types of releases:
 
