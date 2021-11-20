@@ -445,7 +445,7 @@ correctly perform any future Update process (see <<update-open-hospital,Update O
 Backup of the client *data and configuration files*, especially for "PORTABLE" mode, can be performed by saving the *"data"* folder (including all subfolders) placed under the main OH installation folder.
 
 [#folders]
-== 4.4 Folders and directory structure
+=== 4.4 Folders and directory structure
 
 Open Hospital has a folder tree hierarchy which is shown here, where *_<version>_* is replaced with the current Open Hospital version, *<operating_system> with windows or linux and *_<arch>_* with the OS architecture (32 or 64 bit):
 
