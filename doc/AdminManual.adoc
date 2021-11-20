@@ -67,7 +67,7 @@ More information can be found on the Open Hospital website: https://www.open-hos
 
 == 4 Installation
 
-=== 4.1 Open Hospital
+=== 4.1 Open Hospital - CLIENT mode
 
 Open Hospital is a client application that can be used on a single computer (PORTABLE mode) or in a client/server configuration (CLIENT mode). The server part utilizes a DBMSfootnote:[DataBase Management System] to archive, share, and present the information. The free and open-source MariaDBfootnote:[See https://www.mariadb.org] is the database server of choice.
 
