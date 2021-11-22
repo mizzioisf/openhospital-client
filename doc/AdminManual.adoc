@@ -89,14 +89,14 @@ tar zxvf OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz # multiarch client ver
 on Windows:
 ----
 unzip OpenHospital-v1.11.1-windows_[ARCH]-[portable].zip # portable version
-unzio OpenHospital-v1.11.1-multiarch-client.zip à multiarch client version
+unzip OpenHospital-v1.11.1-multiarch-client.zip à multiarch client version
 ----
 
 After uncompressing the package, browse to the extracted directory:
 
 ----
-cd _/usr/local/OpenHospital-v1.11.1 (Linux)
-cd C:\Users\OH\OpenHospital-v1.11.1 (Windows)
+cd /usr/local/OpenHospital-v1.11.1 # Linux
+cd C:\Users\OH\OpenHospital-v1.11.1 # Windows
 ----
 
 
@@ -105,7 +105,7 @@ NOTE: Don not run OH by double-clicking on the oh.bat startup script without unz
 
 == 4 Installation
 
-=== 4.1 Open Hospital - CLIENT mode
+=== 4.1 OH - CLIENT mode
 
 Open Hospital is a client application that can be used on a single computer (PORTABLE mode) or in a client/server configuration (CLIENT mode). The server part utilizes a DBMSfootnote:[DataBase Management System] to archive, share, and present the information. The free and open-source MariaDBfootnote:[See https://www.mariadb.org] is the database server of choice.
 
@@ -266,7 +266,7 @@ bind-address = 192.168.1.100
 ----
 
 [#ohdatabase-creation]
-==== 4.1.4 Open Hospital - Database creation
+==== 4.1.4 OH - Database creation
 
 To create the Open Hospital database, a MySQL client and a set of SQL script files placed under the sql/ folder are needed.
 
@@ -366,7 +366,7 @@ mysql>quit;
 NOTE: Remember to set the updated database password also in the Open Hospital configuration files and startup scripts.
 
 
-==== 4.1.5 Open Hospital - Configuration
+==== 4.1.5 OH - Configuration
 
 Open Hospital comes with several configuration files called “properties files”. To set up the database connection for Open Hospital, modify the _database.properties_ and _log4j.properties_ files, located in the “resource” folder rsc/.
 
@@ -384,7 +384,7 @@ More information on these files can be found in the sections <<database-properti
 NOTE: It is possibile to use the provided scripts to generate config files: on Linux execute *oh.sh -g*, on Windows launch *oh.bat* and choose the option *g*.
 
 
-==== 4.1.6 Open Hospital - Startup and run
+==== 4.1.6 OH - Startup and run
 
 The Open Hospital software is now ready to be run by executing the proper launcher command:
 
@@ -404,7 +404,7 @@ It is possible to create a shortcut (link) to the executable script on the deskt
 image:image100.png[oh.ico,width=32,height=32]
 
 
-=== 4.2 Open Hospital - PORTABLE mode
+=== 4.2 OH - PORTABLE mode
 
 Open Hospital can also be executed in a *PORTABLE* mode. A "portable" version is also distributed, in order to have all the needed software in one single package.
 
