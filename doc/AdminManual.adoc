@@ -118,7 +118,7 @@ The Administrator/Installer tasks are hereby listed:
 * Uncompress the downloaded OH package in a folder of choice
 * Install the JRE - Java Runtime Environment (see compatibility matrix for the right version) on every client
 * Install the MariaDB/MySQL server on a computer that will act as the OH server
-* Create the OH database through the execution of a script placed in the sql/ folder
+* Create the OH database through the execution of a script placed in the _sql/_ folder
 * Copy the Open Hospital application on every client (it may also be installed on the server)
 * Configure each Open Hospital instance to point to the OH Database server (using the hostname or the IP address)
 
