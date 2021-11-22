@@ -56,13 +56,34 @@ All the information needed to use the application software is not included; plea
 <<<
 
 [#Download]
-== 3 Download
+== 3 Initial setup
+
+=== 3.1 Download
 
 Open Hospital official releases can be downloaded at the following link:
 
 **Download latest release from github**: https://github.com/informatici/openhospital/releases/latest
 
 More information can be found on the Open Hospital website: https://www.open-hospital.org/download/
+
+=== 3.1 Setup
+
+Open Hospital does not require installation. It is sufficient to unzip the downloaded package in a folder of choice, e.g.
+
+on Linux: /usr/local/OpenHospital
+on Windows: C:\Users\OH\OpenHospital-v1.11.1
+
+To uncompress the package:
+
+*Portable version*
+* on Linux: tar zxvf  OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz or OpenHospital-v1.11.1-multiarch-client.zip
+* on Windows: unzip  OpenHospital-v1.11.1-windows_[ARCH]-[portable].zip or OpenHospital-v1.11.1-multiarch-client
+
+*Multiarch client version*
+* on Linux: unzip x OpenHospital-v1.11.1-multiarch-client.zip
+* on Windows: unzip OpenHospital-v1.11.1-multiarch-client.zip
+
+NOTE: Don not run oh by double-clicking on the oh.bat startup script without unzipping the package
 
 
 == 4 Installation
