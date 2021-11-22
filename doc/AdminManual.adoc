@@ -64,28 +64,28 @@ Open Hospital official releases can be downloaded at the following link:
 
 **Download latest release from github**: https://github.com/informatici/openhospital/releases/latest
 
-More information can be found on the Open Hospital website: https://www.open-hospital.org/download/
+More information can be found on the Open Hospital website: https://www.open-hospital.org/download
 
 === 3.1 Setup
 
 Open Hospital does not require installation. It is sufficient to unzip the downloaded package in a folder of choice, e.g.
 
-on Linux: /usr/local/OpenHospital
-on Windows: C:\Users\OH\OpenHospital-v1.11.1
+on Linux: _/usr/local/OpenHospital_
+on Windows: _C:\Users\OH\OpenHospital-v1.11.1_
 
 To uncompress the package:
 
-*Portable version*
+Portable version
 
-* on Linux: tar zxvf  OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz or OpenHospital-v1.11.1-multiarch-client.zip
-* on Windows: unzip  OpenHospital-v1.11.1-windows_[ARCH]-[portable].zip or OpenHospital-v1.11.1-multiarch-client
+* on Linux: _tar zxvf  OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz_ or _OpenHospital-v1.11.1-multiarch-client.zip_
+* on Windows: _unzip  OpenHospital-v1.11.1-windows_[ARCH]-[portable].zip_ or _OpenHospital-v1.11.1-multiarch-client_
 
-*Multiarch client version*
+Multiarch client version
 
-* on Linux: unzip x OpenHospital-v1.11.1-multiarch-client.zip
-* on Windows: unzip OpenHospital-v1.11.1-multiarch-client.zip
+* on Linux: _unzip x OpenHospital-v1.11.1-multiarch-client.zip_
+* on Windows: _unzip OpenHospital-v1.11.1-multiarch-client.zip_
 
-NOTE: Don not run oh by double-clicking on the oh.bat startup script without unzipping the package
+NOTE: Don not run OH by double-clicking on the oh.bat startup script without unzipping the package
 
 
 == 4 Installation
