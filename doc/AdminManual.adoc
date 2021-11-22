@@ -268,13 +268,13 @@ bind-address = 192.168.1.100
 [#ohdatabase-creation]
 ==== 4.1.4 OH - Database creation
 
-To create the Open Hospital database, a MySQL client and a set of SQL script files placed under the sql/ folder are needed.
+To create the Open Hospital database, a MySQL client and a set of SQL script files placed under the _sql/_ folder are needed.
 
 On a Microsoft Windows® system, MySQL Workbench® can be used as a client to connect to the database server and perform the needed tasks, while on Linux based systems the MySQL Administrator and MySQL Query Browser tools can be used.
 
 The suggested approach is to use the command-line MariaDB/MySQL client which uses the same commands and syntax for every platform.
 
-Open a terminal and navigate to the sql/ folder (e.g.):
+Open a terminal and navigate to the _sql/_ folder (e.g.):
 
 [source,shell]
 ----
@@ -1910,7 +1910,7 @@ The easiest way is to backup the working copy and re-apply those settings in the
 Changes are found in the CHANGELOG file.
 
 Major releases always have changes to the DB, and these changes are implemented via different scripts included in the
-sql (mysql for older version) folder (e.g.):
+_sql_ (mysql for older versions) folder (e.g.):
 
 [cols=",",options="header",]
 |===
