@@ -70,13 +70,10 @@ More information can be found on the Open Hospital website: https://www.open-hos
 
 Open Hospital does not require installation. It is sufficient to unzip the downloaded package in a folder of choice, e.g.
 
-on Linux:
+* on Linux:
 ----
-/home/OH/OpenHospital-[VERSION]
-----
-on Windows:
-----
-C:\Users\OH\OpenHospital-[VERSION]
+/home/OH/OpenHospital-[VERSION]		# Linux
+C:\Users\OH\OpenHospital-[VERSION]	# Windows
 ----
 
 To uncompress the package:
@@ -87,7 +84,7 @@ cd /home/OH
 tar zxvf OpenHospital-v[VERSION]-linux_[ARCH]-[portable].tgz # portable version
 unzip x OpenHospital-v[VERSION]-linux_multiarch.zip # multiarch client version
 ----
-on Windows:
+* on Windows:
 ----
 unzip OpenHospital-v[VERSION]-windows_[ARCH]-[portable].zip # portable version
 unzip OpenHospital-v[VERSION]-multiarch-client.zip à multiarch client version
@@ -96,8 +93,8 @@ unzip OpenHospital-v[VERSION]-multiarch-client.zip à multiarch client version
 After uncompressing the package, browse to the extracted directory (example given for version 1.11.1):
 
 ----
-cd /home/OH/OpenHospital-v1.11.1 # Linux
-cd C:\Users\OH\OpenHospital-v1.11.1 # Windows
+cd /home/OH/OpenHospital-v1.11.1	# Linux
+cd C:\Users\OH\OpenHospital-v1.11.1	# Windows
 ----
 
 
