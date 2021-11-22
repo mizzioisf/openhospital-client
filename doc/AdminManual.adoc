@@ -84,7 +84,7 @@ To uncompress the package:
 * on Linux:
 ----
 tar zxvf OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz # portable version
-tar zxvf OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz # multiarch client version
+unzip x OpenHospital-v1.11.1-linux_multiarch.zip # multiarch client version
 ----
 on Windows:
 ----
