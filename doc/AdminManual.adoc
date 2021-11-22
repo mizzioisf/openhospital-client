@@ -76,24 +76,21 @@ on Linux:
 ----
 on Windows:
 ----
-C:\Users\OH\OpenHospital-v1.11.1_
+C:\Users\OH\OpenHospital-v1.11.1
 ----
 
 To uncompress the package:
 
-Portable version
-
 * on Linux:
 ----
 tar zxvf OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz # portable version
-tar zxvf OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz or _OpenHospital-v1.11.1-multiarch-client.zip_
-* on Windows: _unzip  OpenHospital-v1.11.1-windows_[ARCH]-[portable].zip_ or _OpenHospital-v1.11.1-multiarch-client_
+tar zxvf OpenHospital-v1.11.1-linux_[ARCH]-[portable].tgz # multiarch client version
 ----
-
-Multiarch client version
-
-* on Linux: _unzip x OpenHospital-v1.11.1-multiarch-client.zip_
-* on Windows: _unzip OpenHospital-v1.11.1-multiarch-client.zip_
+on Windows:
+----
+unzip OpenHospital-v1.11.1-windows_[ARCH]-[portable].zip # portable version
+unzio OpenHospital-v1.11.1-multiarch-client.zip à multiarch client version
+----
 
 After uncompressing the package, browse to the extracted directory:
 
@@ -101,7 +98,6 @@ After uncompressing the package, browse to the extracted directory:
 cd _/usr/local/OpenHospital-v1.11.1 (Linux)
 cd C:\Users\OH\OpenHospital-v1.11.1 (Windows)
 ----
-
 
 
 NOTE: Don not run OH by double-clicking on the oh.bat startup script without unzipping the package
