@@ -54,15 +54,15 @@ OH - Open Hospital features include:
 
 Minimum hardware requirements for running Open Hospital:
 
-* Dual core CPU
+* PC / Notebook with dual core CPU
 * 2 Gb RAM (4 Gb recommended)
-* 4 Gb free Hard Disk space
+* 4 Gb free hard disk space
 
 === 1.3 Software requirements
 
 Minimum Operating System version required:
 
-* Windows 7 (Windows 10 recommended)
+* Windows 7 (Windows 10/11 recommended)
 * Ubuntu 18.04 (Ubuntu 20.04 recommended)
 
 32 bit (i686) and 64 bit (x86_64) architectures are supported.
@@ -77,7 +77,7 @@ Open Hospital official releases can be downloaded at the following link:
 More information can be found on the Open Hospital website: https://www.open-hospital.org/download
 
 [#setup]
-=== 1.6 Setup
+=== 1.6 Initial setup
 
 Open Hospital does not require installation. It is sufficient to unzip the downloaded package in a folder of choice, e.g.
 
@@ -783,7 +783,7 @@ It is possible to use a different report by installing it in the report folder (
 NOTE: An application restart is required to see the modification applied.
 
 
-==== 5.1.8 DISCHART
+==== 3.1.8 DISCHART
 
 The following table shows the default value and the allowed ones:
 
@@ -1600,7 +1600,7 @@ image:image37.png[image,width=645,height=84]
 NOTE: An application restart is required to see the effect of any applied parameter modification.
 
 [#sms-properties]
-=== 5.6 sms.properties
+=== 3.6 sms.properties
 
 The default sms.properties file is:
 
