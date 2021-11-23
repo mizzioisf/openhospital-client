@@ -71,7 +71,7 @@ Minimum Operating System version:
 
 == 3 Initial setup
 
-[#Download]
+[#download]
 === 3.1 Download
 
 Open Hospital official releases can be downloaded at the following link:
@@ -129,6 +129,7 @@ image:image3.png[image,width=642,height=243]
 
 The Administrator/Installer tasks are hereby listed:
 
+* <<download,Download>> the Open Hospital package for the Operating System of choice
 * Uncompress the downloaded OH package in a folder of choice
 * <<jre,Install the JRE>> - Java Runtime Environment (see compatibility matrix for the right version) on every client
 * <<database-server,Install and configure MariaDB/MySQL>> on the server/computer that will act as the OH database server
@@ -1887,7 +1888,7 @@ log4j.properties as explained in the chapter <<log4j-properties,log4j.properties
 
 === 8.1 Update Open Hospital - CLIENT mode
 
-New releases, as well as this Admin Manual and the User Manual, are regularly released on Github/SourceForge. See the <<Download,Download>> section for more details.
+New releases, as well as this Admin Manual and the User Manual, are regularly released on Github/SourceForge. See the <<download,Download>> section for more details.
 
 There are two types of releases:
 
