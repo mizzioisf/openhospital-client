@@ -19,7 +19,7 @@ pass:[<br>][.small]#Policies is made available under a http://creativecommons.or
 
 == Open Hospital
 
-== 1 Abstract
+== 1 Introduction
 
 OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Electronic Health Record (EHR) software application.
 Open Hospital is deployed as a desktop application that can be used in a standalone, single-user mode (PORTABLE mode)
@@ -32,7 +32,8 @@ It was first deployed in 2006 at the St. Luke Hospital in Angal (Uganda) and it 
 
 <<<
 
-== 2 Introduction
+
+=== 1.1 Features
 
 Open Hospital features include:
 
@@ -53,11 +54,24 @@ In the following chapters, all the information needed to install, configure, run
 The information included also allows enabling and disabling functionality as well as managing users and groups.
 All the information needed to use the application software is not included; please refer to the _User’s Guide_, supplied with the application software.
 
-<<<
+=== 1.2 Hardware requirements
 
-[#Download]
+Minimum hardware requirements:
+
+* Dual core CPU
+* 2Gb RAM (4Gb recommended)
+* 4Gb free Hard Disk space
+
+=== 1.3 Software requirements
+
+Minimum Operating System version:
+
+* Windows 7
+* Ubuntu 18.04
+
 == 3 Initial setup
 
+[#Download]
 === 3.1 Download
 
 Open Hospital official releases can be downloaded at the following link:
