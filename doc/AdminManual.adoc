@@ -66,8 +66,10 @@ Minimum hardware requirements:
 
 Minimum Operating System version:
 
-* Windows 7
-* Ubuntu 18.04
+* Windows 7 (Windows 10 recommended)
+* Ubuntu 18.04 (Ubuntu 20.04 recommended)
+
+32 bit (i686) and 64 bit (x86_64) architectures are supported.
 
 == 3 Initial setup
 
@@ -131,8 +133,8 @@ image:image3.png[image,width=642,height=243]
 The Administrator/Installer tasks are hereby listed:
 
 * <<download,Download>> the Open Hospital package for the Operating System of choice
-* <<setup,Setup>>> the downloaded OH package by uncompressing the archive in a folder of choice
-* <<jre,Install the JRE>> - Java Runtime Environment (see compatibility matrix for the right version) on every client
+* <<setup,Setup>> the downloaded OH package by uncompressing the archive in a folder of choice
+* <<jre,Install JAVA JRE>> - Java Runtime Environment (see compatibility matrix for the right version) on every client
 * <<database-server,Install and configure MariaDB/MySQL>> on the server/computer that will act as the OH database server
 * <<ohdatabase-creation,Create the OH database>> through the execution of a script placed in the _sql/_ folder
 * Copy the Open Hospital application on every client (it may also be installed on the server)
