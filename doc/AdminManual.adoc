@@ -70,9 +70,7 @@ Minimum Operating System version required:
 [#download]
 === 1.5 Download
 
-Open Hospital official releases can be downloaded at the following link:
-
-**Download latest release from github**: https://github.com/informatici/openhospital/releases/latest
+Open Hospital official releases can be downloaded from GitHub: https://github.com/informatici/openhospital/releases/latest
 
 More information can be found on the Open Hospital website: https://www.open-hospital.org/download
 
@@ -80,8 +78,6 @@ More information can be found on the Open Hospital website: https://www.open-hos
 === 1.6 Initial setup
 
 Open Hospital does not require installation. It is sufficient to unzip the downloaded package in a folder of choice, e.g.
-
-* on Linux:
 ----
 /home/OH/OpenHospital-[VERSION]		# Linux
 C:\Users\OH\OpenHospital-[VERSION]	# Windows
@@ -109,7 +105,7 @@ cd C:\Users\OH\OpenHospital-v1.11.1	# Windows
 ----
 
 
-NOTE: You need read/write permission on the folder of choice
+NOTE: You need read/write permission on the folder of choice.
 
 NOTE: Do not run OH by double-clicking on the oh.bat startup script without unzipping the package first!
 
@@ -388,7 +384,7 @@ NOTE: These settings are required for every Open Hospital installation/client.
 More information on these files can be found in the sections <<database-properties,database.properties>> and
 <<log4j-properties,log4j.properties>>.
 
-NOTE: It is possibile to use the provided scripts to generate config files: on Linux execute *oh.sh -g*, on Windows launch *oh.bat* and choose the option *g*.
+NOTE: It is possible to use the provided scripts to generate config files: on Linux execute *oh.sh -g*, on Windows launch *oh.bat* and choose the option *g*.
 
 
 ==== 2.1.6 OH - Startup and run
@@ -518,7 +514,7 @@ Open Hospital has a folder tree hierarchy which is shown here, where *_<version>
 
 These folders may be organized differently depending on the version of the software or the architecture of the operating system.
 
-Depending on the choosen operating system and architecture, the needed external applications and libraries (like MySQL/MariaDB and Java JRE) will be present also:
+Depending on the chosen operating system and architecture, the needed external applications and libraries (like MySQL/MariaDB and Java JRE) will be present also:
 
 ** _zulu8.58.0.13-ca-fx-jdk8.0.312-<operating_system>_<arch>/ - Java Virtual Machine
 ** _mariadb-<version>-<arch>/ or _mysql-<version>-<arch>-<build>/_ - MySQL Server or MariaDB Server
@@ -1404,7 +1400,7 @@ The remaining five parameters may need modification according to the network set
 
 * *jdbc.drivers*: the Java library used to connect to a database server
 * *jdbc.url*: the address to point to the MySQL Server
-* *jdbc.server*: the IP address of the databse server (where MariaDB/MySQL Server is installed);
+* *jdbc.server*: the IP address of the database server (where MariaDB/MySQL Server is installed);
 localhost means the same computer where this file is located; others values can be: +
 _127.0.0.1_ – loopback network +
 _192.168.0.100_ – an example of a private IP address (LAN) +
