@@ -1890,7 +1890,7 @@ removed from the window and the *[.underline]##S##ave* button will be enabled (i
 The removal of a therapy is not effective until it is confirmed with the *[.underline]##S##ave* button (see <<save-function-therapy,Save function>>).
 
 [#check-availability-of-the-pharmaceuticals]
-==== 10.10.4 Check Availability of the Pharmaceuticals (C[.underline]##h##eck Availability)
+==== 8.10.4 Check Availability of the Pharmaceuticals (C[.underline]##h##eck Availability)
 
 When the therapy plan is entered (all the therapies of a patient) press the _Check Availability_ button in the *Buttons panel* on the right side of the *_Therapy_* window to check the availability of the related pharmaceuticals in the hospital. If the pharmaceutical checked is present in the quantity requested by the therapy plan green-colored checkmark is shown.
 
