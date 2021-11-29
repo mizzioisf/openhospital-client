@@ -1067,7 +1067,7 @@ The application saves the bill and returns to the *_Patient Bills Management_* w
 
 If the patient is going to pay the complete amount of the bill press the *P[underline]##a##id* button. If the balance is not equal to zero the system automatically adds a payment in the payments list equal to the balance and sets the bill as “C” (Closed).
 
-===== 6.1.2.11 Print Receipt Function
+===== 6.2.1.11 Print Receipt Function
 
 A receipt can be printed at any time by pressing the *P[.underline]##a##id* button__. To enable this feature, the RECEIPTPRINTER__ flag in the configuration file must be set and a proper printer device must be connected to the system. Ask the Administrator or refer to the _Administrator’s Guide_.
 
