@@ -43,21 +43,22 @@ OH - Open Hospital features include:
 * Internal communication
 * Statistics and printing
 
-== 2 Documentation
+=== 1.2 Documentation
 
 In the following chapters, all the information needed to correctly and efficiently use Open Hospital are presented. 
 More information can be found on the Open Hospital web site https://www.open-hospital.org.
-The information needed to install, configure or administer the OH software is not included in this manual; please refer to the _Administrator’s Guide_ supplied with the software.
+
+NOTE: The information needed to install, configure or administer the OH software is not included in this manual; please refer to the _Administrator’s Guide_ supplied with the software.
 
 
-== 3 Useful Information about this User Manual
+=== 1.3 About this User Manual
 
-=== 3.1 Help
+==== 1.3.1 Help
 
 * The *[.underline]##H##elp* function available on the bottom of the main MENU of Open Hospital provides access to
 this document [.underline]#offline#.
 
-=== 3.2 Legend
+==== 1.3.2 Legend
 
 In this document the following conventions are used:
 
@@ -91,7 +92,7 @@ The entry (the entire line) is then highlighted in blue. This behavior is valid 
 
 image:image4.png[Highlight Line,width=509,height=296]
 
-== 4 Run the Application
+== 4 Start the Application
 
 To run Open Hospital, double-click the program icon on the desktop; an information image (splash image) appears for a few seconds and
 then the main _menu_ of the OH application is shown.
