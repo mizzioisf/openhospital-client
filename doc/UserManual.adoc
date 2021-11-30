@@ -92,7 +92,7 @@ The entry (the entire line) is then highlighted in blue. This behavior is valid 
 
 image:image4.png[Highlight Line,width=509,height=296]
 
-== 2 Start the Application
+== 2 Start the OH Application
 
 To run Open Hospital, double-click the program icon on the desktop; an information image (splash image) appears for a few seconds and
 then the main _menu_ of the OH application is shown.
@@ -101,7 +101,7 @@ If no desktop shortcut is present, open the folder where the software has been i
 
 === 2.1 Main menu and functions
 
-.The default Main Menu of the application.
+.The default Main Menu of the OH application shows the available functions:.
 [#default-main-menu-4]
 [caption="Main Menu: "]
 image:image0_DefaultMainMenu.png[Default Main Menu,width=250,height=627]
