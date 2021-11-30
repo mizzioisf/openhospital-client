@@ -97,7 +97,9 @@ image:image4.png[Highlight Line,width=509,height=296]
 To run Open Hospital, double-click the program icon on the desktop; an information image (splash image) appears for a few seconds and
 then the main _menu_ of the OH application is shown.
 
-If no desktop shortcut is present, open the folder where the software has been installed and double-click on the platform specific startup script (oh.bat on Windows / oh.sh on Linux).
+If no desktop shortcut is present, open the folder where the software has been installed and double-click on the platform specific startup script (**oh.bat** on Windows / **oh.sh** on Linux).
+
+=== 2.1 Main menu
 
 .The default Main Menu of the application.
 [#default-main-menu-4]
