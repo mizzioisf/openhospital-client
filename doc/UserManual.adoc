@@ -99,12 +99,14 @@ then the main _menu_ of the OH application is shown.
 
 If no desktop shortcut is present, open the folder where the software has been installed and double-click on the platform specific startup script (**oh.bat** on Windows / **oh.sh** on Linux).
 
-=== 2.1 Main menu and functions
+=== 2.1 Main menu
 
 .The default Main Menu of the OH application shows the available functions:.
 [#default-main-menu-4]
 [caption="Main Menu: "]
 image:image0_DefaultMainMenu.png[Default Main Menu,width=250,height=627]
+
+=== 2.2 Functions
 
 From the main menu it is possible to access functions and submenus. In the example below, selecting the *_Settings_* button leads to the OH settings submenu:
 
