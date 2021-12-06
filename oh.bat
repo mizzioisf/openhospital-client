@@ -121,15 +121,15 @@ set DATABASE_NAME=oh
 set DATABASE_USER=isf
 set DATABASE_PASSWORD=isf123
 
-set DICOM_STORAGE="FileSystemDicomManager" REM SqlDicomManager
 set DICOM_MAX_SIZE="4M"
+set DICOM_STORAGE="FileSystemDicomManager" REM SqlDicomManager
+set DICOM_DIR="data\dicom_storage"
 
 set OH_DIR="oh"
 set OH_DOC_DIR="..\doc"
 set CONF_DIR="data\conf"
 set DATA_DIR="data\db"
 set LOG_DIR="data\log"
-set DICOM_DIR="data\dicom_storage"
 set SQL_DIR="sql"
 set SQL_EXTRA="sql\extra"
 set TMP_DIR="tmp"
