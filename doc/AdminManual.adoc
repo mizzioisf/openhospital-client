@@ -525,7 +525,7 @@ Depending on the chosen operating system and architecture, the needed external a
 [#configuration]
 == 3 Configuration
 
-Customization of Open Hospital depends on settings set in text files called “properties files”. Open Hospital comes with 8 main properties files:
+Configuration of the local Open Hospital instance (CLIENT and PORTABLE mode) can be adapted by setting the desired parameters in the text files called “properties files”. Open Hospital uses the following properties files:
 
 * *oh/rsc/*
 ** *database.properties* – for Open Hospital database connection
@@ -542,11 +542,10 @@ Furthermore, additional configurations files (not meant to be modified by the us
 * *resolutions.xml* –  stores locally the information about webcams
 * *version.properties* – contains the current Open Hospital version
 
-Every configuration file works only [.underline]#locally# and is meant to manage  [.underline]#only a single instance# of Open Hospital application.
-
-This means that clients running Open Hospital may run differently according to their configuration files.
+The configuration files are related only to the local instance of Open Hospital; clients running Open Hospital may run differently according to their configuration files.
 
 NOTE: Any change to these files requires an application restart to apply the settings.
+NOTE: Default properties files are distributed with a .dist extension.
 
 The following chapters will describe these properties files and their features in detail.
 
@@ -1427,17 +1426,17 @@ Open Hospital comes with a dicom.properties file set as follows by default:
 
 [source,properties]
 ----
-#dicom.manager.impl=org.isf.dicom.manager.FileSystemDicomManager       	for filesystem
-#dicom.manager.impl=org.isf.dicom.manager.SqlDicomManager       	   	for database
-#dicom.max.size=1024B, 2048B, 1M, 16M, 256M, 512M, 1024M, 1G			size examples
-dicom.manager.impl=org.isf.dicom.manager.SqlDicomManager
-dicom.storage.filesystem=E:\\ISF\\DICOM\\OH_storage
-dicom.max.size=4M
+#dicom.manager.impl=org.isf.dicom.manager.FileSystemDicomManager        # filesystem storage
+#dicom.manager.impl=org.isf.dicom.manager.SqlDicomManager               # database storage
+#dicom.max.size=1024B, 2048B, 1M, 16M, 256M, 512M, 1024M, 1G            # image size examples
+dicom.manager.impl=org.isf.dicom.manager.DICOM_STORAGE
+dicom.storage.filesystem=OH_PATH_SUBSTITUTE/DICOM_DIR
+dicom.max.size=DICOM_SIZE
 ----
 
 * *dicom.manager.impl*: the Java class that implements org.isf.dicom.manager.DicomManagerInterface and that manages the DICOM persistence operation. This property accepts on of the following:
-** org.isf.dicom.SqlDicomManager: The dicom file is stored in the database
-** org.isf.dicom.FileSystemDicomManager: The dicom file is stored in the file system
+** org.isf.dicom.Sql*DicomManager: DICOM files are stored in the database
+** org.isf.dicom.FileSystemDicomManager: DICOM files are stored in the file system
 * *dicom.storage.filesystem*: if the value of the first parameter is org.isf.dicom.FileSystemDicomManager,
 this property specifies the path where the DICOM files are stored.
 * *dicom.max.size*: is the maximum allowed size for a dicom/jpg image (the MariaDB/MySQL server setting max_allowed_packet should be set with the same or a larger value).
