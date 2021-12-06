@@ -542,8 +542,8 @@ Furthermore, additional configurations files (not meant to be modified by the us
 * *resolutions.xml* –  stores locally the information about webcams
 * *version.properties* – contains the current Open Hospital version
 
-The configuration files are related only to the local instance of Open Hospital; clients running Open Hospital may run differently according to their configuration files.
-The files can be modified using a text editor or through the configuration options available in the startup scripts **oh.sh / oh.ps1**; the scripts can be used to generate the correct _.properties_ files from the default _.properties.dist_ filess packaged with the OH distributions,
+The properties files are related only to the local instance of Open Hospital; different instances may use specific OH configuration with custom properties files.
+The files can be modified using a text editor or through the configuration options available in the startup scripts **oh.sh / oh.ps1**; the scripts can be used to generate the correct _.properties_ files from the default _.properties.dist_ filess packaged with the OH distributions.
 
 NOTE: Any change to these files requires an application restart to apply the settings.
 
