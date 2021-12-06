@@ -528,14 +528,14 @@ Depending on the chosen operating system and architecture, the needed external a
 Configuration of the local Open Hospital instance (CLIENT and PORTABLE mode) can be adapted by setting the desired parameters in the text files called “properties files”. Open Hospital uses the following properties files:
 
 * *oh/rsc/*
-** *database.properties* – for Open Hospital database connection
-** *dicom.properties* – for the DICOM viewer module
+** *database.properties* – Open Hospital database connection
+** *dicom.properties* – DICOM viewer module options
 ** *examination.properties* – contains the settings for the ‘examination’ module
-** *log4j.properties* – for the logging system
-** *settings.properties* – for configuring Open Hospital options
-** *sms.properties* – for the SMS Manager module
-** *txtPrinter.properties*– for the text printing system
-** *xmpp.properties* – for the Xmpp Server
+** *log4j.properties* – Logging system and paths
+** *settings.properties* – Open Hospital options and settings
+** *sms.properties* – SMS Manager module
+** *txtPrinter.properties* – Text printing system
+** *xmpp.properties* – Xmpp Server configuration
 
 Furthermore, additional configurations files (not meant to be modified by the user) are:
 
@@ -543,9 +543,11 @@ Furthermore, additional configurations files (not meant to be modified by the us
 * *version.properties* – contains the current Open Hospital version
 
 The configuration files are related only to the local instance of Open Hospital; clients running Open Hospital may run differently according to their configuration files.
+The files can be modified using a text editor or through the configuration options available in the startup scripts oh.sh / oh.ps1.
 
 NOTE: Any change to these files requires an application restart to apply the settings.
-NOTE: Default properties files are distributed with a .dist extension.
+
+NOTE: Default properties files are distributed with a .dist extension
 
 The following chapters will describe these properties files and their features in detail.
 
