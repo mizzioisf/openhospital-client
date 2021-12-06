@@ -70,6 +70,7 @@ DATABASE_NAME=oh
 DATABASE_USER=isf
 DATABASE_PASSWORD="isf123"
 
+DICOM_STORAGE=FileSystemDicomManager # SqlDicomManager
 DICOM_MAX_SIZE="4M"
 
 OH_DIR="oh"
@@ -80,6 +81,7 @@ DICOM_DIR="data/dicom_storage"
 BACKUP_DIR="data/dump"
 LOG_DIR="data/log"
 SQL_DIR="sql"
+SQL_EXTRA_DIR="sql/extra"
 TMP_DIR="tmp"
 
 LOG_FILE=startup.log
@@ -540,7 +542,7 @@ function generate_config_files {
 	######## DICOM setup
 	[ -f ./$OH_DIR/rsc/dicom.properties ] && mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
 	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-	-e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
+	-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
 
 	######## log4j.properties setup
 	OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
@@ -739,7 +741,8 @@ while getopts ${OPTSTRING} opt; do
 		echo "MYSQL_PORT=$MYSQL_PORT"
 		echo "DATABASE_NAME=$DATABASE_NAME"
 		echo "DATABASE_USER=$DATABASE_USER"
-		echo "DATABASE_PASSWORD=$DATABASE_PASSWORD"
+		echo ""
+		echo "DICOM_STORAGE=$DICOM_STORAGE"
 		echo "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
 		echo "OH_DIR=$OH_DIR"
 		echo "OH_DOC_DIR=$OH_DOC_DIR"
@@ -749,6 +752,7 @@ while getopts ${OPTSTRING} opt; do
 		echo "BACKUP_DIR=$BACKUP_DIR"
 		echo "LOG_DIR=$LOG_DIR"
 		echo "SQL_DIR=$SQL_DIR"
+		echo "SQL_EXTRA_DIR=$SQL_EXTRA_DIR"
 		echo "TMP_DIR=$TMP_DIR"
 		echo ""
 		echo "LOG_FILE=$LOG_FILE"
