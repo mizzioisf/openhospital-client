@@ -1422,7 +1422,7 @@ NOTE: The same settings must be applied in log4.properties, see
 
 === 3.3 dicom.properties
 
-Open Hospital comes with a dicom.properties file set as follows by default:
+Open Hospital comes with a _dicom.properties.dist_ file set as follows:
 
 [source,properties]
 ----
@@ -1434,14 +1434,23 @@ dicom.storage.filesystem=OH_PATH_SUBSTITUTE/DICOM_DIR
 dicom.max.size=DICOM_SIZE
 ----
 
-* *dicom.manager.impl*: the Java class that implements org.isf.dicom.manager.DicomManagerInterface and that manages the DICOM persistence operation. This property accepts on of the following:
-** org.isf.dicom.Sql*DicomManager: DICOM files are stored in the database
+In order to generate the correct _dicom.properties_ file, the following parameters need to be set:
+
+* *DICOM_STORAGE - dicom.manager.impl*: the Java class that implements org.isf.dicom.manager.DicomManagerInterface and that manages the DICOM persistence operation. This property accepts on of the following:
+** org.isf.dicom.SqlDicomManager: DICOM files are stored in the database
 ** org.isf.dicom.FileSystemDicomManager: DICOM files are stored in the file system
-* *dicom.storage.filesystem*: if the value of the first parameter is org.isf.dicom.FileSystemDicomManager,
-this property specifies the path where the DICOM files are stored.
-* *dicom.max.size*: is the maximum allowed size for a dicom/jpg image (the MariaDB/MySQL server setting max_allowed_packet should be set with the same or a larger value).
+* *OH_PATH_SUBSTITUTE/DICOM_DIR - dicom.storage.filesystem*: if the value of the first parameter is org.isf.dicom.FileSystemDicomManager,
+this property specifies the path where the DICOM files are stored
+* *DICOM_SIZE - dicom.max.size*: is the maximum allowed size for a dicom/jpg image (the MariaDB/MySQL server setting max_allowed_packet should be set with the same or a larger value).
 If not specified the default value of "4M" is used.
 
+Example dicom.properties file:
+[source,properties]
+----
+dicom.manager.impl=org.isf.dicom.manager.FileSystemDicomManager
+dicom.storage.filesystem=z:\OH\Shared|Dicom_images
+dicom.max.size=4M
+----
 
 === 3.4 examination.properties
 
