@@ -1387,33 +1387,19 @@ Open Hospital comes with a _database.properties_ file with the following default
 
 [source,properties]
 ----
-jdbc.drivers=com.mysql.jdbc.Driver
-jdbc.url=jdbc:mysql:
-jdbc.server=localhost
-jdbc.db=oh
-jdbc.username=isf
-jdbc.password=isf123
-#jdbc.port=3306
+jdbc.url=jdbc:mysql://DBSERVER:DBPORT/DBNAME
+jdbc.username=DBUSER
+jdbc.password=DBPASS
 ----
 
-The first two parameters are not meant to be modified by the user nor by the Administrator.
-The remaining parameters may need modification according to the network settings.
-
-* *jdbc.drivers*: the Java library used to connect to a database server
-* *jdbc.url*: the address to point to the MySQL Server
-* *jdbc.server*: the IP address of the database server (where MariaDB/MySQL Server is installed);
+* *jdbc.url*: the IP address:TCP port/ Database name of the OH Database Server
+IP address can be:
 localhost means the same computer where this file is located; others values can be: +
 _127.0.0.1_ – loopback network +
 _192.168.0.100_ – an example of a private IP address (LAN) +
 _217.147.110.117_ – an example of a public IP address (WAN)
-* *jdbc.db*: the name of the Open Hospital database
 * *jdbc.username*: the database user allowed to connect and operate on the database
-* *jdbc.password*: the user password
-* *jdbc.port*: the TCP port where the database server is listening; by default, this port is 3306 but can be changed if needed to match the installation
-
-The full address for the database using the defaults then is:
-
-jdbc:mysql://localhost/oh
+* *jdbc.password*: the database user password
 
 NOTE: An application restart is required to see the modification applied. +
 
