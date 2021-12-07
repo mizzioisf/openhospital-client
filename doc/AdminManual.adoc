@@ -1382,7 +1382,7 @@ NOTE: An application restart is required to see the modification applied.
 [#database-properties]
 === 3.2 database.properties
 
-Open Hospital comes with a database.properties file with the following defaults:
+Open Hospital comes with a _database.properties_ file with the following defaults:
 
 [source,properties]
 ----
@@ -2045,11 +2045,11 @@ mysql> source step_39_patientfolder_submenu.sql
 ----
 
 [start=7]
-. Take notes if any error messages occur and report them to: +
-https://sourceforge.net/p/openhospital/support-requests/
-. If everything is successful, replace the working copy on each client with the new one and connect it to the same DB
+. If any error message occurs you can report it to: +
+https://openhospital.atlassian.net/
+. If the procedure is successful, replace the OH working copy on each client with the new one and connect it to the same DB
 (see <<database-properties,database.properties>> and <<log4j-properties,log4j.properties>>).
-Remember to keep files that have been changed, especially any changes to the configuration settings
+Remember to mantain the configuration files that have been changed, to preserve the custom settings.
 (see <<configuration,Configuration>>). The most common way is to backup the working copy and re-apply those
 settings in the new one (see <<backup-restore,Backup & Restore>>).
 . Start the program and check the log files (data/logs) to ensure that the new version is running and has no error messages.
@@ -2071,7 +2071,7 @@ To migrate a portable installation to a full client/server configuration, keepin
 . Change settings to point to the new database (see <<database-properties,database.properties>> and <<log4j-properties,log4j.properties>>).
 
 For questions about updating, migrating, or maintaining an Open Hospital installation, please contact us at:
-info@informaticisenzafrontiere.org and specify:
+https://www.open-hospital.org/contact and specify:
 
 * A brief history of the organization;
 * The country where the installation is and the language used;
