@@ -1424,12 +1424,12 @@ dicom.max.size=DICOM_SIZE
 
 In order to generate the correct _dicom.properties_ file, the following parameters need to be set:
 
-* *dicom.manager.impl=org.isf.dicom.manager.DICOM_STORAGE*: the Java class that implements org.isf.dicom.manager.DicomManagerInterface and that manages the DICOM persistence operation. This property accepts on of the following:
-** org.isf.dicom.SqlDicomManager: DICOM files are stored in the database
-** org.isf.dicom.FileSystemDicomManager: DICOM files are stored in the file system
-* *dicom.storage.filesystem=OH_PATH_SUBSTITUTE/DICOM_DIR*: if the value of the first parameter is org.isf.dicom.FileSystemDicomManager,
+* *DICOM_STORAGE*: This property accepts on of the following:
+** SqlDicomManager: DICOM files are stored in the database
+** FileSystemDicomManager: DICOM files are stored in the file system
+* *OH_PATH_SUBSTITUTE/DICOM_DIR*: if the value of the first parameter is FileSystemDicomManager,
 this property specifies the path where the DICOM files are stored
-* *dicom.max.size=DICOM_SIZE*: is the maximum allowed size for a dicom/jpg image (the MariaDB/MySQL server setting max_allowed_packet should be set with the same or a larger value).
+* *DICOM_SIZE*: maximum allowed size for a dicom/jpg image (the MariaDB/MySQL server setting max_allowed_packet should be set with the same or a larger value).
 If not specified the default value of "4M" is used.
 
 Example _dicom.properties_ file:
