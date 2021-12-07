@@ -553,7 +553,7 @@ The following chapters will describe these properties files and their features i
 [#settings-properties]
 === 3.1 settings.properties
 
-The default settings.properties file is:
+The default _settings.properties_ file is:
 
 [source,properties]
 ----
@@ -637,7 +637,7 @@ Open Hospital ships with nine translations, identified by the international coun
 * sw – Swahili
 * zh_CN - simplified Chinese
 
-To change the language used in the application simply edit *_settings.properties_* and change the value of this key.
+To change the language used in the application edit _settings.properties_ and change the value of this key.
 If an unknown value is set, the local computer language is applied.
 
 NOTE: An application restart is required to apply the setting.
