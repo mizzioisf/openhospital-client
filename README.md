@@ -242,12 +242,13 @@ DATABASE_USER=isf
 DATABASE_PASSWORD="xxxxx"
 
 DICOM_MAX_SIZE="4M"
+DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
+DICOM_DIR="data/dicom_storage"
 
 OH_DIR="oh"
 OH_DOC_DIR="../doc"
 CONF_DIR="data/conf"
 DATA_DIR="data/db"
-DICOM_DIR="data/dicom_storage"
 BACKUP_DIR="data/dump"
 LOG_DIR="data/log"
 SQL_DIR="sql"
@@ -433,5 +434,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.11.19*
+*last updated: 2021.12.06*
 
