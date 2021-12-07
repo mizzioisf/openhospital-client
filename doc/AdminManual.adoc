@@ -1392,9 +1392,11 @@ jdbc.username=DBUSER
 jdbc.password=DBPASS
 ----
 
+Use the provided startup scripts in order to automatically generate the properties file from the corresponding .dist files, or set manually the following parameters:
+
 * *DBSERVER*: the IP address of the OH Database Server. 
 IP address can be set to: +
-_127.0.0.1_ – localhost / loopback network +
+_127.0.0.1_ – localhost / loopback network interface (local computer) +
 _192.168.0.100_ – an example of a private IP address (LAN) +
 _217.147.110.117_ – an example of a public IP address (WAN)
 * *DBPORT*: the TCP port of the OH database Server
@@ -1422,12 +1424,12 @@ dicom.storage.filesystem=OH_PATH_SUBSTITUTE/DICOM_DIR
 dicom.max.size=DICOM_SIZE
 ----
 
-In order to generate the correct _dicom.properties_ file, the following parameters need to be set:
+Use the provided startup scripts in order to automatically generate the properties file from the corresponding .dist files, or set manually the following parameters:
 
-* *DICOM_STORAGE*: This property accepts on of the following:
+* *DICOM_STORAGE*: This property accepts one of the following:
 ** SqlDicomManager: DICOM files are stored in the database
 ** FileSystemDicomManager: DICOM files are stored in the file system
-* *OH_PATH_SUBSTITUTE/DICOM_DIR*: if the value of the first parameter is FileSystemDicomManager,
+* *OH_PATH_SUBSTITUTE/DICOM_DIR*: if the value of the first parameter is set to "FileSystemDicomManager",
 this property specifies the path where the DICOM files are stored
 * *DICOM_SIZE*: maximum allowed size for a dicom/jpg image (the MariaDB/MySQL server setting max_allowed_packet should be set with the same or a larger value).
 If not specified the default value of "4M" is used.
@@ -1530,31 +1532,46 @@ log4j.appender.StdOut.layout.ConversionPattern=[%d{dd/MMM/yyyy HH:mm:ss}] [%X{OH
 # File Appender (with classes), daily rotation
 log4j.appender.RollingFile = org.apache.log4j.DailyRollingFileAppender
 log4j.appender.RollingFile.DatePattern='.'yyyy-MM-dd
-log4j.appender.RollingFile.File=logs/openhospital.log
+log4j.appender.RollingFile.File=LOG_DEST
 log4j.appender.RollingFile.layout=org.apache.log4j.PatternLayout
 log4j.appender.RollingFile.layout.ConversionPattern=[%d{dd/MMM/yyyy HH:mm:ss}] [%X{OHUserGroup}:%X{OHUser}] %-p - %m (%l)%n
 
 # DB Appender (table columns)
 log4j.appender.DB=org.apache.log4j.jdbc.JDBCAppender
-log4j.appender.DB.URL=jdbc:mysql://localhost:3306/oh?autoReconnect=true
-log4j.appender.DB.user=isf
-log4j.appender.DB.password=isf123
+log4j.appender.DB.URL=jdbc:mysql://DBSERVER:DBPORT/DBNAME?autoReconnect=true
+log4j.appender.DB.user=DBUSER
+log4j.appender.DB.password=DBPASS
 log4j.appender.DB.sql=INSERT INTO LOG (LOG_TYPE, LOG_CLASS, LOG_METHOD, LOG_TIME, LOG_MESS, LOG_USER) VALUES (1, '%C', '%M', '%d{yyyy-MM-dd HH:mm:ss}', LEFT('%m', 1024), '%X{OHUser}')
 log4j.appender.DB.layout=org.apache.log4j.PatternLayout
 
 # Assigning appenders to packages (application loggers)
-log4j.category.org.isf=DEBUG,RollingFile,StdOut
+log4j.category.org.isf=LOG_LEVEL,RollingFile
 log4j.additivity.org.isf = false
 
 # Assigning appenders to Hibernate packages (DB loggers)
 # - hibernate.SQL to DEBUG for SQL queries to be logged
 # - hibernate.type to TRACE for queries parameters to be logged with "binding parameter [?]"
-log4j.logger.org.hibernate=INFO,RollingFile,StdOut
-log4j.logger.org.hibernate.SQL=INFO,RollingFile,StdOut
-log4j.logger.org.hibernate.type=INFO,RollingFile,StdOut
+log4j.logger.org.hibernate=LOG_LEVEL,RollingFile,StdOut
+#log4j.logger.org.hibernate.SQL=INFO,RollingFile,StdOut
 ----
 
-This file is not meant to be modified by the user.
+Use the provided startup scripts in order to automatically generate the properties file from the corresponding .dist files, or set manually the following parameters:
+
+* *DBSERVER*: the IP address of the OH Database Server. 
+IP address can be set to: +
+_127.0.0.1_ – localhost / loopback network +
+_192.168.0.100_ – an example of a private IP address (LAN) +
+_217.147.110.117_ – an example of a public IP address (WAN)
+* *DBPORT*: the TCP port of the OH database Server
+* *DBNAME*: the database name
+* *DBUSER*: the database user
+* *DBPASS*: the database user password
+* *LOG_LEVEL*: the OH application log level - can be set to  INFO|DEBUG|TRACE
+
+NOTE: An application restart is required to see the modification applied. +
+
+NOTE: The same settings must be applied in _database.properties_, see
+<<database-properties,database.properties>> in this manual.
 
 Once the system is up and running, the log level can be reduced from "DEBUG" to "INFO", in order to avoid large log files:
 
@@ -1576,7 +1593,6 @@ Logging can be routed to the database (DB) by adding the respective *appender*:
 ----
 log4j.category.org.isf=INFO,RollingFile,DB
 ----
-
 
 Logging can also be routed to standard output (the console window) with:
 
