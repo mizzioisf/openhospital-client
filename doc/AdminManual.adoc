@@ -1393,7 +1393,7 @@ jdbc.password=DBPASS
 ----
 
 * *DBSERVER*: the IP address of the OH Database Server. 
-IP address can be set to:+
+IP address can be set to: +
 _127.0.0.1_ – localhost / loopback network +
 _192.168.0.100_ – an example of a private IP address (LAN) +
 _217.147.110.117_ – an example of a public IP address (WAN)
