@@ -1556,14 +1556,14 @@ log4j.logger.org.hibernate.type=INFO,RollingFile,StdOut
 
 This file is not meant to be modified by the user.
 
-Once the system is up and running, the log level can be reduced from "DEBUG" to "INFO", so the log files are significantly reduced in size:
+Once the system is up and running, the log level can be reduced from "DEBUG" to "INFO", in order to avoid large log files:
 
 [source,properties]
 ----
 log4j.category.org.isf=INFO,RollingFile
 ----
 
-Alternatively, in case of malfunctions of the application, the log level can be increased to "TRACE" so more detail on the operation of the application can be recorded:
+To investigate bugs or issues, the log level can be increased to "TRACE" in order to log more detailed information:
 
 [source,properties]
 ----
