@@ -1397,9 +1397,9 @@ IP address can be set to: +
 _127.0.0.1_ – localhost / loopback network +
 _192.168.0.100_ – an example of a private IP address (LAN) +
 _217.147.110.117_ – an example of a public IP address (WAN)
-* *DBPORT*: the TCP port of the OH Database Server
-* *DBNAME*: the OH Database name
-* *DBUSER*: the database user allowed to connect and operate on the database
+* *DBPORT*: the TCP port of the OH database Server
+* *DBNAME*: the database name
+* *DBUSER*: the database user
 * *DBPASS*: the database user password
 
 NOTE: An application restart is required to see the modification applied. +
