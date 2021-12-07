@@ -369,7 +369,7 @@ mysql>quit;
 NOTE: Remember to set the updated database password also in the Open Hospital configuration files and startup scripts.
 
 
-==== 2.1.5 OH - Database Configuration
+==== 2.1.5 OH - Database configuration
 
 To set up the database connection for Open Hospital, edit and configure the database settings in the oh.sh/oh.ps1 startup scripts or directly modify the _database.properties_ and _log4j.properties_ files, located in the “resource” folder rsc/.
 
@@ -482,7 +482,7 @@ To restore data with MySQL Workbench®:
 
 ==== 2.3.3 Backup of OH code and settings
 
-Backup of the Open Hospital *code and settings* can be performed by saving the *oh/* folder. Configuration files are placed under the *oh/rsc* folder.
+Backup of the Open Hospital *code and settings* can be performed by saving the *"oh"* folder. Configuration files are placed under the *"oh/rsc"* folder.
 
 Backup of the client *data and configuration files*, especially for "PORTABLE" mode, can be performed by saving the *"data"* folder (including all subfolders) placed under the main OH installation folder.
 
