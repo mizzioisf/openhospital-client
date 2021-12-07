@@ -546,7 +546,7 @@ The properties files can be generated automatically from the packaged _.dist_ fi
 
 NOTE: Any change to these files requires an application restart to apply the settings.
 
-NOTE: The properties files are automatically generated at any **oh.sh/oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
+NOTE: The properties files are automatically generated at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
 
 The following chapters will describe these properties files and their features in detail.
 
