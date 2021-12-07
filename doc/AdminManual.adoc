@@ -1392,10 +1392,9 @@ jdbc.username=DBUSER
 jdbc.password=DBPASS
 ----
 
-* *DBSERVER*: the IP address:TCP port/ Database name of the OH Database Server
-IP address can be:
-localhost means the same computer where this file is located; others values can be: +
-_127.0.0.1_ – loopback network +
+* *DBSERVER*: the IP address of the OH Database Server. 
+IP address can be set to:+
+_127.0.0.1_ – localhost / loopback network +
 _192.168.0.100_ – an example of a private IP address (LAN) +
 _217.147.110.117_ – an example of a public IP address (WAN)
 * *DBPORT*: the TCP port of the OH Database Server
