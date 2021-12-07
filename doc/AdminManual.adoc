@@ -1383,7 +1383,7 @@ NOTE: An application restart is required to see the modification applied.
 [#database-properties]
 === 3.2 database.properties
 
-Open Hospital comes with a _database.properties_ file with the following defaults:
+Open Hospital comes with a _database.properties.dist_ file with the following defaults:
 
 [source,properties]
 ----
@@ -1514,7 +1514,7 @@ RR_MAX = 100
 [#log4j-properties]
 === 3.5 log4j.properties
 
-The default _log4j.properties_ file is:
+The default _log4j.properties.dist_ file is:
 
 [source,properties]
 ----
