@@ -84,7 +84,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 # set MANUAL_CONFIG to "on" to setup configuration files manually
 # my.cnf and all oh/rsc/*.properties files will not be generated or
 # overwritten if already present
-#$script:MANUAL_CONFIG="off"
+#$script:MANUAL_CONFIG="on"
 
 # Interactive mode
 # set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
