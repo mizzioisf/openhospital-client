@@ -547,7 +547,7 @@ The properties files can be generated automatically from the packaged _.dist_ fi
 
 NOTE: Any change to these files requires an application restart to apply the settings.
 
-NOTE: The properties files are automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
+NOTE: The properties files are automatically generated/overwritten at any Open Hospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
 
 The following chapters will describe these properties files and their features in detail.
 
@@ -644,7 +644,7 @@ If an unknown value is set, the local computer language is applied.
 
 NOTE: An application restart is required to apply the setting.
 
-NOTE: The OH_LANGUAGE setting is automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
+NOTE: The OH_LANGUAGE setting is automatically generated/overwritten at any OpenHospital startup, unless MANUAL_CONFIG option is set to "on" in the  **oh.sh / oh.ps1** scripts.
 
 ==== 3.1.2 SINGLEUSER
 
@@ -1102,7 +1102,7 @@ By default, DOC_DIR is set to 'doc'.
 
 NOTE: An application restart is required to see the modification applied.
 
-NOTE: The DOC_DIR setting is automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
+NOTE: The DOC_DIR setting is automatically generated/overwritten at any OpenHospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
 
 
 ==== 3.1.23 SMSENABLED
@@ -1415,7 +1415,7 @@ NOTE: An application restart is required to see the modification applied. +
 NOTE: The same settings must be applied in _log4.properties_, see
 <<log4j-properties,log4j.properties>> in this manual.
 
-NOTE: The _database.properties_ file is automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
+NOTE: The _database.properties_ file is automatically generated/overwritten at any Open Hospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
 
 === 3.3 dicom.properties
 
