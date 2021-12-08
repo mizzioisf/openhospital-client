@@ -556,7 +556,6 @@ The following chapters will describe these properties files and their features i
 === 3.1 settings.properties
 
 Open Hospital general configuration is set in the _settings.properties_ file.
-
 Default configuration is set in the _settings.properties.dist_ file:
 
 [source,properties]
@@ -1390,7 +1389,7 @@ NOTE: An application restart is required to see the modification applied.
 [#database-properties]
 === 3.2 database.properties
 
-Database configuration is set in the _database.properties_ file.\
+Database configuration is set in the _database.properties_ file.
 Default database configuration is set in the _database.properties.dist_ file:
 
 [source,properties]
@@ -1421,7 +1420,7 @@ NOTE: The _database.properties_ file is automatically generated/overwritten at a
 
 === 3.3 dicom.properties
 
-DICOM configuration is set in the _dicom.properties_ file.\
+DICOM configuration is set in the _dicom.properties_ file.
 Default DICOM configuration is set in the _dicom.properties.dist_ file:
 
 [source,properties]
@@ -1525,7 +1524,7 @@ RR_MAX = 100
 [#log4j-properties]
 === 3.5 log4j.properties
 
-Logging configuration is set in the _log4j.properties_ file.\
+Logging configuration is set in the _log4j.properties_ file.
 Default configuration is set in the _log4j.properties.dist_ file:
 
 [source,properties]
