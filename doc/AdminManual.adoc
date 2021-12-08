@@ -1390,7 +1390,9 @@ NOTE: An application restart is required to see the modification applied.
 [#database-properties]
 === 3.2 database.properties
 
-Open Hospital comes with a _database.properties.dist_ file with the following defaults:
+Database configuration is set in the _database.properties_ file.
+
+Default configuration is set in the _database.properties.dist_ file:
 
 [source,properties]
 ----
@@ -1416,6 +1418,7 @@ NOTE: An application restart is required to see the modification applied. +
 NOTE: The same settings must be applied in _log4.properties_, see
 <<log4j-properties,log4j.properties>> in this manual.
 
+NOTE: The _database.properties_ file is automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
 
 === 3.3 dicom.properties
 
