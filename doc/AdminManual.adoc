@@ -1583,7 +1583,9 @@ NOTE: An application restart is required to see the modification applied. +
 NOTE: The same settings must be applied in _database.properties_, see
 <<database-properties,database.properties>> in this manual.
 
-Once the system is up and running, the log level can be reduced from "DEBUG" to "INFO", in order to avoid large log files:
+NOTE: The _log4j.properties_ file is automatically generated/overwritten at any Open Hospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
+
+NOTE: DEBUG mode can generate large log files and should be avoided in production environment.
 
 [source,properties]
 ----
