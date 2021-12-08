@@ -1138,16 +1138,15 @@ see <<log4j-properties,log4j.properties>>) and try to use the SetupGSM utility (
 
 ===== 3.1.23.2 SetupGSM utility
 
-To setup GSM communication within OH, follow these instructions:
-
-To use the SetupGSM utility launch the OH startup script and select the the G option:
-
-* On Windows launch **oh.bat** -> select *G* option
-* On linux launch **oh.sh -G**
-
-Once the utility has started, follow these instructions:
+To setup GSM communication it is possibile use the included SetupGSM utility. 
 
 . Plug the device into the system and make sure the system recognizes it, loads a proper driver for it and assigns a serial port (COM)
+. Launch the OH startup script and select the the G option:
+
+ ** On Windows launch **oh.bat** -> select *G* option
+ ** On linux launch **oh.sh -G**
+
+. Once the utility has started, follow these instructions:
 . The utility will scan all plugged devices and will try to recognize the modem (or phone) within them
 . If the device is recognized as a modem confirmation message prompt message as follows appears:
 
