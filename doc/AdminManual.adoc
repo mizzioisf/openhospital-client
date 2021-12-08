@@ -1578,14 +1578,8 @@ _217.147.110.117_ – an example of a public IP address (WAN)
 * *DBPASS*: the database user password
 * *LOG_LEVEL*: the OH application log level - can be set to  INFO|DEBUG|TRACE
 
-NOTE: An application restart is required to see the modification applied. +
-
 NOTE: The same settings must be applied in _database.properties_, see
 <<database-properties,database.properties>> in this manual.
-
-NOTE: The _log4j.properties_ file is automatically generated/overwritten at any Open Hospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
-
-NOTE: DEBUG mode can generate large log files and should be avoided in production environment.
 
 [source,properties]
 ----
@@ -1618,7 +1612,11 @@ If the DB appender is specified, the configuration must be set to match the sett
 
 image:image37.png[image,width=645,height=84]
 
-NOTE: An application restart is required to see the effect of any applied parameter modification.
+NOTE: The _log4j.properties_ file is automatically generated/overwritten at any Open Hospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
+
+NOTE: DEBUG mode can generate large log files and should be avoided in production environment.
+
+NOTE: An application restart is required to apply the modified setting.
 
 [#sms-properties]
 === 3.6 sms.properties
