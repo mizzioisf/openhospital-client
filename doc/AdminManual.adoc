@@ -545,7 +545,7 @@ Furthermore, additional configurations files (not meant to be modified by the us
 The properties files are related only to the local instance of Open Hospital; different instances may use specific OH configuration with custom properties files.
 The properties files can be generated automatically from the packaged _.dist_ files by editing the configuration options available in the startup scripts **oh.sh / oh.ps1** and launching OH. The properties files can also be modified manually using a text editor.
 
-NOTE: Any change to these files requires an application restart to apply the settings.
+NOTE: Any change to these files requires an application restart to apply the modified settings.
 
 NOTE: The properties files are automatically generated/overwritten at any Open Hospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
 
@@ -642,7 +642,7 @@ Open Hospital is available in nine different languages, identified by the intern
 To change the language used in the application edit _settings.properties_ and change the value of this key.
 If an unknown value is set, the local computer language is applied.
 
-NOTE: An application restart is required to apply the setting.
+NOTE: An application restart is required to apply the modified setting.
 
 NOTE: The OH_LANGUAGE setting is automatically generated/overwritten at any OpenHospital startup, unless MANUAL_CONFIG option is set to "on" in the  **oh.sh / oh.ps1** scripts.
 
