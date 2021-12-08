@@ -2042,7 +2042,7 @@ The purpose of this function is to extract data registered in the application an
 [caption="Main Menu: "]
 image:image0_DefaultMainMenu.png[Default Main Menu,width=250,height=627]
 
-Open Hospital comes with a set of reports designed for the Ugandan Ministry of Health (HMIS) and for the
+Open Hospital provides a set of reports designed for the Ugandan Ministry of Health (HMIS) and for the
 Kenyan Ministry of Health (MOH) as well as national independent reports (OH).
 All of these reports may be useful for any organization and can be added or removed as explained in
 the Administrator Manual's chapter “6 – Reports”.
