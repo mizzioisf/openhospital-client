@@ -1151,7 +1151,7 @@ To setup GSM communication it is possibile use the included SetupGSM utility and
 
 image:image25.png[image,width=293,height=120]
 [start=4]
-. If the name of the device is the one meant to be used with the system then just click “yes”, otherwise click “no”, and the scan will continue
+. If the identified device is the correct one, just click “yes”, otherwise click “no”, and the scan will continue
 . Once “yes” is selected the _sms.properties_ file is automatically modified by the utility by inserting the proper port address.
 
 
