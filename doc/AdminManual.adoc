@@ -707,7 +707,7 @@ With *AUTOMATICLOT_OUT = YES* the application discharges automatically the neare
 With *AUTOMATICLOTWARD_TOWARD = YES*, the application discharges from a ward (to other wards) the nearest expiring lot automatically when required. By default, AUTOMATICLOTWARD_TOWARD is set to NO. It is possible to change the value at any time.
 For discharges to patients (drug giving) the lot is *never* asked.
 
-NOTE: An application restart is required to see the modification applied for all the above settings.
+NOTE: An application restart is required to apply the modified settings.
 
 
 ==== 3.1.4 LOTWITHCOST
@@ -723,7 +723,7 @@ The following table shows the default value and the allowed ones:
 Open Hospital allows for managing the cost of medicals in the main pharmacy
 (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-2-2-2-insert-stock-charging-movement-charge[6.2.2.2 Insert stock charging movement] in the User's Guide).
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.5 PATIENTSHEET
@@ -742,7 +742,7 @@ Open Hospital can produce a report about the clinical history of a patient
 By default, PATIENTSHEET is set to patient_clinical_sheet, that is, the filename of the related report to use for the Clinical Sheet functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.6 OPDCHART
@@ -761,7 +761,7 @@ Open Hospital can produce a report about the OPD chart of a patient
 By default, OPDCHART is set to patient_opd_chart which is the filename of the related report to use for the Clinical Sheet functionality *OPD Chart*.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.7 ADMCHART
@@ -780,7 +780,7 @@ Open Hospital can produce a report about the Admission of a patient
 By default, ADMCHART is set to patient_adm_chart, that is, the filename of the related report to use for the Clinical Sheet functionality *Admission Chart*.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.8 DISCHART
@@ -799,7 +799,7 @@ Open Hospital can produce a report about the Discharge of a patient
 By default, DISCHART is set to patient_dis_chart which is the filename of the related report to use for the Clinical Sheet functionality *Discharge Chart*.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.9 PATIENTBILL
@@ -818,7 +818,7 @@ Open Hospital can manage patient bills and produce an A4 format breakdown with h
 By default, PATIENTBILL is set to PatientBill, that is, the filename of the related report to use for the bill printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.10 BILLSREPORT
@@ -836,7 +836,7 @@ Open Hospital can manage patient bills and produce a report about all bills paid
 By default, BILLSREPORT is set to BillsReport, that is, the filename of the related report to use for the account printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.11 BILLSREPORTMONTH
@@ -855,7 +855,7 @@ Open Hospital can manage patient bills and produce a report about all bills paid
 By default, BILLSREPORTMONTH is set to BillsReportMonth, that is, the filename of the related report to use for the account printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.12 PHARMACEUTICALORDER
@@ -874,7 +874,7 @@ Open Hospital can produce a report for the Pharmacy Stock critical levels which 
 By default, PHARMACEUTICALORDER is set to PharmaceuticalOrder, that is, the filename of the related report to use for the pharmacy printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.13 PHARMACEUTICALSTOCK
@@ -892,7 +892,7 @@ Open Hospital can produce a report for the Pharmacy Stock Status which identifie
 By default, PHARMACEUTICALSTOCK is set to PharmaceuticalStock that is the filename of the related report to use for the pharmacy printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.14 PATIENTEXTENDED
@@ -909,7 +909,7 @@ Open Hospital allows for the registration of a patient with extended or more det
 
 By default, PATIENTEXTENDED is set to yes. It is possible to set it to no to reduce the amount of data collected and so reduce the workload for the staff involved in data entry.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.15 OPDEXTENDED
@@ -928,7 +928,7 @@ For each visit, the user will be asked to select a registered patient or to regi
 By default, OPDEXTENDED is set to yes.
 It is possible to set it to no to reduce the amount of data to be collected (only age and sex, no patient registration) and so reduce the workload for the staff involved in data entry.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.16 MATERNITYRESTARTINJUNE
@@ -947,7 +947,7 @@ This option controls which behavior is followed.
 
 By default, MATERNITYRESTARTINJUNE is set to no.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.17 LABEXTENDED
@@ -968,7 +968,7 @@ exam will be attached to the patient's history
 By default, LABEXTENDED is set to yes. Anyway, is possible to set it to no to reduce the amount of data to be collected 
 (only name, age, sex, no patient registration) and so reduce the workload for the staff involved in data entry.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.18 LABMULTIPLEINSERT
@@ -987,7 +987,7 @@ note that the LABEXTENDED option must also be set to yes
 
 By default, LABMULTIPLEINSERT is set to yes, but if LABEXTENDED is set to no it will be just ignored.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.19 INTERNALPHARMACIES
@@ -1005,7 +1005,7 @@ Open Hospital can register all dispensing to patients within a ward. Activating 
 
 By default, INTERNALPHARMACIES is set to yes.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.20 MERGEFUNCTION
@@ -1025,7 +1025,7 @@ Activating this option, the Merge functionality will be available in the Admissi
 
 By default, MERGEFUNCTION is set to no.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.21 INTERNALVIEWER
@@ -1065,7 +1065,7 @@ INTERNALVIEWER=evince
 ----
 By default, INTERNALVIEWER is set to yes.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.22 DOC_DIR
@@ -1100,7 +1100,7 @@ DOC_DIR=../doc
 ----
 By default, DOC_DIR is set to 'doc'.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 NOTE: The DOC_DIR setting is automatically generated/overwritten at any OpenHospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
 
@@ -1162,7 +1162,7 @@ Open Hospital can keep the main menu always on top so it cannot be overlapped or
 
 By default, MAINMENUALWAYSONTOP is set to no.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 [#receiptprinter]
@@ -1185,7 +1185,7 @@ By default, RECEIPTPRINTER is set to no.
 
 NOTE: The text printer must be set as the default printer.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.26 VIDEOMODULEENABLED
@@ -1204,7 +1204,7 @@ Once this option is activated the related button, *New Photo* in the *New Patien
 
 By default, VIDEOMODULEENABLED is set to no.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.27 PATIENTVACCINEEXTENDED
@@ -1223,7 +1223,7 @@ This option allows toggling the patient’s full name in the *_Patient Vaccine B
 
 By default, PATIENTVACCINEEXTENDED is set to yes.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.28 ENHANCEDSEARCH
@@ -1243,7 +1243,7 @@ With the enhanced search only, the patient matching a search criterion will be l
 By default, ENHANCEDSEARCH is set to no.
 It is possible to toggle this option anytime to reduce the amount of memory needed by the computer or the server.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 [#xmppmoduleenabled]
@@ -1264,7 +1264,7 @@ the SINGLEUSER option must be set to no too. If this option is active, Open Hosp
 
 By default, XMPPMODULEENABLED is set to no, but if SINGLEUSER is set to yes XMPPMODULEENABLED is ignored.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.30 DICOMMODULEENABLED
@@ -1282,7 +1282,7 @@ When this option is enabled, a button, *DICOM*, appears in the patient Clinical 
 
 By default, DICOMMODULEENABLED is set to no.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.30.1 DICOMTHUMBNAILS
@@ -1299,7 +1299,7 @@ Open Hospital can enable or disable thumbnails in the Dicom Viewer.
 
 By default, DICOMTHUMBNAILS is set to yes.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.31 DEBUG
@@ -1326,7 +1326,7 @@ Once a photo is produced, Open Hospital remembers the settings and uses them in 
 
 By default, DEBUG is set to no.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.32 ALLOWMULTIPLEOPENEDBILL
@@ -1345,7 +1345,7 @@ the user is asked to confirm the creation of another one.
 
 By default, ALLOWMULTIPLEOPENEDBILL is set to no.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.33 OPENEDBILLSREPORT
@@ -1363,7 +1363,7 @@ The parameter contains the jasper report file name to print the list of open bil
 
 By default, OPENEDBILLSREPORT is set to OH023_BillsReportMonth.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.1.34 ALLOWPRINTOPENEDBILL
@@ -1382,7 +1382,7 @@ get the receipt by clicking the Receipt button in the buttons panel.
 
 By default, ALLOWPRINTOPENEDBILL is set to no.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 [#database-properties]
@@ -1410,7 +1410,7 @@ _217.147.110.117_ – an example of a public IP address (WAN)
 * *DBUSER*: the database user
 * *DBPASS*: the database user password
 
-NOTE: An application restart is required to see the modification applied. +
+NOTE: An application restart is required to apply the modified setting.
 
 NOTE: The same settings must be applied in _log4.properties_, see
 <<log4j-properties,log4j.properties>> in this manual.
@@ -1739,7 +1739,7 @@ image:image43.png[Accountin_print_as_paid]
 
 The best way to set these parameters for the device is to set them one by one and check the different results until the best fit is reached.
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 [#xmpp-properties]
 === 3.8 xmpp.properties
@@ -1766,7 +1766,7 @@ Once the XMPP Server is installed, active and running set the two parameters in 
 * *DOMAIN* – the IP address of the XMPP server (it could be the same as the database server)
 * *PORT* – 5222 or another if set differently
 
-NOTE: An application restart is required to see the modification applied.
+NOTE: An application restart is required to apply the modified setting.
 
 
 ==== 3.8.1 OpenFire Settings
