@@ -43,22 +43,19 @@ OH - Open Hospital features include:
 * Internal communication
 * Statistics and printing
 
-=== 1.2 Documentation
+=== 1.2 About this User Manual
 
 In the following chapters, all the information needed to correctly and efficiently use Open Hospital are presented. 
 More information can be found on the Open Hospital web site https://www.open-hospital.org.
 
 NOTE: The information needed to install, configure or administer the OH software is not included in this manual; please refer to the _Administrator’s Guide_ supplied with the software.
 
-
-=== 1.3 About this User Manual
-
-==== 1.3.1 Help
+==== 1.2.1 Help
 
 * The *[.underline]##H##elp* function available on the bottom of the main MENU of Open Hospital provides access to
 this document [.underline]#offline#.
 
-==== 1.3.2 Legend
+==== 1.2.2 Legend
 
 In this document the following conventions are used:
 
