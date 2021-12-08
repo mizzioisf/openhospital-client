@@ -670,7 +670,7 @@ image:image24.PNG[Login.PNG,width=305,height=148]
 The default password for the “admin” user is “admin”. After typing this password in the white field and pressing *[.underline]##S##ubmit*, the main *_Menu_* with the functions are enabled.
 
 Once logged in as the “admin” user defining additional users and/or groups is possible (see the
-link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#15-users-groups-file-users[Users & Groups] chapter in the User's Guide), or just continue with a simple form of data protection.
+link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#users-groups[Users & Groups] chapter in the User's Guide), or just continue with a simple form of data protection.
 
 NOTE: The setting is client-side specific, this means that the login can be disabled on a specific client, but logons will still
 be required on other clients, with the same defined user and group.
@@ -693,13 +693,13 @@ The following table shows the default value and the alternatives for lot managem
 Open Hospital allows for automatic management of lots in the main pharmacy.
 This means that is possible to work in the pharmacy without taking care of lot definitions in loading the store and
 just specify preparation and expiring date for each charging movement
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-2-2-2-insert-stock-charging-movement-charge[6.2.2.2 Insert stock charging movement] in the User's Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#4-2-2-2-insert-stock-charging-movement-charge[4.2.2.2 Insert stock charging movement] in the User's Guide).
 
 For discharging movement, the lot is automatically calculated according to the nearest expiring date of lots (FEFO - First Expiring First Out). If the quantity to discharge is larger than the quantity of the first selected lot, more than one discharging operation can be generated.
 
 _AUTOMATIC LOTS MANAGEMENT_ is split into two different settings for charging and discharging the main pharmacy and to manage lots also in the wards.
 In this way, more control is given to the user that may want to provide all the lots' details in _charging operations_ but ask the application to automatically _discharge_ the nearest expiring ones (FEFO).
-Similarly, in wards (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-3-pharmaceuticals-stock-ward-pharmaceuticals-stock-ward[6.3 Pharmaceuticals Stock Ward] in the User's Guide)
+Similarly, in wards (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#4-3-pharmaceuticals-stock-ward-pharmaceuticals-stock-ward[4.3 Pharmaceuticals Stock Ward] in the User's Guide)
 the user may decide to manage lots manually or to ask the application to do it automatically.
 
 With *AUTOMATICLOT_IN = YES* the application generates a lot number automatically and only asks for an expiration date (mandatory). By default, AUTOMATICLOT_IN is set to NO. It is possible to change the value at any time.
@@ -723,7 +723,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital allows for managing the cost of medicals in the main pharmacy
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-2-2-2-insert-stock-charging-movement-charge[6.2.2.2 Insert stock charging movement] in the User's Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#4-2-2-2-insert-stock-charging-movement-charge[4.2.2.2 Insert stock charging movement] in the User's Guide).
 
 NOTE: An application restart is required to apply the modified setting.
 
@@ -739,7 +739,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can produce a report about the clinical history of a patient
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-9-clinical-sheet-clinical-sheet[10.9 Clinical Sheet] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-9-clinical-sheet-clinical-sheet[8.9 Clinical Sheet] in the User’s Guide).
 
 By default, PATIENTSHEET is set to patient_clinical_sheet, that is, the filename of the related report to use for the Clinical Sheet functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
@@ -758,7 +758,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can produce a report about the OPD chart of a patient
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-9-clinical-sheet-clinical-sheet[10.9 Clinical Sheet] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-9-clinical-sheet-clinical-sheet[8.9 Clinical Sheet] in the User’s Guide).
 
 By default, OPDCHART is set to patient_opd_chart which is the filename of the related report to use for the Clinical Sheet functionality *OPD Chart*.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
@@ -777,7 +777,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can produce a report about the Admission of a patient
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-9-clinical-sheet-clinical-sheet[10.9 Clinical Sheet] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-9-clinical-sheet-clinical-sheet[8.9 Clinical Sheet] in the User’s Guide).
 
 By default, ADMCHART is set to patient_adm_chart, that is, the filename of the related report to use for the Clinical Sheet functionality *Admission Chart*.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
@@ -796,7 +796,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can produce a report about the Discharge of a patient
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-9-clinical-sheet-clinical-sheet[10.9 Clinical Sheet] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-9-clinical-sheet-clinical-sheet[8.9 Clinical Sheet] in the User’s Guide).
 
 By default, DISCHART is set to patient_dis_chart which is the filename of the related report to use for the Clinical Sheet functionality *Discharge Chart*.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
@@ -815,7 +815,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can manage patient bills and produce an A4 format breakdown with his/her items and payments
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-2-functions-of-accounting[8.2 Functions of Accounting] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-2-functions-of-accounting[6.2 Functions of Accounting] in the User’s Guide).
 
 By default, PATIENTBILL is set to PatientBill, that is, the filename of the related report to use for the bill printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
@@ -852,7 +852,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can manage patient bills and produce a report about all bills paid (or not paid) monthly
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-2-functions-of-accounting[8.2 Functions of Accounting] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-2-functions-of-accounting[6.2 Functions of Accounting] in the User’s Guide).
 
 By default, BILLSREPORTMONTH is set to BillsReportMonth, that is, the filename of the related report to use for the account printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
@@ -871,7 +871,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can produce a report for the Pharmacy Stock critical levels which helps to identify which pharmaceuticals are running low and which ones need to be ordered
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-1-pharmaceuticals-pharmaceuticals[6.1 Pharmaceuticals] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#4-1-pharmaceuticals-pharmaceuticals[4.1 Pharmaceuticals] in the User’s Guide).
 
 By default, PHARMACEUTICALORDER is set to PharmaceuticalOrder, that is the filename of the related report to use for the pharmacy printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
@@ -907,7 +907,7 @@ The following table shows the default value and the allowed ones:
 |PATIENTEXTENDED |yes |yes, no
 |===
 
-Open Hospital allows for the registration of a patient with extended or more detailed information (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-4-insert-a-new-patient-extended-new-patient[10.4 Insert a new Patient Extended] in the User’s Guide).
+Open Hospital allows for the registration of a patient with extended or more detailed information (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-4-insert-a-new-patient-extended-new-patient[8.4 Insert a new Patient Extended] in the User’s Guide).
 
 By default, PATIENTEXTENDED is set to yes. It is possible to set it to no to reduce the amount of data collected and so reduce the workload for the staff involved in data entry.
 
@@ -965,7 +965,7 @@ The following table shows the default value and the allowed ones:
 Open Hospital can force every laboratory exam to be linked to a registered patient,
 to have a comprehensive clinical history. For each exam, the user will be asked to select a registered patient so from that moment the 
 exam will be attached to the patient's history
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#7-3-2-new-laboratory-exam-v-2-0[7.3.2 New Laboratory Exam] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#5-3-2-new-laboratory-exam-v-2-0[5.3.2 New Laboratory Exam] in the User’s Guide).
 
 By default, LABEXTENDED is set to yes. Anyway, is possible to set it to no to reduce the amount of data to be collected 
 (only name, age, sex, no patient registration) and so reduce the workload for the staff involved in data entry.
@@ -985,7 +985,7 @@ The following table shows the default value and the allowed ones:
 
 Open Hospital can insert multiple laboratory tests per patient at one time to avoid the repetitive operation of selecting a patient or writing his/her name;
 note that the LABEXTENDED option must also be set to yes
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#7-3-3-laboratory-multiple-insert[7.3.3 Laboratory Multiple Insert] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#5-3-3-laboratory-multiple-insert[5.3.3 Laboratory Multiple Insert] in the User’s Guide).
 
 By default, LABMULTIPLEINSERT is set to yes, but if LABEXTENDED is set to no it will be just ignored.
 
@@ -1003,7 +1003,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can register all dispensing to patients within a ward. Activating this option, the Pharmaceutical Stock Ward functionality will be available in the application
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-11-merge-function-merge[Merge function] in the User's Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#811-merge-function-merge[Merge function] in the User's Guide).
 
 By default, INTERNALPHARMACIES is set to yes.
 
@@ -1023,7 +1023,7 @@ The following table shows the default value and the allowed ones:
 Open Hospital can merge two patient’s histories into one.
 This is particularly useful in the case of double registration where different information was collected over time. 
 Activating this option, the Merge functionality will be available in the Admission/Patient module
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-11-merge-function-merge[Merge function] in the User's Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#811-merge-function-merge[Merge function] in the User's Guide).
 
 By default, MERGEFUNCTION is set to no.
 
@@ -1045,7 +1045,7 @@ any executable filename in the path or with an absolute path
 
 Open Hospital can use a different PDF reader for generated reports.
 If this parameter is set to yes, the Jasper PDF Viewer is used
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#11-2-report-launcher-launch-report[Report Launcher] in the User's Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#92-report-launcher-launch-report[Report Launcher] in the User's Guide).
 If another PDF viewer is required, specify the executable's filename.
 One must ensure that the executable is available in the desktop environment.
 
@@ -1119,7 +1119,7 @@ The following table shows the default value and the allowed ones:
 
 Open Hospital can indicate whether information can be sent to patients via SMS notifications.
 Enabling or disabling this option only affects the possibility to set, or not set, a therapy as notifiable
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-10-7-notify-sms[10.10.7 Notify & SMS] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-10-7-notify-sms[8.10.7 Notify & SMS] in the User’s Guide).
 
 By default, SMSENABLED is set to no.
 
@@ -1186,7 +1186,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can manage text or ZPL printers with aim of printing simple receipts in the Accounting module
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-1-2-11-print-receipt-function[8.2.1.11 Print receipt] function in User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-1-2-11-print-receipt-function[6.2.1.11 Print receipt] function in User’s Guide).
 Once this option is activated, additional parameters are needed in the *txtPrinter.properties file* to adjust the output with the printer connected to the system
 (see <<txtprinter-properties,txtPrinter.properties>> in this document).
 
@@ -1208,7 +1208,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can drive any webcam with the aim of capturing patient's images in the Admission/Patient module
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-4-3-patient-photo-new-photo[10.4.3 Patient Photo] function in User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-4-3-patient-photo-new-photo[8.4.3 Patient Photo] function in User’s Guide).
 Once this option is activated the related button, *New Photo* in the *New Patient* window is available to start and use the webcam.
 
 By default, VIDEOMODULEENABLED is set to no.
@@ -1227,7 +1227,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can register vaccines given to patients
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#9-vaccines-patient-vaccines[9 Vaccines] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#7-vaccines-patient-vaccines[7 Vaccines] in the User’s Guide).
 This option allows toggling the patient’s full name in the *_Patient Vaccine Browser_* window.
 
 By default, PATIENTVACCINEEXTENDED is set to yes.
@@ -1246,7 +1246,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital can optimize memory usage when the number of registered patients becomes large
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-2-2-search-patient-enhanced[10.2.2 Search patient Enhanced] in the User’s Guide).
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-2-2-search-patient-enhanced[8.2.2 Search patient Enhanced] in the User’s Guide).
 With the enhanced search only, the patient matching a search criterion will be loaded in the memory, otherwise, all patients registered in the system will be loaded in the *_Patient Browser_* window.
 
 By default, ENHANCEDSEARCH is set to no.
@@ -1267,7 +1267,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital embeds a technology that allows users logged into the application to chat and share information related to the hospital activities
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#13-communication-communication[13 Communication] in the User’s Guide);
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#11-communication-communication[11 Communication] in the User’s Guide);
 the SINGLEUSER option must be set to no too. If this option is active, Open Hospital will look for an XMPP Server at startup time. The *xmpp.properties* will be used to point to the server that must be installed on the computer or on the OH Server by the System Administrator
 (see <<xmpp-properties,xmpp.properties>> in this document).
 
@@ -1323,7 +1323,7 @@ The following table shows the default value and the allowed ones:
 
 Open Hospital can run in debug mode when it would be useful to understand what is happening behind the user graphical interface.
 Currently, this option affects only the video module, which means that in place of the normal *New Patient* window
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#10-4-3-patient-photo-new-photo[10.4.3 Patient Photo] function in User’s Guide),
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-4-3-patient-photo-new-photo[8.4.3 Patient Photo] function in User’s Guide),
 the program opens the new special window shown below:
 
 image:image26.png[New Patient Extended_photo_debug.PNG,width=645,height=535]
@@ -1732,7 +1732,7 @@ printing dialog allowing a change to the printer at every print attempt:
 image:image42.png[image,width=291,height=245]
 
 * *PRINT_AS_PAID*: This changes the behavior when a Bill is set to PAID in the Accounting module
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-1-2-11-print-receipt-function[8.2.1.11 Print receipt] function in User’s Guide). +
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-1-2-11-print-receipt-function[6.2.1.11 Print receipt] function in User’s Guide). +
  ** If it is set to _yes_, Open Hospital will try to print a receipt just after a Bill is set to PAID +
  *** A confirmation window will appear (see below), otherwise, it must be done after, by pressing the *[.underline]##E##dit Bill* button on the already closed (“C”) bill
 
@@ -1765,7 +1765,7 @@ PORT=5222
 This file is used only if the XMPPMODULEENABLED flag is enabled (see <<xmppmoduleenabled,XMPPMODULEENABLED>> in this document).
 
 To use the Communication module
-(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#13-communication-communication[13 Communication] in the User’s Guide), install an
+(see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#11-communication-communication[11 Communication] in the User’s Guide), install an
 XMPP Server separately on the OH Server, typically on the same machine as the database server.
 
 The most common XMPP Server is the free and open-source project Ignite Openfire® (http://www.igniterealtime.org/projects/openfire/) available for Linux, Windows, and Mac.

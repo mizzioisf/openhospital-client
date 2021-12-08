@@ -717,7 +717,7 @@ It is possible to create, modify or delete exams.
 
 === 5.2 Functions of Laboratory
 
-* To access the Laboratory’s functions press *[.underline]##L##aboratory* on the main menu of Open Hospital. The *_Laboratory Browser_* window is shown:
+To access the Laboratory’s functions press *[.underline]##L##aboratory* on the main menu of Open Hospital. The *_Laboratory Browser_* window is shown:
 
 All functions available under *[.underline]##L##aboratory* are accessible from the *_Laboratory Browser_* window shown below. By default, the system shows all the laboratory exams record in the last week.
 
@@ -2226,7 +2226,7 @@ image:image137.png[Communication reports for Allan,width=377,height=284]
 
 <<<
 [#settings]
-== 11 Settings ([.underline]##S##ettings)
+== 12 Settings ([.underline]##S##ettings)
 
 === 12.1 Main Characteristics
 
