@@ -1801,7 +1801,7 @@ Bundles are the language (or translation) files provided with Open Hospital. As 
 
 where XY is an international country code.
 
-These files are property files (a text file), which contain multiple *key = value* pairs containing localized text for the language specified.
+These property files (text format) contain multiple *key = value* pairs containing localized text for the language specified.
 
 All files must be encoded in *UTF-8* to accept any language-specific characters (e.g. è ì ò à ñ ú ù ¡ ¿ ...).
 
@@ -2060,8 +2060,8 @@ mysql> source step_39_patientfolder_submenu.sql
 ----
 
 [start=7]
-. If any error message occurs you can report it to: +
-https://openhospital.atlassian.net/
+. If any error message occurs you can report an issue here:+
+ https://openhospital.atlassian.net/.
 . If the procedure is successful, replace the OH working copy on each client with the new one and connect it to the same DB
 (see <<database-properties,database.properties>> and <<log4j-properties,log4j.properties>>).
 Remember to mantain the configuration files that have been changed, to preserve the custom settings.
