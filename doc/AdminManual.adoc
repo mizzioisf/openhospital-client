@@ -57,8 +57,9 @@ Minimum hardware requirements for running Open Hospital:
 * PC / Notebook with dual core CPU
 * 2 Gb RAM (4 Gb recommended)
 * 4 Gb free hard disk space (8 Gb recommended)
+* Netowrk adapter (for client/server configuration)
 
-These specifications are for client only; database server specifications may vary accordingly to the different use cases.
+These specifications are for OH client only; database server specifications may vary accordingly to the different use cases.
 
 === 1.3 Software requirements
 
@@ -113,10 +114,11 @@ NOTE: Do not run OH by double-clicking on the oh.bat startup script without unzi
 
 === 1.7 Documentation
 
-In the following chapters, all the information needed to install, configure, run and maintain an Open Hospital installation are presented.
-The information included also allows enabling and disabling functionality as well as managing users and groups.
-The information needed to use the OH software is not included in this manual; please refer to the _User’s Guide_.
+In the following chapters, all the information needed to install, configure, deploy, run and maintain an Open Hospital 
+installation is presented, including procedures on how to enable and disable features as well as managing users and groups in a multi user environment.
 More information can be found on the Open Hospital web site https://www.open-hospital.org.
+
+NOTE: The information needed to use the OH software is not included in this manual; please refer to the _Open Hospital User’s Guide_.
 
 
 == 2 Installation
@@ -658,8 +660,8 @@ The following table shows the default value and the allowed ones:
 
 Open Hospital is designed to support multi-user usage. This means that is possible to define different users, arrange them by group and set different rights in application usage; for instance, a user “receptionist” may be able to register a new patient but not to prescribe a therapy.
 
-Open Hospital has a predefined user called “admin” that has all rights to access all the functionality of the application.
-When SINGLEUSER is set to YES (default) the program starts with this user and all the program functionality is available.
+Open Hospital has a predefined user called “admin” that has access rights to all the features of the application.
+When SINGLEUSER is set to YES (default) the program starts with this user and all the features are available.
 
 If SINGLEUSER is set to NO the following login window appears when the program is started:
 
@@ -871,7 +873,7 @@ The following table shows the default value and the allowed ones:
 Open Hospital can produce a report for the Pharmacy Stock critical levels which helps to identify which pharmaceuticals are running low and which ones need to be ordered
 (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#6-1-pharmaceuticals-pharmaceuticals[6.1 Pharmaceuticals] in the User’s Guide).
 
-By default, PHARMACEUTICALORDER is set to PharmaceuticalOrder, that is, the filename of the related report to use for the pharmacy printing functionality.
+By default, PHARMACEUTICALORDER is set to PharmaceuticalOrder, that is the filename of the related report to use for the pharmacy printing functionality.
 It is possible to use a different report by installing it in the report folder (see <<reports,Reports>>) and by changing this parameter.
 
 NOTE: An application restart is required to apply the modified setting.
@@ -1278,14 +1280,14 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital includes a feature that allows attaching DICOM files to a patient’s clinical sheet.
-When this option is enabled, a button, *DICOM*, appears in the patient Clinical sheet module.
+When this option is enabled, a *DICOM* button is shown in the patient Clinical sheet module.
 
 By default, DICOMMODULEENABLED is set to no.
 
 NOTE: An application restart is required to apply the modified setting.
 
 
-==== 3.1.30.1 DICOMTHUMBNAILS
+==== 3.1.31 DICOMTHUMBNAILS
 
 The following table shows the default value and the allowed ones:
 
@@ -1302,7 +1304,7 @@ By default, DICOMTHUMBNAILS is set to yes.
 NOTE: An application restart is required to apply the modified setting.
 
 
-==== 3.1.31 DEBUG
+==== 3.1.32 DEBUG
 
 The following table shows the default value and the allowed ones:
 
@@ -1329,7 +1331,7 @@ By default, DEBUG is set to no.
 NOTE: An application restart is required to apply the modified setting.
 
 
-==== 3.1.32 ALLOWMULTIPLEOPENEDBILL
+==== 3.1.33 ALLOWMULTIPLEOPENEDBILL
 
 The following table shows the default value and the allowed ones:
 
@@ -1348,7 +1350,7 @@ By default, ALLOWMULTIPLEOPENEDBILL is set to no.
 NOTE: An application restart is required to apply the modified setting.
 
 
-==== 3.1.33 OPENEDBILLSREPORT
+==== 3.1.34 OPENEDBILLSREPORT
 
 The following table shows the default value and the allowed ones:
 
@@ -1366,7 +1368,7 @@ By default, OPENEDBILLSREPORT is set to OH023_BillsReportMonth.
 NOTE: An application restart is required to apply the modified setting.
 
 
-==== 3.1.34 ALLOWPRINTOPENEDBILL
+==== 3.1.35 ALLOWPRINTOPENEDBILL
 
 The following table shows the default value and the allowed ones:
 

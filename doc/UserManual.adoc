@@ -45,10 +45,10 @@ OH - Open Hospital features include:
 
 === 1.2 About this User Manual
 
-In the following chapters, all the information needed to correctly and efficiently use Open Hospital are presented. 
-More information can be found on the Open Hospital web site https://www.open-hospital.org.
+In the following chapters, all the information needed to use correctly and efficiently the OH software is presented.
+More information can be found on the Open Hospital web site: https://www.open-hospital.org.
 
-NOTE: The information needed to install, configure or administer the OH software is not included in this manual; please refer to the _Administrator’s Guide_ supplied with the software.
+NOTE: The information needed to install, configure or administer Open Hospital is not included in this manual; please refer to the _Open Hospital Administrator’s Guide_ supplied with the software.
 
 ==== 1.2.1 Help
 
@@ -424,7 +424,7 @@ The Pharmaceutical Stock feature is used to store and trace every stock movement
 
 * date of the movement
 * type of the movement, that is, if it is a charging or discharging one
-* the ward that the movement refers to. This characteristic is needed for discharging movements only. It is important to know in which ward pharmaceuticals have been used, otherwise, this field is empty
+* the ward that the movement refers to. This feature is needed for discharging movements only. It is important to know in which ward pharmaceuticals have been used, otherwise, this field is empty
 * the quantity
 * the pharmaceutical (which in turn relates to different categories: Laboratory, Surgery, Drugs or Chemical)
 * the lot to which the movement is referred to. Some pharmaceuticals may not have a lot related (for example ‘Gloves’), so the field can be omitted. It is recommended to store even the lot (if it exists) because every lot has its own peculiarity:
