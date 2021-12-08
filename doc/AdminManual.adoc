@@ -526,9 +526,8 @@ Depending on the chosen operating system and architecture, the needed external a
 [#configuration]
 == 3 Configuration
 
-Configuration of the local Open Hospital instance (CLIENT and PORTABLE mode) can be adapted by setting the desired parameters in the text files called “properties files”. Open Hospital uses the following properties files:
+Configuration of the local Open Hospital instance (CLIENT and PORTABLE mode) is set in the configuration files called “properties files”. The following properties files are available in the **oh/rsc** subfolder:
 
-* *oh/rsc/*
 ** *database.properties* – Open Hospital database connection
 ** *dicom.properties* – DICOM viewer module options
 ** *examination.properties* – contains the settings for the ‘examination’ module
