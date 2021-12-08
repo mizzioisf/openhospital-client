@@ -56,7 +56,9 @@ Minimum hardware requirements for running Open Hospital:
 
 * PC / Notebook with dual core CPU
 * 2 Gb RAM (4 Gb recommended)
-* 4 Gb free hard disk space
+* 4 Gb free hard disk space (8 Gb recommended)
+
+These specifications are for client only; database server specifications may vary accordingly to the different use cases.
 
 === 1.3 Software requirements
 
@@ -469,7 +471,7 @@ image:image22.png[image,width=642,height=461]
 [#restore-data]
 ==== 2.3.2 Restore of database (alternative with MySQL Workbench®)
 
-To restore data with MySQL Workbench®:
+To restore database data with MySQL Workbench®:
 
 [arabic]
 . Under *Server Administration* on the Home window select the server instance onto which the data will be restored (Create *New Server Instance* if doing it the first time).
@@ -484,7 +486,7 @@ To restore data with MySQL Workbench®:
 
 Backup of the Open Hospital *code and settings* can be performed by saving the *"oh"* folder. Configuration files are placed under the *"oh/rsc"* folder.
 
-Backup of the client *data and configuration files*, especially for "PORTABLE" mode, can be performed by saving the *"data"* folder (including all subfolders) placed under the main OH installation folder.
+Backup of the client *data and configuration files*, especially for "PORTABLE" mode, can be performed by saving/copying the *"data"* folder (including all subfolders) placed under the main OH installation folder.
 
 [#folders]
 === 2.4 Folders and directory structure
@@ -546,20 +548,21 @@ The properties files can be generated automatically from the packaged _.dist_ fi
 
 NOTE: Any change to these files requires an application restart to apply the settings.
 
-NOTE: The properties files are automatically generated at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
+NOTE: The properties files are automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
 
 The following chapters will describe these properties files and their features in detail.
 
 [#settings-properties]
 === 3.1 settings.properties
 
-The default _settings.properties_ file is:
+Open Hospital general configuration is set in the _settings.properties_ file.
+Default configuration is set in the _settings.properties.dist_ file:
 
 [source,properties]
 ----
 # This file contains Open Hospital settings
-LANGUAGE=en
-SINGLEUSER=no
+LANGUAGE=OH_LANGUAGE
+SINGLEUSER=yes
 AUTOMATICLOT_IN=no
 AUTOMATICLOT_OUT=no
 AUTOMATICLOTWARD_TOWARD=no
@@ -587,7 +590,7 @@ INTERNALPHARMACIES=yes
 MERGEFUNCTION=yes
 SMSENABLED=no
 INTERNALVIEWER=yes
-DOC_DIR=doc
+DOC_DIR=OH_DOC_DIR
 MAINMENUALWAYSONTOP=no
 RECEIPTPRINTER=yes
 VIDEOMODULEENABLED=yes
@@ -617,7 +620,7 @@ In following chapters will describe the meaning of each of the key/value pairs.
 [#language]
 ==== 3.1.1 LANGUAGE
 
-The following table shows the default value and the allowed ones:
+The following table shows the allowed values for the OH_LANGUAGE variable:
 
 [cols=",,",options="header",]
 |===
@@ -642,6 +645,7 @@ If an unknown value is set, the local computer language is applied.
 
 NOTE: An application restart is required to apply the setting.
 
+NOTE: The OH_LANGUAGE setting is automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
 
 ==== 3.1.2 SINGLEUSER
 
@@ -1067,7 +1071,7 @@ NOTE: An application restart is required to see the modification applied.
 
 ==== 3.1.22 DOC_DIR
 
-The following table shows the default value and the allowed ones:
+The following table shows the allowed value for the DOC_DIR variable:
 
 [cols=",,",options="header",]
 |===
@@ -1075,8 +1079,8 @@ The following table shows the default value and the allowed ones:
 |DOC_DIR |doc | any path
 |===
 
-Open Hospital documentation is link:https://github.com/informatici/openhospital-doc[online] and PDF versions are compiled
-and published at each release, and put in a folder that must be accessible by the application; this folder might change
+Open Hospital documentation is available link:https://github.com/informatici/openhospital-doc[online]; PDF versions of the manuals
+are packaged with every OH release in a folder that must be accessible by the application; this folder might change
 depending on the application version, or eventually be customized by the administrator (e.g., subfolder on the Desktop)
 
 *Example in Windows*:
@@ -1098,6 +1102,8 @@ DOC_DIR=../doc
 By default, DOC_DIR is set to 'doc'.
 
 NOTE: An application restart is required to see the modification applied.
+
+NOTE: The DOC_DIR setting is automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
 
 
 ==== 3.1.23 SMSENABLED
@@ -1442,10 +1448,11 @@ dicom.storage.filesystem=Z:\OH\Shared|Dicom_images
 dicom.max.size=4M
 ----
 
+NOTE: The properties files are automatically generated/overwritten at any **oh.sh / oh.ps1**  startup, unless MANUAL_CONFIG option is set to "on" in the scripts.
+
 === 3.4 examination.properties
 
-Open Hospital comes with the _examination.properties_ file used in the examination module.
-The file is set as follow by default:
+Examination module configuration is set in the _examination.properties_ file:
 
 [source,properties]
 ----
@@ -1514,7 +1521,8 @@ RR_MAX = 100
 [#log4j-properties]
 === 3.5 log4j.properties
 
-The default _log4j.properties.dist_ file is:
+Logging configuration is set in the _log4j.properties_ file.
+Default configuration is set in the _log4j.properties.dist_ file:
 
 [source,properties]
 ----
@@ -1611,7 +1619,7 @@ NOTE: An application restart is required to see the effect of any applied parame
 [#sms-properties]
 === 3.6 sms.properties
 
-The default _sms.properties_ file is:
+SMS communication module configuration is set in the _sms.properties_ file:
 
 [source,properties]
 ----
@@ -1687,7 +1695,7 @@ This file defines the parameters for sending SMS using the Skebby HTTP API.
 [#txtprinter-properties]
 ===  3.7 txtPrinter.properties
 
-The default _txtPrinter.properties_ file is:
+Text printer configuration is set in the _txtPrinter.properties_ file:
 
 [source,properties]
 ----
@@ -1734,7 +1742,7 @@ NOTE: An application restart is required to see the modification applied.
 [#xmpp-properties]
 === 3.8 xmpp.properties
 
-Open Hospital comes with the _xmpp.properties_ file set as follows by default:
+XMPP module configuration is set in the the _xmpp.properties_ file:
 
 [source,properties]
 ----
