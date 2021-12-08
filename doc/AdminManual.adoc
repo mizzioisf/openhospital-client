@@ -1126,7 +1126,7 @@ By default, SMSENABLED is set to no.
 
 ===== 3.1.23.1 GSM Configuration
 
-To set up a GSM device, the GSM mode has to be defined in the sms.properties file (see <<sms-properties,sms.properties>>).
+To set up a GSM device, the GSM mode has to be defined in the _sms.properties_ file (see <<sms-properties,sms.properties>>).
 
 The default settings for a GSM modem should work with the majority of GSM devices (like phones, smartphones, USB modems, etc…).
 The exception is the PORT parameter which must be changed to match the SERIAL port address used by the device plugged into the system.
@@ -1138,7 +1138,12 @@ see <<log4j-properties,log4j.properties>>) and try to use the SetupGSM utility (
 
 ===== 3.1.23.2 SetupGSM utility
 
-To use the SetupGSM utility (oh.sh -G / oh.bat -> select *G* option) just follow these instructions:
+To use the SetupGSM utility launch the OH startup script with the G option:
+
+* On Windows launch **oh.bat** -> select *G* option
+* On linux launch **oh.sh -G**
+
+Once the utility has started, follow these instructions:
 
 . Plug the device into the system and be sure the system recognizes it, load a proper driver for it and assign a serial port (COM)
 . Launch the utility: the utility will scan all plugged devices and will try to recognize the modem (or phone) within them
@@ -1147,7 +1152,7 @@ To use the SetupGSM utility (oh.sh -G / oh.bat -> select *G* option) just follow
 image:image25.png[image,width=293,height=120]
 [start=4]
 . If the name of the device is the one meant to be used with the system then just click “yes”, otherwise click “no”, and the scan will continue
-. Once “yes” is selected the sms.properties file is automatically modified by the utility with the proper port address
+. Once “yes” is selected the _sms.properties_ file is automatically modified by the utility by inserting the proper port address.
 
 
 ==== 3.1.24 MAINMENUALWAYSONTOP
