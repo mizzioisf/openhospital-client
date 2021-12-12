@@ -1,4 +1,4 @@
-= Open Hospital User's Guide 1.11.1
+= Open Hospital 1.11.1 - User's Guide
 :icons: font
 :stem:
 :toc: left
@@ -59,14 +59,14 @@ this document [.underline]#offline#.
 
 In this document the following conventions are used:
 
-* When in the text of this document a word written in bold and highlighted in grey *–*
-like *[.underline]##P##harmacy* or *[.underline]##N##ew –* indicates a function of the application and it is also
+* When a text is written in bold and highlighted in grey *–*
+like *[.underline]##P##harmacy* or *[.underline]##N##ew –* it indicates a function of the application and it is also
 called a “button”. *[.underline]##P##harmacy* is a button.
 
-* When text is written in bold Italic (as an example, *_Laboratory Browser)_* it indicates the screen with the name
+* When a text is written in bold Italic (as an example, *_Laboratory Browser)_* it indicates the screen with the name
 “Laboratory Browser” (see example below). Each screen of the application is called a window. *_Laboratory Browser_* is a window.
 
-* When text is written in bold as - *Search patient visits –* it indicates a function of the application,
+* When a text is written in bold as - *Search patient visits –* it indicates a function of the application,
 or an area of the window (for example, *Data table*).
 
 * Each button always has a single letter with an underscore. The functionality offered by the button is made available by
@@ -152,12 +152,12 @@ Queries about ambulatory patient visits can be done using the search criteria av
 
 The following fields are available to select or narrow the resulting matches:
 
-* *Disease type*: Allows for the selection by a specific disease type or all disease types
-* *Disease*: Allows for the selection of a specific disease, or all diseases, or searching for partial matches by typing some letters in the search field
-* *Date*: “Date From” and “Date To” allows for the selection of all visits occurring during the specified period
-* *Age*: “Age From” and “Age To” allows for the selection of the patients by age
-* *Sex*: Allows for the selection of patients by sex: All / Male / Female
-* *Type of patient*: Allows for the selection of visits by type of attendance: All / New / Re-Attendance
+* *Disease type*: Select a specific disease type or all disease types
+* *Disease*: select a specific disease, or all diseases, or searching for partial matches by typing some letters in the search field
+* *Date*: “Date From” and “Date To” to select all visits occurring during the specified period
+* *Age*: “Age From” and “Age To” to select patients by age
+* *Sex*: Select patients by sex: All / Male / Female
+* *Type of patient*: Select visits by type of attendance: All / New / Re-Attendance
 
 After specifying the selection criteria, press the *[.underline]##S##earch* button.
 The counter at the bottom of the window indicates how many visits match the specified criteria
@@ -1402,7 +1402,7 @@ When finished modifying the data in the *Buttons panel* there are two choices:
 ==== 8.3.2 Delete a Patient (Dele[.underline]##t##e)
 
 To delete a stored patient select the patient in the *_Patient Browser_* window.
-Next press the *Dele[.underline]##t##e* button. The name of the patient is shown in the *_Question_* window below. The patient's data can then be deleted. Deleted information is no longer available in the system. _The patient is not completely removed from the system as the Administrator to restore the data at any time._
+Next press the *Dele[.underline]##t##e* button. The name of the patient is shown in the *_Question_* window below: by pressing "yes", the patient's data is deleted. Deleted information is no longer available in the system. _The patient is not completely removed from the system; ask the Administrator to restore the data if needed._
 
 image:image84.png[Delete a Patient]
 
@@ -1555,7 +1555,7 @@ Enter the following information:
 
 After entering the data, Open Hospital automatically calculates the BMI and displays the result on the human figure at the left.
 
-Where everything is correct, click *[.underline]##S##ave* to save the examination.
+When all the data has been entered, click *[.underline]##S##ave* to save the examination.
 
 To remove an examination, select one or more records in the lower table and click *[.underline]##D##elete* to delete them.
 
@@ -1704,7 +1704,7 @@ When the changes are complete the *Buttons panel* has the following choices:
 ==== 8.8.3 Delete an Admission ([.underline]##D##elete)
 
 To delete a stored admission select the admission in the *_Patient Data_* window.
-Next, press the *[.underline]##D#elete* button. A confirmation window is shown; now the admission can be deleted. Deleted admissions are no longer available.
+Next, press the *[.underline]##D##elete* button. A confirmation window is shown; now the admission can be deleted. Deleted admissions are no longer available.
 
 image:image101.png[Delete confirmation]
 
@@ -1763,12 +1763,12 @@ image:image104.png[Patient Data,width=624,height=368]
 The window does not allow changing the data but, for the selected patient, it shows all the outpatient (OPD) visits, the Admissions, his/her Laboratory exams and the various surgeries they underwent;
 by clicking on a row in the *Data table* at the top of the window, the related laboratory exams will be shown as follows:
 
-* the selected row is an Admission: all the exams done between the admission date and the discharge date are shown in the *Data table*, in the *_Exams_* tab
-* the selected row is an outpatient (OPD) visit: all the exams done after the selected OPD visit until the next one (if any) or next admission date (if any) are shown in the *Data table*, in the *_Exams_* tab
+* the selected row is an Admission: all the exams done between the admission date and the discharge date are shown in the *Data table*, in the *_Exams_* tab;
+* the selected row is an outpatient (OPD) visit: all the exams done after the selected OPD visit until the next one (if any) or next admission date (if any) are shown in the *Data table*, in the *_Exams_* tab.
 
 The tab *_Operations_* shows the various operations recorded for the selected patient between the admission date and the discharge date.
 
-The tab *_Drugs_* shows the drugs recorded for the selected patient
+The tab *_Drugs_* shows the drugs recorded for the selected patient.
 
 The *Buttons panel* has the following choices:
 
@@ -1809,7 +1809,7 @@ Next, the following data to be used for the DICOM is prompted for (or the multi-
 
 * *Date*: the system will propose the current date or other dates provided by the DICOM file itself
 * *Category*: optionally select a Dicom category (see <<dicom-types,Dicom Types>>):
-* *Description*: the description to be used
+* *Description*: the description to be used.
 
 image:image243.png[Dicom information,width=282,height=200]
 
@@ -1965,9 +1965,9 @@ Use these two checkboxes to set the therapies plan for this patient as important
 
 Briefly, the SMS notification works in the following way:
 
-* therapies: will be notified to the patient with an SMS at 8:00 am, with text “REMINDER: “ + therapy details
-* visits: will be notified to the patient with an SMS 24 hours before the scheduled date and time, with the text “REMINDER VISIT: “ + visit details (see
-<<sms-manager,SMS Manager>>)
+* therapies: a notification will be sent to the patient with an SMS at 8:00 am, with text **“REMINDER: “ + therapy details**;
+* visits: a notification will be sent to the patient with an SMS 24 hours before the scheduled date and time, with the text **“REMINDER VISIT: “ + visit details** (see
+<<sms-manager,SMS Manager>>).
 
 ==== 8.10.8 Visits
 
@@ -2151,7 +2151,7 @@ Through the communication module events and notifications can be shared among us
 [caption="Main Menu: "]
 image:image0_DefaultMainMenu.png[Default Main Menu,width=250,height=627]
 
-This function is used to chat and share information with other users logged in the system if in turn the application has been set in [.underline]#multi-user# mode and an [.underline]#XMPP Server# is active and running (Ask the Administrator or refer to the __Administrator’s Guide_).
+This function is used to chat and share information with other users logged in the system if in turn the application has been set in [.underline]#multi-user# mode and an [.underline]#XMPP Server# is active and running (Ask the Administrator or refer to the _Administrator’s Guide_).
 
 The functionality allows the following tasks:
 
@@ -2352,7 +2352,7 @@ The Delivery Result Types defined are used in the Admission function (see
 
 Once the *De[.underline]##l##ivery Type* button in the *_Types_* menu is pressed, the *_Delivery Type Browser_* window is shown:
 
-image:image142.PNG[Discharge Types]
+image:image142.png[Discharge Types]
 
 The functions available in this window (similar to other windows in the *_Types_* menu) are:
 
@@ -2368,7 +2368,7 @@ The Delivery Types defined are used in the Admission function (see
 
 Once the *[.underline]##D##isease Type* button in the *_Types_* menu is pressed, the *_Disease Type Browser_* window is shown:
 
-image:image144.PNG[Disease Type]
+image:image144.png[Disease Type]
 
 The functions available in this window (similar to other windows in the *_Types_* menu) are:
 
@@ -2638,7 +2638,7 @@ The functions available in this window are:
 
 By pressing the *[.underline]##E##dit* button, the *_Edit Disease_* window is shown:
 
-image:image167.PNG[Edit Disease]
+image:image167.png[Edit Disease]
 
 In editing mode, the type and code cannot be changed and the the only modifications allowed are to the Description and if the disease should appear only in OPD, or Admissions, or in both.
 
