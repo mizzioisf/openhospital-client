@@ -89,7 +89,7 @@ cd openhospital-client
    -v    show OH software version and configuration
    -X    clean/reset OH installation
 ```
---------------------
+
 ## Windows
 
 - double click on the **oh.bat** batch file and choose among available options:
@@ -125,7 +125,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
  X    clean/reset OH installation
  q    quit
 ```
---------------------
+
 Note: The **oh.bat** launches the **oh.ps1** startup file automatically.
 The script presents the interactive menu that can be used to setup and choose how to run Open Hospital.
 
@@ -346,6 +346,7 @@ sudo apt-get install libaio1
 ## Windows
 
 Powershell minimun version 5.1 is required to run oh.ps1.
+To install Powershell 5.1 go to https://www.microsoft.com/en-us/download/details.aspx?id=54616
 
 Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit jre is mandatory.
 If you need DICOM on Windows 64 bit set **DICOM_ENABLE="on"** in the script.

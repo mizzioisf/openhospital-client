@@ -214,8 +214,7 @@ NOTE: If the terminal does not reply as above most probably during installation 
 ===== 2.1.3.2 MariaDB/MySQL - Configuration
 
 Please use the following configuration values for MariaDB/MySQL server in _my.cnf_ config file. Values can be adjusted and adapted to the hardware resources available.
-Config file can be _my.ini_ or _my.cnf_;
-Default for Windows MariaDB is _my.ini_ located at "C:\Program Files\MariaDB-[VERSION]\data\"
+Config file can be _my.ini_ or _my.cnf_; default for Windows MariaDB is _my.ini_ located at "C:\Program Files\MariaDB-[VERSION]\data\"
 
 ----
 #
@@ -450,7 +449,8 @@ archive remain unchanged once extracted, otherwise the launcher cannot launch or
 NOTE: Important: the PORTABLE mode is meant to try or test the software or to be used in a facility (like a dispensary)
 where only a single computer is available. If the facility is large and more clients/operators need to work on the same data, the full installation (client/server) in a networked architecture is recommended.
 
-include::https://raw.githubusercontent.com/informatici/openhospital/master/oh-bundle/OH-README.md[lines=21..218,leveloffset=+2]
+include::../README.md[lines=52..285,leveloffset=+2]
+
 
 [#backup-restore]
 === 2.3 Backup & Restore
