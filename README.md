@@ -413,7 +413,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **New**: Save (see oh.sh -s) / Restore (oh.sh -r) database, available both for CLIENT and PORTABLE mode !
 - **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
 - **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
-- **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for testing
+- **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
 - **New**: test database connection option (see oh.sh -t)
 - **New**: displays software versions and current configuration (see oh.sh -v)
 - **New**: generate config files (see oh.sh -g)
@@ -434,5 +434,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.12.06*
+*last updated: 2021.12.12*
 
