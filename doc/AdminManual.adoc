@@ -1456,7 +1456,7 @@ Use the provided startup scripts in order to automatically generate the _dicom.p
 ** SqlDicomManager: DICOM files are stored in the database
 ** FileSystemDicomManager: DICOM files are stored in the file system
 * *OH_PATH_SUBSTITUTE/DICOM_DIR*: if the value of the first parameter is set to "FileSystemDicomManager",
-this property specifies the path where the DICOM files are stored. It is possible to specify a local folder (data/dicom_storage is the default path under the OH installation folder) or to set a shared network folder, userful for LAN - client / server environment. Suggested configuration is to map the network/NFS folder under the data/dicom_storage path with a symbolic link.
+this property specifies the path where the DICOM files are stored. It is possible to specify a local folder (_data/dicom_storage_ is the default path under the OH installation folder) or to set a shared network folder, userful for LAN - client/server environment. Suggested configuration is to map the network/NFS folder under the _data/dicom_storage_ path with a symbolic link.
 The shared folder needs read/write permissions for uploading DICOM images.
 * *DICOM_SIZE*: maximum allowed size for a dicom/jpg image (the MariaDB/MySQL server setting max_allowed_packet should be set with the same or a larger value).
 If not specified the default value of "4M" is used.
