@@ -302,6 +302,7 @@ function set_path {
 		if ( !(Test-Path "$OH_PATH\$SCRIPT_NAME") ) {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
 			Read-Host; exit 1
+		}
 		# set path variable with / in place of \ for configuration files
 		$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
 	}
