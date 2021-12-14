@@ -181,7 +181,7 @@ set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
 REM ######## Script start
 
 REM set path variable with / in place of \ for configuration file
-set OH_PATH_SUBSTITUTE=!OH_PATH:\=/! 
+set OH_PATH_SUBSTITUTE=%OH_PATH:\=/%
 
 echo Configuring Open Hospital...
 
