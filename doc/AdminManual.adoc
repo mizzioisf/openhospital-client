@@ -1278,7 +1278,7 @@ Open Hospital embeds a technology that allows users logged into the application 
 (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#11-communication-communication[11 Communication] in the User’s Guide);
 the SINGLEUSER option must be set to "no". If this option is active, Open Hospital will look for an XMPP Server at startup time. 
 
-See the <<xmpp-properties,xmpp.properties>> chapter for instructions on how to setup and configure the XMPP Server.
+See the <<xmpp-properties,xmpp.properties>> chapter for instructions on how to setup and configure the XMPP Server communication.
 
 By default, XMPPMODULEENABLED is set to no, but if SINGLEUSER is set to yes XMPPMODULEENABLED is ignored.
 
@@ -1791,8 +1791,8 @@ NOTE: An application restart is required to apply the modified setting.
 
 The XMPP module needs some knowledge about the XMPP protocol and how an XMPP server works.
 
-Every new log into Open Hospital creates an OpenFire user with the same username and password (even if passwords are saved
-differently in OH and OpenFire DB). For this reason, the OH "admin" user may conflict with OpenFire one not allowing the log in as admin and to chat.
+Every new user login into Open Hospital creates an OpenFire user with the same username and password (even if passwords are saved
+differently in OH and OpenFire DB). For this reason, the OH "admin" user may conflict with the OpenFire user, not allowing the log in as admin and to chat.
 
 NOTE: If the admin user needs to chat with other users consider creating another "superuser" in OH
 under the "admin" group.
