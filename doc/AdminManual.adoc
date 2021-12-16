@@ -1581,20 +1581,20 @@ log4j.logger.org.hibernate=LOG_LEVEL,RollingFile,StdOut
 #log4j.logger.org.hibernate.SQL=INFO,RollingFile,StdOut
 ----
 
-Use the provided startup scripts in order to automatically generate the _log4j.properties_ file from the corresponding _.dist_ file, or set manually the following parameters:
+Use the provided OH startup scripts in order to automatically generate the _log4j.properties_ file from the corresponding _.dist_ file, or set manually the following parameters:
 
 * *DBSERVER*: the IP address of the OH Database Server. 
 IP address can be set to: +
 _127.0.0.1_ – localhost / loopback network +
 _192.168.0.100_ – an example of a private IP address (LAN) +
 _217.147.110.117_ – an example of a public IP address (WAN)
-* *DBPORT*: the TCP port of the OH database Server
-* *DBNAME*: the database name
-* *DBUSER*: the database user
+* *DBPORT*: the TCP port of the OH database Server (default _3306_)
+* *DBNAME*: the database name (default _oh_)
+* *DBUSER*: the database user (default _isf_)
 * *DBPASS*: the database user password
 * *LOG_LEVEL*: the OH application log level - can be set to  INFO|DEBUG|TRACE
 
-NOTE: The same settings must be applied in _database.properties_, see
+NOTE: The same settings must be applied in the _database.properties_ configuration file, see
 <<database-properties,database.properties>> in this manual.
 
 [source,properties]
@@ -1624,9 +1624,7 @@ log4j.category.org.isf=INFO,RollingFile,StdOut
 ----
 
 If the DB appender is specified, the configuration must be set to match the settings in the _database.properties_ file
-(see <<database-properties,database.properties>>). The most important properties are those highlighted in *red* below:
-
-image:image37.png[image,width=645,height=84]
+(see <<database-properties,database.properties>>).
 
 NOTE: The _log4j.properties_ file is automatically generated/overwritten at any Open Hospital startup, unless MANUAL_CONFIG option is set to "on" in the **oh.sh / oh.ps1** scripts.
 
