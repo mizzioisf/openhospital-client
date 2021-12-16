@@ -385,13 +385,15 @@ NOTE: Remember to set the updated database password also in the Open Hospital co
 
 ==== 2.1.5 OH - Database configuration
 
-To set up the database connection for Open Hospital, edit and configure the database settings in the **oh.sh / oh.ps1** startup scripts or directly modify the _database.properties_ and _log4j.properties_ files, located in the _oh/rsc/_ “resource” folder.
+To set up the database connection for Open Hospital, edit and configure the database settings in the **oh.sh / oh.ps1** startup scripts or directly modify the _database.properties_ and _log4j.properties_ configuration files, located in the _oh/rsc/_ resource folder.
 
 Specify:
 
-* the *IP address* of the machine where the database server was installed and containing the Open Hospital database. Replace “localhost” with the server IP address (e.g., 192.168.1.100)
-* the “isf” user (or the user specified in the installation phase) *password*
-* the MariaDB/MySQL Server *Port Number*, if changed from the default “3306”
+* the *IP address* of the the MariaDB/MySQL Server database server hosting the the Open Hospital database. Replace “localhost” with the server IP address (e.g., 192.168.1.100)
+* the *TCP Port Number* of the database server, if changed from the default “3306”
+* the *Database name* - default is "oh"
+* the *Database user* user (or the user specified in the installation phase) - default is "isf"
+* the *Database password* associated with the user
 
 NOTE: These settings are required for every Open Hospital installation/client.
 
