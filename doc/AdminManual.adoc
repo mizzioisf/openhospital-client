@@ -390,8 +390,8 @@ To set up the database connection for Open Hospital, edit and configure the data
 Specify:
 
 * the *IP address* of the the MariaDB/MySQL Server database server hosting the the Open Hospital database. Replace “localhost” with the server IP address (e.g., 192.168.1.100)
-* the *TCP Port Number* of the database server, if changed from the default “3306”
-* the *Database name* - default is "oh"
+* the *TCP Port Number* of the database server - default is “3306"
+* the *Database name* of the OH installation - default is "oh"
 * the *Database user* user (or the user specified in the installation phase) - default is "isf"
 * the *Database password* associated with the user
 
@@ -1590,9 +1590,9 @@ IP address can be set to: +
 _127.0.0.1_ – localhost / loopback network +
 _192.168.0.100_ – an example of a private IP address (LAN) +
 _217.147.110.117_ – an example of a public IP address (WAN)
-* *DBPORT*: the TCP port of the OH database Server (default _3306_)
-* *DBNAME*: the database name (default _oh_)
-* *DBUSER*: the database user (default _isf_)
+* *DBPORT*: the TCP port of the OH database Server - default is "3306"
+* *DBNAME*: the database name - default is "oh"
+* *DBUSER*: the database user - default is "isf"
 * *DBPASS*: the database user password
 * *LOG_LEVEL*: the OH application log level - can be set to  INFO|DEBUG|TRACE
 
