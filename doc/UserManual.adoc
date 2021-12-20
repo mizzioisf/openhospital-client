@@ -2967,7 +2967,9 @@ So, the Registration Office group can only use the Admission/Patient module to i
 
 So, the “main menu” for each user registered in the Registration Office group and for each one in the Cashiers group is shown as follows:
 
-image:image194.png[Main Menu,width=641,height=386]
+|===
+|image:OH-main_menu_s1.png[OH Main Menu 1]|image:OH-main_menu_s2.png[OH Main Menu 2]
+|===
 
 ==== 12.12.2 Users ([.underline]##U##sers)
 
