@@ -37,7 +37,7 @@ SCRIPT_NAME=$(basename "$0")
 # with the settings defined in this script.
 #
 # Default is set to "off": configuration files will not be generated or overwritten if already present
-CONFIG_FILES_GENERATION=on
+#CONFIG_FILES_GENERATION=off
 
 ############## OH general configuration - change at your own risk :-) ##############
 
@@ -360,19 +360,23 @@ fi
 }
 
 function config_database {
-	# find a free TCP port to run MySQL starting from the default port
-	echo "Looking for a free TCP port for MySQL database..."
-	while [[ $(ss -tl4  sport = :$MYSQL_PORT | grep LISTEN) ]]; do
-		MYSQL_PORT=$(expr $MYSQL_PORT + 1)
-	done
-	echo "Found TCP port $MYSQL_PORT!"
+	echo "Checking for MySQL config file..."
+	
+	if [ $CONFIG_FILES_GENERATION = "on" ] || [ ! -f ./$CONF_DIR/my.cnf ]; then
+		[ -f ./$CONF_DIR/my.cnf ] && mv -f ./$CONF_DIR/my.cnf ./$CONF_DIR/my.cnf.old
 
-	# create MySQL configuration
-	echo "Generating MySQL config file..."
-	[ -f ./$CONF_DIR/my.cnf ] && mv -f ./$CONF_DIR/my.cnf ./$CONF_DIR/my.cnf.old
-	sed -e "s/MYSQL_SERVER/$MYSQL_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-	-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
-	-e "s/MYSQL_PORT/$MYSQL_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/my.cnf
+		# find a free TCP port to run MySQL starting from the default port
+		echo "Looking for a free TCP port for MySQL database..."
+		while [[ $(ss -tl4  sport = :$MYSQL_PORT | grep LISTEN) ]]; do
+			MYSQL_PORT=$(expr $MYSQL_PORT + 1)
+		done
+		echo "Found TCP port $MYSQL_PORT!"
+
+		echo "Generating MySQL config file..."
+		sed -e "s/MYSQL_SERVER/$MYSQL_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
+		-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
+		-e "s/MYSQL_PORT/$MYSQL_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/my.cnf
+	fi
 }
 
 function initialize_database {
@@ -540,37 +544,38 @@ function clean_files {
 
 function generate_config_files {
 	# set up configuration files
-	echo "Generating OH configuration files..."
+	echo "Checking for OH configuration files..."
 	######## DICOM setup
-	if [ $CONFIG_FILES_GENERATION = "on" ] | | [ ! -f ./$OH_DIR/rsc/dicom.properties ];
-	then
-		mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
+	if [ $CONFIG_FILES_GENERATION = "on" ] || [ ! -f ./$OH_DIR/rsc/dicom.properties ]; then
+		[ -f ./$OH_DIR/rsc/dicom.properties ] && mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
+		echo "Generating OH configuration file -> dicom.properties..."
 		sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
 		-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
 	fi
 
 	######## log4j.properties setup
-	if [ $CONFIG_FILES_GENERATION = "on" ] | | [ ! -f ./$OH_DIR/rsc/log4j.properties ];
-	then
+	if [ $CONFIG_FILES_GENERATION = "on" ] || [ ! -f ./$OH_DIR/rsc/log4j.properties ]; then
 		OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
-		mv -f ./$OH_DIR/rsc/log4j.properties ./$OH_DIR/rsc/log4j.properties.old
+		[ -f ./$OH_DIR/rsc/log4j.properties ] && mv -f ./$OH_DIR/rsc/log4j.properties ./$OH_DIR/rsc/log4j.properties.old
+		echo "Generating OH configuration file -> log4j.properties..."
 		sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		-e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
 		./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
 	fi
 
 	######## database.properties setup 
-	if [ $CONFIG_FILES_GENERATION = "on" ] | | [ ! -f ./$OH_DIR/rsc/database.properties ];
-	then
-		mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
+	if [ $CONFIG_FILES_GENERATION = "on" ] || [ ! -f ./$OH_DIR/rsc/database.properties ]; then
+		[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
+		echo "Generating OH configuration file -> database.properties..."
 		sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
 		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
 	fi
 	######## settings.properties setup
 	# set language and DOC_DIR in OH config file
-	if [ $CONFIG_FILES_GENERATION = "on" ] | | [ ! -f ./$OH_DIR/rsc/settings.properties ];
-		mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
+	if [ $CONFIG_FILES_GENERATION = "on" ] || [ ! -f ./$OH_DIR/rsc/settings.properties ]; then
+		[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
+		echo "Generating OH configuration file -> settings.properties..."
 		sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
 	fi
 }
@@ -627,7 +632,6 @@ while getopts ${OPTSTRING} opt; do
 		;;
 	g)	# generate config files and exit
 		# setting $OH_DIR
-		OH_DIR=".";
 		CONFIG_FILES_GENERATION="on"
 		generate_config_files;
 		echo "Done!"
@@ -680,9 +684,7 @@ while getopts ${OPTSTRING} opt; do
 			# check if database already exists
 			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 				mysql_check;
-				if [ $CONFIG_FILES_GENERATION != "on" ]; then
-					config_database;
-				fi
+				config_database;
 			else
 	        		echo "Error: no data found! Exiting."
 				exit 1
@@ -710,9 +712,7 @@ while getopts ${OPTSTRING} opt; do
 			# reset database if exists
 			clean_database;
 			mysql_check;
-			if [ $CONFIG_FILES_GENERATION = "on" ]; then
-				config_database;
-			fi
+			config_database;
 			initialize_dir_structure;
 			initialize_database;
 			start_database;	
@@ -841,9 +841,7 @@ if [ $OH_MODE = "PORTABLE" ]; then
 	# check for MySQL software
 	mysql_check;
 	# config MySQL
-	if [ $CONFIG_FILES_GENERATION = "on" ]; then
-		config_database;
-	fi
+	config_database;
 	# check if OH database already exists
 	if [ ! -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 		echo "OH database not found, starting from scratch..."
@@ -866,9 +864,7 @@ fi
 test_database_connection;
 
 # generate config files
-if [ $CONFIG_FILES_GENERATION = "on" ]; then
-	generate_config_files;
-fi
+generate_config_files;
 
 ######## Open Hospital start
 
