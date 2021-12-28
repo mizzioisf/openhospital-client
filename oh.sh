@@ -32,10 +32,12 @@ SCRIPT_NAME=$(basename "$0")
 
 ############## Script startup configuration - change at your own risk :-) ##############
 #
-# set MANUAL_CONFIG to "on" to setup configuration files manually
-# my.cnf and all oh/rsc/*.properties files will not be generated or
-# overwritten if already present
-#MANUAL_CONFIG=on
+# set CONFIG_FILES_GENERATION=on "on" to force generation / overwriting of configuration files:
+# data/conf/my.cnf oh/rsc/*.properties files will be regenerated from the original .dist files
+# with the settings defined in this script.
+#
+# Default is set to "off": configuration files will not be generated or overwritten if already present
+CONFIG_FILES_GENERATION=on
 
 ############## OH general configuration - change at your own risk :-) ##############
 
@@ -191,9 +193,9 @@ function get_confirmation {
 
 function set_defaults {
 	# set default values for script variables
-	# manual config - set default to off
-	if [ -z ${MANUAL_CONFIG+x} ]; then
-		MANUAL_CONFIG="off"
+	# config file generation - set default to off
+	if [ -z ${CONFIG_FILES_GENERATION+x} ]; then
+		CONFIG_FILES_GENERATION="off"
 	fi
 
 	# OH mode - set default to PORTABLE
@@ -540,27 +542,37 @@ function generate_config_files {
 	# set up configuration files
 	echo "Generating OH configuration files..."
 	######## DICOM setup
-	[ -f ./$OH_DIR/rsc/dicom.properties ] && mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
-	sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-	-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
+	if [ $CONFIG_FILES_GENERATION = "on" ] | | [ ! -f ./$OH_DIR/rsc/dicom.properties ];
+	then
+		mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
+		sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
+		-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
+	fi
 
 	######## log4j.properties setup
-	OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
-	[ -f ./$OH_DIR/rsc/log4j.properties ] && mv -f ./$OH_DIR/rsc/log4j.properties ./$OH_DIR/rsc/log4j.properties.old
-	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
-	-e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
-	./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
+	if [ $CONFIG_FILES_GENERATION = "on" ] | | [ ! -f ./$OH_DIR/rsc/log4j.properties ];
+	then
+		OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
+		mv -f ./$OH_DIR/rsc/log4j.properties ./$OH_DIR/rsc/log4j.properties.old
+		sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
+		-e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
+		./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
+	fi
 
 	######## database.properties setup 
-	[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
-	sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
-	-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
-	./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
-
+	if [ $CONFIG_FILES_GENERATION = "on" ] | | [ ! -f ./$OH_DIR/rsc/database.properties ];
+	then
+		mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
+		sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
+		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
+		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
+	fi
 	######## settings.properties setup
 	# set language and DOC_DIR in OH config file
-	[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
-	sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
+	if [ $CONFIG_FILES_GENERATION = "on" ] | | [ ! -f ./$OH_DIR/rsc/settings.properties ];
+		mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
+		sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
+	fi
 }
 
 
@@ -615,7 +627,8 @@ while getopts ${OPTSTRING} opt; do
 		;;
 	g)	# generate config files and exit
 		# setting $OH_DIR
-		[ -f ./rsc/settings.properties.dist ] && OH_DIR=".";
+		OH_DIR=".";
+		CONFIG_FILES_GENERATION="on"
 		generate_config_files;
 		echo "Done!"
 		exit 0;
@@ -667,7 +680,7 @@ while getopts ${OPTSTRING} opt; do
 			# check if database already exists
 			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 				mysql_check;
-				if [ $MANUAL_CONFIG != "on" ]; then
+				if [ $CONFIG_FILES_GENERATION != "on" ]; then
 					config_database;
 				fi
 			else
@@ -697,7 +710,7 @@ while getopts ${OPTSTRING} opt; do
 			# reset database if exists
 			clean_database;
 			mysql_check;
-			if [ $MANUAL_CONFIG != "on" ]; then
+			if [ $CONFIG_FILES_GENERATION = "on" ]; then
 				config_database;
 			fi
 			initialize_dir_structure;
@@ -806,7 +819,7 @@ if [ $DEMO_DATA = "on" ]; then
 fi
 
 # display running configuration
-echo "Manual config is set to $MANUAL_CONFIG"
+echo "Config file generation is set to $CONFIG_FILES_GENERATION"
 echo "Starting Open Hospital in $OH_MODE mode..."
 echo "OH_PATH is set to $OH_PATH"
 echo "OH language is set to $OH_LANGUAGE"
@@ -828,7 +841,7 @@ if [ $OH_MODE = "PORTABLE" ]; then
 	# check for MySQL software
 	mysql_check;
 	# config MySQL
-	if [ $MANUAL_CONFIG != "on" ]; then
+	if [ $CONFIG_FILES_GENERATION = "on" ]; then
 		config_database;
 	fi
 	# check if OH database already exists
@@ -853,7 +866,7 @@ fi
 test_database_connection;
 
 # generate config files
-if [ $MANUAL_CONFIG != "on" ]; then
+if [ $CONFIG_FILES_GENERATION = "on" ]; then
 	generate_config_files;
 fi
 
