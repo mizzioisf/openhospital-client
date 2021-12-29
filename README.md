@@ -187,6 +187,18 @@ This might also be useful to set different combinations of options (language, de
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 ```
 
+### Generate config files
+
+```
+# set GENERATE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
+# data/conf/my.cnf oh/rsc/*.properties files will be regenerated from the original .dist files
+# with the settings defined in this script.
+#
+# Default is set to "off": configuration files will not be generated or overwritten if already present.
+#
+#GENERATE_CONFIG_FILES="off"
+```
+
 ### Distribution type - CLIENT | PORTABLE
 
 ```
