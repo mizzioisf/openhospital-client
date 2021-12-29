@@ -692,8 +692,7 @@ function generate_config_files {
 	}
 
 	######## database.properties setup 
-	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or ! (Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties") ) {
-		if (Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties") { mv -Force $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old }
+	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties") ) {
 		Write-Host "Generating OH configuration file -> database.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
@@ -709,7 +708,7 @@ function generate_config_files {
 
 	######## settings.properties setup
 	# set language in OH config file
-	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or ! (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties") ) {
+	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties") ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties") { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old }
 		Write-Host "Generating OH configuration file -> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
