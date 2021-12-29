@@ -36,7 +36,8 @@ SCRIPT_NAME=$(basename "$0")
 # data/conf/my.cnf oh/rsc/*.properties files will be regenerated from the original .dist files
 # with the settings defined in this script.
 #
-# Default is set to "off": configuration files will not be generated or overwritten if already present
+# Default is set to "off": configuration files will not be generated or overwritten if already present.
+#
 #CONFIG_FILES_GENERATION="off"
 
 ############## OH general configuration - change at your own risk :-) ##############
