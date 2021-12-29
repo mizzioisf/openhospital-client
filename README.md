@@ -191,7 +191,7 @@ This might also be useful to set different combinations of options (language, de
 
 ```
 # set GENERATE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
-# data/conf/my.cnf oh/rsc/*.properties files will be regenerated from the original .dist files
+# data/conf/my.cnf and oh/rsc/*.properties files will be regenerated from the original .dist files
 # with the settings defined in this script.
 #
 # Default is set to "off": configuration files will not be generated or overwritten if already present.
