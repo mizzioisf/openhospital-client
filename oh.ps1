@@ -446,7 +446,7 @@ function config_database {
 	Write-Host "Checking for MySQL config file..."
 
 	$filetocheck="$OH_PATH/$CONF_DIR/my.cnf";
-	if ($script:CONFIG_FILES_GENERATION="on") -or ( !(Test-Path $filetocheck) ) {
+	if ($script:CONFIG_FILES_GENERATION -eq "on") -or ( !(Test-Path $filetocheck) ) {
 
 #		mv -Force "$OH_PATH/$CONF_DIR/my.cnf" "$OH_PATH/$CONF_DIR/my.cnf.old"
 		# find a free TCP port to run MySQL starting from the default port
@@ -668,7 +668,7 @@ function generate_config_files {
 	Write-Host "Checking for OH configuration files..."
 
 	######## DICOM setup
-	if ($script:CONFIG_FILES_GENERATION="on") -or ( !(Test-Path "$OH_PATH/$OH_DIR/rsc/dicom.properties")) {
+	if ($script:CONFIG_FILES_GENERATION -eq "on") -or ( !(Test-Path "$OH_PATH/$OH_DIR/rsc/dicom.properties")) {
 		mv -Force $OH_PATH/$OH_DIR/rsc/dicom.properties $OH_PATH/$OH_DIR/rsc/dicom.properties.old
 		Write-Host "Generating OH configuration file -> dicom.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/dicom.properties.dist").replace("OH_PATH_SUBSTITUTE","$OH_PATH_SUBSTITUTE") | Set-Content "$OH_PATH/$OH_DIR/rsc/dicom.properties"
@@ -678,7 +678,7 @@ function generate_config_files {
 	}
 
 	######## log4j.properties setup
-	if ($script:CONFIG_FILES_GENERATION="on") -or ( !(Test-Path "$OH_PATH/$OH_DIR/rsc/log4.properties" )) {
+	if ($script:CONFIG_FILES_GENERATION -eq "on") -or ( !(Test-Path "$OH_PATH/$OH_DIR/rsc/log4.properties" )) {
 		mv -Force $OH_PATH/$OH_DIR/rsc/log4j.properties $OH_PATH/$OH_DIR/rsc/log4j.properties.old
 		Write-Host "Generating OH configuration file -> log4j.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
@@ -691,7 +691,7 @@ function generate_config_files {
 	}
 
 	######## database.properties setup 
-	if ($script:CONFIG_FILES_GENERATION="on") -or ( ! (Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties" )) {
+	if ($script:CONFIG_FILES_GENERATION -eq "on") -or ( ! (Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties" )) {
 		mv -Force $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old
 		Write-Host "Generating OH configuration file -> database.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
@@ -708,7 +708,7 @@ function generate_config_files {
 
 	######## settings.properties setup
 	# set language in OH config file
-	if ($script:CONFIG_FILES_GENERATION="on") -or ( ! (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" )) {
+	if ($script:CONFIG_FILES_GENERATION -eq "on") -or ( ! (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" )) {
 		mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old
 		Write-Host "Generating OH configuration file -> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
