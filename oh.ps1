@@ -446,9 +446,8 @@ function mysql_check {
 function config_database {
 	Write-Host "Checking for MySQL config file..."
 
-	$filetocheck="$OH_PATH/$CONF_DIR/my.cnf";
-	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or  !(Test-Path $filetocheck) ) {
-	if (Test-Path $filetocheck ) { mv -Force $filetocheck $filetocheck.old }
+	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or  !(Test-Path "$OH_PATH/$CONF_DIR/my.cnf") ) {
+	if (Test-Path "$OH_PATH/$CONF_DIR/my.cnf" ) { mv -Force "$OH_PATH/$CONF_DIR/my.cnf" "$OH_PATH/$CONF_DIR/my.cnf.old" }
 
 		# find a free TCP port to run MySQL starting from the default port
 		Write-Host "Looking for a free TCP port for MySQL database..."
