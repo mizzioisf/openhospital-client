@@ -140,6 +140,7 @@ $script:DICOM_DIR="data/dicom_storage"
 
 $script:OH_DIR="oh"
 $script:OH_DOC_DIR="../doc"
+$script:OH_SINGLE_USER="yes" # set "no" for multiuser
 $script:CONF_DIR="data/conf"
 $script:DATA_DIR="data/db"
 $script:BACKUP_DIR="data/dump"
@@ -714,6 +715,9 @@ function generate_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set DOC_DIR in OH config file
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+
+		# set singleuser = yes / no
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
 
