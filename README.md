@@ -187,7 +187,7 @@ This might also be useful to set different combinations of options (language, de
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 ```
 
-### Generate config files
+### Config file generation
 
 ```
 # set GENERATE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
