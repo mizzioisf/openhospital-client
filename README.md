@@ -1,4 +1,4 @@
-# ![](./oh.ico) OH - Open Hospital Portable | Client 
+# ![](./doc/media/OH-icon.png) OH - Open Hospital Portable | Client 
 
 OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Electronic Health Record (EHR) software application.
 Open Hospital is deployed as a desktop application that can be used in a standalone, single user mode (PORTABLE mode)
