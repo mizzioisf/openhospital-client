@@ -473,6 +473,7 @@ function config_database {
 
 		Write-Host "Found TCP port $MYSQL_PORT!"
 
+		Write-Host "Generating MySQL config files..."
 		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
 		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("OH_PATH_SUBSTITUTE","$OH_PATH_SUBSTITUTE") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
 		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("MYSQL_SERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
