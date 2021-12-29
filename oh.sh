@@ -37,7 +37,7 @@ SCRIPT_NAME=$(basename "$0")
 # with the settings defined in this script.
 #
 # Default is set to "off": configuration files will not be generated or overwritten if already present
-#CONFIG_FILES_GENERATION=off
+#CONFIG_FILES_GENERATION="off"
 
 ############## OH general configuration - change at your own risk :-) ##############
 
@@ -525,13 +525,18 @@ function test_database_connection {
 }
 
 function clean_files {
-	# clean all configuration files - leave only .dist files
-	echo "Warning: do you want to remove all existing configuration and log files ?"
+	# remove all log files
+	echo "Warning: do you want to remove all existing log files ?"
 	get_confirmation;
-	echo "Removing files..."
+	echo "Removing log files..."
+	rm -f ./$LOG_DIR/*
+
+	# remove configuration files - leave only .dist files
+	echo "Warning: do you want to remove all existing configuration files ?"
+	get_confirmation;
+	echo "Removing configuration files..."
 	rm -f ./$CONF_DIR/my.cnf
 	rm -f ./$CONF_DIR/my.cnf.old
-	rm -f ./$LOG_DIR/*
 	rm -f ./$OH_DIR/rsc/settings.properties
 	rm -f ./$OH_DIR/rsc/settings.properties.old
 	rm -f ./$OH_DIR/rsc/database.properties
@@ -631,7 +636,6 @@ while getopts ${OPTSTRING} opt; do
 		DEMO_DATA="on"
 		;;
 	g)	# generate config files and exit
-		# setting $OH_DIR
 		CONFIG_FILES_GENERATION="on"
 		generate_config_files;
 		echo "Done!"
