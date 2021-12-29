@@ -20,7 +20,7 @@ The Windows version has been tested on Windows 7/10/11 (64/bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.11.1 Open Hospital release!**
+**New ! Updated to 1.11.2-RC Open Hospital release!**
 
 # Running OH - Ultra-quickstart
 
@@ -189,6 +189,9 @@ This might also be useful to set different combinations of options (language, de
 
 ### Config file generation
 
+It is possibile to set the GENERATE_CONFIG_FILES option to "on" to regenerate the OH configuration files at startup (this is also possibile by selecting the *g* script option).
+The default is set to off, so the configuration files are not regenerated and overwritten at every startup. This is useful for production environment where the configuration is fixed.
+
 ```
 # set GENERATE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
 # data/conf/my.cnf and oh/rsc/*.properties files will be regenerated from the original .dist files
@@ -196,7 +199,9 @@ This might also be useful to set different combinations of options (language, de
 #
 # Default is set to "off": configuration files will not be generated or overwritten if already present.
 #
-#GENERATE_CONFIG_FILES="off"
+#GENERATE_CONFIG_FILES="off" # linux
+#$script:GENERATE_CONFIG_FILES="off" # windows
+
 ```
 
 ### Distribution type - CLIENT | PORTABLE
@@ -273,25 +278,7 @@ LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 
 ```
-### Config files generation
 
-It is possibile to set the CONFIG_FILES_GENERATION option to "on" to regenerate the OH configuration files at startup (also possibile with using the *g* script option),
-The default is set to off, so the configuration files are not regenerated and overwritten at every startup.
-This is useful for production environment where the configuration is fixed.
-
-```
-############## Script startup configuration - change at your own risk :-) ##############
-#
-# set CONFIG_FILES_GENERATION=on "on" to force generation / overwriting of configuration files:
-# data/conf/my.cnf oh/rsc/*.properties files will be regenerated from the original .dist files
-# with the settings defined in this script.
-#
-# Default is set to "off": configuration files will not be generated or overwritten if already present.
-#
-#CONFIG_FILES_GENERATION="off"
-CONFIG_FILES_GENERATION=off # linux
-$script:"CONFIG_FILES_GENERATION="off" # windows
-```
 ### (Windows only) Enable interactive mode
 ```
 # Interactive mode
