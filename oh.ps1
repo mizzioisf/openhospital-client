@@ -87,7 +87,8 @@ $global:ProgressPreference= 'SilentlyContinue'
 # data/conf/my.cnf oh/rsc/*.properties files will be regenerated from the original .dist files
 # with the settings defined in this script.
 #
-# Default is set to "off": configuration files will not be generated or overwritten if already present
+# Default is set to "off": configuration files will not be generated or overwritten if already present.
+#
 #$script:CONFIG_FILES_GENERATION="off"
 
 # Interactive mode
@@ -447,8 +448,8 @@ function config_database {
 
 	$filetocheck="$OH_PATH/$CONF_DIR/my.cnf";
 	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or  !(Test-Path $filetocheck) ) {
+	if (Test-Path $filetocheck ) { mv -Force $filetocheck $filetocheck.old }
 
-#		mv -Force "$OH_PATH/$CONF_DIR/my.cnf" "$OH_PATH/$CONF_DIR/my.cnf.old"
 		# find a free TCP port to run MySQL starting from the default port
 		Write-Host "Looking for a free TCP port for MySQL database..."
 
@@ -669,7 +670,7 @@ function generate_config_files {
 
 	######## DICOM setup
 	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/dicom.properties") ) {
-		mv -Force $OH_PATH/$OH_DIR/rsc/dicom.properties $OH_PATH/$OH_DIR/rsc/dicom.properties.old
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/dicom.properties") { mv -Force $OH_PATH/$OH_DIR/rsc/dicom.properties $OH_PATH/$OH_DIR/rsc/dicom.properties.old }
 		Write-Host "Generating OH configuration file -> dicom.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/dicom.properties.dist").replace("OH_PATH_SUBSTITUTE","$OH_PATH_SUBSTITUTE") | Set-Content "$OH_PATH/$OH_DIR/rsc/dicom.properties"
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/dicom.properties").replace("DICOM_DIR","$DICOM_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/dicom.properties"
@@ -679,7 +680,7 @@ function generate_config_files {
 
 	######## log4j.properties setup
 	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/log4.properties") ) {
-		mv -Force $OH_PATH/$OH_DIR/rsc/log4j.properties $OH_PATH/$OH_DIR/rsc/log4j.properties.old
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/log4j.properties") { mv -Force $OH_PATH/$OH_DIR/rsc/log4j.properties $OH_PATH/$OH_DIR/rsc/log4j.properties.old }
 		Write-Host "Generating OH configuration file -> log4j.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
@@ -692,7 +693,7 @@ function generate_config_files {
 
 	######## database.properties setup 
 	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or ! (Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties") ) {
-		mv -Force $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties") { mv -Force $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old }
 		Write-Host "Generating OH configuration file -> database.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties").replace("DBPORT","$MYSQL_PORT") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
@@ -709,7 +710,7 @@ function generate_config_files {
 	######## settings.properties setup
 	# set language in OH config file
 	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or ! (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties") ) {
-		mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties") { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old }
 		Write-Host "Generating OH configuration file -> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set DOC_DIR in OH config file
