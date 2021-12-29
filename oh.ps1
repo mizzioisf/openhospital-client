@@ -679,7 +679,7 @@ function generate_config_files {
 	}
 
 	######## log4j.properties setup
-	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/log4.properties") ) {
+	if ( ($script:CONFIG_FILES_GENERATION -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/log4j.properties") ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/log4j.properties") { mv -Force $OH_PATH/$OH_DIR/rsc/log4j.properties $OH_PATH/$OH_DIR/rsc/log4j.properties.old }
 		Write-Host "Generating OH configuration file -> log4j.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties.dist").replace("DBSERVER","$MYSQL_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
