@@ -151,7 +151,6 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 ```
 ./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -manual_config on
 ```
-
 ### Windows - legacy mode
 
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat behaviour):
@@ -176,7 +175,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 - **q**    quit (windows only)
 - **h**    help (linux only)
 
-# Configuration
+## Script configuration
 
 Some advanced options can be configured manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
 This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
@@ -247,6 +246,7 @@ DICOM_DIR="data/dicom_storage"
 
 OH_DIR="oh"
 OH_DOC_DIR="../doc"
+OH_SINGLE_USER="yes" # set "no" for multiuser
 CONF_DIR="data/conf"
 DATA_DIR="data/db"
 BACKUP_DIR="data/dump"
@@ -261,18 +261,24 @@ LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 
 ```
-### Manual config
+### Config files generation
 
-It is possibile to set the MANUAL_CONFIG option to "on" to keep the OH configuration files, so they are not regenerated and overwritten at every startup.
+It is possibile to set the CONFIG_FILES_GENERATION option to "on" to regenerate the OH configuration files at startup (also possibile with using the *g* script option),
+The default is set to off, so the configuration files are not regenerated and overwritten at every startup.
 This is useful for production environment where the configuration is fixed.
 
 ```
 ############## Script startup configuration - change at your own risk :-) ##############
-## set MANUAL_CONFIG to "on" to setup configuration files manually
-# my.cnf and all oh/rsc/*.properties files will not be generated or
-# overwritten if already present
-MANUAL_CONFIG=off # linux
-$script:MANUAL_CONFIG="off" # windows
+#
+# set CONFIG_FILES_GENERATION=on "on" to force generation / overwriting of configuration files:
+# data/conf/my.cnf oh/rsc/*.properties files will be regenerated from the original .dist files
+# with the settings defined in this script.
+#
+# Default is set to "off": configuration files will not be generated or overwritten if already present.
+#
+#CONFIG_FILES_GENERATION="off"
+CONFIG_FILES_GENERATION=off # linux
+$script:"CONFIG_FILES_GENERATION="off" # windows
 ```
 ### (Windows only) Enable interactive mode
 ```
@@ -313,7 +319,7 @@ Java JRE, Zulu or OpenJDK distribution
 
 Administrator and User manuals are available in the **doc** folder.
 
-# Known issues
+## Known issues
 
 If you experience problems in starting up the script, avoid long folder path and path with special characters / spaces in it.
 
@@ -366,7 +372,6 @@ set-executionpolicy remotesigned
 ```
 - You might also be required to enable access on Windows Firewall to oh.ps1 and/or to the TCP port used for the local database (PORTABLE mode).
 
-
 ## Windows - legacy mode
 
 (*) If you are using oh.bat in legacy mode, you might have to download and unzip java ad mysql manually.
@@ -415,7 +420,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **New**: Save (see oh.sh -s) / Restore (oh.sh -r) database, available both for CLIENT and PORTABLE mode !
 - **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
 - **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
-- **New**: manual config mode (set MANUAL_CONFIG=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
+- **New**: configuration file generation (set GENERATE_CONFIG_FILES=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
 - **New**: test database connection option (see oh.sh -t)
 - **New**: displays software versions and current configuration (see oh.sh -v)
 - **New**: generate config files (see oh.sh -g)
@@ -436,5 +441,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.12.12*
+*last updated: 2021.12.29*
 
