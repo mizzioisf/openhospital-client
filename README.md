@@ -20,7 +20,7 @@ The Windows version has been tested on Windows 7/10/11 (64/bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.11.2-RC Open Hospital release!**
+**New ! Updated to 1.11.2 Open Hospital release!**
 
 # Running OH - Ultra-quickstart
 
