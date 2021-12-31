@@ -383,15 +383,15 @@ function download_file ($download_url,$download_file){
 
 function java_check {
 	# check if JAVA_BIN is already set and it exists
-	if ( !( $JAVA_BIN ) -or !(Test-Path $JAVA_BIN) ) {
+	if ( !( $JAVA_BIN ) -or !(Test-Path $JAVA_BIN  -PathType Leaf ) ) {
         	# set default
         	Write-Host "Setting default JAVA..."
 		$script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
 	}
 
 	# if JAVA_BIN is not found download JRE
-	if ( !(Test-Path $JAVA_BIN) ) {
-        	if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT") ) {
+	if ( !(Test-Path $JAVA_BIN  -PathType Leaf ) ) {
+        	if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT"  -PathType Leaf ) ) {
 			Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Download java binaries
@@ -408,14 +408,6 @@ function java_check {
 		Write-Host "Java unpacked successfully!"
         	Write-Host "Removing downloaded file..."
         	Write-Host "Done!"
-		# check for java binary
-		#if ( Test-Path "$OH_PATH\$JAVA_DIR\bin\java.exe" ) {
-	#		$script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
-#		}
-#		else {
-#			Write-Host "Error: JAVA not found! Please download it or set JAVA_BIN in the script. Exiting." -ForegroundColor Red
-#			Read-Host; exit 1
-#		}
 	}
 	Write-Host "JAVA found!"
 	Write-Host "Using $JAVA_BIN"
@@ -912,7 +904,6 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	}
 	"v"	{ # show version
         	Write-Host "--------- Software version ---------"
-	
 		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 		$var = $_.Split('=',2).Trim()
 		New-Variable -Scope Script -Name $var[0] -Value $var[1]
@@ -921,25 +912,28 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host "MySQL version: $MYSQL_DIR"
 		Write-Host "JAVA version: $JAVA_DISTRO"
 		Write-Host ""
-
 		# show configuration
  		Write-Host "--------- Script Configuration ---------"
  		Write-Host "Architecture is $ARCH"
  		Write-Host "Config file generation is set to $GENERATE_CONFIG_FILES"
+		Write-Host ""
  		Write-Host "--------- OH Configuration ---------"
  		Write-Host "Open Hospital is configured in $OH_MODE mode"
 		Write-Host "Language is set to $OH_LANGUAGE"
 		Write-Host "Demo data is set to $DEMO_DATA"
 		Write-Host "Log level is set to $LOG_LEVEL"
+		Write-Host ""
 		Write-Host "--- Database ---"
 		Write-Host "MYSQL_SERVER=$MYSQL_SERVER"
 		Write-Host "MYSQL_PORT=$MYSQL_PORT"
 		Write-Host "DATABASE_NAME=$DATABASE_NAME"
 		Write-Host "DATABASE_USER=$DATABASE_USER"
+		Write-Host ""
 		Write-Host "--- Dicom ---"
 		Write-Host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
 		Write-Host "DICOM_STORAGE=$DICOM_STORAGE"
 		Write-Host "DICOM_DIR=$DICOM_DIR"
+		Write-Host ""
 		Write-Host "--- OH Folders ---"
 		Write-Host "OH_DIR=$OH_DIR"
 		Write-Host "OH_DOC_DIR=$OH_DOC_DIR"
@@ -951,6 +945,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host "SQL_DIR=$SQL_DIR"
 		Write-Host "SQL_EXTRA_DIR=$SQL_EXTRA_DIR"
 		Write-Host "TMP_DIR=$TMP_DIR"
+		Write-Host ""
 		Write-Host "--- Logging ---"
 		Write-Host "LOG_FILE=$LOG_FILE"
 		Write-Host "LOG_FILE_ERR=$LOG_FILE_ERR"
