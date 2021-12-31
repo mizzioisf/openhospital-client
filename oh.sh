@@ -297,13 +297,17 @@ function java_lib_setup {
 }
 
 function java_check {
-if [ -z ${JAVA_BIN+x} ]; then
+# check if JAVA_BIN is already set and it exists
+if ( [ -z ${JAVA_BIN+x} ] || [ ! -x "$JAVA_BIN" ] ); then
+	# set default
+	echo "Setting default JAVA..."
 	JAVA_BIN="$OH_PATH/$JAVA_DIR/bin/java"
 fi
 
-if [ ! -x $JAVA_BIN ]; then
+# if JAVA_BIN is not found download JRE
+if [ ! -x "$JAVA_BIN" ]; then
 	if [ ! -f "./$JAVA_DISTRO.$EXT" ]; then
-		echo "Warning - JAVA_BIN not set or JAVA not found. Do you want to download it?"
+		echo "Warning - JAVA not found. Do you want to download it?"
 		get_confirmation;
 		# download java binaries
 		echo "Download $JAVA_DISTRO..."
@@ -315,20 +319,13 @@ if [ ! -x $JAVA_BIN ]; then
 		echo "Error unpacking Java. Exiting."
 		exit 1
 	fi
-		echo "JAVA unpacked successfully!"
-		echo "Removing downloaded file..."
-		rm ./$JAVA_DISTRO.$EXT
-		echo "Done!"
-	fi
-# check for java binary
-if [ -x "$OH_PATH/$JAVA_DIR/bin/java" ]; then
-	JAVA_BIN="$OH_PATH/$JAVA_DIR/bin/java"
-	echo "JAVA found!"
-	echo "Using $JAVA_DIR"
-else 
-	echo "Error: JAVA not found! Please download it or set JAVA_BIN in the script. Exiting."
-	exit 1
+	echo "JAVA unpacked successfully!"
+	echo "Removing downloaded file..."
+	rm ./$JAVA_DISTRO.$EXT
+	echo "Done!"
 fi
+echo "JAVA found!"
+echo "Using $JAVA_BIN"
 }
 
 function mysql_check {

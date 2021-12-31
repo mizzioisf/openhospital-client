@@ -381,14 +381,53 @@ function download_file ($download_url,$download_file){
 	}
 }
 
+########################################
 function java_check {
-	if ( !( $JAVA_BIN ) ) {
+# check if JAVA_BIN is already set and it exists
+if ( [ -z ${JAVA_BIN+x} ] || [ ! -x "$JAVA_BIN" ] ); then
+        # set default
+        echo "Setting default JAVA..."
+        JAVA_BIN="$OH_PATH/$JAVA_DIR/bin/java"
+fi
+
+# if JAVA_BIN is not found download JRE
+if [ ! -x "$JAVA_BIN" ]; then
+        if [ ! -f "./$JAVA_DISTRO.$EXT" ]; then
+                echo "Warning - JAVA not found. Do you want to download it?"
+                get_confirmation;
+                # download java binaries
+                echo "Download $JAVA_DISTRO..."
+                wget -P ./ $JAVA_URL/$JAVA_DISTRO.$EXT
+        fi
+        echo "Unpacking $JAVA_DISTRO..."
+        tar xf ./$JAVA_DISTRO.$EXT -C ./
+        if [ $? -ne 0 ]; then
+                echo "Error unpacking Java. Exiting."
+                exit 1
+        fi
+        echo "JAVA unpacked successfully!"
+        echo "Removing downloaded file..."
+        rm ./$JAVA_DISTRO.$EXT
+        echo "Done!"
+fi
+echo "JAVA found! Using $JAVA_BIN"
+}
+
+########################################
+
+
+function java_check {
+	# check if JAVA_BIN is already set and it exists
+	if ( !( $JAVA_BIN ) -and !(Test-Path $JAVA_BIN) ) {
+        	# set default
+        	Write-Host "Setting default JAVA..."
 		$script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
 	}
 
+	# if JAVA_BIN is not found download JRE
 	if ( !(Test-Path $JAVA_BIN) ) {
         	if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT") ) {
-			Write-Host "Warning - JAVA_BIN not set or JAVA not found. Do you want to download it?" -ForegroundColor Yellow
+			Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Download java binaries
 			download_file "$JAVA_URL" "$JAVA_DISTRO.$EXT"
@@ -402,14 +441,16 @@ function java_check {
 			Read-Host; exit 1
 		}
 		Write-Host "Java unpacked successfully!"
+        	Write-Host "Removing downloaded file..."
+        	Write-Host "Done!"
 		# check for java binary
-		if ( Test-Path "$OH_PATH\$JAVA_DIR\bin\java.exe" ) {
-			$script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
-		}
-		else {
-			Write-Host "Error: JAVA not found! Please download it or set JAVA_BIN in the script. Exiting." -ForegroundColor Red
-			Read-Host; exit 1
-		}
+		#if ( Test-Path "$OH_PATH\$JAVA_DIR\bin\java.exe" ) {
+	#		$script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
+#		}
+#		else {
+#			Write-Host "Error: JAVA not found! Please download it or set JAVA_BIN in the script. Exiting." -ForegroundColor Red
+#			Read-Host; exit 1
+#		}
 	}
 	Write-Host "JAVA found!"
 	Write-Host "Using $JAVA_BIN"
