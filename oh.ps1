@@ -383,7 +383,7 @@ function download_file ($download_url,$download_file){
 
 function java_check {
 	# check if JAVA_BIN is already set and it exists
-	if ( !( $JAVA_BIN ) -and !(Test-Path $JAVA_BIN) ) {
+	if ( !( $JAVA_BIN ) -or !(Test-Path $JAVA_BIN) ) {
         	# set default
         	Write-Host "Setting default JAVA..."
 		$script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
