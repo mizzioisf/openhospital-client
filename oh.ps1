@@ -36,11 +36,11 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
               [ -mode PORTABLE|CLIENT ]
               [ -loglevel INFO|DEBUG ] [default set to INFO]
               [ -dicom on|off ]
-              [ -manual_config on|off ]
+              [ -generate_config on|off ]
               [ -interactive on|off ]
 
 .EXAMPLE
-./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -manual_config on
+./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -generate_config on
 
 .NOTES
 Developed by Informatici Senza Frontiere - 2021
@@ -62,12 +62,12 @@ https://www.open-hospital.org
 #Requires -Version 5.1
 
 ######## command line parameters
-param ($lang, $mode, $loglevel, $dicom, $generate_config_files, $interactive)
+param ($lang, $mode, $loglevel, $dicom, $generate_config, $interactive)
 $script:OH_LANGUAGE=$lang
 $script:OH_MODE=$mode
 $script:LOG_LEVEL=$loglevel
 $script:DICOM_ENABLE=$dicom
-$script:GENERATE_CONFIG_FILES=$generate_config_files
+$script:GENERATE_CONFIG_FILES=$generate_config
 $script:INTERACTIVE_MODE=$interactive
 
 ######## get script info
@@ -241,7 +241,7 @@ function script_menu {
 	Write-Host "               [ -mode PORTABLE|CLIENT ]"
 	Write-Host "               [ -loglevel INFO|DEBUG ] "
 	Write-Host "               [ -dicom on|off ] "
-	Write-Host "               [ -manual_config on|off ] "
+	Write-Host "               [ -generate_config on|off ] "
 	Write-Host "               [ -interactive on|off ] "
 	Write-Host ""
 	Write-Host "   C    start OH in CLIENT mode (client / server configuration)"

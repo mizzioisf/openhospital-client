@@ -107,7 +107,7 @@ Usage: oh.ps1 [ -lang en|fr|it|es|pt ]
               [ -loglevel INFO|DEBUG ] 
               [ -dicom on|off ]
               [ -interactive on|off ]
-              [ -manual_config on|off ]
+              [ -generate_config on|off ]
 
 
  C    start OH in CLIENT mode (client / server configuration)
@@ -149,7 +149,7 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 -> To run oh.ps1 with command line options (example):
 
 ```
-./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -manual_config on
+./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -generate_config on
 ```
 ### Windows - legacy mode
 
