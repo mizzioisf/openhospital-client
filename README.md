@@ -16,7 +16,7 @@ OH is released under the GNU GPL 3.0 License.
 
 The Linux version has been tested on different distributions and versions,
 including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 21.04 x64 (64bit).
-The Windows version has been tested on Windows 7/10/11 (64/bit)
+The Windows version has been tested on Windows 7/10/11 (64bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
@@ -338,7 +338,7 @@ sudo apt-get install libncurses5
 
 - If you get this error:
 ```
-Error Initializing MySQL database on port 3306 error while loading shared libraries: libaio.so.1. I had to install it manually and re-launch the script.
+Error Initializing MySQL database on port 3306 error while loading shared libraries: libaio.so.1.
 ```
 
 You have to install the libaio libraries, on Ubuntu:
