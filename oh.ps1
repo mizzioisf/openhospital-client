@@ -840,6 +840,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	"l"	{ # set language 
 		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt (default is en)"
 		set_language;
+		$script:GENERATE_CONFIG_FILES="on"
 	}
 	"s"	{ # save database 
 		# check if portable mode is on

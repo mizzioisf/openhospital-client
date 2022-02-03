@@ -680,6 +680,7 @@ while getopts ${OPTSTRING} opt; do
 	l)	# set language
 		OH_LANGUAGE=$OPTARG
 		set_language;
+		GENERATE_CONFIG_FILES="on"
 		;;
 	s)	# save database
 		# check if portable mode is on
