@@ -709,9 +709,9 @@ while getopts ${OPTSTRING} opt; do
 	r)	# restore 
         	echo "Restoring Open Hospital database...."
 		# ask user for database/sql script to restore
-		read -p "Enter SQL dump/backup file that you want to restore - (in sql/ subdirectory) -> " DB_CREATE_SQL
-		if [ -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
-		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+		read -p "Enter SQL dump/backup file that you want to restore - (in $BACKUP_DIR subdirectory) -> " DB_CREATE_SQL
+		if [ -f ./$BACKUP_DIR/$DB_CREATE_SQL ]; then
+		        echo "Found $BACKUP_DIR/$DB_CREATE_SQL, restoring it..."
 			# reset database if exists
 			clean_database;
 			mysql_check;

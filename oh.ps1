@@ -873,8 +873,8 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	       	Write-Host "Restoring Open Hospital database...."
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:BACKUP_DIR subdirectory) -> "
-		if (Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL") {
-			Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
+		if (Test-Path "$OH_PATH\$BACKUP_DIR\$DB_CREATE_SQL") {
+			Write-Host "Found $BACKUP_DIR\$DB_CREATE_SQL, restoring it..."
 			# reset database if exists
 			clean_database;
 			mysql_check;
