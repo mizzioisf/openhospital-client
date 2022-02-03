@@ -577,7 +577,7 @@ function import_database {
 
 	# create OH database structure
 	Write-Host "Importing database schema..."
-	
+
 	cd "./$SQL_DIR"
 
     $SQLCOMMAND=@"
