@@ -146,7 +146,7 @@ JAVA_URL="https://cdn.azul.com/zulu/bin"
 #JAVA_DIR="jdk-11.0.11+9-jre"
 
 ### JRE 8 - zulu distribution
-#JAVA_DISTRO="zulu8.58.0.13-ca-fx-jdk8.0.312-linux_$JAVA_PACKAGE_ARCH"
+#JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-linux_$JAVA_PACKAGE_ARCH"
 #JAVA_URL="https://cdn.azul.com/zulu/bin/"
 JAVA_DIR=$JAVA_DISTRO
 

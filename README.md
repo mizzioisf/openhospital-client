@@ -379,9 +379,9 @@ In order to download and unzip Java:
 - Visit  https://cdn.azul.com/zulu/bin/
 - download the **JRE - .zip version**
 
-**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu8.58.0.13-ca-fx-jre8.0.312-win_i686.zip
+**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu8.60.0.21-ca-jre8.0.322-win_i686.zip
 
-**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu8.58.0.13-ca-fx-jre8.0.312-win_x64.zip
+**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu8.60.0.21-ca-jre8.0.322-win_x64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 

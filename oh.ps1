@@ -216,7 +216,7 @@ $script:JAVA_DISTRO="zulu11.52.13-ca-fx-jre11.0.13-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 
 ### JRE 8 - zulu
-#$script:JAVA_DISTRO="zulu8.58.0.13-ca-fx-jdk8.0.312-win_$JAVA_PACKAGE_ARCH"
+#$script:JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-win_$JAVA_PACKAGE_ARCH"
 #$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 $script:JAVA_DIR=$JAVA_DISTRO
 
