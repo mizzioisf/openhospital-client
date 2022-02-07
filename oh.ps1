@@ -431,7 +431,7 @@ function mysql_check {
 		}
 	        Write-Host "MySQL unpacked successfully!"
 	}
-	# check for mysql binary
+	# check for mysqld binary
 	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -PathType Leaf) {
         	Write-Host "MySQL found!"
 		Write-Host "Using $MYSQL_DIR"
@@ -903,6 +903,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			Write-Host "Error: Only for CLIENT mode. Exiting." -ForegroundColor Red
 			Read-Host; exit 1
 		}
+		mysql_check;
 		test_database_connection;
 		Read-Host; exit 0
 	}

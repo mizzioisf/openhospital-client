@@ -348,7 +348,7 @@ if [ ! -d "./$MYSQL_DIR" ]; then
 	rm ./$MYSQL_DIR.$EXT
 	echo "Done!"
 fi
-# check for mysql binary
+# check for mysqld binary
 if [ -x ./$MYSQL_DIR/bin/mysqld_safe ]; then
 	echo "MySQL found!"
 	echo "Using $MYSQL_DIR"
@@ -739,6 +739,7 @@ while getopts ${OPTSTRING} opt; do
 			echo "Error: Only for CLIENT mode. Exiting."
 			exit 1
 		fi
+		mysql_check;
 		test_database_connection;
 		exit 0
 		;;
