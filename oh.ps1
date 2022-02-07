@@ -874,6 +874,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		if ( !(Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL")) {
 			Write-Host "Error: No SQL file found! Exiting." -ForegroundColor Red
 			Read-Host; exit 2
+		}
 		else {
 			Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
 			if ( $OH_MODE -eq "PORTABLE" ) {
@@ -888,7 +889,6 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			}
 			import_database;
 			}
-		}
 		if ( $OH_MODE -eq "PORTABLE" ) {
 			shutdown_database;
 		}
