@@ -845,11 +845,12 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		$script:GENERATE_CONFIG_FILES="on"
 	}
 	"s"	{ # save database 
+		# check if mysql utilities exist
+		mysql_check;
 		# check if portable mode is on
 		if ( $OH_MODE -eq "PORTABLE" ) {
 			# check if database already exists
 			if (Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME") {
-				mysql_check;
 				config_database;
 				start_database;
 			}
@@ -878,10 +879,11 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		}
 		else {
 			Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
+			# check if mysql utilities exist
+			mysql_check;
 			if ( $OH_MODE -eq "PORTABLE" ) {
 				# reset database if exists
 				clean_database;
-				mysql_check;
 				config_database;
 				initialize_dir_structure;
 				initialize_database;

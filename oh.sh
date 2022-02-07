@@ -683,11 +683,12 @@ while getopts ${OPTSTRING} opt; do
 		GENERATE_CONFIG_FILES="on"
 		;;
 	s)	# save database
+		# check if mysql utilities exist
+		mysql_check;
 		# check if portable mode is on
 		if [ $OH_MODE = "PORTABLE" ]; then
 			# check if database already exists
 			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
-				mysql_check;
 				config_database;
 				start_database;
 			else
@@ -713,10 +714,11 @@ while getopts ${OPTSTRING} opt; do
 			exit 2
 		else
 		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+			# check if mysql utilities exist
+			mysql_check;
 			if [ $OH_MODE = "PORTABLE" ]; then
 				# reset database if exists
 				clean_database;
-				mysql_check;
 				config_database;
 				initialize_dir_structure;
 				initialize_database;
