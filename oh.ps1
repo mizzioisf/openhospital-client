@@ -865,6 +865,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host "Done!"
 		Read-Host;
 		exit 0
+		}
 	}
 	"r"	{ # restore
 	       	Write-Host "Restoring Open Hospital database...."
