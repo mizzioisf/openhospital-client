@@ -990,7 +990,6 @@ if ( $DEMO_DATA -eq "on" ) {
 		Write-Host "Error - OH_MODE is set to CLIENT mode. Cannot run with Demo data, exiting." -ForeGroundcolor Red
 		Read-Host; 
 		exit 1
-		else { $script:OH_MODE="PORTABLE" }
 	}
 	
 	# reset database if exists
