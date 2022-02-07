@@ -612,7 +612,7 @@ function dump_database {
 		cd "$CURRENT_DIR"
 		Read-Host; exit 2
 	}
-	Write-Host "MySQL dump file $BACKUP_DIR\mysqldump_$DATE.sql completed!" -ForegroundColor Green
+	Write-Host "MySQL dump file $BACKUP_DIR/mysqldump_$DATE.sql completed!" -ForegroundColor Green
 }
 
 function shutdown_database {
@@ -878,7 +878,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 			Read-Host; exit 2
 		}
 		else {
-			Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
+			Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
 			# check if mysql utilities exist
 			mysql_check;
 			if ( $OH_MODE -eq "PORTABLE" ) {
