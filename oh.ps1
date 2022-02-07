@@ -656,7 +656,8 @@ function test_database_connection {
 			Write-Host "Error: can't connect to database! Exiting." -ForegroundColor Red
 			Read-Host; exit 2
 		}
-		Write-Host "Database connection successfully established!"
+		# temporary disabled - catch not working
+		# Write-Host "Database connection successfully established!"
 	}
 	else {
 		Write-Host "Can't test database connection..." 
