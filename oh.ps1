@@ -856,6 +856,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
 				Read-Host; exit 1
 			}
+		}
 		test_database_connection;
 		Write-Host "Saving Open Hospital database..."
 		dump_database;
@@ -865,7 +866,6 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		Write-Host "Done!"
 		Read-Host;
 		exit 0
-		}
 	}
 	"r"	{ # restore
 	       	Write-Host "Restoring Open Hospital database...."
