@@ -136,18 +136,18 @@ MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$MYSQL_PACKAGE_ARCH"
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
 
-### JRE 11 - zulu distribution
-JAVA_DISTRO="zulu11.52.13-ca-jre11.0.13-linux_x64"
-JAVA_URL="https://cdn.azul.com/zulu/bin"
-
 ### JRE 11 - openjdk distribution
 #JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.11%2B9"
 #JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.11_9"
 #JAVA_DIR="jdk-11.0.11+9-jre"
 
+### JRE 11 - zulu distribution
+JAVA_DISTRO="zulu11.52.13-ca-jre11.0.13-linux_x64"
+JAVA_URL="https://cdn.azul.com/zulu/bin"
+
 ### JRE 8 - zulu distribution
-#JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-linux_$JAVA_PACKAGE_ARCH"
-#JAVA_URL="https://cdn.azul.com/zulu/bin/"
+JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-linux_$JAVA_PACKAGE_ARCH"
+JAVA_URL="https://cdn.azul.com/zulu/bin/"
 JAVA_DIR=$JAVA_DISTRO
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################

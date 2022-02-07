@@ -170,12 +170,12 @@ REM set JAVA_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/do
 REM set JAVA_DISTRO="OpenJDK11U-jre_x86-32_windows_hotspot_11.0.11_9.zip"
 
 REM # JRE 11 32bit - i686 - zulu
-set JAVA_URL="https://cdn.azul.com/zulu/bin/zulu11.52.13-ca-fx-jre11.0.13-win_i686.zip"
-set JAVA_DISTRO=zulu11.52.13-ca-fx-jre11.0.13-win_i686.zip
+REM set JAVA_URL="https://cdn.azul.com/zulu/bin/zulu11.52.13-ca-fx-jre11.0.13-win_i686.zip"
+REM JAVA_DISTRO=zulu11.52.13-ca-fx-jre11.0.13-win_i686.zip
 
 REM # JRE 8 32bit - i686 - zulu - default
-REM set JAVA_DIR=zulu8.60.0.21-ca-jre8.0.322-win_i686
-REM set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
+set JAVA_DIR=zulu8.60.0.21-ca-jre8.0.322-win_i686
+set JAVA_BIN=%OH_PATH%\%JAVA_DIR%\bin\java.exe
 
 set REPLACE_PATH=%OH_PATH%\%MYSQL_DIR%\bin
 
