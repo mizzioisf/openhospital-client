@@ -894,6 +894,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		}
 		Write-Host "Done!"
         	Read-Host; exit 0
+	}
 	"t"	{ # test database connection 
 		if ( !($OH_MODE -eq "CLIENT") ) {
 			Write-Host "Error: Only for CLIENT mode. Exiting." -ForegroundColor Red
