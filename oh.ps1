@@ -845,57 +845,54 @@ if ( $INTERACTIVE_MODE -eq "on") {
 	}
 	"s"	{ # save database 
 		# check if portable mode is on
-
 		if ( $OH_MODE -eq "PORTABLE" ) {
 			# check if database already exists
 			if (Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME") {
 				mysql_check;
 				config_database;
+				start_database;
 			}
 			else {
 		        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
 				Read-Host; exit 1
 			}
-			start_database;
-			Write-Host "Saving Open Hospital database..."
-			dump_database;
-			shutdown_database;
-			Write-Host "Done!"
-			Read-Host;
-			exit 0
-		}
-		# dump remote database for CLIENT mode configuration
 		test_database_connection;
 		Write-Host "Saving Open Hospital database..."
 		dump_database;
+		if ( $OH_MODE -eq "PORTABLE" ) {
+			shutdown_database;
+		}
 		Write-Host "Done!"
-                exit 0
+		Read-Host;
+		exit 0
 	}
 	"r"	{ # restore
 	       	Write-Host "Restoring Open Hospital database...."
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
-		if (Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL") {
-			Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
-			# reset database if exists
-			clean_database;
-			mysql_check;
-			config_database;
-			initialize_dir_structure;
-			initialize_database;
-			start_database;	
-			set_database_root_pw;
-			import_database;
-			shutdown_database;
-			Write-Host "Done!"
-			exit 0
-		}
-		else {
+		if ( !(Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL")) {
 			Write-Host "Error: No SQL file found! Exiting." -ForegroundColor Red
 			Read-Host; exit 2
+		else {
+			Write-Host "Found $SQL_DIR\$DB_CREATE_SQL, restoring it..."
+			if ( $OH_MODE -eq "PORTABLE" ) {
+				# reset database if exists
+				clean_database;
+				mysql_check;
+				config_database;
+				initialize_dir_structure;
+				initialize_database;
+				start_database;	
+				set_database_root_pw;
+			}
+			import_database;
+			}
 		}
+		if ( $OH_MODE -eq "PORTABLE" ) {
+			shutdown_database;
+		}
+		Write-Host "Done!"
         	Read-Host; exit 0
-	}
 	"t"	{ # test database connection 
 		if ( !($OH_MODE -eq "CLIENT") ) {
 			Write-Host "Error: Only for CLIENT mode. Exiting." -ForegroundColor Red

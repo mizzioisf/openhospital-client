@@ -689,50 +689,51 @@ while getopts ${OPTSTRING} opt; do
 			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 				mysql_check;
 				config_database;
+				start_database;
 			else
 	        		echo "Error: no data found! Exiting."
 				exit 1
 			fi
-			start_database;
-			echo "Saving Open Hospital database..."
-			dump_database;
-			shutdown_database;
-			echo "Done!"
-			exit 0
 		fi
-		# dump remote database for CLIENT mode configuration
 		test_database_connection;
 		echo "Saving Open Hospital database..."
 		dump_database;
-        	echo "Done!"
+		if [ $OH_MODE = "PORTABLE" ]; then
+			shutdown_database;
+		fi
+		echo "Done!"
 		exit 0
 		;;
 	r)	# restore 
         	echo "Restoring Open Hospital database...."
 		# ask user for database/sql script to restore
 		read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
-		if [ -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
-		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
-			# reset database if exists
-			clean_database;
-			mysql_check;
-			config_database;
-			initialize_dir_structure;
-			initialize_database;
-			start_database;	
-			set_database_root_pw;
-			import_database;
-			shutdown_database;
-	        	echo "Done!"
-			exit 0
-		else
+		if [ ! -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
 			echo "Error: No SQL file found! Exiting."
 			exit 2
+		else
+		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+			if [ $OH_MODE = "PORTABLE" ]; then
+				# reset database if exists
+				clean_database;
+				mysql_check;
+				config_database;
+				initialize_dir_structure;
+				initialize_database;
+				start_database;
+				set_database_root_pw;
+			fi
+			import_database;
+			if [ $OH_MODE = "PORTABLE" ]; then
+				shutdown_database;
+			fi
+	        	echo "Done!"
+			exit 0
 		fi
         	# normal startup from here
 		;;
 	t)	# test database connection
-		if [ $OH_MODE = "PORTABLE" ]; then
+		if [ $OH_MODE != "CLIENT" ]; then
 			echo "Error: Only for CLIENT mode. Exiting."
 			exit 1
 		fi
