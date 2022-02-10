@@ -20,7 +20,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.11.2 Open Hospital release!**
+**New ! Updated to 1.11.3 Open Hospital pre-release!**
 
 # Running OH - Ultra-quickstart
 
@@ -394,9 +394,9 @@ In order to download and unzip mariadb:
 - Download the zip file:
 
 
-**x86 - 32bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.41/win32-packages/mariadb-10.2.41-win32.zip
+**x86 - 32bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.42/win32-packages/mariadb-10.2.42-win32.zip
 
-**x64 - 64bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.41/winx64-packages/mariadb-10.2.41-winx64.zip
+**x64 - 64bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.42/winx64-packages/mariadb-10.2.42-winx64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -440,5 +440,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2021.12.30*
+*last updated: 2022.02.10*
 
