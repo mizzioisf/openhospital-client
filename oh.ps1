@@ -197,7 +197,7 @@ if ( $DICOM_ENABLE -eq "on" ) {
 
 ######## MySQL/MariaDB Software
 # MariaDB
-$script:MYSQL_VERSION="10.2.41"
+$script:MYSQL_VERSION="10.2.43"
 $script:MYSQL_URL="https://archive.mariadb.org/mariadb-$script:MYSQL_VERSION/win$script:MYSQL_ARCH-packages/"
 $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
 # MySQL
