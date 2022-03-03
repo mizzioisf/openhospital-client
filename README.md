@@ -156,34 +156,39 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 Follow these instruction to create a Windows OH launch icon on desktop:
 
 **Method 1 (with launch parameters stored on oh.ps1)**
-Rigth click on Desktop
-New Shortcut
-Browse to OH folder location and select oh.bat
-Assign a name to the shortcut
-Rigth click on the shortcut
-Properties
-Change icon
-Specify a different file
-Browse to OH folder location and select oh.ico
-Apply
+- Rigth click on Desktop
+- New Shortcut
+- Browse to OH folder location and select oh.bat
+- Assign a name to the shortcut
+- Rigth click on the shortcut
+- Properties
+- Change icon
+- Specify a different file
+- Browse to OH folder location and select oh.ico
+- Apply
 
 **Method 2 (with launch parameters stored on execution command)**
-Rigth click on Desktop
-New Shortcut
-Browse to OH folder location and select oh.ps1
-Assign a name to the shortcut
-Rigth click on the shortcut
-Properties
-Change icon
-Specify a different file
-Browse to OH folder location and select oh.ico
-Modify Target with
-C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1
-Apply
-Option parameters can be added at the end of Target string separated by spaces
-example
-C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 -loglevel DEBUG
+- Rigth click on Desktop
+- New Shortcut
+- Browse to OH folder location and select oh.ps1
+- Assign a name to the shortcut
+- Rigth click on the shortcut
+- Properties
+- Change icon
+- Specify a different file
+- Browse to OH folder location and select oh.ico
+- Modify Target with
 
+```
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1
+```
+- Apply
+ 
+Option parameters can be added at the end of Target string separated by spaces, example:
+
+```
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 -loglevel DEBUG
+```
 
 ### Windows - legacy mode
 
