@@ -310,7 +310,7 @@ C:\Users\OH\OpenHospital-v1.11.3\sql> mysql -u root -p [-h hostname/ip address]
 Enter password: *****
 ----
 
-using the ‘root’ password chosen during the installation process. The terminal should reply with the MySQL client command line prompt:
+using the ‘root’ password chosen during the installation process. The terminal should reply with the MariaDB client command line prompt:
 
 [source,shell]
 ----
@@ -466,7 +466,7 @@ archive remain unchanged once extracted, otherwise the launcher cannot launch or
 NOTE: Important: the PORTABLE mode is meant to try or test the software or to be used in a facility (like a dispensary)
 where only a single computer is available. If the facility is large and more clients/operators need to work on the same data, the full installation (client/server) in a networked architecture is recommended.
 
-include::https://raw.githubusercontent.com/informatici/openhospital/master/oh-bundle/OH-README.md[lines=25..374,leveloffset=+2]
+include::https://raw.githubusercontent.com/informatici/openhospital/master/oh-bundle/OH-README.md[lines=25..413,leveloffset=+2]
 
 [#backup-restore]
 === 2.3 Backup & Restore
@@ -514,9 +514,9 @@ To restore database data with MySQL Workbench®:
 
 ==== 2.3.3 Backup of OH code and settings
 
-Backup of the Open Hospital *code and settings* can be performed by saving the *"oh"* folder. Configuration files are found under the *"oh/rsc"* folder.
+Backup of the Open Hospital *code and settings* can be performed by saving the *"oh"* folder (configuration files are found under the *"oh/rsc"* folder).
 
-Backup of the client *data files*, useful for "PORTABLE" mode, can be performed by saving/copying the *"data"* folder (including all subfolders) found under the main OH installation path.
+Backup of the client *data files*, useful for "PORTABLE" mode, can be performed by saving/copying the *"data"* folder (including all subfolders) found under the main OH installation path
 
 [#folders]
 === 2.4 Folders and directory structure
@@ -1424,7 +1424,6 @@ get the receipt by clicking the Receipt button in the buttons panel.
 By default, ALLOWPRINTOPENEDBILL is set to no.
 
 NOTE: An application restart is required to apply the modified setting.
-
 
 
 [#database-properties]

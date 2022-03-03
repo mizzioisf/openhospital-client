@@ -167,7 +167,7 @@ $script:languagearray= @("en","fr","it","es","pt")
 ############## Architecture and external software ##############
 
 ######## MySQL/MariaDB Software
-# MariaDB
+# MariaDB version
 $script:MYSQL_VERSION="10.2.43"
 $script:MYSQL32_VERSION="10.2.41"
 
