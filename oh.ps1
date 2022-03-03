@@ -166,6 +166,11 @@ $script:languagearray= @("en","fr","it","es","pt")
 
 ############## Architecture and external software ##############
 
+######## MySQL/MariaDB Software
+# MariaDB
+$script:MYSQL_VERSION="10.2.43"
+$script:MYSQL32_VERSION="10.2.41"
+
 ######## define architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
@@ -180,6 +185,7 @@ if ($64archarray -contains "$ARCH") {
 elseif ($32archarray -contains "$ARCH") {
 	$script:JAVA_ARCH=32;
 	$script:MYSQL_ARCH=32;
+	$script:MYSQL_VERSION=$script:MYSQL32_VERSION;
 	$script:JAVA_PACKAGE_ARCH="i686";
 }
 else {
@@ -197,7 +203,6 @@ if ( $DICOM_ENABLE -eq "on" ) {
 
 ######## MySQL/MariaDB Software
 # MariaDB
-$script:MYSQL_VERSION="10.2.43"
 $script:MYSQL_URL="https://archive.mariadb.org/mariadb-$script:MYSQL_VERSION/win$script:MYSQL_ARCH-packages/"
 $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
 # MySQL
