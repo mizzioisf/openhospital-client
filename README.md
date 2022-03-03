@@ -151,28 +151,28 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 ```
 ./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -generate_config on
 ```
-### Windows - launch shortcut
+### Windows - create startup shortcut
 
 Follow these instruction to create a Windows OH launch icon on desktop:
 
-**Method 1 (with launch parameters stored on oh.ps1)**
+**Method 1 (with launch parameters configured in oh.ps1)**
 - Rigth click on Desktop
 - New Shortcut
 - Browse to OH folder location and select oh.bat
 - Assign a name to the shortcut
-- Rigth click on the shortcut
-- Properties
-- Change icon
-- Specify a different file
-- Browse to OH folder location and select oh.ico
-- Apply
+	- Right click on the shortcut
+	- Properties
+	- Change icon
+	- Specify a different file
+	- Browse to OH folder location and select oh.ico
+	- Apply
 
 **Method 2 (with launch parameters stored on execution command)**
 - Rigth click on Desktop
 - New Shortcut
 - Browse to OH folder location and select oh.ps1
 - Assign a name to the shortcut
-- Rigth click on the shortcut
+- Right click on the shortcut
 - Properties
 - Change icon
 - Specify a different file
