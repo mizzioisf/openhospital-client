@@ -160,20 +160,18 @@ Follow these instruction to create a Windows OH launch icon on desktop:
 - New Shortcut
 - Browse to OH folder location and select oh.bat
 - Assign a name to the shortcut
-	- Right click on the shortcut
-	- Properties
-	- Change icon
-	- Specify a different file
-	- Browse to OH folder location and select oh.ico
-	- Apply
+- Right click on the shortcut and select Properties
+- Change icon
+- Specify a different file
+- Browse to OH folder location and select oh.ico
+- Apply
 
 **Method 2 (with launch parameters stored on execution command)**
 - Rigth click on Desktop
 - New Shortcut
 - Browse to OH folder location and select oh.ps1
 - Assign a name to the shortcut
-- Right click on the shortcut
-- Properties
+- Right click on the shortcut and select Properties
 - Change icon
 - Specify a different file
 - Browse to OH folder location and select oh.ico
