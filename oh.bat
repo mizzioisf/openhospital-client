@@ -148,17 +148,13 @@ set ARCH=32
 
 REM ######## MySQL Software
 REM # MariaDB 64bit
-REM https://archive.mariadb.org/mariadb-10.2.43/winx64-packages/mariadb-10.2.43-winx64.zip
-REM # MySQL 64bit
-REM https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.35-winx64.zip
+REM https://archive.mariadb.org/mariadb-10.4.24/winx64-packages/mariadb-10.4.24-winx64.zip
 
 REM # MariaDB 32bit
-REM https://archive.mariadb.org/mariadb-10.2.41/win32-packages/mariadb-10.2.41-win32.zip
-REM # MySQL 32bit
-REM https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.35-win32.zip
+REM https://archive.mariadb.org/mariadb-10.4.22/win32-packages/mariadb-10.4.22-win32.zip
 
-REM set MYSQL_DIR=mysql-5.7.35-win32
-set MYSQL_DIR=mariadb-10.2.41-win%ARCH%
+REM set MYSQL_DIR=mariadb-10.4.22-win32
+set MYSQL_DIR=mariadb-10.4.24-win%ARCH%
 
 REM ####### JAVA Software
 REM # JRE 11 64bit - x86_64

@@ -168,8 +168,8 @@ $script:languagearray= @("en","fr","it","es","pt")
 
 ######## MySQL/MariaDB Software
 # MariaDB version
-$script:MYSQL_VERSION="10.2.43"
-$script:MYSQL32_VERSION="10.2.41"
+$script:MYSQL_VERSION="10.4.24"
+$script:MYSQL32_VERSION="10.4.22"
 
 ######## define architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
@@ -205,9 +205,6 @@ if ( $DICOM_ENABLE -eq "on" ) {
 # MariaDB
 $script:MYSQL_URL="https://archive.mariadb.org/mariadb-$script:MYSQL_VERSION/win$script:MYSQL_ARCH-packages/"
 $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
-# MySQL
-#$script:MYSQL_DIR="mysql-5.7.35-win$script:MYSQL_ARCH"
-#$script:MYSQL_URL=" https://downloads.mysql.com/archives/get/p/23/file"
 
 ######## JAVA Software
 ######## JAVA 64bit - default architecture
