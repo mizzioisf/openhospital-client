@@ -353,6 +353,11 @@ else
 	echo "MySQL not found! Exiting."
 	exit 1
 fi
+# check for libaio
+if [ $(ldconfig -p | grep libaiooooo) ]; then
+	echo "libaio not found! Please install the library. Exiting."
+	exit 1
+fi
 }
 
 function config_database {
