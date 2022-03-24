@@ -354,8 +354,15 @@ else
 	exit 1
 fi
 # check for libaio
-if [ $(ldconfig -p | grep libaiooooo) ]; then
+ldconfig -p | grep libaio > /dev/null;
+if [ $? -eq 1 ]; then
 	echo "libaio not found! Please install the library. Exiting."
+	exit 1
+fi
+# check for libncurses
+ldconfig -p | grep libncurses > /dev/null;
+if [ $? -eq 1 ]; then
+	echo "libncurses not found! Please install the library. Exiting."
 	exit 1
 fi
 }
