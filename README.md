@@ -20,7 +20,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.11.3 Open Hospital pre-release!**
+**New ! Updated to 1.12-dev Open Hospital pre-release!**
 
 # Running OH - Ultra-quickstart
 
@@ -418,9 +418,9 @@ In order to download and unzip Java:
 - Visit  https://cdn.azul.com/zulu/bin/
 - download the **JRE - .zip version**
 
-**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu8.60.0.21-ca-jre8.0.322-win_i686.zip
+**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu11.58.25-ca-jre11.0.16.1-win_i686.zip
 
-**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu8.60.0.21-ca-jre8.0.322-win_x64.zip
+**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu11.58.23-ca-jre11.0.16.1-win_x64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -435,7 +435,7 @@ In order to download and unzip mariadb:
 
 **x86 - 32bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.41/win32-packages/mariadb-10.2.41-win32.zip
 
-**x64 - 64bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.43/winx64-packages/mariadb-10.2.43-winx64.zip
+**x64 - 64bit:** https://downloads.mariadb.com/MariaDB/mariadb-10.2.44/winx64-packages/mariadb-10.2.44-winx64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -479,5 +479,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2022.02.10*
+*last updated: 2022.10.11*
 

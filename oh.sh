@@ -126,7 +126,7 @@ esac
 
 ######## MySQL/MariaDB Software
 # MariaDB
-MYSQL_VERSION="10.4.24"
+MYSQL_VERSION="10.2.44"
 MYSQL_URL="https://archive.mariadb.org/mariadb-$MYSQL_VERSION/bintar-linux-$MYSQL_ARCH"
 MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$MYSQL_PACKAGE_ARCH"
 
@@ -139,12 +139,12 @@ MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$MYSQL_PACKAGE_ARCH"
 #JAVA_DIR="jdk-11.0.11+9-jre"
 
 ### JRE 11 - zulu distribution
-#JAVA_DISTRO="zulu11.52.13-ca-jre11.0.13-linux_x64"
-#JAVA_URL="https://cdn.azul.com/zulu/bin"
+JAVA_DISTRO="zulu11.58.23-ca-jre11.0.16.1-linux_$JAVA_PACKAGE_ARCH"
+JAVA_URL="https://cdn.azul.com/zulu/bin"
 
 ### JRE 8 - zulu distribution
-JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-linux_$JAVA_PACKAGE_ARCH"
-JAVA_URL="https://cdn.azul.com/zulu/bin/"
+#JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-linux_$JAVA_PACKAGE_ARCH"
+#JAVA_URL="https://cdn.azul.com/zulu/bin/"
 JAVA_DIR=$JAVA_DISTRO
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################

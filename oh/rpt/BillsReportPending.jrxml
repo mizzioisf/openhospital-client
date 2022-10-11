@@ -28,7 +28,7 @@
 	BLL_BALANCE,
 	BLL_STATUS
 	FROM (
-		SELECT * FROM BILLS LEFT JOIN BILLPAYMENTS ON BLL_ID = BLP_ID_BILL
+		SELECT * FROM OH_BILLS LEFT JOIN OH_BILLPAYMENTS ON BLL_ID = BLP_ID_BILL
 		WHERE BLL_STATUS <> 'D' AND BLL_STATUS <> 'X'
 		AND (DATE(BLP_DATE) BETWEEN DATE($P{fromdate}) AND DATE($P{todate})
 			OR DATE(BLL_DATE) BETWEEN DATE($P{fromdate}) AND DATE($P{todate}))
@@ -185,7 +185,7 @@ ORDER BY BLL_DATE]]>
 				<textElement verticalAlignment="Middle">
 					<font fontName="DejaVu Sans" size="14" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{Periodical.Incomes.Billed.And.Receivables.Report}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{Periodic.Incomes.Billed.And.Receivables.Report}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement key="staticText-13" x="0" y="104" width="535" height="21" uuid="a46b9b28-dc30-4a76-86bf-4f9dc7f7d0f2"/>

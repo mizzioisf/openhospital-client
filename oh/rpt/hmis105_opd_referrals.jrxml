@@ -24,9 +24,9 @@ SELECT  'Referrals to unit' category,
         case when OPD_AGE<5 and OPD_SEX = 'F' then 1 else null end femaleupto4,
         case when OPD_AGE>=5 and OPD_SEX = 'M' then 1 else null end maleover4,
         case when OPD_AGE>=5 and OPD_SEX = 'F' then 1 else null end femaleover4
-    FROM OPD o
-where year(OPD_DATE_VIS)=$P{year}
-  and month(OPD_DATE_VIS)=$P{month}
+    FROM OH_OPD o
+where year(OPD_DATE)=$P{year}
+  and month(OPD_DATE)=$P{month}
   and OPD_REFERRAL_TO = 'R'
 UNION ALL
 SELECT  'Referrals from unit' category,
@@ -34,9 +34,9 @@ SELECT  'Referrals from unit' category,
         case when OPD_AGE<5 and OPD_SEX = 'F' then 1 else null end femaleupto4,
         case when OPD_AGE>=5 and OPD_SEX = 'M' then 1 else null end maleover4,
         case when OPD_AGE>=5 and OPD_SEX = 'F' then 1 else null end femaleover4
-    FROM OPD o
-where year(OPD_DATE_VIS)=$P{year}
-  and month(OPD_DATE_VIS)=$P{month}
+    FROM OH_OPD o
+where year(OPD_DATE)=$P{year}
+  and month(OPD_DATE)=$P{month}
   and OPD_REFERRAL_FROM = 'R'
 ) detaildata
 group by category

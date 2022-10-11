@@ -33,20 +33,20 @@ from (
            (select 
                count(*) 
             from 
-               LABORATORY l
+               OH_LABORATORY l
             where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(l.LAB_EXAM_DATE)=$P{month} and year(l.LAB_EXAM_DATE)=$P{year}
+               and month(l.LAB_DATE)=$P{month} and year(l.LAB_DATE)=$P{year}
                and l.LAB_MATERIAL = 'Blood'
             ) blood_done,
         
            (select 
                count(*) 
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(LAB_EXAM_DATE)=$P{month} and year(LAB_EXAM_DATE)=$P{year}
+               and month(LAB_DATE)=$P{month} and year(LAB_DATE)=$P{year}
                and l.LAB_RES=ex.EXA_DEFAULT
                and l.LAB_MATERIAL = 'Blood'
            ) blood_negative, 
@@ -54,20 +54,20 @@ from (
            (select 
                count(*) 
             from 
-               LABORATORY l
+               OH_LABORATORY l
             where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(l.LAB_EXAM_DATE)=$P{month} and year(l.LAB_EXAM_DATE)=$P{year}
+               and month(l.LAB_DATE)=$P{month} and year(l.LAB_DATE)=$P{year}
                and l.LAB_MATERIAL = 'Urine'
            ) urine_done,
         
            ( select 
                count(*) 
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(LAB_EXAM_DATE)=$P{month} and year(LAB_EXAM_DATE)=$P{year}
+               and month(LAB_DATE)=$P{month} and year(LAB_DATE)=$P{year}
                and l.LAB_RES=ex.EXA_DEFAULT
                and l.LAB_MATERIAL = 'Urine'
            ) urine_negative, 
@@ -75,20 +75,20 @@ from (
            (select 
                count(*) 
             from 
-               LABORATORY l
+               OH_LABORATORY l
             where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(l.LAB_EXAM_DATE)=$P{month} and year(l.LAB_EXAM_DATE)=$P{year}
+               and month(l.LAB_DATE)=$P{month} and year(l.LAB_DATE)=$P{year}
                and l.LAB_MATERIAL = 'Stool'   
             ) stool_done,
         
            ( select 
                count(*) 
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(LAB_EXAM_DATE)=$P{month} and year(LAB_EXAM_DATE)=$P{year}
+               and month(LAB_DATE)=$P{month} and year(LAB_DATE)=$P{year}
                and l.LAB_RES=ex.EXA_DEFAULT
                and l.LAB_MATERIAL = 'Stool'
            ) stool_negative, 
@@ -96,20 +96,20 @@ from (
            (select 
                count(*) 
             from 
-               LABORATORY l
+               OH_LABORATORY l
             where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(l.LAB_EXAM_DATE)=$P{month} and year(l.LAB_EXAM_DATE)=$P{year}
+               and month(l.LAB_DATE)=$P{month} and year(l.LAB_DATE)=$P{year}
                and l.LAB_MATERIAL = 'Sputum'
             ) sputum_done,
         
            ( select 
                count(*) 
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(LAB_EXAM_DATE)=$P{month} and year(LAB_EXAM_DATE)=$P{year}
+               and month(LAB_DATE)=$P{month} and year(LAB_DATE)=$P{year}
                and l.LAB_RES=ex.EXA_DEFAULT
                and l.LAB_MATERIAL = 'Sputum'   
            ) sputum_negative, 
@@ -117,20 +117,20 @@ from (
           (select 
                count(*) 
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(l.LAB_EXAM_DATE)=$P{month} and year(l.LAB_EXAM_DATE)=$P{year}
+               and month(l.LAB_DATE)=$P{month} and year(l.LAB_DATE)=$P{year}
                and l.LAB_MATERIAL = 'CSF'
            ) csf_done, 
         
            ( select 
                count(*) 
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(LAB_EXAM_DATE)=$P{month} and year(LAB_EXAM_DATE)=$P{year}
+               and month(LAB_DATE)=$P{month} and year(LAB_DATE)=$P{year}
                and l.LAB_RES=ex.EXA_DEFAULT
                and l.LAB_MATERIAL = 'CSF'
            ) csf_negative, 
@@ -138,20 +138,20 @@ from (
            (select 
                count(*) 
             from 
-               LABORATORY l
+               OH_LABORATORY l
             where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(l.LAB_EXAM_DATE)=$P{month} and year(l.LAB_EXAM_DATE)=$P{year}
+               and month(l.LAB_DATE)=$P{month} and year(l.LAB_DATE)=$P{year}
                and l.LAB_MATERIAL = 'Swabs'
            ) swabs_done,
         
            ( select 
                count(*) 
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(LAB_EXAM_DATE)=$P{month} and year(LAB_EXAM_DATE)=$P{year}
+               and month(LAB_DATE)=$P{month} and year(LAB_DATE)=$P{year}
                and l.LAB_RES=ex.EXA_DEFAULT
                and l.LAB_MATERIAL = 'Swabs'   
            ) swabs_negative, 
@@ -159,20 +159,20 @@ from (
            (select 
                count(*) 
             from 
-               LABORATORY l
+               OH_LABORATORY l
              where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(l.LAB_EXAM_DATE)=$P{month} and year(l.LAB_EXAM_DATE)=$P{year}
+               and month(l.LAB_DATE)=$P{month} and year(l.LAB_DATE)=$P{year}
                and l.LAB_MATERIAL = 'Tissues'
            ) tissues_done,
         
            ( select 
                count(*) 
              from 
-               LABORATORY l
+               OH_LABORATORY l
              where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(LAB_EXAM_DATE)=$P{month} and year(LAB_EXAM_DATE)=$P{year}
+               and month(LAB_DATE)=$P{month} and year(LAB_DATE)=$P{year}
                and l.LAB_RES=ex.EXA_DEFAULT
                and l.LAB_MATERIAL = 'Tissues'
            ) tissues_negative, 
@@ -180,11 +180,11 @@ from (
            (select 
                count(*)  
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(LAB_EXAM_DATE)=$P{month} 
-               and year(LAB_EXAM_DATE)=$P{year}
+               and month(LAB_DATE)=$P{month} 
+               and year(LAB_DATE)=$P{year}
            group by 
                EXA_DESC
            ) row_total, 
@@ -192,11 +192,11 @@ from (
           (select 
                count(*)  
            from 
-               LABORATORY l
+               OH_LABORATORY l
            where 
                l.LAB_EXA_ID_A = ex.EXA_ID_A
-               and month(l.LAB_EXAM_DATE)=$P{month} 
-               and year(l.LAB_EXAM_DATE)=$P{year}
+               and month(l.LAB_DATE)=$P{month} 
+               and year(l.LAB_DATE)=$P{year}
                and (l.LAB_MATERIAL not in ('Blood' , 'Urine' , 'Stool' , 'Sputum' , 'CSF' , 'Swabs' , 'Tissues')
                or l.LAB_MATERIAL is null)     
            group by 
@@ -205,7 +205,7 @@ from (
 
         
         
-        from EXAM ex, EXAMTYPE et
+        from OH_EXAM ex, OH_EXAMTYPE et
         where et.EXC_ID_A = ex.EXA_EXC_ID_A
         order by 1,2
 ) final]]>

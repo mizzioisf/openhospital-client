@@ -168,8 +168,8 @@ $script:languagearray= @("en","fr","it","es","pt")
 
 ######## MySQL/MariaDB Software
 # MariaDB version
-$script:MYSQL_VERSION="10.4.24"
-$script:MYSQL32_VERSION="10.4.22"
+$script:MYSQL_VERSION="10.2.44"
+$script:MYSQL32_VERSION="10.2.41"
 
 ######## define architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
@@ -213,13 +213,20 @@ $script:MYSQL_DIR="mariadb-$script:MYSQL_VERSION-win$script:MYSQL_ARCH"
 #$script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9"
 #$script:JAVA_DIR="jdk-11.0.11+9-jre"
 
-### JRE 11 - zulu
-#$script:JAVA_DISTRO="zulu11.52.13-ca-fx-jre11.0.13-win_$JAVA_PACKAGE_ARCH"
+### JRE 8 - zulu
+#$script:JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-win_$JAVA_PACKAGE_ARCH"
 #$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
 
-### JRE 8 - zulu
-$script:JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-win_$JAVA_PACKAGE_ARCH"
-$script:JAVA_URL="https://cdn.azul.com/zulu/bin/"
+### JRE 11 - zulu
+$script:JAVA_URL="https://cdn.azul.com/zulu/bin"
+#$script:JAVA_DISTRO="zulu11.58.25-ca-jre11.0.16.1-win_$JAVA_PACKAGE_ARCH"
+$script:JAVA_DISTRO="zulu11.58.23-ca-jre11.0.16.1-win_$JAVA_PACKAGE_ARCH"
+
+# workaround for JRE 11 - 32bit
+if ( $JAVA_ARCH -eq "32" ) {
+	$script:JAVA_DISTRO="zulu11.58.25-ca-jre11.0.16.1-win_$JAVA_PACKAGE_ARCH"
+}
+
 $script:JAVA_DIR=$JAVA_DISTRO
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
