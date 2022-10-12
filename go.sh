@@ -30,7 +30,7 @@
 # OH_PATH is the directory where Portable OpenHospital files are located
 # OH_PATH=/usr/local/PortableOpenHospital
 
-OH_SUBDIR="oh-1.11.beta"
+OH_SUBDIR="oh-1.12.beta"
 OH_REPO="https://github.com/mizzioisf/openhospital-client"
 
 ######## Software configuration - change at your own risk :-)
