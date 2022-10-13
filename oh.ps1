@@ -169,8 +169,10 @@ $script:languagearray= @("en","fr","it","es","pt")
 
 ######## MySQL/MariaDB Software
 # MariaDB version
-$script:MYSQL_VERSION="10.2.44"
-$script:MYSQL32_VERSION="10.2.41"
+#$script:MYSQL_VERSION="10.2.44"
+#$script:MYSQL32_VERSION="10.2.41"
+$script:MYSQL_VERSION="10.4.26"
+$script:MYSQL32_VERSION="10.4.22"
 
 ######## define architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
