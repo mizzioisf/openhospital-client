@@ -103,7 +103,7 @@ REM ###################
 set OH_PATH=%~dps0
 
 REM # Language setting - default set to en
-REM set OH_LANGUAGE=en fr es it pt
+REM set OH_LANGUAGE=en fr es it pt ar
 set OH_LANGUAGE=en
 
 REM # set log level to INFO | DEBUG - default set to INFO

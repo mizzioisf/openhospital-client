@@ -32,7 +32,7 @@ The script is used to setup and launch Open Hospital in PORTABLE, CLIENT  mode o
 It can also be used to perform some basic operations like saving or importing a database.
 
 Open Hospital CLIENT | PORTABLE
-Usage: oh.ps1 [ -lang en|fr|it|es|pt ] [default set to en]
+Usage: oh.ps1 [ -lang en|fr|it|es|pt|ar ] [default set to en]
               [ -mode PORTABLE|CLIENT ]
               [ -loglevel INFO|DEBUG ] [default set to INFO]
               [ -dicom on|off ]
@@ -113,7 +113,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 #$script:DEMO_DATA="off"
 
 # language setting - default set to en
-#$script:OH_LANGUAGE="en" # fr es it pt
+#$script:OH_LANGUAGE="en" # fr es it pt ar
 
 # enable DICOM (default set to on - forces JAVA_ARCH to 32bit)
 $script:DICOM_ENABLE="on"
@@ -163,7 +163,7 @@ $script:EXT="zip"
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 # available languages - do not modify
-$script:languagearray= @("en","fr","it","es","pt") 
+$script:languagearray= @("en","fr","it","es","pt","ar") 
 
 ############## Architecture and external software ##############
 
@@ -249,7 +249,7 @@ function script_menu {
 	Write-Host " lang $script:OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL "
 	Write-Host " ---------------------------------------------------------"
 	Write-Host ""
-	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt ] "
+	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt|ar ] "
 	Write-Host "               [ -mode PORTABLE|CLIENT ]"
 	Write-Host "               [ -loglevel INFO|DEBUG ] "
 	Write-Host "               [ -dicom on|off ] "
@@ -263,7 +263,7 @@ function script_menu {
 	Write-Host "   g    generate configuration files"
 	Write-Host "   G    setup GSM"
 	Write-Host "   i    initialize/install OH database"
-	Write-Host "   l    set language: en|fr|it|es|pt"
+	Write-Host "   l    set language: en|fr|it|es|pt|ar"
 	Write-Host "   s    save OH database"
 	Write-Host "   r    restore OH database"
 	Write-Host "   t    test database connection (CLIENT mode only)"
@@ -327,8 +327,8 @@ function set_path {
 }
 
 function set_language {
-	# set OH interface language - default to en
-	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
+	# set OH interface language - default to en (also for arabic)
+	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) -Or ($OH_LANGUAGE="ar") ) {
 		$script:OH_LANGUAGE="en"
 	}
 	# check for valid language selection
@@ -854,7 +854,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 		exit 0
 	}
 	"l"	{ # set language 
-		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt (default is en)"
+		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
 		set_language;
 		$script:GENERATE_CONFIG_FILES="on"
 	}
