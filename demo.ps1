@@ -340,6 +340,7 @@ function set_language {
 	else {
 		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
 		Read-Host; exit 1
+	}
 	
 }
 
