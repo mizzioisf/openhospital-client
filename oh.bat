@@ -2,7 +2,7 @@
 REM # Open Hospital (www.open-hospital.org)
 REM # Copyright © 2006-2022 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
 REM #
-REM # Open Hospital is a free and open source software for healthcare data management.
+RE # Open Hospital is a free and open source software for healthcare data management.
 REM #
 REM # This program is free software: you can redistribute it and/or modify
 REM # it under the terms of the GNU General Public License as published by
@@ -114,9 +114,9 @@ set DICOM_ENABLE=on
 
 REM ### Software configuration - change at your own risk :-)
 REM # Database
-set MYSQL_SERVER=localhost
-set MYSQL_PORT=3306
-set MYSQL_ROOT_PW=tmp2021oh111
+set DATABAE_SERVER=localhost
+set DATABASE_PORT=3306
+set DATABASE_ROOT_PW=tmp2021oh111
 set DATABASE_NAME=oh
 set DATABASE_USER=isf
 set DATABASE_PASSWORD=isf123
@@ -208,8 +208,8 @@ echo Generating MySQL config file...
 REM ### Setup MySQL configuration
 echo f | xcopy %OH_PATH%\%CONF_DIR%\my.cnf.dist %OH_PATH%\%CONF_DIR%\my.cnf /y > "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_PATH_SUBSTITUTE %OH_PATH_SUBSTITUTE% -- %OH_PATH%\%CONF_DIR%\my.cnf  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe MYSQL_SERVER %MYSQL_SERVER% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe MYSQL_PORT %MYSQL_PORT% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DATABASE_SERVER %DATABASE_SERVER% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DATABASE_PORT %DATABASE_PORT% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe MYSQL_DISTRO %MYSQL_DIR% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DICOM_SIZE %DICOM_MAX_SIZE% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe TMP_DIR %TMP_DIR% -- %OH_PATH%\%CONF_DIR%\my.cnf >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -226,7 +226,7 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\dicom.properties.dist %OH_PATH%\%OH_DIR%\r
 
 REM ### Setup database.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\database.properties.dist %OH_PATH%\%OH_DIR%\rsc\database.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe DBSERVER %MYSQL_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DBSERVER %DATABASE_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBUSER %DATABASE_USER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPASS %DATABASE_PASSWORD% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -244,7 +244,7 @@ REM # replace backslash with slash
 set OH_LOG_DIR=%LOG_DIR:\=/%
 set OH_LOG_DEST=../%OH_LOG_DIR%/%OH_LOG_FILE%
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\rsc\log4j.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe DBSERVER %MYSQL_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DBSERVER %DATABASE_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBUSER %DATABASE_USER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPASS %DATABASE_PASSWORD% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -283,17 +283,17 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	REM # If using MySQL root password need to be set
 	if %MYSQL_DIR:~0,5% == mysql (
 		echo Setting MySQL root password...
-		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root --skip-password --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '%MYSQL_ROOT_PW%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
+		start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root --skip-password --host=%DATABASE_SERVER% --port=%DATABASE_PORT% -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '%DATABASE_ROOT_PW%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 		if ERRORLEVEL 1 (goto error)
 	)
 
 	echo Creating database...
-	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% -e "CREATE DATABASE %DATABASE_NAME%; CREATE USER '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%'; GRANT ALL PRIVILEGES ON %DATABASE_NAME%.* TO '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
+	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe -u root -p%MYSQL_ROOT_PW% --host=%DATABASE_SERVER% --port=%DATABASE_PORT% -e "CREATE DATABASE %DATABASE_NAME%; CREATE USER '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%'; GRANT ALL PRIVILEGES ON %DATABASE_NAME%.* TO '%DATABASE_USER%'@'localhost' IDENTIFIED BY '%DATABASE_PASSWORD%';" >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 	if ERRORLEVEL 1 (goto error)
 
 	echo Importing database schema %DB_CREATE_SQL%...
 	cd /d %OH_PATH%\%SQL_DIR%
-	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u root -p%MYSQL_ROOT_PW% --host=%DATABASE_SERVER% --port=%DATABASE_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 	if ERRORLEVEL 1 (goto error)
 	cd /d %OH_PATH%
 	echo Database imported!
@@ -339,7 +339,7 @@ cd /d %OH_PATH%\%OH_DIR%
 
 REM # Shutdown MySQL
 echo Shutting down MySQL...
-start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%MYSQL_ROOT_PW% --host=%MYSQL_SERVER% --port=%MYSQL_PORT% shutdown >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
+start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysqladmin --user=root --password=%DATABASE_ROOT_PW% --host=%DATABASE_SERVER% --port=%DATABASE_PORT% shutdown >> %OH_PATH%\%LOG_DIR%\%LOG_FILE% 2>&1
 
 REM # Exit
 echo Exiting Open Hospital...

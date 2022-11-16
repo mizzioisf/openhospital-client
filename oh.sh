@@ -66,12 +66,13 @@ SCRIPT_NAME=$(basename "$0")
 
 ############## OH local configuration - change at your own risk :-) ##############
 # Database
-MYSQL_SERVER=localhost
-MYSQL_PORT=3306
-MYSQL_ROOT_PW="tmp2021oh111"
+DATABASE_SERVER=localhost
+DATABASE_PORT=3306
+DATABASE_ROOT_PW="tmp2021oh111"
 DATABASE_NAME=oh
 DATABASE_USER=isf
 DATABASE_PASSWORD="isf123"
+#DATABASE_LANGUAGE=en # default to en
 
 DICOM_MAX_SIZE="4M"
 DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
@@ -239,25 +240,30 @@ function set_path {
 }
 
 function set_language {
-	# set OH interface language - default to en
+	# set OH interface language - default to en if not defined
 	if [ -z ${OH_LANGUAGE+x} ]; then
 		OH_LANGUAGE=en
+	fi
+	# set OH database language - default to en if not defined
+	if [ -z ${DATABASE_LANGUAGE+x} ]; then
+		DATABASE_LANGUAGE=en
 	fi
 	# check for valid language selection
 	case $OH_LANGUAGE in 
 		en|fr|it|es|pt) 
-			# set database creation script in chosen language
-			DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
+			DATABASE_LANGUAGE=$OH_LANGUAGE
 			;;
-		ar*) 
-			# set database creation script in english for arab interface
-			DB_CREATE_SQL="create_all_en.sql"
+		ar*)	# default to en for other languages
+ 			# set database creation script in english for arab interface
+			DATABASE_LANGUAGE=en
 			;;
 		*)
 			echo "Invalid language option: $OH_LANGUAGE. Exiting."
 			exit 1
 		;;
 	esac
+	# set database creation script in chosen language
+	DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
 }
 
 function initialize_dir_structure {
@@ -384,15 +390,15 @@ function config_database {
 
 		# find a free TCP port to run MySQL starting from the default port
 		echo "Looking for a free TCP port for MySQL database..."
-		while [[ $(ss -tl4  sport = :$MYSQL_PORT | grep LISTEN) ]]; do
-			MYSQL_PORT=$(expr $MYSQL_PORT + 1)
+		while [[ $(ss -tl4  sport = :$DATABASE_PORT | grep LISTEN) ]]; do
+			MYSQL_PORT=$(expr $DATABASE_PORT + 1)
 		done
 		echo "Found TCP port $MYSQL_PORT!"
 
 		echo "Generating MySQL config file..."
-		sed -e "s/MYSQL_SERVER/$MYSQL_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
+		sed -e "s/MYSQL_SERVER/$DATABASE_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
 		-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
-		-e "s/MYSQL_PORT/$MYSQL_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/my.cnf
+		-e "s/MYSQL_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/my.cnf
 	fi
 }
 
@@ -425,14 +431,14 @@ function start_database {
 		exit 2
 	fi
 	# wait till the MySQL tcp port is open
-	until nc -z $MYSQL_SERVER $MYSQL_PORT; do sleep 1; done
+	until nc -z $DATABASE_SERVER $DATABASE_PORT; do sleep 1; done
 	echo "MySQL server started! "
 }
 
 function set_database_root_pw {
 	# if using MySQL/MariaDB root password need to be set
 	echo "Setting MySQL root password..."
-	./$MYSQL_DIR/bin/mysql -u root --skip-password --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PW';" >> ./$LOG_DIR/$LOG_FILE 2>&1
+	./$MYSQL_DIR/bin/mysql -u root --skip-password --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$DATABASE_ROOT_PW';" >> ./$LOG_DIR/$LOG_FILE 2>&1
 	
 	if [ $? -ne 0 ]; then
 		echo "Error: MySQL root password not set! Exiting."
@@ -444,7 +450,7 @@ function set_database_root_pw {
 function import_database {
 	echo "Creating OH Database..."
 	# create OH database and user
-	./$MYSQL_DIR/bin/mysql -u root -p$MYSQL_ROOT_PW --protocol=tcp --host=$MYSQL_SERVER --port=$MYSQL_PORT \
+	./$MYSQL_DIR/bin/mysql -u root -p$DATABASE_ROOT_PW --protocol=tcp --host=$DATABASE_SERVER --port=$DATABASE_PORT \
 	-e "CREATE DATABASE $DATABASE_NAME; CREATE USER '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'; \
 	CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost'; \
 	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%' ; " >> ./$LOG_DIR/$LOG_FILE 2>&1
@@ -467,7 +473,7 @@ function import_database {
 	# create OH database structure
 	echo "Importing database schema..."
 	cd "./$SQL_DIR"
-	../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
+	../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
 	if [ $? -ne 0 ]; then
 		echo "Error: Database not imported! Exiting."
 		shutdown_database;
@@ -483,7 +489,7 @@ function dump_database {
 	if [ -x ./$MYSQL_DIR/bin/mysqldump ]; then
 		mkdir -p "$OH_PATH/$BACKUP_DIR"
 		echo "Dumping MySQL database..."
-		./$MYSQL_DIR/bin/mysqldump --skip-extended-insert -u root --password=$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp $DATABASE_NAME > ./$BACKUP_DIR/mysqldump_$DATE.sql
+		./$MYSQL_DIR/bin/mysqldump --skip-extended-insert -u root --password=$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME > ./$BACKUP_DIR/mysqldump_$DATE.sql
 		if [ $? -ne 0 ]; then
 			echo "Error: Database not dumped! Exiting."
 			cd "$CURRENT_DIR"
@@ -503,9 +509,9 @@ function shutdown_database {
 	if [ $OH_MODE = "PORTABLE" ]; then
 		echo "Shutting down MySQL..."
 		cd "$OH_PATH"
-		./$MYSQL_DIR/bin/mysqladmin -u root -p$MYSQL_ROOT_PW --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp shutdown >> ./$LOG_DIR/$LOG_FILE 2>&1
+		./$MYSQL_DIR/bin/mysqladmin -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp shutdown >> ./$LOG_DIR/$LOG_FILE 2>&1
 		# wait till the MySQL tcp port is closed
-		until !( nc -z $MYSQL_SERVER $MYSQL_PORT ); do sleep 1; done
+		until !( nc -z $DATABASE_SERVER $DATABASE_PORT ); do sleep 1; done
 		echo "MySQL stopped!"
 	else
 		exit 1
@@ -529,7 +535,7 @@ function test_database_connection {
 	if [ -x ./$MYSQL_DIR/bin/mysql ]; then
 		# test connection to the OH MySQL database
 		echo "Testing database connection..."
-		DBTEST=$(./$MYSQL_DIR/bin/mysql --user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$MYSQL_SERVER --port=$MYSQL_PORT --protocol=tcp -e "USE $DATABASE_NAME" >> ./$LOG_DIR/$LOG_FILE 2>&1; echo "$?" )
+		DBTEST=$(./$MYSQL_DIR/bin/mysql --user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e "USE $DATABASE_NAME" >> ./$LOG_DIR/$LOG_FILE 2>&1; echo "$?" )
 		if [ $DBTEST -eq 0 ];then
 			echo "Database connection successfully established!"
 		else
@@ -580,7 +586,7 @@ function generate_config_files {
 		OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
 		[ -f ./$OH_DIR/rsc/log4j.properties ] && mv -f ./$OH_DIR/rsc/log4j.properties ./$OH_DIR/rsc/log4j.properties.old
 		echo "Generating OH configuration file -> log4j.properties..."
-		sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
+		sed -e "s/DBSERVER/$DATABASE_SERVER/g" -e "s/DBPORT/$DATABASE_PORT/" -e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		-e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
 		./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
 	fi
@@ -589,7 +595,7 @@ function generate_config_files {
 	if [ $GENERATE_CONFIG_FILES = "on" ] || [ ! -f ./$OH_DIR/rsc/database.properties ]; then
 		[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
 		echo "Generating OH configuration file -> database.properties..."
-		sed -e "s/DBSERVER/$MYSQL_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
+		sed -e "s/DBSERVER/$DATABASE_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
 		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
 	fi
@@ -675,15 +681,15 @@ while getopts ${OPTSTRING} opt; do
 		OH_MODE="CLIENT"
 		echo "Do you want to initialize/install the OH database on:"
 		echo ""
-		echo " Server -> $MYSQL_SERVER"
-		echo " TCP port -> $MYSQL_PORT" 
+		echo " Server -> $DATABASE_SERVER"
+		echo " TCP port -> $DATABASE_PORT" 
 		echo ""
 		get_confirmation;
 		set_language;
 		initialize_dir_structure;
 		mysql_check;
 		# ask user for database root password
-		read -p "Please insert the MySQL / MariaDB database root password (root@$MYSQL_SERVER) -> " MYSQL_ROOT_PW
+		read -p "Please insert the MySQL / MariaDB database root password (root@$DATABASE_SERVER) -> " DATABASE_ROOT_PW
 		echo ""
 		echo "Installing the database....."
 		echo ""
@@ -780,8 +786,8 @@ while getopts ${OPTSTRING} opt; do
 		echo "Log level is set to $LOG_LEVEL"
 		echo ""
 		echo "--- Database ---"
-		echo "MYSQL_SERVER=$MYSQL_SERVER"
-		echo "MYSQL_PORT=$MYSQL_PORT"
+		echo "DATABASE_SERVER=$DATABASE_SERVER"
+		echo "DATABASE_PORT=$DATABASE_PORT"
 		echo "DATABASE_NAME=$DATABASE_NAME"
 		echo "DATABASE_USER=$DATABASE_USER"
 		echo ""
@@ -830,7 +836,7 @@ done
 
 # check mode
 if [ -z ${OH_MODE+x} ]; then
-	echo "Error - OH_MODE not defined [CLIENT - PORTABLE]! Exiting."
+	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
 	exit 1
 fi
 
@@ -901,7 +907,7 @@ test_database_connection;
 # generate config files
 generate_config_files;
 
-######## Open Hospital start
+######## Open Hospital interface startup
 
 echo "Starting Open Hospital..."
 
