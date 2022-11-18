@@ -130,7 +130,7 @@ esac
 # MariaDB
 #MYSQL_VERSION="10.2.44"
 #MYSQL_VERSION="10.4.26"
-MYSQL_VERSION="10.6.9"
+MYSQL_VERSION="10.6.11"
 MYSQL_PACKAGE_ARCH="systemd-$MYSQL_ARCH"
 MYSQL_URL="https://archive.mariadb.org/mariadb-$MYSQL_VERSION/bintar-linux-$MYSQL_PACKAGE_ARCH"
 MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$MYSQL_PACKAGE_ARCH"
@@ -144,7 +144,7 @@ MYSQL_DIR="mariadb-$MYSQL_VERSION-linux-$MYSQL_PACKAGE_ARCH"
 #JAVA_DIR="jdk-11.0.11+9-jre"
 
 ### JRE 11 - zulu distribution
-JAVA_DISTRO="zulu11.58.23-ca-jre11.0.16.1-linux_$JAVA_PACKAGE_ARCH"
+JAVA_DISTRO="zulu11.60.19-ca-fx-jre11.0.17-linux_$JAVA_PACKAGE_ARCH"
 JAVA_URL="https://cdn.azul.com/zulu/bin"
 
 ### JRE 8 - zulu distribution
