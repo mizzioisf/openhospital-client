@@ -1089,7 +1089,7 @@ if ( ($OH_MODE -eq "PORTABLE") -And ($OH_MODE -eq "SERVER") ){
 if ( $OH_MODE -eq "SERVER" ) {
 	
 	Write-Host "Open Hospital - SERVER mode started"
-	Write-Host "Database server listening on $DATABASE_SERVER:$DATABASE_PORT"
+	Write-Host "Database server listening on $DATABASE_SERVER port $DATABASE_PORT"
 	Write-Host "Press Ctrl + C to exit"
 	while true; do
 		trap ctrl_c INT
