@@ -642,7 +642,7 @@ function dump_database {
 }
 
 function shutdown_database {
-	if !( $OH_MODE -eq "CLIENT" ) {
+	if ( !( $OH_MODE -eq "CLIENT" ) ) {
 		Write-Host "Shutting down MySQL..."
 		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 		# wait till the MySQL socket file is removed -> TO BE IMPLEMENTED
@@ -797,7 +797,7 @@ cd "$OH_PATH" # workaround for hard coded paths
 ######## User input
 
 # If INTERACTIVE_MODE is set to "off" don't show menu for user input
-if ( $INTERACTIVE_MODE -eq "on") {
+if ( $INTERACTIVE_MODE -eq "on" ) {
 	script_menu;
 	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_MODE mode"
 	Write-Host ""
