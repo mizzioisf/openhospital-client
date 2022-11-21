@@ -2,7 +2,7 @@
 REM # Open Hospital (www.open-hospital.org)
 REM # Copyright © 2006-2022 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
 REM #
-RE # Open Hospital is a free and open source software for healthcare data management.
+REM # Open Hospital is a free and open source software for healthcare data management.
 REM #
 REM # This program is free software: you can redistribute it and/or modify
 REM # it under the terms of the GNU General Public License as published by
