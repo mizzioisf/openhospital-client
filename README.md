@@ -198,6 +198,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 - **C**    start Open Hospital in CLIENT mode, usually when an external database server is used (Client / Server configuration)
 - **P**    start Open Hospital in PORTABLE mode, where data is saved locally
+- **S**    start Open Hospital in SERVER mode: the local portable instance of MariaDB is launched
 - **d**    start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations to log file
 - **D**    start OH with Demo data - loads a demo database in order to test the software 
 - **g**    generate OH configuration files (oh/rsc/\*.properties) and exit
@@ -287,9 +288,9 @@ If a database server hostname/address is specified (other then localhost), OH ca
 ```
 ############## OH local configuration - change at your own risk :-) ##############
 # Database
-MYSQL_SERVER=localhost
-MYSQL_PORT=3306
-MYSQL_ROOT_PW="xxxxxxxxxx"
+DATABASE_SERVER=localhost
+DATABASE_PORT=3306
+DATABASE_ROOT_PW="xxxxxxxxxx"
 DATABASE_NAME=oh
 DATABASE_USER=isf
 DATABASE_PASSWORD="xxxxx"
@@ -451,6 +452,11 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **Unified script** for:
     Portable 64bit (default) and 32bit (with automatic architecture detection)
     Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
+
+- **New**: SERVER mode support
+- **New**: Arabic Language support **oh.sh -l ar**
+- **New**: Full 64bit support on Windows, also for DICOM !
+-----
 - **New**: Language support (both via variable in the script or user input option: **oh.sh -l fr**)
 - **New**: Demo database support (See oh.sh -D)
 - **New**: Client mode support (see oh.sh -C)
