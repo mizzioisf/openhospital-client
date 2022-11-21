@@ -1058,7 +1058,7 @@ initialize_dir_structure;
 ######## Database setup
 
 # start MySQL and create database
-if ( ($OH_MODE -eq "PORTABLE") -And ($OH_MODE -eq "SERVER") ){
+if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 	# check for MySQL software
 	mysql_check;
 	# config MySQL
