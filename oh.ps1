@@ -1087,7 +1087,7 @@ if ( ($OH_MODE -eq "PORTABLE") -And ($OH_MODE -eq "SERVER") ){
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if ( $OH_MODE -eq "SERVER" ) {
-	
+
 	Write-Host "Open Hospital - SERVER mode started"
 	Write-Host "Database server listening on $DATABASE_SERVER port $DATABASE_PORT"
 	Write-Host "Press Ctrl + C to exit"
@@ -1102,7 +1102,7 @@ if ( $OH_MODE -eq "SERVER" ) {
 			}
 		}
 	}
-
+}
 else {
 	######## Open Hospital GUI startup - only for CLIENT or PORTABLE mode
 
