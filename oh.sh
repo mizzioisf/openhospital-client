@@ -45,7 +45,7 @@ SCRIPT_NAME=$(basename "$0")
 # OH_PATH is the directory where Open Hospital files are located
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
-# set OH mode to PORTABLE | CLIENT - default set to PORTABLE
+# set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
 #OH_MODE=PORTABLE 
 
 # set DEMO_DATA to on to enable demo database loading - default set to off
@@ -67,7 +67,7 @@ SCRIPT_NAME=$(basename "$0")
 ############## OH local configuration - change at your own risk :-) ##############
 # Database
 DATABASE_SERVER=localhost
-DATABASE_PORT=3306
+DATABASE_PORT="3306"
 DATABASE_ROOT_PW="tmp2021oh111"
 DATABASE_NAME=oh
 DATABASE_USER=isf
@@ -170,6 +170,7 @@ function script_usage {
         echo ""
         echo "   -C    start OH in CLIENT mode (client / server configuration)"
         echo "   -P    start OH in PORTABLE mode"
+	echo "   -S    start OH in SERVER (Portable) mode"
         echo "   -d    start OH in debug mode"
         echo "   -D    start OH with Demo data"
         echo "   -g    generate configuration files"
@@ -391,14 +392,14 @@ function config_database {
 		# find a free TCP port to run MySQL starting from the default port
 		echo "Looking for a free TCP port for MySQL database..."
 		while [[ $(ss -tl4  sport = :$DATABASE_PORT | grep LISTEN) ]]; do
-			MYSQL_PORT=$(expr $DATABASE_PORT + 1)
+			DATABASE_PORT=$(expr $DATABASE_PORT + 1)
 		done
-		echo "Found TCP port $MYSQL_PORT!"
+		echo "Found TCP port $DATABASE_PORT!"
 
 		echo "Generating MySQL config file..."
-		sed -e "s/MYSQL_SERVER/$DATABASE_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
+		sed -e "s/DATABASE_SERVER/$DATABASE_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
 		-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
-		-e "s/MYSQL_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/my.cnf
+		-e "s/DATABASE_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/my.cnf
 	fi
 }
 
@@ -406,7 +407,7 @@ function initialize_database {
 	# create data directory
 	mkdir -p "./$DATA_DIR"
 	# inizialize MySQL
-	echo "Initializing MySQL database on port $MYSQL_PORT..."
+	echo "Initializing MySQL database on port $DATABASE_PORT..."
 	case "$MYSQL_DIR" in 
 	*mariadb*)
 		./$MYSQL_DIR/scripts/mysql_install_db --basedir=./$MYSQL_DIR --datadir=./"$DATA_DIR" \
@@ -595,7 +596,7 @@ function generate_config_files {
 	if [ $GENERATE_CONFIG_FILES = "on" ] || [ ! -f ./$OH_DIR/rsc/database.properties ]; then
 		[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
 		echo "Generating OH configuration file -> database.properties..."
-		sed -e "s/DBSERVER/$DATABASE_SERVER/g" -e "s/DBPORT/$MYSQL_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
+		sed -e "s/DBSERVER/$DATABASE_SERVER/g" -e "s/DBPORT/$DATABASE_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
 		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
 	fi
@@ -634,7 +635,7 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CPdDgGhil:srtvX?" 
+OPTSTRING=":CPSdDgGhil:srtvX?" 
 
 # function to parse input
 while getopts ${OPTSTRING} opt; do
@@ -644,6 +645,9 @@ while getopts ${OPTSTRING} opt; do
 		;;
 	P)	# start in PORTABLE mode
 		OH_MODE="PORTABLE"
+		;;
+	S)	# start in SERVER mode
+		OH_MODE="SERVER"
 		;;
 	d)	# debug
 		LOG_LEVEL=DEBUG
@@ -834,7 +838,7 @@ done
 
 ######################## OH start ########################
 
-# check mode
+# check OH mode
 if [ -z ${OH_MODE+x} ]; then
 	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
 	exit 1
@@ -842,9 +846,9 @@ fi
 
 # check for demo mode
 if [ $DEMO_DATA = "on" ]; then
-	# exit if OH is configured in CLIENT mode
-	if [ $OH_MODE = "CLIENT" ]; then
-		echo "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data, exiting."
+	# exit if OH is configured in CLIENT or SERVER mode
+	if [ $OH_MODE = "CLIENT" ] || [ $OH_MODE = "SERVER"] ; then
+		echo "Error - OH_MODE set to $OH_MODE mode. Cannot run with Demo data, exiting."
 		exit 1;
 	fi
 
@@ -878,7 +882,7 @@ initialize_dir_structure;
 ######## Database setup
 
 # start MySQL and create database
-if [ $OH_MODE = "PORTABLE" ]; then
+if [ $OH_MODE = "PORTABLE" ] || [ $OH_MODE = "SERVER" ] ; then
 	# check for MySQL software
 	mysql_check;
 	# config MySQL
@@ -901,30 +905,40 @@ if [ $OH_MODE = "PORTABLE" ]; then
 	fi
 fi
 
-# test if database connection is working
-test_database_connection;
+######## Open Hospital interface startup - only for CLIENT or PORTABLE mode
 
-# generate config files
-generate_config_files;
+if [ $OH_MODE != "SERVER" ]; then
 
-######## Open Hospital interface startup
+	# test if database connection is working
+	test_database_connection;
 
-echo "Starting Open Hospital..."
+	# generate config files
+	generate_config_files;
 
-# OH GUI launch
-cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+	echo "Starting Open Hospital..."
+	# OH GUI launch
+	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
 
-$JAVA_BIN -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
+	$JAVA_BIN -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
 
-if [ $? -ne 0 ]; then
-	echo "An error occurred while starting Open Hospital. Exiting."
-	shutdown_database;
-	cd "$CURRENT_DIR"
-	exit 4
+	if [ $? -ne 0 ]; then
+		echo "An error occurred while starting Open Hospital. Exiting."
+		shutdown_database;
+		cd "$CURRENT_DIR"
+		exit 4
+	fi
 fi
 
-echo "Exiting Open Hospital..."
+# if server wait for CTRL-C to exit
+if [ $OH_MODE != "SERVER" ]; then
+	echo "Open Hospital - SERVER mode started"
+	echo "Database server listening on $DATABASE_ADDRESS:$DATABASE_PORT"
+	trap ctrl_c INT
+fi
 
+# Close and exit
+
+echo "Exiting Open Hospital..."
 shutdown_database;
 
 # go back to starting directory
