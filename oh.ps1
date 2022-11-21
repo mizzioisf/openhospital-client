@@ -1091,14 +1091,18 @@ if ( $OH_MODE -eq "SERVER" ) {
 	Write-Host "Open Hospital - SERVER mode started"
 	Write-Host "Database server listening on $DATABASE_SERVER port $DATABASE_PORT"
 	Write-Host "Press Ctrl + C to exit"
-	while true; do
-		trap ctrl_c INT
-		function ctrl_c() {
-			echo "Exiting Open Hospital..."
-			shutdown_database;		
-			exit 0
+
+	while ($true) {
+		if ([console]::KeyAvailable) {
+			$key = [system.console]::readkey($true)
+			if (($key.modifiers -band [consolemodifiers]"control") -and ($key.key -eq "C")){
+				echo "Exiting Open Hospital..."
+				shutdown_database;		
+				exit 0
+			}
 		}
-	done
+	}
+
 else {
 	######## Open Hospital GUI startup - only for CLIENT or PORTABLE mode
 
