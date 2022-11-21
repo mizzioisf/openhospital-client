@@ -507,7 +507,7 @@ function dump_database {
 }
 
 function shutdown_database {
-	if [ $OH_MODE = "PORTABLE" ]; then
+	if [ $OH_MODE != "CLIENT" ]; then
 		echo "Shutting down MySQL..."
 		cd "$OH_PATH"
 		./$MYSQL_DIR/bin/mysqladmin -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp shutdown >> ./$LOG_DIR/$LOG_FILE 2>&1
@@ -905,9 +905,23 @@ if [ $OH_MODE = "PORTABLE" ] || [ $OH_MODE = "SERVER" ] ; then
 	fi
 fi
 
-######## Open Hospital interface startup - only for CLIENT or PORTABLE mode
 
-if [ $OH_MODE != "SERVER" ]; then
+# if SERVER mode is selected, wait for CTRL-C input to exit
+if [ $OH_MODE = "SERVER" ]; then
+	echo "Open Hospital - SERVER mode started"
+	echo "Database server listening on $DATABASE_SERVER:$DATABASE_PORT"
+	echo "Press Ctrl + C to exit"
+	while true; do
+		trap ctrl_c INT
+		function ctrl_c() {
+			echo "Exiting Open Hospital..."
+			shutdown_database;		
+			cd "$CURRENT_DIR"
+			exit 0
+		}
+	done
+else
+	######## Open Hospital interface startup - only for CLIENT or PORTABLE mode
 
 	# test if database connection is working
 	test_database_connection;
@@ -927,22 +941,15 @@ if [ $OH_MODE != "SERVER" ]; then
 		cd "$CURRENT_DIR"
 		exit 4
 	fi
+
+	# Close and exit
+
+	echo "Exiting Open Hospital..."
+	shutdown_database;
+
+	# go back to starting directory
+	cd "$CURRENT_DIR"
 fi
-
-# if server wait for CTRL-C to exit
-if [ $OH_MODE != "SERVER" ]; then
-	echo "Open Hospital - SERVER mode started"
-	echo "Database server listening on $DATABASE_ADDRESS:$DATABASE_PORT"
-	trap ctrl_c INT
-fi
-
-# Close and exit
-
-echo "Exiting Open Hospital..."
-shutdown_database;
-
-# go back to starting directory
-cd "$CURRENT_DIR"
 
 # exit
 echo "Done!"
