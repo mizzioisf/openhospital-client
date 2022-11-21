@@ -28,12 +28,12 @@
 Open Hospital startup script - oh.ps1
 
 .DESCRIPTION
-The script is used to setup and launch Open Hospital in PORTABLE, CLIENT  mode or with Demo data.
+The script is used to setup and launch Open Hospital in PORTABLE, CLIENT or SERVER mode or with Demo data.
 It can also be used to perform some basic operations like saving or importing a database.
 
-Open Hospital CLIENT | PORTABLE
+Open Hospital CLIENT | PORTABLE | SERVER
 Usage: oh.ps1 [ -lang en|fr|it|es|pt|ar ] [default set to en]
-              [ -mode PORTABLE|CLIENT ]
+              [ -mode PORTABLE|CLIENT|SERVER ]
               [ -loglevel INFO|DEBUG ] [default set to INFO]
               [ -dicom on|off ]
               [ -generate_config on|off ]
@@ -103,7 +103,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 # -> OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 
-# set OH mode to PORTABLE | CLIENT - default set to PORTABLE
+# set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
 #$script:OH_MODE="PORTABLE"
 
 # set DEMO_DATA to on to enable demo database loading - default set to off
@@ -198,12 +198,16 @@ else {
 }
 
 # workaround to force 32bit JAVA in order to have DICOM working on 64bit arch
-if ( $DICOM_ENABLE -eq "on" ) {
-	Write-Host "DICOM_ENABLE=on, forcing JAVA architecture to 32bit" 
-	$script:JAVA_ARCH=32;
-	$script:JAVA_PACKAGE_ARCH="i686";
-	#$script:MYSQL_ARCH=32;
-}
+#
+# NOT NEEDED ANYMORE FROM OH 1.12-dev !
+#
+
+#if ( $DICOM_ENABLE -eq "on" ) {
+#	Write-Host "DICOM_ENABLE=on, forcing JAVA architecture to 32bit" 
+#	$script:JAVA_ARCH=32;
+#	$script:JAVA_PACKAGE_ARCH="i686";
+#	#$script:MYSQL_ARCH=32;
+#}
 
 ######## MySQL/MariaDB Software
 # MariaDB
@@ -247,7 +251,7 @@ function script_menu {
 	Write-Host " ---------------------------------------------------------"
 	Write-Host ""
 	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt|ar ] "
-	Write-Host "               [ -mode PORTABLE|CLIENT ]"
+	Write-Host "               [ -mode PORTABLE|CLIENT|SERVER ]"
 	Write-Host "               [ -loglevel INFO|DEBUG ] "
 	Write-Host "               [ -dicom on|off ] "
 	Write-Host "               [ -generate_config on|off ] "
@@ -638,7 +642,7 @@ function dump_database {
 }
 
 function shutdown_database {
-	if ( $OH_MODE -eq "PORTABLE" ) {
+	if !( $OH_MODE -eq "CLIENT" ) {
 		Write-Host "Shutting down MySQL..."
 		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqladmin.exe" -ArgumentList ("-u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp shutdown") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 		# wait till the MySQL socket file is removed -> TO BE IMPLEMENTED
@@ -1005,7 +1009,7 @@ if ( $INTERACTIVE_MODE -eq "on") {
 
 Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
 
-# check mode 
+# check OH mode 
 if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
 	Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
 	Read-Host;
@@ -1014,9 +1018,9 @@ if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MO
 
 # check demo mode
 if ( $DEMO_DATA -eq "on" ) {
-	# exit if OH is configured in Client mode
-	if (( $OH_MODE -eq "CLIENT" )) {
-		Write-Host "Error - OH_MODE is set to CLIENT mode. Cannot run with Demo data, exiting." -ForeGroundcolor Red
+	# exit if OH is configured in CLIENT or SERVER mode
+	if ( ( $OH_MODE -eq "CLIENT" ) -And ( $OH_MODE -eq "SERVER" ) ) {
+		Write-Host "Error - OH_MODE is set to $OH_MODE mode. Cannot run with Demo data, exiting." -ForeGroundcolor Red
 		Read-Host; 
 		exit 1
 	}
@@ -1054,7 +1058,7 @@ initialize_dir_structure;
 ######## Database setup
 
 # start MySQL and create database
-if ( $OH_MODE -eq "PORTABLE" ) {
+if ( ($OH_MODE -eq "PORTABLE") -And ($OH_MODE -eq "SERVER") ){
 	# check for MySQL software
 	mysql_check;
 	# config MySQL
@@ -1078,35 +1082,54 @@ if ( $OH_MODE -eq "PORTABLE" ) {
 	}
 }
 
-# test if database connection is working
-test_database_connection;
-
-# generate config files
-generate_config_files;
 
 
-######## Open Hospital interface startup
 
-Write-Host "Starting Open Hospital..."
+# if SERVER mode is selected, wait for CTRL-C input to exit
+if ( $OH_MODE -eq "SERVER" ) {
+	
+	Write-Host "Open Hospital - SERVER mode started"
+	Write-Host "Database server listening on $DATABASE_SERVER:$DATABASE_PORT"
+	Write-Host "Press Ctrl + C to exit"
+	while true; do
+		trap ctrl_c INT
+		function ctrl_c() {
+			echo "Exiting Open Hospital..."
+			shutdown_database;		
+			exit 0
+		}
+	done
+else {
+	######## Open Hospital GUI startup - only for CLIENT or PORTABLE mode
 
-# OH GUI launch
-cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths
+	# test if database connection is working
+	test_database_connection;
 
-#$JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\$OH_DIR\rsc\log4j.properties`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
+	# generate config files
+	generate_config_files;
 
-# log4j configuration is now read directly
+	Write-Host "Starting Open Hospital..."
+
+	# OH GUI launch
+	cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths
+
+	#$JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\$OH_DIR\rsc\log4j.properties`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
+
+	# log4j configuration is now read directly
 $JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=`"$NATIVE_LIB_PATH`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
 
-Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 
-Write-Host "Exiting Open Hospital..."
+	# Close and exit
+	Write-Host "Exiting Open Hospital..."
+	
+	shutdown_database;
 
-shutdown_database;
+	# go back to starting directory
+	cd "$CURRENT_DIR"
+}
 
-# go back to starting directory
-cd "$CURRENT_DIR"
-
-# exit
+# Final exit
 Write-Host "Done!"
 Read-Host
 exit 0
