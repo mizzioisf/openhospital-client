@@ -1,5 +1,5 @@
 [client]
-port = MYSQL_PORT
+port = DATABASE_PORT
 socket = "OH_PATH_SUBSTITUTE/TMP_DIR/mysql.sock"  
 
 [mysqld] 
