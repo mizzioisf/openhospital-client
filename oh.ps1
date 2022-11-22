@@ -1096,7 +1096,7 @@ if ( $OH_MODE -eq "SERVER" ) {
 
 		switch ("$choice") {
 			"Q" {
-				Write-Host "Exiting Open Hospital XX..."
+				Write-Host "Exiting Open Hospital..."
 				shutdown_database;		
 				exit 0
 			}
