@@ -1100,7 +1100,7 @@ if ( $OH_MODE -eq "SERVER" ) {
 				shutdown_database;		
 				exit 0
 			}
-			default { "Invalid choice. "; Read-Host; }
+			default { "Invalid choice. " }
 		}
 	}
 
