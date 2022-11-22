@@ -348,7 +348,7 @@ data/dicom_storage
 External software package downloaded at first run:
 
 ```
-Mariadb 10.4.x server
+Mariadb 10.x.x server
 Java JRE, Zulu or OpenJDK distribution
 ```
 
@@ -427,7 +427,7 @@ In order to download and unzip Java:
 
 In order to download and unzip mariadb:
 
-- Visit https://downloads.mariadb.org/mariadb/10.4/
+- Visit https://mariadb.org/download/
 - Select the Operating System: **Windows**
 - Select package type: **ZIP file**
 - Select CPU (architecture) **32 / 64**
@@ -478,11 +478,11 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Added sql subdirectory to organize sql creation scripts
 - Added various checks about correct settings of parameters and startup of services
 - Added security controls (no more _rm -rf_ here and there :-)
-- Added support for **MariaDB** - (tested with version up to mariadb-10.2) (OH seems faster and more responsive)
+- Added support for **MariaDB** for better security and performance
 - Windows -> addedd support for path with spaces / special characters 
 - Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2022.10.11*
+*last updated: 2022.11.22*
 
