@@ -115,7 +115,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 # language setting - default set to en
 #$script:OH_LANGUAGE="en" # fr es it pt ar
 
-# enable DICOM (default set to on - forces JAVA_ARCH to 32bit)
+# enable DICOM (default set to on)
 $script:DICOM_ENABLE="on"
 
 # set log level to INFO | DEBUG - default set to INFO
@@ -173,7 +173,7 @@ $script:languagearray= @("en","fr","it","es","pt","ar")
 #$script:MYSQL_VERSION="10.2.44"
 #$script:MYSQL32_VERSION="10.2.41"
 $script:MYSQL_VERSION="10.6.11"
-$script:MYSQL32_VERSION="10.6.9"
+$script:MYSQL32_VERSION="10.6.5"
 
 ######## define architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
