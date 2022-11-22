@@ -183,7 +183,7 @@ set OH_PATH_SUBSTITUTE=%OH_PATH:\=/%
 echo Configuring Open Hospital...
 
 REM # Set mysql TCP port
-set startPort=%MYSQL_PORT%
+set startPort=%DATABASE_PORT%
 :searchport
 netstat -o -n -a | find "LISTENING" | find ":%startPort% " > NUL
 if "%ERRORLEVEL%" equ "0" (
@@ -192,12 +192,12 @@ if "%ERRORLEVEL%" equ "0" (
 	goto :searchport
 ) ELSE (
 	echo TCP port %startPort% available
-	set MYSQL_PORT=%startPort%
+	set DATABASE_PORT=%startPort%
 	goto :foundport
 )
 
 :foundport
-echo Found TCP port %MYSQL_PORT% for MySQL !
+echo Found TCP port %DATABASE_PORT% for MySQL !
 
 REM # Create tmp and log dir
 mkdir "%OH_PATH%\%TMP_DIR%"
@@ -226,7 +226,7 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\dicom.properties.dist %OH_PATH%\%OH_DIR%\r
 REM ### Setup database.properties
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\database.properties.dist %OH_PATH%\%OH_DIR%\rsc\database.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBSERVER %DATABASE_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DBPORT %DATABASE_PORT% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBUSER %DATABASE_USER% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPASS %DATABASE_PASSWORD% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBNAME %DATABASE_NAME% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -244,7 +244,7 @@ set OH_LOG_DIR=%LOG_DIR:\=/%
 set OH_LOG_DEST=../%OH_LOG_DIR%/%OH_LOG_FILE%
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\rsc\log4j.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBSERVER %DATABASE_SERVER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
-%REPLACE_PATH%\replace.exe DBPORT %MYSQL_PORT% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+%REPLACE_PATH%\replace.exe DBPORT %DATABASE_PORT% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBUSER %DATABASE_USER% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBPASS %DATABASE_PASSWORD% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe DBNAME %DATABASE_NAME% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
@@ -274,7 +274,7 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	)
 	if ERRORLEVEL 1 (goto error)
 
-	echo Starting MySQL server on port %MYSQL_PORT%...
+	echo Starting MySQL server on port %DATABASE_PORT%...
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\%CONF_DIR%\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
 	if ERRORLEVEL 1 (goto error)
 	timeout /t 2 /nobreak >nul
@@ -298,7 +298,7 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 	echo Database imported!
 ) else (
 	echo Database already initialized, trying to start...
-	echo Starting MySQL server on port %MYSQL_PORT%...
+	echo Starting MySQL server on port %DATABASE_PORT%...
 	start /b /min %OH_PATH%\%MYSQL_DIR%\bin\mysqld.exe --defaults-file=%OH_PATH%\%CONF_DIR%\my.cnf --tmpdir=%OH_PATH%\%TMP_DIR% --standalone --console
 	if ERRORLEVEL 1 (goto error)
 )
