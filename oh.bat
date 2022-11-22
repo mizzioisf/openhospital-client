@@ -332,7 +332,7 @@ if %PROCESSOR_ARCHITECTURE%==AMD64 if not %DICOM_ENABLE%==on if not %ARCH%==32 (
 
 REM ###### Start Open Hospital #####
 
-echo Starting Open Hospital...
+echo Starting Open Hospital GUI...
 
 cd /d %OH_PATH%\%OH_DIR%
 %JAVA_BIN% -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.menu.gui.Menu

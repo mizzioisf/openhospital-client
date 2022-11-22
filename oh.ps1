@@ -1090,18 +1090,31 @@ if ( $OH_MODE -eq "SERVER" ) {
 
 	Write-Host "Open Hospital - SERVER mode started"
 	Write-Host "Database server listening on $DATABASE_SERVER port $DATABASE_PORT"
-	Write-Host "Press Ctrl + C to exit"
-
+	
 	while ($true) {
-		if ([console]::KeyAvailable) {
-			$key = [system.console]::readkey($true)
-			if (($key.modifiers -band [consolemodifiers]"control") -and ($key.key -eq "C")){
-				echo "Exiting Open Hospital..."
+		$choice = Read-Host -Prompt "Press Q to exit"
+
+		switch ("$choice") {
+			"Q" {
+				Write-Host "Exiting Open Hospital XX..."
 				shutdown_database;		
 				exit 0
 			}
+			default { "Invalid choice. "; Read-Host; }
 		}
 	}
+
+#	while ($true) {
+#		if ([console]::KeyAvailable) {
+#			$key = [system.console]::readkey($true)
+#			if (($key.modifiers -band [consolemodifiers]"control") -and ($key.key -eq "C")){
+#				echo "Exiting Open Hospital XX..."
+#				shutdown_database;		
+#				exit 0
+#			}
+#		}
+#	}
+
 }
 else {
 	######## Open Hospital GUI startup - only for CLIENT or PORTABLE mode
@@ -1112,7 +1125,7 @@ else {
 	# generate config files
 	generate_config_files;
 
-	Write-Host "Starting Open Hospital..."
+	Write-Host "Starting Open Hospital GUI..."
 
 	# OH GUI launch
 	cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths

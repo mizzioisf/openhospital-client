@@ -921,7 +921,7 @@ if [ $OH_MODE = "SERVER" ]; then
 		}
 	done
 else
-	######## Open Hospital interface startup - only for CLIENT or PORTABLE mode
+	######## Open Hospital GUI startup - only for CLIENT or PORTABLE mode
 
 	# test if database connection is working
 	test_database_connection;
@@ -929,7 +929,7 @@ else
 	# generate config files
 	generate_config_files;
 
-	echo "Starting Open Hospital..."
+	echo "Starting Open Hospital GUI..."
 	# OH GUI launch
 	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
 
@@ -951,6 +951,6 @@ else
 	cd "$CURRENT_DIR"
 fi
 
-# exit
+# Final exit
 echo "Done!"
 exit 0
