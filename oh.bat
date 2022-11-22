@@ -114,7 +114,7 @@ set DICOM_ENABLE=on
 
 REM ### Software configuration - change at your own risk :-)
 REM # Database
-set DATABAE_SERVER=localhost
+set DATABASE_SERVER=localhost
 set DATABASE_PORT=3306
 set DATABASE_ROOT_PW=tmp2021oh111
 set DATABASE_NAME=oh
