@@ -173,7 +173,7 @@ $script:languagearray= @("en","fr","it","es","pt","ar")
 #$script:MYSQL_VERSION="10.2.44"
 #$script:MYSQL32_VERSION="10.2.41"
 $script:MYSQL_VERSION="10.6.11"
-$script:MYSQL32_VERSION="10.4.22"
+$script:MYSQL32_VERSION="10.6.9"
 
 ######## define architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
