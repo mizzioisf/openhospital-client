@@ -1094,7 +1094,7 @@ if ( $OH_MODE -eq "SERVER" ) {
 	while ($true) {
 		$choice = Read-Host -Prompt "Press Q to exit"
 
-		switch ("$choice") {
+		switch -CaseSensitive ("$choice") {
 			"Q" {
 				Write-Host "Exiting Open Hospital..."
 				shutdown_database;		
