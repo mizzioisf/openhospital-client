@@ -632,7 +632,7 @@ set_language;
 # set working dir to OH base dir
 cd "$OH_PATH"
 
-######## User input
+######## Parse user input
 
 # reset in case getopts has been used previously in the shell
 OPTIND=1 

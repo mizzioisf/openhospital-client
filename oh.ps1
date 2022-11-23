@@ -173,7 +173,7 @@ $script:languagearray= @("en","fr","it","es","pt","ar")
 $script:MYSQL_VERSION="10.6.11"
 $script:MYSQL32_VERSION="10.6.5"
 
-######## define system architecture
+######## define system and software architecture
 $script:ARCH=$env:PROCESSOR_ARCHITECTURE
 
 $32archarray=@("386","486","586","686","x86","i86pc")
@@ -790,7 +790,7 @@ set_language;
 # set working dir to OH base dir
 cd "$OH_PATH" # workaround for hard coded paths
 
-######## User input
+######## Parse user input
 
 # If INTERACTIVE_MODE is set to "off" don't show menu for user input
 if ( $INTERACTIVE_MODE -eq "on" ) {
