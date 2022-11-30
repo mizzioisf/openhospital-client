@@ -1079,8 +1079,6 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 }
 
 
-
-
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if ( $OH_MODE -eq "SERVER" ) {
 
