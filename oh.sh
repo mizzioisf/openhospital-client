@@ -388,7 +388,7 @@ fi
 function config_database {
 	echo "Checking if MySQL is running..."
 	if [ -f "$OH_PATH/$TMP_DIR/mysql.sock" ] || [ -f "$OH_PATH/$TMP_DIR/mysql.pid" ] ; then
-		echo "MySQL alreay running ! Exiting."
+		echo "MySQL already running ! Exiting."
 		exit 1
 	fi
 

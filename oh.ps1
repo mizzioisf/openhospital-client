@@ -466,8 +466,8 @@ function mysql_check {
 
 function config_database {
 	Write-Host "Checking if MySQL is running..."
-	if ( (Test-Path "$OH_PATH/$TMP_DIR/mysql.sock" ) -or ( "$OH_PATH/$TMP_DIR/mysql.pid" ) ) {
-		Write-Host "MySQL alreay running ! Exiting."
+	if ( ( Test-Path "$OH_PATH/$TMP_DIR/mysql.sock" ) -or ( Test-Path "$OH_PATH/$TMP_DIR/mysql.pid" ) ) {
+		Write-Host "MySQL already running ! Exiting."
 		exit 1
 	}
 
