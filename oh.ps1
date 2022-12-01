@@ -465,9 +465,15 @@ function mysql_check {
 }
 
 function config_database {
+	Write-Host "Checking if MySQL is running..."
+	if ( (Test-Path "$OH_PATH/$TMP_DIR/mysql.sock" ) -or ( "$OH_PATH/$TMP_DIR/mysql.pid" ) ) {
+		Write-Host "MySQL alreay running ! Exiting."
+		exit 1
+	}
+
 	Write-Host "Checking for MySQL config file..."
 
-	if ( ($script:GENERATE_CONFIG_FILES -eq "on") -or  !(Test-Path "$OH_PATH/$CONF_DIR/my.cnf") ) {
+	if ( ($script:GENERATE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$CONF_DIR/my.cnf") ) {
 	if (Test-Path "$OH_PATH/$CONF_DIR/my.cnf" ) { mv -Force "$OH_PATH/$CONF_DIR/my.cnf" "$OH_PATH/$CONF_DIR/my.cnf.old" }
 
 		# find a free TCP port to run MySQL starting from the default port
@@ -1083,7 +1089,8 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 if ( $OH_MODE -eq "SERVER" ) {
 
 	Write-Host "Open Hospital - SERVER mode started"
-	Write-Host "Database server listening on $DATABASE_SERVER port $DATABASE_PORT"
+#	Write-Host "Database server listening on $DATABASE_SERVER port $DATABASE_PORT"
+	Write-Host "Database server ready for connections..."
 	
 	while ($true) {
 		$choice = Read-Host -Prompt "Press Q to exit"
