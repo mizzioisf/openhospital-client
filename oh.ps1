@@ -563,9 +563,11 @@ function start_database {
 #	Write-Host "-> Server IP address:" && cat ./$CONF_DIR/my.cnf | grep bind-address
 #	Write-Host "-> TCP port: " && cat ./$CONF_DIR/my.cnf | grep port | head -1
 	Write-Host "-> Server IP address:"
-	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "bind-address"
+#	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "bind-address"
+	Get-Item -Path "$OH_PATH/$CONF_DIR/my.cnf" | Get-content | Select-String "bind-address"
 	Write-Host "-> TCP port: "
-	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "port" -ReadCount 1
+#	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "port" -ReadCount 1
+	Get-Item -Path "$OH_PATH/$CONF_DIR/my.cnf" | Get-content | Select-String "port" -ReadCount 1
 	Write-Host "****************************"
 }
 
