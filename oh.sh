@@ -444,9 +444,8 @@ function start_database {
 
 	# show MySQL server running configuration
 	echo "****************************"
-	echo "*** MySQL configuration: ***"
-	echo "-> Server IP address:" && cat ./$CONF_DIR/my.cnf | grep bind-address
-	echo "-> TCP port: " && cat ./$CONF_DIR/my.cnf | grep port | head -1
+	echo "* Database server IP address:" && cat ./$CONF_DIR/my.cnf | grep bind-address
+	echo "* TCP port: " && cat ./$CONF_DIR/my.cnf | grep port | head -1
 	echo "****************************"
 }
 
