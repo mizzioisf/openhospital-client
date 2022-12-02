@@ -573,8 +573,8 @@ function start_database {
 	Select-String -Path "$OH_PATH/$CONF_DIR/my.cnf" -Pattern "port" -List
 
 	Write-Host "****************************"
-#	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "port" -Last
-	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-Object -Pattern "port" -Last 1
+	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "port" -Last | Select-Object -Unique
+#	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-Object -Pattern "port" -Unique
 	Write-Host "****************************"
 }
 
