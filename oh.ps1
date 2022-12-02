@@ -566,12 +566,14 @@ function start_database {
 #	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "bind-address"
 	Get-Item -Path "$OH_PATH/$CONF_DIR/my.cnf" | Get-content | Select-String "bind-address"
 	Write-Host "-> TCP port: "
-#	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "port" -ReadCount 1
+Y#	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "port" -ReadCount 1
 #	Get-Item -Path "$OH_PATH/$CONF_DIR/my.cnf" | Get-content | Select-String "port" -ReadCount 1
 #	Get-Item -Path "$OH_PATH/$CONF_DIR/my.cnf" | Get-content | Select-String "port" 
 #	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-object | Select-String "port" 
-	Select-String -PAth "$OH_PATH/$CONF_DIR/my.cnf" -Pattern "port" -List
-#	cat "$OH_PATH/$CONF_DIR/my.cnf" | Select-object | Select-String "port" 
+	Select-String -Path "$OH_PATH/$CONF_DIR/my.cnf" -Pattern "port" -List
+
+	Write-Host "****************************"
+	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "port"
 	Write-Host "****************************"
 }
 
