@@ -565,7 +565,7 @@ function start_database {
 	Write-Host "-> Server IP address:"
 	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "bind-address"
 	Write-Host "-> TCP port: "
-	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "port" | Tail -1
+	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String "port" -Tail -1
 	Write-Host "****************************"
 }
 
