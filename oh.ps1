@@ -559,12 +559,10 @@ function start_database {
 	
 	# show MySQL server running configuration
 	Write-Host "****************************"
-	Write-Host "*** MySQL configuration: ***"
-	Write-Host "-> Server IP address:"
+	Write-Host "-> Database server IP address:"
 	Get-Item -Path "$OH_PATH/$CONF_DIR/my.cnf" | Get-content | Select-String "bind-address"
 	Write-Host "-> TCP port: "
-	Select-String -Path "$OH_PATH/$CONF_DIR/my.cnf" -Pattern "port" -List
-	Write-Host "****************************"
+	Write-Host ""
 	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "port" | Select-Object -First 1 -Unique
 	Write-Host "****************************"
 }
