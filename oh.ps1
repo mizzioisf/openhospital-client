@@ -1018,7 +1018,7 @@ do {
 		default { Write-Host "Invalid option: $opt."; }
 	}
 }
-until ($opt -eq 'q') || ($opt -eq 'C') ($opt -eq 'P') ($opt -eq 'S') 
+until ($opt -eq 'q') -Or ($opt -eq 'C') -Or ($opt -eq 'P') -Or ($opt -eq 'S') 
 }
 
 ######################### OH start ############################
