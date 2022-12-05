@@ -811,7 +811,8 @@ cd "$OH_PATH" # workaround for hard coded paths
 # If INTERACTIVE_MODE is set to "off" don't show menu for user input
 if ( $INTERACTIVE_MODE -eq "on" ) {
 	script_menu;
-	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_MODE mode"
+#	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_MODE mode"
+	$opt = Read-Host "Please make a selection:"
 	Write-Host ""
 
 	# parse_input
@@ -1013,7 +1014,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		exit 0; 
 	}
 #		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
-#		-> default is set to start with OH 
+
+		default { Write-Host "Invalid option: $opt."; }
 	}
 }
 
