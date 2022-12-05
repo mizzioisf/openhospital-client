@@ -810,6 +810,7 @@ cd "$OH_PATH" # workaround for hard coded paths
 
 # If INTERACTIVE_MODE is set to "off" don't show menu for user input
 if ( $INTERACTIVE_MODE -eq "on" ) {
+do {
 	script_menu;
 #	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_MODE mode"
 	$opt = Read-Host "Please make a selection:"
@@ -846,7 +847,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		generate_config_files;
 		Write-Host "Done!"
 		Read-Host;
-		exit 0;
 	}
 	"G"	{ # set up GSM 
 		Write-Host "Setting up GSM..."
@@ -854,7 +854,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		java_lib_setup;
 		Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM $@ ") -Wait -NoNewWindow
 		Read-Host;
-		exit 0;
 	}
 	"i"	{ # initialize/install OH database
 		# set mode to CLIENT
@@ -909,7 +908,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		Write-Host "Done!"
 		Read-Host;
-		exit 0
 	}
 	"r"	{ # restore
 	       	Write-Host "Restoring Open Hospital database...."
@@ -947,7 +945,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		mysql_check;
 		test_database_connection;
-		Read-Host; exit 0
+		Read-Host; 
 	}
 	"v"	{ # show version
         	Write-Host "--------- Software version ---------"
@@ -1000,7 +998,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		Write-Host ""
 	
 		Read-Host;
-		exit 0
 	}
 	"X"	{ # clean
 		Write-Host "Cleaning Open Hospital installation..."
@@ -1008,15 +1005,16 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		clean_database;
 		Write-Host "Done!"
 		Read-Host;
-		exit 0
 	}
 	"q"	{ # quit
-		exit 0; 
+#		exit 0; 
+		 Write-Host "Quit pressed !";
 	}
 #		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
 
 		default { Write-Host "Invalid option: $opt."; }
 	}
+until ($opt -eq 'q')
 }
 
 ######################### OH start ############################
@@ -1101,7 +1099,6 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 if ( $OH_MODE -eq "SERVER" ) {
 
 	Write-Host "Open Hospital - SERVER mode started"
-#	Write-Host "Database server listening on $DATABASE_SERVER port $DATABASE_PORT"
 	Write-Host "Database server ready for connections..."
 	
 	while ($true) {
