@@ -1010,8 +1010,8 @@ do {
 		Read-Host;
 	}
 	"q"	{ # quit
-#		exit 0; 
-		 Write-Host "Quit pressed !";
+		Write-Host "Quit pressed. Exiting.";
+		exit 0; 
 	}
 #		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
 
