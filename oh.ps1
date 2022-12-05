@@ -820,24 +820,27 @@ do {
 	switch -casesensitive( "$opt" ) {
 	"C"	{ # start in CLIENT mode
 		$script:OH_MODE="CLIENT"
+		break;
 	}
 	"P"	{ # start in PORTABLE mode
 		$script:OH_MODE="PORTABLE"
+		break;
 	}
 	"S"	{ # start in SERVER (Portable) mode
 		$script:OH_MODE="SERVER"
+		break;
 	}
 	"d"	{ # debug 
 		$script:LOG_LEVEL="DEBUG"
 		Write-Host "Log level set to $LOG_LEVEL"
+		break;
 	}
 	"D"	{ # demo mode 
 		Write-Host "Starting Open Hospital with Demo data..."
 		# exit if OH is configured in CLIENT mode
 		if ( $OH_MODE -eq "CLIENT" ) {
-			Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data, exiting." -ForeGroundcolor Red
+			Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data." -ForeGroundcolor Red
 			Read-Host;
-			exit 1;
 		}
 		else { $script:OH_MODE="PORTABLE" }
 		$DEMO_DATA="on"
