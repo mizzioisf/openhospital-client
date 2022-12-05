@@ -257,7 +257,7 @@ function script_menu {
 	Write-Host "   P    start OH in PORTABLE mode"
 	Write-Host "   S    start OH in SERVER (Portable) mode"
 	Write-Host "   d    start OH in debug mode"
-	Write-Host "   D    start OH with Demo data"
+	Write-Host "   D    Load Demo data"
 	Write-Host "   g    generate configuration files"
 	Write-Host "   G    setup GSM"
 	Write-Host "   i    initialize/install OH database"
@@ -813,7 +813,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 do {
 	script_menu;
 #	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_MODE mode"
-	$opt = Read-Host "Please make a selection:"
+	$opt = Read-Host "Please make a selection"
 	Write-Host ""
 
 	# parse_input
@@ -1018,7 +1018,7 @@ do {
 		default { Write-Host "Invalid option: $opt."; }
 	}
 }
-until ($opt -eq 'q')
+until ($opt -eq 'q') || ($opt -eq 'C') ($opt -eq 'P') ($opt -eq 'S') 
 }
 
 ######################### OH start ############################
