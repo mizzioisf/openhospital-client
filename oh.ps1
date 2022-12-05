@@ -940,8 +940,8 @@ do {
 	}
 	"t"	{ # test database connection 
 		if ( !($OH_MODE -eq "CLIENT") ) {
-			Write-Host "Error: Only for CLIENT mode. Exiting." -ForegroundColor Red
-			Read-Host; exit 1
+			Write-Host "Error: Only for CLIENT mode." -ForegroundColor Red
+			Read-Host; break;
 		}
 		mysql_check;
 		test_database_connection;
