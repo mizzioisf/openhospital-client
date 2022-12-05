@@ -1015,6 +1015,7 @@ do {
 		default { Write-Host "Invalid option: $opt."; }
 	}
 until ($opt -eq 'q')
+	}
 }
 
 ######################### OH start ############################
