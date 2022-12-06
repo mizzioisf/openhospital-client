@@ -924,12 +924,11 @@ do {
 				set_database_root_pw;
 			}
 			import_database;
-			}
-		if ( $OH_MODE -eq "PORTABLE" ) {
 			shutdown_database;
+			}
 		}
 		Write-Host "Done!"
-        	Read-Host; exit 0
+        	Read-Host;
 	}
 	"t"	{ # test database connection 
 		if ( !($OH_MODE -eq "CLIENT") ) {
