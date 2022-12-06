@@ -922,9 +922,8 @@ do {
 				initialize_database;
 				start_database;	
 				set_database_root_pw;
-			}
-			import_database;
-			shutdown_database;
+				import_database;
+				shutdown_database;
 			}
 		}
 		Write-Host "Done!"
