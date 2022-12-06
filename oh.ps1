@@ -922,12 +922,12 @@ do {
 				initialize_database;
 				start_database;	
 				set_database_root_pw;
-				import_database;
+				import_database; # TBD for CLIENT mode
 				shutdown_database;
+				Write-Host "Done!"
+		        	Read-Host;
 			}
 		}
-		Write-Host "Done!"
-        	Read-Host;
 	}
 	"t"	{ # test database connection 
 		if ( !($OH_MODE -eq "CLIENT") ) {
