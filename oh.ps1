@@ -893,10 +893,12 @@ do {
 		        	Write-Host "Error: no data found!" -ForegroundColor Red
 				Read-Host;
 			}
+		else {
+			test_database_connection;
+			Write-Host "Saving Open Hospital database..."
+			dump_database;
+
 		}
-		test_database_connection;
-		Write-Host "Saving Open Hospital database..."
-		dump_database;
 		if ( $OH_MODE -eq "PORTABLE" ) {
 			shutdown_database;
 		}
