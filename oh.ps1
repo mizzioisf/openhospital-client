@@ -405,15 +405,15 @@ function download_file ($download_url,$download_file){
 
 function java_check {
 	# check if JAVA_BIN is already set and it exists
-	if ( !( $JAVA_BIN ) -or !(Test-Path $JAVA_BIN -PathType Leaf ) ) {
+	if ( !( $JAVA_BIN ) -or !(Test-Path $JAVA_BIN -PathType leaf ) ) {
         	# set default
         	Write-Host "Setting default JAVA..."
 		$script:JAVA_BIN="$OH_PATH\$JAVA_DIR\bin\java.exe"
 	}
 
 	# if JAVA_BIN is not found download JRE
-	if ( !(Test-Path $JAVA_BIN  -PathType Leaf ) ) {
-        	if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT" -PathType Leaf ) ) {
+	if ( !(Test-Path $JAVA_BIN  -PathType leaf ) ) {
+        	if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT" -PathType leaf ) ) {
 			Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Download java binaries
@@ -437,7 +437,7 @@ function java_check {
 
 function mysql_check {
 	if (  !(Test-Path "$OH_PATH\$MYSQL_DIR") ) {
-		if ( !(Test-Path "$OH_PATH\$MYSQL_DIR.$EXT" -PathType Leaf) ) {
+		if ( !(Test-Path "$OH_PATH\$MYSQL_DIR.$EXT" -PathType leaf) ) {
 			Write-Host "Warning - MariaDB/MySQL not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading mysql binary
@@ -454,7 +454,7 @@ function mysql_check {
 	        Write-Host "MySQL unpacked successfully!"
 	}
 	# check for mysqld binary
-	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -PathType Leaf) {
+	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -PathType leaf) {
         	Write-Host "MySQL found!"
 		Write-Host "Using $MYSQL_DIR"
 	}
@@ -675,7 +675,7 @@ function clean_database {
 
 function test_database_connection {
 	# test if mysql client is available
-	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -PathType Leaf) {
+	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -PathType leaf) {
 		# test connection to the OH MySQL database
 		Write-Host "Testing database connection..."
 		try {
@@ -762,17 +762,17 @@ function clean_files {
 	Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Removing configuration files..."
-	$filetodel="$OH_PATH\$CONF_DIR\my.cnf"; if (Test-Path $filetodel){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$CONF_DIR\my.cnf.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\rsc\database.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\rsc\database.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\rsc\log4j.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\rsc\log4j.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\rsc\dicom.properties"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\rsc\dicom.properties.old"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\$LOG_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$CONF_DIR\my.cnf"; if (Test-Path $filetodel -PathType leaf){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$CONF_DIR\my.cnf.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\rsc\database.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\rsc\database.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\rsc\log4j.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\rsc\log4j.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\rsc\dicom.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\rsc\dicom.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$OH_DIR\$LOG_DIR\*"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 
