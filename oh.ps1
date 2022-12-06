@@ -556,15 +556,6 @@ function start_database {
 	# until nc -z $DATABASE_SERVER $DATABASE_PORT; do sleep 1; done
 
 	Write-Host "MySQL server started! "
-	
-	# show MySQL server running configuration
-	Write-Host "*******************************"
-	Write-Host "* Database server listening on:"
-	Write-Host ""
-	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "bind-address" | Select-Object -First 1 -Unique
-	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "port" | Select-Object -First 1 -Unique
-	Write-Host ""
-	Write-Host "*******************************"
 }
 
 function set_database_root_pw {
@@ -881,7 +872,6 @@ do {
 		import_database;
 		test_database_connection;
 		Write-Host "Done!"
-		exit 0
 	}
 	"l"	{ # set language 
 		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
@@ -899,8 +889,8 @@ do {
 				start_database;
 			}
 			else {
-		        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
-				Read-Host; exit 1
+		        	Write-Host "Error: no data found!" -ForegroundColor Red
+				Read-Host;
 			}
 		}
 		test_database_connection;
@@ -917,8 +907,8 @@ do {
 		# ask user for database to restore
 		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
 		if ( !(Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL")) {
-			Write-Host "Error: No SQL file found! Exiting." -ForegroundColor Red
-			Read-Host; exit 2
+			Write-Host "Error: No SQL file found!" -ForegroundColor Red
+			Read-Host;
 		}
 		else {
 			Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
@@ -1103,6 +1093,14 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 if ( $OH_MODE -eq "SERVER" ) {
 
 	Write-Host "Open Hospital - SERVER mode started"
+	# show MySQL server running configuration
+	Write-Host "*******************************"
+	Write-Host "* Database server listening on:"
+	Write-Host ""
+	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "bind-address" | Select-Object -First 1 -Unique
+	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "port" | Select-Object -First 1 -Unique
+	Write-Host ""
+	Write-Host "*******************************"
 	Write-Host "Database server ready for connections..."
 	
 	while ($true) {
