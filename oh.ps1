@@ -883,24 +883,22 @@ do {
 		# check if mysql utilities exist
 		mysql_check;
 		# check if portable mode is on
-		if ( $OH_MODE -eq "PORTABLE" ) {
+		if ( !($OH_MODE -eq "CLIENT" )) {
 			# check if database already exists
-			if (Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME") {
+			if ( !(Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME")) {
+		        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
+				exit 2;
+			}
+			else {
 				config_database;
 				start_database;
 			}
-			else {
-		        	Write-Host "Error: no data found!" -ForegroundColor Red
-				Read-Host;
-			}
 		}
-		else {
-			test_database_connection;
-			Write-Host "Saving Open Hospital database..."
-			dump_database;
+		test_database_connection;
+		Write-Host "Trying to saving Open Hospital database..."
+		dump_database;
 
-		}
-		if ( $OH_MODE -eq "PORTABLE" ) {
+		if ( !($OH_MODE -eq "CLIENT" )) {
 			shutdown_database;
 		}
 		Write-Host "Done!"
