@@ -997,6 +997,10 @@ do {
 		Write-Host "Quit pressed. Exiting.";
 		exit 0; 
 	}
+	"Q"	{ # quit
+		Write-Host "Quit pressed. Exiting.";
+		exit 0; 
+	}
 	default { Write-Host "Invalid option: $opt."; 
 		Read-Host;
 	}
