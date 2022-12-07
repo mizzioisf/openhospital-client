@@ -998,6 +998,7 @@ do {
 		exit 0; 
 	}
 	default { Write-Host "Invalid option: $opt."; }
+	Read-Host;
 	}
 }
 until ( ($opt -ceq 'q') -Or ($opt -ceq 'C') -Or ($opt -ceq 'P') -Or ($opt -ceq 'S') ) 
