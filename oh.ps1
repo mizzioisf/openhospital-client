@@ -802,7 +802,6 @@ cd "$OH_PATH" # workaround for hard coded paths
 if ( $INTERACTIVE_MODE -eq "on" ) {
 do {
 	script_menu;
-#	$opt = Read-Host "Please make a selection or press any other key to start Open Hospital in $OH_MODE mode"
 	$opt = Read-Host "Please make a selection"
 	Write-Host ""
 
@@ -810,20 +809,16 @@ do {
 	switch -casesensitive( "$opt" ) {
 	"C"	{ # start in CLIENT mode
 		$script:OH_MODE="CLIENT"
-		break;
 	}
 	"P"	{ # start in PORTABLE mode
 		$script:OH_MODE="PORTABLE"
-		break;
 	}
 	"S"	{ # start in SERVER (Portable) mode
 		$script:OH_MODE="SERVER"
-		break;
 	}
 	"d"	{ # debug 
 		$script:LOG_LEVEL="DEBUG"
 		Write-Host "Log level set to $LOG_LEVEL"
-		break;
 	}
 	"D"	{ # demo mode 
 		Write-Host "Starting Open Hospital with Demo data..."
