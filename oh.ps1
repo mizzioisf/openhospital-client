@@ -1019,6 +1019,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Quit pressed. Exiting.";
 			exit 0; 
 		}
+		""	{ # Quit
+			Write-Host "GOOOO";
+			exit 0; 
+		}
 		default { Write-Host "Invalid option: $opt."; 
 			Read-Host;
 			break;
