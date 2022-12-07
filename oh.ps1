@@ -802,7 +802,9 @@ cd "$OH_PATH" # workaround for hard coded paths
 if ( $INTERACTIVE_MODE -eq "on" ) {
 	do {
 		script_menu;
-		$opt = Read-Host "Please select an option or press enter to start Open Hospital"
+	#	$opt = Read-Host "Please select an option or press enter to start Open Hospital"
+		Write-Host "Please select an option or press enter to start Open Hospital"
+		$opt = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 		Write-Host ""
 
 		# parse_input
@@ -1003,8 +1005,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		default { Write-Host "Invalid option: $opt."; 
 			Read-Host;
-		break;
-		break;
+			break;
 		}
 		}
 	}
