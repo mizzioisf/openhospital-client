@@ -800,210 +800,210 @@ cd "$OH_PATH" # workaround for hard coded paths
 
 # If INTERACTIVE_MODE is set to "off" don't show menu for user input
 if ( $INTERACTIVE_MODE -eq "on" ) {
-do {
-	script_menu;
-	$opt = Read-Host "Please make a selection"
-	Write-Host ""
+	do {
+		script_menu;
+		$opt = Read-Host "Please select an option or press enter to start Open Hospital"
+		Write-Host ""
 
-	# parse_input
-	switch -casesensitive( "$opt" ) {
-	"C"	{ # start in CLIENT mode
-		$script:OH_MODE="CLIENT"
-	}
-	"P"	{ # start in PORTABLE mode
-		$script:OH_MODE="PORTABLE"
-	}
-	"S"	{ # start in SERVER (Portable) mode
-		$script:OH_MODE="SERVER"
-	}
-	"d"	{ # debug 
-		$script:LOG_LEVEL="DEBUG"
-		Write-Host "Log level set to $LOG_LEVEL"
-	}
-	"D"	{ # demo mode 
-		Write-Host "Starting Open Hospital with Demo data..."
-		# exit if OH is configured in CLIENT mode
-		if ( $OH_MODE -eq "CLIENT" ) {
-			Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data." -ForeGroundcolor Red
+		# parse_input
+		switch -casesensitive( "$opt" ) {
+		"C"	{ # start in CLIENT mode
+			$script:OH_MODE="CLIENT"
+		}
+		"P"	{ # start in PORTABLE mode
+			$script:OH_MODE="PORTABLE"
+		}
+		"S"	{ # start in SERVER (Portable) mode
+			$script:OH_MODE="SERVER"
+		}
+		"d"	{ # debug 
+			$script:LOG_LEVEL="DEBUG"
+			Write-Host "Log level set to $LOG_LEVEL"
+		}
+		"D"	{ # demo mode 
+			Write-Host "Starting Open Hospital with Demo data..."
+			# exit if OH is configured in CLIENT mode
+			if ( $OH_MODE -eq "CLIENT" ) {
+				Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data." -ForeGroundcolor Red
+				Read-Host;
+			}
+			else { $script:OH_MODE="PORTABLE" }
+			$DEMO_DATA="on"
+		}
+		"g"	{ # generate config files and exit
+			$script:GENERATE_CONFIG_FILES="on"
+			generate_config_files;
+			Write-Host "Done!"
 			Read-Host;
 		}
-		else { $script:OH_MODE="PORTABLE" }
-		$DEMO_DATA="on"
-	}
-	"g"	{ # generate config files and exit
-		$script:GENERATE_CONFIG_FILES="on"
-		generate_config_files;
-		Write-Host "Done!"
-		Read-Host;
-	}
-	"G"	{ # set up GSM 
-		Write-Host "Setting up GSM..."
-		java_check;
-		java_lib_setup;
-		Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM $@ ") -Wait -NoNewWindow
-		Write-Host "Done!"
-		Read-Host;
-	}
-	"i"	{ # initialize/install OH database
-		# set mode to CLIENT
-		$OH_MODE="CLIENT"
-		Write-Host "Do you want to initialize/install the OH database on:"
-		Write-Host ""
-		Write-Host " Server -> $DATABASE_SERVER"
-		Write-Host " TCP port -> $DATABASE_PORT"
-		Write-Host ""
-		get_confirmation;
-		set_language;
-		initialize_dir_structure;
-		mysql_check;
-		# ask user for database root password
-		$script:DATABASE_ROOT_PW = Read-Host "Please insert the MySQL / MariaDB database root password (root@$DATABASE_SERVER) -> "
-		Write-Host "Installing the database....."
-		Write-Host ""
-		Write-Host " Database name -> $DATABASE_NAME"
-		Write-Host " Database user -> $DATABASE_USER"
-		Write-Host " Database password -> $DATABASE_PASSWORD"
-		Write-Host ""
-		import_database;
-		test_database_connection;
-		Write-Host "Done!"
-	}
-	"l"	{ # set language 
-		$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
-		set_language;
-		$script:GENERATE_CONFIG_FILES="on"
-	}
-	"s"	{ # save database 
-		# check if mysql utilities exist
-		mysql_check;
-		# check if portable mode is on
-		if ( !($OH_MODE -eq "CLIENT" )) {
-			# check if database already exists
-			if ( !(Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME")) {
-		        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
-				exit 2;
-			}
-			else {
-				config_database;
-				start_database;
-			}
-		}
-		test_database_connection;
-		Write-Host "Trying to save Open Hospital database..."
-		dump_database;
-
-		if ( !($OH_MODE -eq "CLIENT" )) {
-			shutdown_database;
-		}
-		Write-Host "Done!"
-		Read-Host;
-	}
-	"r"	{ # restore
-	       	Write-Host "Restoring Open Hospital database...."
-		# ask user for database to restore
-		$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
-		if ( !(Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" -PathType leaf)) {
-			Write-Host "Error: No SQL file found!" -ForegroundColor Red
+		"G"	{ # set up GSM 
+			Write-Host "Setting up GSM..."
+			java_check;
+			java_lib_setup;
+			Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM $@ ") -Wait -NoNewWindow
+			Write-Host "Done!"
 			Read-Host;
 		}
-		else {
-			Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+			"i"	{ # initialize/install OH database
+			# set mode to CLIENT
+			$OH_MODE="CLIENT"
+			Write-Host "Do you want to initialize/install the OH database on:"
+			Write-Host ""
+			Write-Host " Server -> $DATABASE_SERVER"
+			Write-Host " TCP port -> $DATABASE_PORT"
+			Write-Host ""
+			get_confirmation;
+			set_language;
+			initialize_dir_structure;
+			mysql_check;
+			# ask user for database root password
+			$script:DATABASE_ROOT_PW = Read-Host "Please insert the MySQL / MariaDB database root password (root@$DATABASE_SERVER) -> "
+			Write-Host "Installing the database....."
+			Write-Host ""
+			Write-Host " Database name -> $DATABASE_NAME"
+			Write-Host " Database user -> $DATABASE_USER"
+			Write-Host " Database password -> $DATABASE_PASSWORD"
+			Write-Host ""
+			import_database;
+			test_database_connection;
+			Write-Host "Done!"
+		}
+		"l"	{ # set language 
+			$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
+			set_language;
+			$script:GENERATE_CONFIG_FILES="on"
+		}
+		"s"	{ # save database 
 			# check if mysql utilities exist
 			mysql_check;
+			# check if portable mode is on
 			if ( !($OH_MODE -eq "CLIENT" )) {
-				# reset database if exists
-				clean_database;
-				config_database;
-				initialize_dir_structure;
-				initialize_database;
-				start_database;	
-				set_database_root_pw;
-				import_database; # TBD for CLIENT mode
+				# check if database already exists
+				if ( !(Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME")) {
+			        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
+					exit 2;
+				}
+				else {
+					config_database;
+					start_database;
+				}
+			}
+			test_database_connection;
+			Write-Host "Trying to save Open Hospital database..."
+			dump_database;
+
+			if ( !($OH_MODE -eq "CLIENT" )) {
 				shutdown_database;
-				Write-Host "Done!"
-		        	Read-Host;
+			}
+			Write-Host "Done!"
+			Read-Host;
+		}
+		"r"	{ # restore
+		       	Write-Host "Restoring Open Hospital database...."
+			# ask user for database to restore
+			$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
+			if ( !(Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" -PathType leaf)) {
+				Write-Host "Error: No SQL file found!" -ForegroundColor Red
+				Read-Host;
+			}
+			else {
+				Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+				# check if mysql utilities exist
+				mysql_check;
+				if ( !($OH_MODE -eq "CLIENT" )) {
+					# reset database if exists
+					clean_database;
+					config_database;
+					initialize_dir_structure;
+					initialize_database;
+					start_database;	
+					set_database_root_pw;
+					import_database; # TBD for CLIENT mode
+					shutdown_database;
+					Write-Host "Done!"
+			        	Read-Host;
+				}
 			}
 		}
-	}
-	"t"	{ # test database connection 
-		if ( !($OH_MODE -eq "CLIENT") ) {
-			Write-Host "Error: Only for CLIENT mode." -ForegroundColor Red
-			Read-Host; break;
+		"t"	{ # test database connection 
+			if ( !($OH_MODE -eq "CLIENT") ) {
+				Write-Host "Error: Only for CLIENT mode." -ForegroundColor Red
+				Read-Host; break;
+			}
+			mysql_check;
+			test_database_connection;
+			Read-Host; 
 		}
-		mysql_check;
-		test_database_connection;
-		Read-Host; 
-	}
-	"v"	{ # show version
-        	Write-Host "--------- Software version ---------"
-		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
-		$var = $_.Split('=',2).Trim()
-		New-Variable -Scope Script -Name $var[0] -Value $var[1]
+		"v"	{ # show version
+	        	Write-Host "--------- Software version ---------"
+			Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
+			$var = $_.Split('=',2).Trim()
+			New-Variable -Scope Script -Name $var[0] -Value $var[1]
+			}
+			Write-Host "Open Hospital version" $script:VER_MAJOR $script:VER_MINOR $script:VER_RELEASE
+			Write-Host "MySQL version: $MYSQL_DIR"
+			Write-Host "JAVA version: $JAVA_DISTRO"
+			Write-Host ""
+			# show configuration
+	 		Write-Host "--------- Script Configuration ---------"
+	 		Write-Host "Architecture is $ARCH"
+	 		Write-Host "Config file generation is set to $GENERATE_CONFIG_FILES"
+			Write-Host ""
+	 		Write-Host "--------- OH Configuration ---------"
+	 		Write-Host "Open Hospital is configured in $OH_MODE mode"
+			Write-Host "Language is set to $OH_LANGUAGE"
+			Write-Host "Demo data is set to $DEMO_DATA"
+			Write-Host "Log level is set to $LOG_LEVEL"
+			Write-Host ""
+			Write-Host "--- Database ---"
+			Write-Host "DATABASE_SERVER=$DATABASE_SERVER"
+			Write-Host "DATABASE_PORT=$DATABASE_PORT"
+			Write-Host "DATABASE_NAME=$DATABASE_NAME"
+			Write-Host "DATABASE_USER=$DATABASE_USER"
+			Write-Host ""
+			Write-Host "--- Dicom ---"
+			Write-Host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
+			Write-Host "DICOM_STORAGE=$DICOM_STORAGE"
+			Write-Host "DICOM_DIR=$DICOM_DIR"
+			Write-Host ""
+			Write-Host "--- OH Folders ---"
+			Write-Host "OH_DIR=$OH_DIR"
+			Write-Host "OH_DOC_DIR=$OH_DOC_DIR"
+			Write-Host "OH_SINGLE_USER=$OH_SINGLE_USER"
+			Write-Host "CONF_DIR=$CONF_DIR"
+			Write-Host "DATA_DIR=$DATA_DIR"
+			Write-Host "BACKUP_DIR=$BACKUP_DIR"
+			Write-Host "LOG_DIR=$LOG_DIR"
+			Write-Host "SQL_DIR=$SQL_DIR"
+			Write-Host "SQL_EXTRA_DIR=$SQL_EXTRA_DIR"
+			Write-Host "TMP_DIR=$TMP_DIR"
+			Write-Host ""
+			Write-Host "--- Logging ---"
+			Write-Host "LOG_FILE=$LOG_FILE"
+			Write-Host "LOG_FILE_ERR=$LOG_FILE_ERR"
+			Write-Host "OH_LOG_FILE=$OH_LOG_FILE"
+			Write-Host ""
+
+			Read-Host;
 		}
-		Write-Host "Open Hospital version" $script:VER_MAJOR $script:VER_MINOR $script:VER_RELEASE
-		Write-Host "MySQL version: $MYSQL_DIR"
-		Write-Host "JAVA version: $JAVA_DISTRO"
-		Write-Host ""
-		# show configuration
- 		Write-Host "--------- Script Configuration ---------"
- 		Write-Host "Architecture is $ARCH"
- 		Write-Host "Config file generation is set to $GENERATE_CONFIG_FILES"
-		Write-Host ""
- 		Write-Host "--------- OH Configuration ---------"
- 		Write-Host "Open Hospital is configured in $OH_MODE mode"
-		Write-Host "Language is set to $OH_LANGUAGE"
-		Write-Host "Demo data is set to $DEMO_DATA"
-		Write-Host "Log level is set to $LOG_LEVEL"
-		Write-Host ""
-		Write-Host "--- Database ---"
-		Write-Host "DATABASE_SERVER=$DATABASE_SERVER"
-		Write-Host "DATABASE_PORT=$DATABASE_PORT"
-		Write-Host "DATABASE_NAME=$DATABASE_NAME"
-		Write-Host "DATABASE_USER=$DATABASE_USER"
-		Write-Host ""
-		Write-Host "--- Dicom ---"
-		Write-Host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
-		Write-Host "DICOM_STORAGE=$DICOM_STORAGE"
-		Write-Host "DICOM_DIR=$DICOM_DIR"
-		Write-Host ""
-		Write-Host "--- OH Folders ---"
-		Write-Host "OH_DIR=$OH_DIR"
-		Write-Host "OH_DOC_DIR=$OH_DOC_DIR"
-		Write-Host "OH_SINGLE_USER=$OH_SINGLE_USER"
-		Write-Host "CONF_DIR=$CONF_DIR"
-		Write-Host "DATA_DIR=$DATA_DIR"
-		Write-Host "BACKUP_DIR=$BACKUP_DIR"
-		Write-Host "LOG_DIR=$LOG_DIR"
-		Write-Host "SQL_DIR=$SQL_DIR"
-		Write-Host "SQL_EXTRA_DIR=$SQL_EXTRA_DIR"
-		Write-Host "TMP_DIR=$TMP_DIR"
-		Write-Host ""
-		Write-Host "--- Logging ---"
-		Write-Host "LOG_FILE=$LOG_FILE"
-		Write-Host "LOG_FILE_ERR=$LOG_FILE_ERR"
-		Write-Host "OH_LOG_FILE=$OH_LOG_FILE"
-		Write-Host ""
-	
-		Read-Host;
-	}
-	"X"	{ # clean
-		Write-Host "Cleaning Open Hospital installation..."
-		clean_files;
-		clean_database;
-		Write-Host "Done!"
-		Read-Host;
-	}
-	"q" -Or "Q"	{ # quit
-		Write-Host "Quit pressed. Exiting.";
-		exit 0; 
-	}
-#	"Q"	{ # quit
-#		Write-Host "Quit pressed. Exiting.";
-#		exit 0; 
-#	}
-	default { Write-Host "Invalid option: $opt."; 
-		Read-Host;
-	}
+		"X"	{ # clean
+			Write-Host "Cleaning Open Hospital installation..."
+			clean_files;
+			clean_database;
+			Write-Host "Done!"
+			Read-Host;
+		}
+		"q" 	{ # quit
+			Write-Host "Quit pressed. Exiting.";
+			exit 0; 
+		}
+		"Q"	{ # Quit
+			Write-Host "Quit pressed. Exiting.";
+			exit 0; 
+		}
+		default { Write-Host "Invalid option: $opt."; 
+			Read-Host;
+		}
 	}
 }
 until ( ($opt -ceq 'q') -Or ($opt -ceq 'C') -Or ($opt -ceq 'P') -Or ($opt -ceq 'S') ) 
