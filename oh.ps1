@@ -1132,7 +1132,7 @@ if ( $OH_MODE -eq "SERVER" ) {
 			default { "Invalid choice. " }
 		}
 	}
-
+# CTRL-C version 
 #	while ($true) {
 #		if ([console]::KeyAvailable) {
 #			$key = [system.console]::readkey($true)
