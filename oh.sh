@@ -823,7 +823,8 @@ function parse_user_input {
 		exit 3
 		;;
 	?)	# default
-		echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
+#		echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
+		echo "Invalid option: -${opt}. See $SCRIPT_NAME -h for help"
 #		exit 3
 		;;
 	esac
@@ -857,22 +858,21 @@ OPTSTRING=":CPSdDgGhil:srtvXq?"
 
 PASSED_ARGS=$@
 # If no arguments are passed via command line, show the interactive menu
-if [[ ${#PASSED_ARGS} -eq 0 ]]; then
-
-#	until [[ "$OPTSTRING" != *"$opt"* ]]
-	until [[ ! "$OPTSTRING" =~ .*$opt.* ]]
+if [[ ${#PASSED_ARGS} -ne 0 ]]; then
+	# function to parse input
+	while getopts ${OPTSTRING} opt; do
+		parse_user_input $opt;
+		exit 4;
+	done
+else
+	until [[ "$OPTSTRING" != *"$opt"* ]]
+#	until [[ ! "$OPTSTRING" =~ .*$opt.* ]]
 	do 
 		clear;
 		script_menu;
 		echo ""
 		read -p " -> Select an option: " opt
 		parse_user_input $opt;
-	done
-else
-	# function to parse input
-	until getopts ${OPTSTRING} opt; do
-		parse_user_input $opt;
-		exit 4;
 	done
 fi
 
