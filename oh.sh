@@ -158,7 +158,7 @@ JAVA_DIR=$JAVA_DISTRO
 
 ######################## Functions ########################
 
-function script_usage {
+function script_menu {
         # show help / user options
         echo " ---------------------------------------------------------"
         echo "|                                                         |"
@@ -185,6 +185,7 @@ function script_usage {
         echo "   -t    test database connection (CLIENT mode only)"
         echo "   -v    show OH software version and configuration"
         echo "   -X    clean/reset OH installation"
+        echo "   -q    quit"
         echo ""
 }
 
@@ -441,15 +442,6 @@ function start_database {
 	# wait till the MySQL tcp port is open
 	until nc -z $DATABASE_SERVER $DATABASE_PORT; do sleep 1; done
 	echo "MySQL server started! "
-
-	# show MySQL server running configuration
-	echo "***************************************"
-	echo "* Database server listening on:"
-	echo ""
-	cat ./$CONF_DIR/my.cnf | grep bind-address
-	cat ./$CONF_DIR/my.cnf | grep port | head -1
-	echo ""
-	echo "***************************************"
 }
 
 function set_database_root_pw {
@@ -627,36 +619,8 @@ function generate_config_files {
 	fi
 }
 
-
-######################## Script start ########################
-
-######## Pre-flight checks
-
-# check user running the script
-if [ $(id -u) -eq 0 ]; then
-	echo "Error - do not run this script as root. Exiting."
-	exit 1
-fi
-
-######## Environment setup
-
-set_defaults;
-set_path;
-set_language;
-
-# set working dir to OH base dir
-cd "$OH_PATH"
-
-######## Parse user input
-
-# reset in case getopts has been used previously in the shell
-OPTIND=1 
-# list of arguments expected in user input (- option)
-OPTSTRING=":CPSdDgGhil:srtvX?" 
-
-# function to parse input
-while getopts ${OPTSTRING} opt; do
-	case ${opt} in
+function call_case {
+	case $1 in
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
 		;;
@@ -691,10 +655,9 @@ while getopts ${OPTSTRING} opt; do
 		java_check;
 		java_lib_setup;
 		$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
-		exit 0;
 		;;
 	h)	# help
-		script_usage;
+		script_menu;
 		exit 0
 		;;
 	i)	# initialize/install OH database
@@ -757,7 +720,6 @@ while getopts ${OPTSTRING} opt; do
 		read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
 		if [ ! -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
 			echo "Error: No SQL file found! Exiting."
-			exit 2
 		else
 		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
 			# check if mysql utilities exist
@@ -776,7 +738,6 @@ while getopts ${OPTSTRING} opt; do
 				shutdown_database;
 			fi
 	        	echo "Done!"
-			exit 0
 		fi
         	# normal startup from here
 		;;
@@ -787,7 +748,6 @@ while getopts ${OPTSTRING} opt; do
 		fi
 		mysql_check;
 		test_database_connection;
-		exit 0
 		;;
 	v)	# show version
 		echo "--------- Software version ---------"
@@ -833,16 +793,18 @@ while getopts ${OPTSTRING} opt; do
 		echo "LOG_FILE=$LOG_FILE"
 		echo "OH_LOG_FILE=$OH_LOG_FILE"
 		echo ""
-		exit 0
 		;;
 	X)	# clean
         	echo "Cleaning Open Hospital installation..."
 		clean_files;
 		clean_database;
         	echo "Done!"
+		;;
+	q)	# quit
+		echo "Quit pressed. Exiting.";
 		exit 0
 		;;
-	: )	# if no lang argument is given, shows error
+	: )	# for -l option. If no lang argument is given, shows error
 		echo "No language specified. See $SCRIPT_NAME -h for help"
 		exit 3
 		;;
@@ -851,7 +813,53 @@ while getopts ${OPTSTRING} opt; do
 		exit 3
 		;;
 	esac
-done
+}
+
+######################## Script start ########################
+
+######## Pre-flight checks
+
+# check user running the script
+if [ $(id -u) -eq 0 ]; then
+	echo "Error - do not run this script as root. Exiting."
+	exit 1
+fi
+
+######## Environment setup
+
+set_defaults;
+set_path;
+set_language;
+
+# set working dir to OH base dir
+cd "$OH_PATH"
+
+######## Parse user input
+
+# reset in case getopts has been used previously in the shell
+OPTIND=1 
+# list of arguments expected in user input (- option)
+OPTSTRING=":CPSdDgGhil:srtvXq?" 
+
+PASSED_ARGS=$@
+# If no arguments are passed via command line, show the interactive menu
+if [[ ${#PASSED_ARGS} -eq 0 ]]; then
+	script_menu;
+	echo ""
+	echo " -> Select an option: "
+	read opt;
+	while [[ "$OPTSTRING" == *"$opt"* ]]; do
+		call_case $opt;
+	done
+else
+	# function to parse input
+	while getopts ${OPTSTRING} opt; do
+	call_case $opt;
+	done
+fi
+
+
+#shift "$((OPTIND-1))"
 
 ######################## OH start ########################
 
@@ -863,7 +871,7 @@ fi
 
 # check for demo mode
 if [ $DEMO_DATA = "on" ]; then
-	# exit if OH is configured in CLIENT or SERVER mode
+	# exit if OH is configured in CLIENT mode
 	if [ $OH_MODE = "CLIENT" ] || [ $OH_MODE = "SERVER"] ; then
 		echo "Error - OH_MODE set to $OH_MODE mode. Cannot run with Demo data, exiting."
 		exit 1;
@@ -873,7 +881,9 @@ if [ $DEMO_DATA = "on" ]; then
 		echo "Found SQL demo database, starting OH in demo mode..."
 		DB_CREATE_SQL=$DB_DEMO
 		# reset database if exists
-		clean_database;
+		# clean_database;  
+		# set DATABASE_NAME
+		DATABASE_NAME="ohdemo"	
 	else
 		echo "Error: no $DB_DEMO found! Exiting."
 		exit 1
@@ -926,7 +936,15 @@ fi
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if [ $OH_MODE = "SERVER" ]; then
 	echo "Open Hospital - SERVER mode started"
-#	echo "Database server listening on $DATABASE_SERVER:$DATABASE_PORT"
+
+	# show MySQL server running configuration
+	echo "***************************************"
+	echo "* Database server listening on:"
+	echo ""
+	cat ./$CONF_DIR/my.cnf | grep bind-address
+	cat ./$CONF_DIR/my.cnf | grep port | head -1
+	echo ""
+	echo "***************************************"
 	echo "Database server ready for connections..."
 	echo "Press Ctrl + C to exit"
 	while true; do
