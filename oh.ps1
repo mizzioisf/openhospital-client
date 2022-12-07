@@ -81,8 +81,6 @@ $global:ProgressPreference= 'SilentlyContinue'
 
 ############## Script startup configuration - change at your own risk :-) ##############
 #
-############## Script startup configuration - change at your own risk :-) ##############
-#
 # set GENERATE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
 # data/conf/my.cnf and oh/rsc/*.properties files will be regenerated from the original .dist files
 # with the settings defined in this script.
@@ -895,7 +893,7 @@ do {
 			}
 		}
 		test_database_connection;
-		Write-Host "Trying to saving Open Hospital database..."
+		Write-Host "Trying to save Open Hospital database..."
 		dump_database;
 
 		if ( !($OH_MODE -eq "CLIENT" )) {
@@ -916,7 +914,7 @@ do {
 			Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
 			# check if mysql utilities exist
 			mysql_check;
-			if ( $OH_MODE -eq "PORTABLE" ) {
+			if ( !($OH_MODE -eq "CLIENT" )) {
 				# reset database if exists
 				clean_database;
 				config_database;
@@ -1003,9 +1001,7 @@ do {
 		Write-Host "Quit pressed. Exiting.";
 		exit 0; 
 	}
-#		default { Write-Host "Invalid option: $opt. Exiting."; exit 1; }
-
-		default { Write-Host "Invalid option: $opt."; }
+	default { Write-Host "Invalid option: $opt."; }
 	}
 }
 until ( ($opt -eq 'q') -Or ($opt -eq 'C') -Or ($opt -eq 'P') -Or ($opt -eq 'S') ) 
