@@ -619,7 +619,7 @@ function generate_config_files {
 	fi
 }
 
-function call_case {
+function parse_user_input {
 	case $1 in
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
@@ -644,21 +644,22 @@ function call_case {
 		fi
 		DEMO_DATA="on"
 		;;
-	g)	# generate config files and exit
+	g)	# generate config files
 		GENERATE_CONFIG_FILES="on"
 		generate_config_files;
 		echo "Done!"
-		exit 0;
+		read;
 		;;
 	G)	# set up GSM
 		echo "Setting up GSM..."
 		java_check;
 		java_lib_setup;
 		$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
+		echo "Done!"
+		read;
 		;;
 	h)	# help
 		script_menu;
-		exit 0
 		;;
 	i)	# initialize/install OH database
 		# set mode to CLIENT
@@ -712,7 +713,7 @@ function call_case {
 			shutdown_database;
 		fi
 		echo "Done!"
-		exit 0
+		read;	
 		;;
 	r)	# restore 
         	echo "Restoring Open Hospital database...."
@@ -739,7 +740,7 @@ function call_case {
 			fi
 	        	echo "Done!"
 		fi
-        	# normal startup from here
+		read;	
 		;;
 	t)	# test database connection
 		if [ $OH_MODE != "CLIENT" ]; then
@@ -748,6 +749,7 @@ function call_case {
 		fi
 		mysql_check;
 		test_database_connection;
+		read;	
 		;;
 	v)	# show version
 		echo "--------- Software version ---------"
@@ -793,12 +795,14 @@ function call_case {
 		echo "LOG_FILE=$LOG_FILE"
 		echo "OH_LOG_FILE=$OH_LOG_FILE"
 		echo ""
+		read;	
 		;;
 	X)	# clean
         	echo "Cleaning Open Hospital installation..."
 		clean_files;
 		clean_database;
         	echo "Done!"
+		read;	
 		;;
 	q)	# quit
 		echo "Quit pressed. Exiting.";
@@ -810,7 +814,7 @@ function call_case {
 		;;
 	?)	# default
 		echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
-		exit 3
+#		exit 3
 		;;
 	esac
 }
@@ -844,20 +848,22 @@ OPTSTRING=":CPSdDgGhil:srtvXq?"
 PASSED_ARGS=$@
 # If no arguments are passed via command line, show the interactive menu
 if [[ ${#PASSED_ARGS} -eq 0 ]]; then
-	script_menu;
-	echo ""
-	echo " -> Select an option: "
-	read opt;
-	while [[ "$OPTSTRING" == *"$opt"* ]]; do
-		call_case $opt;
+
+#	until [[ "$OPTSTRING" != *"$opt"* ]]
+	until [[ ! "$OPTSTRING" =~ .*$opt.* ]]
+	do 
+		script_menu;
+		echo ""
+		read -p " -> Select an option: " opt
+		parse_user_input $opt;
 	done
 else
 	# function to parse input
 	while getopts ${OPTSTRING} opt; do
-	call_case $opt;
+		parse_user_input $opt;
+		exit 4;
 	done
 fi
-
 
 #shift "$((OPTIND-1))"
 
