@@ -1030,9 +1030,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			break;
 		}
 		}
+	Clear-Host;
 	}
 	# execute until quit is pressed or CLIENT/PORTABLE/SERVER mode is select (Z option)
-	Clear-Host;
 	until ( ($opt -ceq 'q') -Or ($opt -ceq 'Z') )
 }
 
