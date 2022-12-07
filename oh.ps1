@@ -1003,10 +1003,13 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		default { Write-Host "Invalid option: $opt."; 
 			Read-Host;
+		break;
+		break;
+		}
 		}
 	}
-}
-until ( ($opt -ceq 'q') -Or ($opt -ceq 'C') -Or ($opt -ceq 'P') -Or ($opt -ceq 'S') ) 
+#	until ( ($opt -ceq 'q') -Or ($opt -ceq 'C') -Or ($opt -ceq 'P') -Or ($opt -ceq 'S') ) 
+	until ( ($opt -ceq 'q') ) 
 }
 
 ######################### OH start ############################
