@@ -892,7 +892,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			set_language;
 			$script:GENERATE_CONFIG_FILES="on"
 		}
-		"s"	{ # save database 
+		"s"	{ # save database
 			# check if mysql utilities exist
 			mysql_check;
 			# check if portable mode is on
@@ -917,7 +917,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Done!"
 			Read-Host;
 		}
-		"r"	{ # restore
+		"r"	{ # restore database
 		       	Write-Host "Restoring Open Hospital database...."
 			# ask user for database to restore
 			$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
