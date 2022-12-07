@@ -941,10 +941,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	        	Write-Host "--------- Software version ---------"
 			Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 			$var = $_.Split('=',2).Trim()
-			#New-Variable -Scope Script -Name $var[0] -Value $var[1]
-			New-Variable -Name $var[0] -Value $var[1]
+			New-Variable -Scope Script -Name $var[0] -Value $var[1]
 			}
-			Write-Host "Open Hospital version" $script:VER_MAJOR $script:VER_MINOR $script:VER_RELEASE
+#			Write-Host "Open Hospital version" $script:VER_MAJOR $script:VER_MINOR $script:VER_RELEASE
+			Write-Host "Open Hospital version" $VER_MAJOR $VER_MINOR $VER_RELEASE
 			Write-Host "MySQL version: $MYSQL_DIR"
 			Write-Host "JAVA version: $JAVA_DISTRO"
 			Write-Host ""
