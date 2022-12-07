@@ -242,13 +242,6 @@ function script_menu {
 	Write-Host "|                                                         |"
 	Write-Host " ---------------------------------------------------------"
 	Write-Host ""
-	Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt|ar ] "
-	Write-Host "               [ -mode PORTABLE|CLIENT|SERVER ]"
-	Write-Host "               [ -loglevel INFO|DEBUG ] "
-	Write-Host "               [ -dicom on|off ] "
-	Write-Host "               [ -generate_config on|off ] "
-	Write-Host "               [ -interactive on|off ] "
-	Write-Host ""
 	Write-Host " ---------------------------------------------------------"
 	Write-Host " lang $script:OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL "
 	Write-Host " ---------------------------------------------------------"
@@ -873,9 +866,18 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Done!"
 		}
 		"h"	{ # show help
+			Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt|ar ] "
+			Write-Host "               [ -mode PORTABLE|CLIENT|SERVER ]"
+			Write-Host "               [ -loglevel INFO|DEBUG ] "
+			Write-Host "               [ -dicom on|off ] "
+			Write-Host "               [ -generate_config on|off ] "
+			Write-Host "               [ -interactive on|off ] "
+			Write-Host ""
+			Write-Host "Launch oh.bat to run the oh.ps1 interactive startup script"
 			Write-Host "Select any available option from the menu"
 			Write-Host "Choose CLIENT, PORTABLE or SERVER mode"
 			Write-Host ""
+			Read-Host;
 		}
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
