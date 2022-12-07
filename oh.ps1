@@ -797,6 +797,7 @@ cd "$OH_PATH" # workaround for hard coded paths
 # If INTERACTIVE_MODE is set to "off" don't show menu for user input
 if ( $INTERACTIVE_MODE -eq "on" ) {
 	do {
+		Clear-Host;
 		script_menu;
 		$opt = Read-Host "Please select an option or press enter to start Open Hospital"
 		switch -casesensitive( "$opt" ) {
@@ -818,6 +819,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"d"	{ # debug 
 			$script:LOG_LEVEL="DEBUG"
 			Write-Host "Log level set to $LOG_LEVEL"
+			Read-Host;
 		}
 		"D"	{ # demo mode 
 			Write-Host "Setting Open Hospital with Demo data..."
@@ -828,6 +830,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 			else { $script:OH_MODE="PORTABLE" }
 			$DEMO_DATA="on"
+			Write-Host "Demo data set to on. Using demo data."
+			Read-Host;
 		}
 		"g"	{ # generate config files and exit
 			$script:GENERATE_CONFIG_FILES="on"
