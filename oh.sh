@@ -623,19 +623,25 @@ function parse_user_input {
 	case $1 in
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
+		echo "OH_MODE set to CLIENT mode."
+		read;
 		;;
 	P)	# start in PORTABLE mode
 		OH_MODE="PORTABLE"
+		echo "OH_MODE set to PORTABLE mode."
+		read;
 		;;
 	S)	# start in SERVER mode
 		OH_MODE="SERVER"
+		echo "OH_MODE set to SERVER mode."
+		read;
 		;;
 	d)	# debug
 		LOG_LEVEL=DEBUG
 		echo "Log level set to $LOG_LEVEL"
+		read;
 		;;
 	D)	# demo mode
-        	echo "Starting Open Hospital with Demo data..."
 		# exit if OH is configured in CLIENT mode
 		if [ $OH_MODE = "CLIENT" ]; then
 			echo "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data, exiting."
@@ -643,6 +649,8 @@ function parse_user_input {
 		else OH_MODE="PORTABLE"
 		fi
 		DEMO_DATA="on"
+		echo "Demo data set to on. Using demo data."
+		read;
 		;;
 	g)	# generate config files
 		GENERATE_CONFIG_FILES="on"
@@ -685,12 +693,14 @@ function parse_user_input {
 		import_database;
 		test_database_connection;
 		echo "Done!"
-		exit 0
+		read;
 		;;
 	l)	# set language
 		OH_LANGUAGE=$OPTARG
 		set_language;
 		GENERATE_CONFIG_FILES="on"
+		echo "Done!"
+		read;
 		;;
 	s)	# save database
 		# check if mysql utilities exist
@@ -852,6 +862,7 @@ if [[ ${#PASSED_ARGS} -eq 0 ]]; then
 #	until [[ "$OPTSTRING" != *"$opt"* ]]
 	until [[ ! "$OPTSTRING" =~ .*$opt.* ]]
 	do 
+		clear;
 		script_menu;
 		echo ""
 		read -p " -> Select an option: " opt
@@ -859,7 +870,7 @@ if [[ ${#PASSED_ARGS} -eq 0 ]]; then
 	done
 else
 	# function to parse input
-	while getopts ${OPTSTRING} opt; do
+	until getopts ${OPTSTRING} opt; do
 		parse_user_input $opt;
 		exit 4;
 	done
