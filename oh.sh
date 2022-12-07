@@ -623,25 +623,30 @@ function parse_user_input {
 	case $1 in
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
+		echo ""
 		echo "OH_MODE set to CLIENT mode."
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	P)	# start in PORTABLE mode
 		OH_MODE="PORTABLE"
+		echo ""
 		echo "OH_MODE set to PORTABLE mode."
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	S)	# start in SERVER mode
 		OH_MODE="SERVER"
+		echo ""
 		echo "OH_MODE set to SERVER mode."
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	d)	# debug
 		LOG_LEVEL=DEBUG
+		echo ""
 		echo "Log level set to $LOG_LEVEL"
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	D)	# demo mode
+		echo ""
 		# exit if OH is configured in CLIENT mode
 		if [ $OH_MODE = "CLIENT" ]; then
 			echo "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data, exiting."
@@ -650,28 +655,32 @@ function parse_user_input {
 		fi
 		DEMO_DATA="on"
 		echo "Demo data set to on. Using demo data."
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	g)	# generate config files
+		echo ""
 		GENERATE_CONFIG_FILES="on"
 		generate_config_files;
 		echo "Done!"
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	G)	# set up GSM
+		echo ""
 		echo "Setting up GSM..."
 		java_check;
 		java_lib_setup;
 		$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
 		echo "Done!"
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	h)	# help
 		script_menu;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	i)	# initialize/install OH database
 		# set mode to CLIENT
 		OH_MODE="CLIENT"
+		echo ""
 		echo "Do you want to initialize/install the OH database on:"
 		echo ""
 		echo " Server -> $DATABASE_SERVER"
@@ -693,16 +702,18 @@ function parse_user_input {
 		import_database;
 		test_database_connection;
 		echo "Done!"
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	l)	# set language
+		echo ""
 		OH_LANGUAGE=$OPTARG
 		set_language;
 		GENERATE_CONFIG_FILES="on"
 		echo "Done!"
-		read;
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	s)	# save database
+		echo ""
 		# check if mysql utilities exist
 		mysql_check;
 		# check if portable mode is on
@@ -712,6 +723,7 @@ function parse_user_input {
 				config_database;
 				start_database;
 			else
+				echo ""
 	        		echo "Error: no data found! Exiting."
 				exit 1
 			fi
@@ -723,9 +735,10 @@ function parse_user_input {
 			shutdown_database;
 		fi
 		echo "Done!"
-		read;	
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
-	r)	# restore 
+	r)	# restore database
+		echo ""
         	echo "Restoring Open Hospital database...."
 		# ask user for database/sql script to restore
 		read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
@@ -750,18 +763,20 @@ function parse_user_input {
 			fi
 	        	echo "Done!"
 		fi
-		read;	
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	t)	# test database connection
+		echo ""
 		if [ $OH_MODE != "CLIENT" ]; then
 			echo "Error: Only for CLIENT mode. Exiting."
 			exit 1
 		fi
 		mysql_check;
 		test_database_connection;
-		read;	
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	v)	# show version
+		echo ""
 		echo "--------- Software version ---------"
 		source "./$OH_DIR/rsc/version.properties"
 		echo "Open Hospital version" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
@@ -805,16 +820,18 @@ function parse_user_input {
 		echo "LOG_FILE=$LOG_FILE"
 		echo "OH_LOG_FILE=$OH_LOG_FILE"
 		echo ""
-		read;	
+		
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	X)	# clean
         	echo "Cleaning Open Hospital installation..."
 		clean_files;
 		clean_database;
         	echo "Done!"
-		read;	
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	q)	# quit
+		echo "";
 		echo "Quit pressed. Exiting.";
 		exit 0
 		;;
@@ -822,10 +839,14 @@ function parse_user_input {
 		echo "No language specified. See $SCRIPT_NAME -h for help"
 		exit 3
 		;;
+	"" )	# enter key
+		opt="Z"
+		echo "Starting Open Hospital...";
+		;;
 	?)	# default
 #		echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
+		echo ""
 		echo "Invalid option: -${opt}. See $SCRIPT_NAME -h for help"
-#		exit 3
 		;;
 	esac
 }
@@ -857,23 +878,23 @@ OPTIND=1
 OPTSTRING=":CPSdDgGhil:srtvXq?" 
 
 PASSED_ARGS=$@
-# If no arguments are passed via command line, show the interactive menu
+# Parse arguments passed via command line
 if [[ ${#PASSED_ARGS} -ne 0 ]]; then
 	# function to parse input
 	while getopts ${OPTSTRING} opt; do
-		parse_user_input $opt;
-		exit 4;
+		parse_user_input $opt 0; # non interactive
 	done
-else
-	until [[ "$OPTSTRING" != *"$opt"* ]]
-#	until [[ ! "$OPTSTRING" =~ .*$opt.* ]]
+else # If no arguments are passed via command line, show the interactive menu
+	until [[ "$OPTSTRING" != *"$opt"* ]] || [[ "$opt" == "Z" ]]
 	do 
 		clear;
 		script_menu;
 		echo ""
-		read -p " -> Select an option: " opt
-		parse_user_input $opt;
+		echo "opt = $opt"
+		read -n 1 -p " -> Select an option: " opt
+		parse_user_input $opt 1; # interactive
 	done
+	exit 1;
 fi
 
 #shift "$((OPTIND-1))"
