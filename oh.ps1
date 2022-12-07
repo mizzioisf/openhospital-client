@@ -806,15 +806,15 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		switch -casesensitive( "$opt" ) {
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
-			opt="Z";
+			$opt="Z";
 		}
 		"P"	{ # start in PORTABLE mode
 			$script:OH_MODE="PORTABLE"
-			opt="Z";
+			$opt="Z";
 		}
 		"S"	{ # start in SERVER (Portable) mode
 			$script:OH_MODE="SERVER"
-			opt="Z";
+			$opt="Z";
 		}
 		"d"	{ # debug 
 			$script:LOG_LEVEL="DEBUG"
