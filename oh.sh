@@ -625,25 +625,25 @@ function parse_user_input {
 		OH_MODE="CLIENT"
 		echo ""
 		echo "OH_MODE set to CLIENT mode."
-		if (( $2==0 )); then exit 0; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read;	fi
 		;;
 	P)	# start in PORTABLE mode
 		OH_MODE="PORTABLE"
 		echo ""
 		echo "OH_MODE set to PORTABLE mode."
-		if (( $2==0 )); then exit 0; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read;	fi
 		;;
 	S)	# start in SERVER mode
 		OH_MODE="SERVER"
 		echo ""
 		echo "OH_MODE set to SERVER mode."
-		if (( $2==0 )); then exit 0; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read;	fi
 		;;
 	d)	# debug
 		LOG_LEVEL=DEBUG
 		echo ""
 		echo "Log level set to $LOG_LEVEL"
-		if (( $2==0 )); then exit 0; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read;	fi
 		;;
 	D)	# demo mode
 		echo ""
@@ -655,7 +655,7 @@ function parse_user_input {
 		fi
 		DEMO_DATA="on"
 		echo "Demo data set to on. Using demo data."
-		if (( $2==0 )); then exit 0; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read;	fi
 		;;
 	g)	# generate config files
 		echo ""
