@@ -806,12 +806,15 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		switch -casesensitive( "$opt" ) {
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
+			opt="Z"
 		}
 		"P"	{ # start in PORTABLE mode
 			$script:OH_MODE="PORTABLE"
+			opt="Z"
 		}
 		"S"	{ # start in SERVER (Portable) mode
 			$script:OH_MODE="SERVER"
+			opt="Z"
 		}
 		"d"	{ # debug 
 			$script:LOG_LEVEL="DEBUG"
@@ -1022,8 +1025,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		}
 	}
-#	until ( ($opt -ceq 'q') -Or ($opt -ceq 'C') -Or ($opt -ceq 'P') -Or ($opt -ceq 'S') ) 
-	until ( ($opt -ceq 'q') ) 
+	# execute until quit is pressed or CLIENT/PORTABLE/SERVER mode is select (Z option)
+	until ( ($opt -ceq 'q') -Or ($opt -ceq 'Z') 
 }
 
 ######################### OH start ############################
