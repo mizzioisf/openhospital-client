@@ -866,6 +866,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Done!"
 		}
 		"h"	{ # show help
+			Write-Host " ---------------------------------------------------------"
+			Write-Host "|                   Open Hospital | OH                    |"
+			Write-Host " ---------------------------------------------------------"
+			Write-Host ""
 			Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt|ar ] "
 			Write-Host "               [ -mode PORTABLE|CLIENT|SERVER ]"
 			Write-Host "               [ -loglevel INFO|DEBUG ] "
