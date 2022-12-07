@@ -821,7 +821,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host;
 		}
 		"D"	{ # demo mode 
-			Write-Host "Setting Open Hospital with Demo data..."
 			# exit if OH is configured in CLIENT mode
 			if ( $OH_MODE -eq "CLIENT" ) {
 				Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data." -ForeGroundcolor Red
