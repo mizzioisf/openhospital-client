@@ -802,12 +802,18 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		switch -casesensitive( "$opt" ) {
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
+			Write-Host "OH_MODE set to CLIENT mode." -ForeGroundcolor Green
+			Read-Host;
 		}
 		"P"	{ # start in PORTABLE mode
 			$script:OH_MODE="PORTABLE"
+			Write-Host "OH_MODE set to PORTABLE mode." -ForeGroundcolor Green
+			Read-Host;
 		}
 		"S"	{ # start in SERVER (Portable) mode
 			$script:OH_MODE="SERVER"
+			Write-Host "OH_MODE set to SERVER mode." -ForeGroundcolor Green
+			Read-Host;
 		}
 		"d"	{ # debug 
 			$script:LOG_LEVEL="DEBUG"
