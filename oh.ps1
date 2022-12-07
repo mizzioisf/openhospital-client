@@ -841,6 +841,7 @@ do {
 		java_check;
 		java_lib_setup;
 		Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM $@ ") -Wait -NoNewWindow
+		Write-Host "Done!"
 		Read-Host;
 	}
 	"i"	{ # initialize/install OH database
