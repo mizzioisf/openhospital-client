@@ -260,6 +260,7 @@ function script_menu {
 	Write-Host "   D    Load Demo data"
 	Write-Host "   g    generate configuration files"
 	Write-Host "   G    setup GSM"
+	Write-Host "   h    show help"
 	Write-Host "   i    initialize/install OH database"
 	Write-Host "   l    set language: en|fr|it|es|pt|ar"
 	Write-Host "   s    save OH database"
@@ -847,7 +848,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Done!"
 			Read-Host;
 		}
-			"i"	{ # initialize/install OH database
+		"i"	{ # initialize/install OH database
 			# set mode to CLIENT
 			$OH_MODE="CLIENT"
 			Write-Host "Do you want to initialize/install the OH database on:"
@@ -870,6 +871,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			import_database;
 			test_database_connection;
 			Write-Host "Done!"
+		}
+		"h"	{ # show help
+			Write-Host "Select any available option from the menu"
+			Write-Host "Choose CLIENT, PORTABLE or SERVER mode"
+			Write-Host ""
 		}
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
