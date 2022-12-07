@@ -797,7 +797,6 @@ cd "$OH_PATH" # workaround for hard coded paths
 # If INTERACTIVE_MODE is set to "off" don't show menu for user input
 if ( $INTERACTIVE_MODE -eq "on" ) {
 	do {
-		Clear-Host;
 		script_menu;
 		$opt = Read-Host "Please select an option or press enter to start Open Hospital"
 		switch -casesensitive( "$opt" ) {
@@ -1033,6 +1032,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 	}
 	# execute until quit is pressed or CLIENT/PORTABLE/SERVER mode is select (Z option)
+	Clear-Host;
 	until ( ($opt -ceq 'q') -Or ($opt -ceq 'Z') )
 }
 
