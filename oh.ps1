@@ -901,6 +901,8 @@ do {
 		}
 		Write-Host "Done!"
 		Read-Host;
+		Write-Host "Done!!"
+		Read-Host;
 	}
 	"r"	{ # restore
 	       	Write-Host "Restoring Open Hospital database...."
