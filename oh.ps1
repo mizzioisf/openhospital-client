@@ -250,7 +250,7 @@ function script_menu {
 	Write-Host "   P    start OH in PORTABLE mode"
 	Write-Host "   S    start OH in SERVER (Portable) mode"
 	Write-Host "   d    start OH in debug mode"
-	Write-Host "   D    Load Demo data"
+	Write-Host "   D    start OH with demo data"
 	Write-Host "   g    generate configuration files"
 	Write-Host "   G    setup GSM"
 	Write-Host "   h    show help"
@@ -814,7 +814,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Log level set to $LOG_LEVEL"
 		}
 		"D"	{ # demo mode 
-			Write-Host "Starting Open Hospital with Demo data..."
+			Write-Host "Setting Open Hospital with Demo data..."
 			# exit if OH is configured in CLIENT mode
 			if ( $OH_MODE -eq "CLIENT" ) {
 				Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data." -ForeGroundcolor Red
@@ -1039,15 +1039,17 @@ if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MO
 
 # check demo mode
 if ( $DEMO_DATA -eq "on" ) {
-	# exit if OH is configured in CLIENT or SERVER mode
-	if ( ( $OH_MODE -eq "CLIENT" ) -And ( $OH_MODE -eq "SERVER" ) ) {
+	# exit if OH is configured in CLIENT mode
+	if ( $OH_MODE -eq "CLIENT" ) {
 		Write-Host "Error - OH_MODE is set to $OH_MODE mode. Cannot run with Demo data, exiting." -ForeGroundcolor Red
 		Read-Host; 
 		exit 1
 	}
 	
 	# reset database if exists
-	clean_database;
+	#clean_database;
+	# set DATABASE_NAME
+	$script:DATABASE_NAME="ohdemo"	
 
 	if (Test-Path -Path "$OH_PATH\$SQL_DIR\$DB_DEMO" -PathType leaf) {
 	        Write-Host "Found SQL demo database, starting OH with Demo data..."
