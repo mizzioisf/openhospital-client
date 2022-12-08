@@ -798,7 +798,7 @@ cd "$OH_PATH" # workaround for hard coded paths
 if ( $INTERACTIVE_MODE -eq "on" ) {
 	do {
 		script_menu;
-		$opt = Read-Host "Please select an option or press enter to start Open Hospital"
+		$opt = Read-Host "Please select an option or press enter to start OH"
 		switch -casesensitive( "$opt" ) {
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"

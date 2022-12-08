@@ -768,12 +768,12 @@ function parse_user_input {
 	t)	# test database connection
 		echo ""
 		if [ $OH_MODE != "CLIENT" ]; then
-			echo "Error: Only for CLIENT mode. Exiting."
-			exit 1
+			echo "Error: Only for CLIENT mode."
+			if (( $2==0 )); then exit 0; else read;	fi
+		else
+			mysql_check;
+			test_database_connection;
 		fi
-		mysql_check;
-		test_database_connection;
-		if (( $2==0 )); then exit 0; else read;	fi
 		;;
 	v)	# show version
 		echo ""
@@ -848,6 +848,8 @@ function parse_user_input {
 #		echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
 		echo ""
 		echo "Invalid option: -${opt}. See $SCRIPT_NAME -h for help"
+		opt="h";
+		read;
 		;;
 	esac
 }
@@ -892,10 +894,9 @@ else # If no arguments are passed via command line, show the interactive menu
 		script_menu;
 		echo ""
 		echo "opt = $opt"
-		read -n 1 -p " -> Select an option: " opt
+		read -n 1 -p "Please select an option or press enter to start OH: " opt
 		parse_user_input $opt 1; # interactive
 	done
-	exit 1;
 fi
 
 #shift "$((OPTIND-1))"
