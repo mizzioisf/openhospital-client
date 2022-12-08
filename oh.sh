@@ -160,13 +160,13 @@ JAVA_DIR=$JAVA_DISTRO
 
 function script_menu {
         # show help / user options
-        echo " ---------------------------------------------------------"
-        echo "|                                                         |"
-        echo "|                   Open Hospital | OH                    |"
-        echo "|                                                         |"
-        echo " ---------------------------------------------------------"
-        echo " lang $OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL "
-        echo " ---------------------------------------------------------"
+        echo " -----------------------------------------------------------------"
+        echo "|                                                                 |"
+        echo "|                       Open Hospital | OH                        |"
+        echo "|                                                                 |"
+        echo " -----------------------------------------------------------------"
+        echo " lang $OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
+        echo " -----------------------------------------------------------------"
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l en|fr|it|es|pt|ar ] "
         echo ""
@@ -1018,7 +1018,6 @@ if [ $OH_MODE = "PORTABLE" ] || [ $OH_MODE = "SERVER" ] ; then
 		start_database;
 	fi
 fi
-
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if [ $OH_MODE = "SERVER" ]; then

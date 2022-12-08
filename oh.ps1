@@ -236,15 +236,13 @@ $script:JAVA_DIR=$JAVA_DISTRO
 function script_menu {
 	# show menu
 	# Clear-Host # clear console
-	Write-Host " ---------------------------------------------------------"
-	Write-Host "|                                                         |"
-	Write-Host "|                   Open Hospital | OH                    |"
-	Write-Host "|                                                         |"
-	Write-Host " ---------------------------------------------------------"
-	Write-Host ""
-	Write-Host " ---------------------------------------------------------"
-	Write-Host " lang $script:OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL "
-	Write-Host " ---------------------------------------------------------"
+        Write-Host " -----------------------------------------------------------------"
+        Write-Host "|                                                                 |"
+        write-Host "|                       Open Hospital | OH                        |"
+        Write-Host "|                                                                 |"
+        write-Host " -----------------------------------------------------------------"
+        Write-Host " lang $OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
+        Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
 	Write-Host "   C    start OH in CLIENT mode (client / server configuration)"
 	Write-Host "   P    start OH in PORTABLE mode"
