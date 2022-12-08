@@ -55,7 +55,7 @@ SCRIPT_NAME=$(basename "$0")
 #DEMO_DATA=off
 
 # language setting - default set to en
-#OH_LANGUAGE=en # fr es it pt
+#OH_LANGUAGE=en # fr es it pt ar
 
 # set log level to INFO | DEBUG - default set to INFO
 #LOG_LEVEL=INFO
@@ -716,11 +716,16 @@ function parse_user_input {
 	###################################################
 	l)	# set language
 		echo ""
-		OH_LANGUAGE=$OPTARG
-		set_language;
 		GENERATE_CONFIG_FILES="on"
-		echo "Done!"
-		if (( $2==0 )); then exit 0; else read;	fi
+		if (( $2==0 )); then
+			OH_LANGUAGE="$OPTARG"
+			opt="Z";
+		else
+		read -n 2 -p "Please select language [en|fr|it|es|pt|ar]:" OH_LANGUAGE
+			read;
+		fi
+		set_language;
+		echo "Language set to $OH_LANGUAGE."
 		;;
 	###################################################
 	s)	# save database
@@ -926,7 +931,7 @@ else # If no arguments are passed via command line, show the interactive menu
 		script_menu;
 		echo ""
 		IFS=
-		read -s -n 1 -p "Please select an option or press enter to start OH: " opt
+		read -n 1 -p "Please select an option or press enter to start OH: " opt
 		if [[ $opt != "" ]]; then 
 			parse_user_input $opt 1; # interactive
 		else # if enter pressed

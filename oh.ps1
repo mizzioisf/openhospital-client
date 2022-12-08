@@ -342,7 +342,6 @@ function set_language {
 	}
 	# set database creation script in chosen language
 	$script:DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
-	
 }
 
 function initialize_dir_structure {
@@ -900,6 +899,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
 			set_language;
+			Write-Host "Language set to $OH_LANGUAGE."
 			$script:GENERATE_CONFIG_FILES="on"
 		}
 		###################################################
