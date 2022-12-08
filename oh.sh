@@ -911,7 +911,7 @@ fi
 # check for demo mode
 if [ $DEMO_DATA = "on" ]; then
 	# exit if OH is configured in CLIENT mode
-	if [[ $OH_MODE = "CLIENT" ]] || [[ $OH_MODE = "SERVER"]]; then
+	if [[ $OH_MODE = "CLIENT" ]]; then
 		echo "Error - OH_MODE set to $OH_MODE mode. Cannot run with Demo data, exiting."
 		exit 1;
 	fi
