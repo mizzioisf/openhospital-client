@@ -621,30 +621,35 @@ function generate_config_files {
 
 function parse_user_input {
 	case $1 in
+	###################################################
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
 		echo ""
 		echo "OH_MODE set to CLIENT mode."
-		if (( $2==0 )); then opt="Z"; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read; fi
 		;;
+	###################################################
 	P)	# start in PORTABLE mode
 		OH_MODE="PORTABLE"
 		echo ""
 		echo "OH_MODE set to PORTABLE mode."
-		if (( $2==0 )); then opt="Z"; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read; fi
 		;;
+	###################################################
 	S)	# start in SERVER mode
 		OH_MODE="SERVER"
 		echo ""
 		echo "OH_MODE set to SERVER mode."
-		if (( $2==0 )); then opt="Z"; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read; fi
 		;;
+	###################################################
 	d)	# debug
 		LOG_LEVEL=DEBUG
 		echo ""
 		echo "Log level set to $LOG_LEVEL"
-		if (( $2==0 )); then opt="Z"; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read; fi
 		;;
+	###################################################
 	D)	# demo mode
 		echo ""
 		# exit if OH is configured in CLIENT mode
@@ -655,8 +660,9 @@ function parse_user_input {
 		fi
 		DEMO_DATA="on"
 		echo "Demo data set to on. Using demo data."
-		if (( $2==0 )); then opt="Z"; else read;	fi
+		if (( $2==0 )); then opt="Z"; else read; fi
 		;;
+	###################################################
 	g)	# generate config files
 		echo ""
 		GENERATE_CONFIG_FILES="on"
@@ -664,6 +670,7 @@ function parse_user_input {
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	G)	# set up GSM
 		echo ""
 		echo "Setting up GSM..."
@@ -673,10 +680,12 @@ function parse_user_input {
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	h)	# help
 		script_menu;
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	i)	# initialize/install OH database
 		# set mode to CLIENT
 		OH_MODE="CLIENT"
@@ -704,6 +713,7 @@ function parse_user_input {
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	l)	# set language
 		echo ""
 		OH_LANGUAGE=$OPTARG
@@ -712,6 +722,7 @@ function parse_user_input {
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	s)	# save database
 		echo ""
 		# check if mysql utilities exist
@@ -737,6 +748,7 @@ function parse_user_input {
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	r)	# restore database
 		echo ""
         	echo "Restoring Open Hospital database...."
@@ -765,16 +777,18 @@ function parse_user_input {
 		fi
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	t)	# test database connection
 		echo ""
 		if [ $OH_MODE != "CLIENT" ]; then
 			echo "Error: Only for CLIENT mode."
-			if (( $2==0 )); then exit 0; else read;	fi
 		else
 			mysql_check;
 			test_database_connection;
 		fi
+		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	v)	# show version
 		echo ""
 		echo "--------- Software version ---------"
@@ -823,6 +837,7 @@ function parse_user_input {
 		
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	X)	# clean
 		echo ""
         	echo "Cleaning Open Hospital installation..."
@@ -831,19 +846,23 @@ function parse_user_input {
         	echo "Done!"
 		if (( $2==0 )); then exit 0; else read;	fi
 		;;
+	###################################################
 	q)	# quit
 		echo "";
 		echo "Quit pressed. Exiting.";
 		exit 0
 		;;
+	###################################################
 	: )	# for -l option. If no lang argument is given, shows error
 		echo "No language specified. See $SCRIPT_NAME -h for help"
 		exit 3
 		;;
+	###################################################
 	"" )	# enter key
 		opt="Z"
 		echo "Starting Open Hospital...";
 		;;
+	###################################################
 	?)	# default
 #		echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
 		echo ""

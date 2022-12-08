@@ -800,26 +800,31 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		script_menu;
 		$opt = Read-Host "Please select an option or press enter to start OH"
 		switch -casesensitive( "$opt" ) {
+		###################################################
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
 			Write-Host "OH_MODE set to CLIENT mode." -ForeGroundcolor Green
 			Read-Host;
 		}
+		###################################################
 		"P"	{ # start in PORTABLE mode
 			$script:OH_MODE="PORTABLE"
 			Write-Host "OH_MODE set to PORTABLE mode." -ForeGroundcolor Green
 			Read-Host;
 		}
+		###################################################
 		"S"	{ # start in SERVER (Portable) mode
 			$script:OH_MODE="SERVER"
 			Write-Host "OH_MODE set to SERVER mode." -ForeGroundcolor Green
 			Read-Host;
 		}
+		###################################################
 		"d"	{ # debug 
 			$script:LOG_LEVEL="DEBUG"
 			Write-Host "Log level set to $LOG_LEVEL"
 			Read-Host;
 		}
+		###################################################
 		"D"	{ # demo mode 
 			# exit if OH is configured in CLIENT mode
 			if ( $OH_MODE -eq "CLIENT" ) {
@@ -831,12 +836,14 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Demo data set to on. Using demo data."
 			Read-Host;
 		}
+		###################################################
 		"g"	{ # generate config files and exit
 			$script:GENERATE_CONFIG_FILES="on"
 			generate_config_files;
 			Write-Host "Done!"
 			Read-Host;
 		}
+		###################################################
 		"G"	{ # set up GSM 
 			Write-Host "Setting up GSM..."
 			java_check;
@@ -845,6 +852,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Done!"
 			Read-Host;
 		}
+		###################################################
 		"i"	{ # initialize/install OH database
 			# set mode to CLIENT
 			$OH_MODE="CLIENT"
@@ -869,6 +877,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			test_database_connection;
 			Write-Host "Done!"
 		}
+		###################################################
 		"h"	{ # show help
 			Write-Host " ---------------------------------------------------------"
 			Write-Host "|                   Open Hospital | OH                    |"
@@ -887,11 +896,13 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host ""
 			Read-Host;
 		}
+		###################################################
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
 			set_language;
 			$script:GENERATE_CONFIG_FILES="on"
 		}
+		###################################################
 		"s"	{ # save database
 			# check if mysql utilities exist
 			mysql_check;
@@ -917,6 +928,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Done!"
 			Read-Host;
 		}
+		###################################################
 		"r"	{ # restore database
 		       	Write-Host "Restoring Open Hospital database...."
 			# ask user for database to restore
@@ -944,6 +956,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				}
 			}
 		}
+		###################################################
 		"t"	{ # test database connection 
 			if ( !($OH_MODE -eq "CLIENT") ) {
 				Write-Host "Error: Only for CLIENT mode." -ForegroundColor Red
@@ -953,6 +966,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			test_database_connection;
 			Read-Host; 
 		}
+		###################################################
 		"v"	{ # show version
 	        	Write-Host "--------- Software version ---------"
 			Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
@@ -1005,6 +1019,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 			Read-Host;
 		}
+		###################################################
 		"X"	{ # clean
 			Write-Host "Cleaning Open Hospital installation..."
 			clean_files;
@@ -1012,18 +1027,22 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Done!"
 			Read-Host;
 		}
+		###################################################
 		"q" 	{ # quit
 			Write-Host "Quit pressed. Exiting.";
 			exit 0; 
 		}
+		###################################################
 		"Q"	{ # Quit
 			Write-Host "Quit pressed. Exiting.";
 			exit 0; 
 		}
+		###################################################
 		""	{ # Start
 			Write-Host "Starting Open Hospital...";
 			$opt="Z";
 		}
+		###################################################
 		default { Write-Host "Invalid option: $opt."; 
 			Read-Host;
 			break;
