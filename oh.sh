@@ -174,7 +174,7 @@ function script_menu {
         echo "   -P    start OH in PORTABLE mode"
 	echo "   -S    start OH in SERVER (Portable) mode"
         echo "   -d    start OH in debug mode"
-        echo "   -D    start OH with Demo data"
+        echo "   -D    initialize OH with Demo data"
         echo "   -g    generate configuration files"
         echo "   -G    setup GSM"
         echo "   -h    show this help"
@@ -659,7 +659,7 @@ function parse_user_input {
 		else OH_MODE="PORTABLE"
 		fi
 		DEMO_DATA="on"
-		echo "Demo data set to on. Using demo data."
+		echo "Demo data set to on. Using Demo data."
 		if (( $2==0 )); then opt="Z"; else read; fi
 		;;
 	###################################################
@@ -964,7 +964,7 @@ if [ $DEMO_DATA = "on" ]; then
 	fi
 
 	if [ -f ./$SQL_DIR/$DB_DEMO ]; then
-		echo "Found SQL demo database, starting OH in demo mode..."
+		echo "Found SQL demo database, starting OH with Demo data..."
 		DB_CREATE_SQL=$DB_DEMO
 		# reset database if exists
 		# clean_database;  

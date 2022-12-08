@@ -250,7 +250,7 @@ function script_menu {
 	Write-Host "   P    start OH in PORTABLE mode"
 	Write-Host "   S    start OH in SERVER (Portable) mode"
 	Write-Host "   d    start OH in debug mode"
-	Write-Host "   D    start OH with demo data"
+	Write-Host "   D    initialize OH with Demo data"
 	Write-Host "   g    generate configuration files"
 	Write-Host "   G    setup GSM"
 	Write-Host "   h    show help"
@@ -832,7 +832,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 			else { $script:OH_MODE="PORTABLE" }
 			$DEMO_DATA="on"
-			Write-Host "Demo data set to on. Using demo data."
+			Write-Host "Demo data set to on. Using Demo data."
 			Read-Host;
 		}
 		###################################################
