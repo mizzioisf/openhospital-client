@@ -80,7 +80,7 @@ DICOM_DIR="data/dicom_storage"
 
 OH_DIR="oh"
 OH_DOC_DIR="../doc"
-OH_SINGLE_USER="yes" # set "no" for multiuser
+OH_SINGLE_USER="no" # set "yes" for singleuser
 CONF_DIR="data/conf"
 DATA_DIR="data/db"
 PHOTO_DIR="data/photo"

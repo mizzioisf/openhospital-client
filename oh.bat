@@ -127,7 +127,7 @@ set DICOM_DIR="data\dicom_storage"
 
 set OH_DIR="oh"
 set OH_DOC_DIR="..\doc"
-set OH_SINGLE_USER="yes"
+set OH_SINGLE_USER="no"
 set CONF_DIR="data\conf"
 set DATA_DIR="data\db"
 set PHOTO_DIR="data\photo"

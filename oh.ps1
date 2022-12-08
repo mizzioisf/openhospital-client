@@ -139,7 +139,7 @@ $script:DICOM_DIR="data/dicom_storage"
 
 $script:OH_DIR="oh"
 $script:OH_DOC_DIR="../doc"
-$script:OH_SINGLE_USER="yes" # set "no" for multiuser
+$script:OH_SINGLE_USER="no" # set "yes" for singleuser
 $script:CONF_DIR="data/conf"
 $script:DATA_DIR="data/db"
 $script:PHOTO_DIR="data/photo"
