@@ -873,11 +873,15 @@ function parse_user_input {
 		;;
 	###################################################
 	?)	# default
-#		echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
 		echo ""
-		echo "Invalid option: -${opt}. See $SCRIPT_NAME -h for help"
+		if (( $2==0 )); then 
+			echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
+			exit 0;
+		else
+			echo "Invalid option: ${opt}. See $SCRIPT_NAME -h for help"
+			read;
+		fi
 		opt="h";
-		read;
 		;;
 	esac
 }
