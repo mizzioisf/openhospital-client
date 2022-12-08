@@ -969,7 +969,8 @@ if [ $DEMO_DATA = "on" ]; then
 		# reset database if exists
 		# clean_database;  
 		# set DATABASE_NAME
-		DATABASE_NAME="ohdemo"	
+		DATABASE_NAME="ohdemo" # TBD
+		#DATABASE_NAME="oh"	
 	else
 		echo "Error: no $DB_DEMO found! Exiting."
 		exit 1
