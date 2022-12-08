@@ -854,12 +854,21 @@ function parse_user_input {
 		;;
 	###################################################
 	: )	# for -l option. If no lang argument is given, shows error
+		echo "";
 		echo "No language specified. See $SCRIPT_NAME -h for help"
 		exit 3
 		;;
 	###################################################
-	"" )	# enter key
+	#"" )	# enter key
+	#	opt="Z"
+	#	echo "";
+	#	echo "Starting Open Hospital...";
+	#	fi
+	#	;;
+	###################################################
+	"Z" )	# Z key
 		opt="Z"
+		echo "";
 		echo "Starting Open Hospital...";
 		;;
 	###################################################
@@ -907,20 +916,29 @@ if [[ ${#PASSED_ARGS} -ne 0 ]]; then
 		parse_user_input $opt 0; # non interactive
 	done
 else # If no arguments are passed via command line, show the interactive menu
-	until [[ "$OPTSTRING" != *"$opt"* ]] || [[ "$opt" == "Z" ]]
+	until [[ "$OPTSTRING" != *"$opt"* ]]
 	do 
 		clear;
 		script_menu;
 		echo ""
-		echo "opt = $opt"
-		read -n 1 -p "Please select an option or press enter to start OH: " opt
-		parse_user_input $opt 1; # interactive
+		IFS=
+		read -s -n 1 -p "Please select an option or press enter to start OH: " opt
+		if [[ $opt != "" ]]; then 
+			parse_user_input $opt 1; # interactive
+		else # if enter pressed
+			break;
+		fi
+		if [[ "$opt" == "Z" ]]; then
+			break;
+		fi
 	done
 fi
 
 #shift "$((OPTIND-1))"
 
 ######################## OH start ########################
+
+echo ""
 
 # check OH mode
 if [ -z ${OH_MODE+x} ]; then
