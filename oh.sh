@@ -626,8 +626,11 @@ function parse_user_input {
 	###################################################
 	c)	# configure manually
 		echo ""
-		read -p "OH_MODE [CLIENT|PORTABLE|SERVER]: " OH_MODE
+		read -p "Please select OH_MODE [CLIENT|PORTABLE|SERVER]: " OH_MODE
 		read -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
+		echo ""
+		echo "Enter database configuration:"
+		echo ""
 		read -p "DATABASE_SERVER=" DATABASE_SERVER
 		read -p "DATABASE_PORT=" DATABASE_PORT
 		read -p "DATABASE_ROOT_PW=" DATABASE_ROOT_PW
