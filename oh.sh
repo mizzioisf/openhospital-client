@@ -170,6 +170,7 @@ function script_menu {
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l en|fr|it|es|pt|ar ] "
         echo ""
+        echo "   -c    configure OH parameters manually"
         echo "   -C    start OH in CLIENT mode (client / server configuration)"
         echo "   -P    start OH in PORTABLE mode"
 	echo "   -S    start OH in SERVER (Portable) mode"
@@ -388,7 +389,7 @@ fi
 
 function config_database {
 	echo "Checking for MySQL config file..."
-	if [ $GENERATE_CONFIG_FILES = "on" ] || [ ! -f ./$CONF_DIR/my.cnf ]; then
+	if [ "$GENERATE_CONFIG_FILES" = "on" ] || [ ! -f ./$CONF_DIR/my.cnf ]; then
 		[ -f ./$CONF_DIR/my.cnf ] && mv -f ./$CONF_DIR/my.cnf ./$CONF_DIR/my.cnf.old
 
 		# find a free TCP port to run MySQL starting from the default port
@@ -515,7 +516,7 @@ function dump_database {
 }
 
 function shutdown_database {
-	if [ $OH_MODE != "CLIENT" ]; then
+	if [ "$OH_MODE" != "CLIENT" ]; then
 		echo "Shutting down MySQL..."
 		cd "$OH_PATH"
 		./$MYSQL_DIR/bin/mysqladmin -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp shutdown >> ./$LOG_DIR/$LOG_FILE 2>&1
@@ -584,7 +585,7 @@ function generate_config_files {
 	# set up configuration files
 	echo "Checking for OH configuration files..."
 	######## DICOM setup
-	if [ $GENERATE_CONFIG_FILES = "on" ] || [ ! -f ./$OH_DIR/rsc/dicom.properties ]; then
+	if [ "$GENERATE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/dicom.properties ]; then
 		[ -f ./$OH_DIR/rsc/dicom.properties ] && mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
 		echo "Generating OH configuration file -> dicom.properties..."
 		sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
@@ -592,7 +593,7 @@ function generate_config_files {
 	fi
 
 	######## log4j.properties setup
-	if [ $GENERATE_CONFIG_FILES = "on" ] || [ ! -f ./$OH_DIR/rsc/log4j.properties ]; then
+	if [ "$GENERATE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/log4j.properties ]; then
 		OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
 		[ -f ./$OH_DIR/rsc/log4j.properties ] && mv -f ./$OH_DIR/rsc/log4j.properties ./$OH_DIR/rsc/log4j.properties.old
 		echo "Generating OH configuration file -> log4j.properties..."
@@ -602,7 +603,7 @@ function generate_config_files {
 	fi
 
 	######## database.properties setup 
-	if [ $GENERATE_CONFIG_FILES = "on" ] || [ ! -f ./$OH_DIR/rsc/database.properties ]; then
+	if [ "$GENERATE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/database.properties ]; then
 		[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
 		echo "Generating OH configuration file -> database.properties..."
 		sed -e "s/DBSERVER/$DATABASE_SERVER/g" -e "s/DBPORT/$DATABASE_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
@@ -611,7 +612,7 @@ function generate_config_files {
 	fi
 	######## settings.properties setup
 	# set language and DOC_DIR in OH config file
-	if [ $GENERATE_CONFIG_FILES = "on" ] || [ ! -f ./$OH_DIR/rsc/settings.properties ]; then
+	if [ "$GENERATE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/settings.properties ]; then
 		[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
 		echo "Generating OH configuration file -> settings.properties..."
 		sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
@@ -622,11 +623,29 @@ function generate_config_files {
 function parse_user_input {
 	case $1 in
 	###################################################
+	c)	# configure manually
+		echo ""
+		read -p "OH_MODE [CLIENT|PORTABLE|SERVER]: " OH_MODE
+		read -p "Please select language [en|fr|it|es|pt|ar]: " OH_LANGUAGE
+		read -p "DATABASE_SERVER=" DATABASE_SERVER
+		read -p "DATABASE_PORT=" DATABASE_PORT
+		read -p "DATABASE_ROOT_PW=" DATABASE_ROOT_PW
+		read -p "DATABASE_NAME=" DATABASE_NAME
+		read -p "DATABASE_USER=" DATABASE_USER
+		read -p "DATABASE_PASSWORD=" DATABASE_PASSWORD
+		GENERATE_CONFIG_FILES="on"
+		generate_config_files;
+		#DATABASE_LANGUAGE=en # default to en
+
+		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		;;
+	###################################################
+	###################################################
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
 		echo ""
 		echo "OH_MODE set to CLIENT mode."
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to contiune"; read; fi
+		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	P)	# start in PORTABLE mode
@@ -653,7 +672,7 @@ function parse_user_input {
 	D)	# demo mode
 		echo ""
 		# exit if OH is configured in CLIENT mode
-		if [ $OH_MODE = "CLIENT" ]; then
+		if [ "$OH_MODE" = "CLIENT" ]; then
 			echo "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data, exiting."
 			exit 1;
 		else OH_MODE="PORTABLE"
@@ -736,7 +755,7 @@ function parse_user_input {
 		# check if mysql utilities exist
 		mysql_check;
 		# check if portable mode is on
-		if [ $OH_MODE = "PORTABLE" ]; then
+		if [ "$OH_MODE" != "CLIENT" ]; then
 			# check if database already exists
 			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 				config_database;
@@ -750,7 +769,7 @@ function parse_user_input {
 		test_database_connection;
 		echo "Saving Open Hospital database..."
 		dump_database;
-		if [ $OH_MODE = "PORTABLE" ]; then
+		if [ "$OH_MODE" != "CLIENT" ]; then
 			shutdown_database;
 		fi
 		echo "Done!"
@@ -768,7 +787,7 @@ function parse_user_input {
 		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
 			# check if mysql utilities exist
 			mysql_check;
-			if [ $OH_MODE = "PORTABLE" ]; then
+			if [ "$OH_MODE" != "CLIENT" ]; then
 				# reset database if exists
 				clean_database;
 				config_database;
@@ -778,7 +797,7 @@ function parse_user_input {
 				set_database_root_pw;
 			fi
 			import_database;
-			if [ $OH_MODE = "PORTABLE" ]; then
+			if [ $OH_MODE != "CLIENT" ]; then
 				shutdown_database;
 			fi
 	        	echo "Done!"
@@ -788,7 +807,7 @@ function parse_user_input {
 	###################################################
 	t)	# test database connection
 		echo ""
-		if [ $OH_MODE != "CLIENT" ]; then
+		if [ "$OH_MODE" != "CLIENT" ]; then
 			echo "Error: Only for CLIENT mode."
 		else
 			mysql_check;
@@ -919,7 +938,7 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CPSdDgGhil:srtvXq?" 
+OPTSTRING=":cCPSdDgGhil:srtvXq?" 
 
 PASSED_ARGS=$@
 # Parse arguments passed via command line
@@ -960,9 +979,9 @@ if [ -z ${OH_MODE+x} ]; then
 fi
 
 # check for demo mode
-if [ $DEMO_DATA = "on" ]; then
+if [ "$DEMO_DATA" = "on" ]; then
 	# exit if OH is configured in CLIENT mode
-	if [[ $OH_MODE = "CLIENT" ]]; then
+	if [[ "$OH_MODE" = "CLIENT" ]]; then
 		echo "Error - OH_MODE set to $OH_MODE mode. Cannot run with Demo data, exiting."
 		exit 1;
 	fi
@@ -1000,7 +1019,7 @@ initialize_dir_structure;
 ######## Database setup
 
 # start MySQL and create database
-if [ $OH_MODE = "PORTABLE" ] || [ $OH_MODE = "SERVER" ] ; then
+if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	# check for MySQL software
 	mysql_check;
 	# config MySQL
@@ -1024,7 +1043,7 @@ if [ $OH_MODE = "PORTABLE" ] || [ $OH_MODE = "SERVER" ] ; then
 fi
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
-if [ $OH_MODE = "SERVER" ]; then
+if [ "$OH_MODE" = "SERVER" ]; then
 	echo "Open Hospital - SERVER mode started"
 
 	# show MySQL server running configuration
