@@ -55,7 +55,8 @@ SCRIPT_NAME=$(basename "$0")
 #DEMO_DATA=off
 
 # language setting - default set to en
-#OH_LANGUAGE=en # fr es it pt ar
+OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
+#OH_LANGUAGE=en # default
 
 # set log level to INFO | DEBUG - default set to INFO
 #LOG_LEVEL=INFO
@@ -168,7 +169,7 @@ function script_menu {
         echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
         echo " -----------------------------------------------------------------"
         echo ""
-        echo " Usage: $SCRIPT_NAME [ -l en|fr|it|es|pt|ar ] "
+        echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
         echo ""
         echo "   -c    configure OH parameters manually"
         echo "   -C    start OH in CLIENT mode (client / server configuration)"
@@ -626,7 +627,7 @@ function parse_user_input {
 	c)	# configure manually
 		echo ""
 		read -p "OH_MODE [CLIENT|PORTABLE|SERVER]: " OH_MODE
-		read -p "Please select language [en|fr|it|es|pt|ar]: " OH_LANGUAGE
+		read -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 		read -p "DATABASE_SERVER=" DATABASE_SERVER
 		read -p "DATABASE_PORT=" DATABASE_PORT
 		read -p "DATABASE_ROOT_PW=" DATABASE_ROOT_PW
@@ -741,7 +742,7 @@ function parse_user_input {
 			echo "Language set to $OH_LANGUAGE."
 			opt="Z";
 		else
-		read -n 2 -p "Please select language [en|fr|it|es|pt|ar]: " OH_LANGUAGE
+		read -n 2 -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 			echo ""
 			echo "Language set to $OH_LANGUAGE."
 			echo "Press any key to continue";
@@ -957,11 +958,11 @@ else # If no arguments are passed via command line, show the interactive menu
 		read -n 1 -p "Please select an option or press enter to start OH: " opt
 		if [[ $opt != "" ]]; then 
 			parse_user_input $opt 1; # interactive
-		else # if enter pressed
-			break;
+		else
+			break # if enter pressed exit from loop and start OH
 		fi
 		if [[ "$opt" == "Z" ]]; then
-			break;
+			break; # start OH
 		fi
 	done
 fi

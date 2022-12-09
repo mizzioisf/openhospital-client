@@ -111,7 +111,8 @@ $global:ProgressPreference= 'SilentlyContinue'
 #$script:DEMO_DATA="off"
 
 # language setting - default set to en
-#$script:OH_LANGUAGE="en" # fr es it pt ar
+$script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
+#$script:OH_LANGUAGE="en" # default
 
 # enable DICOM (default set to on)
 $script:DICOM_ENABLE="on"
@@ -253,7 +254,7 @@ function script_menu {
 	Write-Host "   G    setup GSM"
 	Write-Host "   h    show help"
 	Write-Host "   i    initialize/install OH database"
-	Write-Host "   l    set language: en|fr|it|es|pt|ar"
+	Write-Host "   l    set language: $OH_LANGUAGE_LIST"
 	Write-Host "   s    save OH database"
 	Write-Host "   r    restore OH database"
 	Write-Host "   t    test database connection (CLIENT mode only)"
@@ -881,7 +882,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "|                   Open Hospital | OH                    |"
 			Write-Host " ---------------------------------------------------------"
 			Write-Host ""
-			Write-Host " Usage: $SCRIPT_NAME [ -lang en|fr|it|es|pt|ar ] "
+			Write-Host " Usage: $SCRIPT_NAME [ -lang $OH_LANGUAGE_LIST ] "
 			Write-Host "               [ -mode PORTABLE|CLIENT|SERVER ]"
 			Write-Host "               [ -loglevel INFO|DEBUG ] "
 			Write-Host "               [ -dicom on|off ] "
@@ -896,7 +897,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"l"	{ # set language 
-			$script:OH_LANGUAGE = Read-Host "Select language: en|fr|es|it|pt|ar (default is en)"
+			$script:OH_LANGUAGE = Read-Host "Select language: $OH_LANGUAGE_LIST (default is en)"
 			set_language;
 			Write-Host "Language set to $OH_LANGUAGE."
 			$script:GENERATE_CONFIG_FILES="on"
