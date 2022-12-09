@@ -801,8 +801,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"c"	{ # configure OH manually
 			echo ""
-			$script:OH_MODE=Read-Host "Please select OH_MODE [CLIENT|PORTABLE|SERVER]: "
-			$script:OH_LANGUAGE=Read-Host "Please select language [$OH_LANGUAGE_LIST] "
+			$script:OH_MODE=Read-Host "Please select OH_MODE [CLIENT|PORTABLE|SERVER]"
+			$script:OH_LANGUAGE=Read-Host "Please select language [$OH_LANGUAGE_LIST]"
 			Write-Host ""
 			Write-Host "Enter database configuration:"
 			Write-Host ""
