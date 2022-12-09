@@ -802,42 +802,42 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"c"	{ # configure OH manually
 			echo ""
 			Read-Host "OH_MODE [CLIENT|PORTABLE|SERVER]: " OH_MODE
-			Read-Host "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
-			Read-Host "DATABASE_SERVER=" DATABASE_SERVER
-			Read-Host "DATABASE_PORT=" DATABASE_PORT
-			Read-Host "DATABASE_ROOT_PW=" DATABASE_ROOT_PW
-			Read-Host "DATABASE_NAME=" DATABASE_NAME
-			Read-Host "DATABASE_USER=" DATABASE_USER
-			Read-Host "DATABASE_PASSWORD=" DATABASE_PASSWORD
+			$script:OH_LANGUAGE=Read-Host "Please select language [$OH_LANGUAGE_LIST]: "
+			$script:DATABASE_SERVER=Read-Host "DATABASE_SERVER="
+			$script:DATABASE_PORT=Read-Host "DATABASE_PORT="
+			$script:DATABASE_ROOT_PW=Read-Host "DATABASE_ROOT_PW="
+			$script:DATABASE_NAME=Read-Host "DATABASE_NAME="
+			$script:DATABASE_USER=Read-Host "DATABASE_USER="
+			$script:DATABASE_PASSWORD=Read-Host "DATABASE_PASSWORD="
 			GENERATE_CONFIG_FILES="on"
 			generate_config_files;
 			#DATABASE_LANGUAGE=en # default to en
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		###################################################
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
 			Write-Host "OH_MODE set to CLIENT mode." -ForeGroundcolor Green
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"P"	{ # start in PORTABLE mode
 			$script:OH_MODE="PORTABLE"
 			Write-Host "OH_MODE set to PORTABLE mode." -ForeGroundcolor Green
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"S"	{ # start in SERVER (Portable) mode
 			$script:OH_MODE="SERVER"
 			Write-Host "OH_MODE set to SERVER mode." -ForeGroundcolor Green
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"d"	{ # debug 
 			$script:LOG_LEVEL="DEBUG"
 			Write-Host "Log level set to $LOG_LEVEL"
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"D"	{ # demo mode 
@@ -849,14 +849,14 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			else { $script:OH_MODE="PORTABLE" }
 			$DEMO_DATA="on"
 			Write-Host "Demo data set to on. Using Demo data."
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"g"	{ # generate config files and exit
 			$script:GENERATE_CONFIG_FILES="on"
 			generate_config_files;
 			Write-Host "Done!"
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"G"	{ # set up GSM 
@@ -865,7 +865,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			java_lib_setup;
 			Start-Process -FilePath "$JAVA_BIN" -ArgumentList ("-Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.utils.sms.SetupGSM $@ ") -Wait -NoNewWindow
 			Write-Host "Done!"
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"i"	{ # initialize/install OH database
@@ -891,7 +891,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			import_database;
 			test_database_connection;
 			Write-Host "Done!"
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"h"	{ # show help
@@ -910,7 +910,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Select any available option from the menu"
 			Write-Host "Choose CLIENT, PORTABLE or SERVER mode"
 			Write-Host ""
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"l"	{ # set language 
@@ -918,7 +918,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			set_language;
 			Write-Host "Language set to $OH_LANGUAGE."
 			$script:GENERATE_CONFIG_FILES="on"
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"s"	{ # save database
@@ -944,7 +944,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				shutdown_database;
 			}
 			Write-Host "Done!"
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"r"	{ # restore database
@@ -971,7 +971,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 					Write-Host "Done!"
 				}
 			}
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"t"	{ # test database connection 
@@ -981,7 +981,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 			mysql_check;
 			test_database_connection;
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"v"	{ # show version
@@ -1034,7 +1034,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "OH_LOG_FILE=$OH_LOG_FILE"
 			Write-Host ""
 
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"X"	{ # clean
@@ -1042,7 +1042,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			clean_files;
 			clean_database;
 			Write-Host "Done!"
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"q" 	{ # quit
@@ -1061,7 +1061,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		default { Write-Host "Invalid option: $opt."; 
-			Write-Host "Press any key to continue"; Read-Host; 
+			Read-Host "Press any key to continue";
 			break;
 		}
 		}
