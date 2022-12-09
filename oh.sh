@@ -171,7 +171,7 @@ function script_menu {
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
         echo ""
-        echo "   -c    configure OH parameters manually"
+        echo "   -c    configure OH manually"
         echo "   -C    start OH in CLIENT mode (client / server configuration)"
         echo "   -P    start OH in PORTABLE mode"
 	echo "   -S    start OH in SERVER (Portable) mode"

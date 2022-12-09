@@ -245,7 +245,7 @@ function script_menu {
         Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
         Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
-	Write-Host "   C    start OH in CLIENT mode (client / server configuration)"
+	Write-Host "   c    configure OH manually"
 	Write-Host "   P    start OH in PORTABLE mode"
 	Write-Host "   S    start OH in SERVER (Portable) mode"
 	Write-Host "   d    start OH in debug mode"
@@ -798,6 +798,23 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		script_menu;
 		$opt = Read-Host "Please select an option or press enter to start OH"
 		switch -casesensitive( "$opt" ) {
+		###################################################
+		"c"	{ # configure OH manually
+			echo ""
+			Read-Host "OH_MODE [CLIENT|PORTABLE|SERVER]: " OH_MODE
+			Read-Host "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
+			Read-Host "DATABASE_SERVER=" DATABASE_SERVER
+			Read-Host "DATABASE_PORT=" DATABASE_PORT
+			Read-Host "DATABASE_ROOT_PW=" DATABASE_ROOT_PW
+			Read-Host "DATABASE_NAME=" DATABASE_NAME
+			Read-Host "DATABASE_USER=" DATABASE_USER
+			Read-Host "DATABASE_PASSWORD=" DATABASE_PASSWORD
+			GENERATE_CONFIG_FILES="on"
+			generate_config_files;
+			#DATABASE_LANGUAGE=en # default to en
+			Write-Host "Press any key to continue"; Read-Host; 
+		}
+		###################################################
 		###################################################
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
