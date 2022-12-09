@@ -241,7 +241,7 @@ function script_menu {
         write-Host "|                       Open Hospital | OH                        |"
         Write-Host "|                                                                 |"
         write-Host " -----------------------------------------------------------------"
-        Write-Host " lang $OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
+        Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
         Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
 	Write-Host "   C    start OH in CLIENT mode (client / server configuration)"

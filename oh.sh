@@ -165,7 +165,7 @@ function script_menu {
         echo "|                       Open Hospital | OH                        |"
         echo "|                                                                 |"
         echo " -----------------------------------------------------------------"
-        echo " lang $OH_LANGUAGE | arch $ARCH | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
+        echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
         echo " -----------------------------------------------------------------"
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l en|fr|it|es|pt|ar ] "
