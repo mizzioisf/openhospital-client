@@ -802,14 +802,15 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"c"	{ # configure OH manually
 			echo ""
 			Read-Host "OH_MODE [CLIENT|PORTABLE|SERVER]: " OH_MODE
-			$script:OH_LANGUAGE=Read-Host "Please select language [$OH_LANGUAGE_LIST]: "
-			$script:DATABASE_SERVER=Read-Host "DATABASE_SERVER="
-			$script:DATABASE_PORT=Read-Host "DATABASE_PORT="
-			$script:DATABASE_ROOT_PW=Read-Host "DATABASE_ROOT_PW="
-			$script:DATABASE_NAME=Read-Host "DATABASE_NAME="
-			$script:DATABASE_USER=Read-Host "DATABASE_USER="
-			$script:DATABASE_PASSWORD=Read-Host "DATABASE_PASSWORD="
-			GENERATE_CONFIG_FILES="on"
+			$script:OH_LANGUAGE=Read-Host "Please select language [$OH_LANGUAGE_LIST] "
+			$script:DATABASE_SERVER=Read-Host "DATABASE_SERVER"
+			$script:DATABASE_PORT=Read-Host "DATABASE_PORT"
+			$script:DATABASE_ROOT_PW=Read-Host "DATABASE_ROOT_PW"
+			$script:DATABASE_NAME=Read-Host "DATABASE_NAME"
+			$script:DATABASE_USER=Read-Host "DATABASE_USER"
+			$script:DATABASE_PASSWORD=Read-Host "DATABASE_PASSWORD"
+			
+			$script:GENERATE_CONFIG_FILES="on"
 			generate_config_files;
 			#DATABASE_LANGUAGE=en # default to en
 			Read-Host "Press any key to continue";
