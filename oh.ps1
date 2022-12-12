@@ -837,6 +837,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"g"	{ # regenerate config files and exit
+			Write-Host "Do yoy want to regenerate OH configuration files with script values ?"
+			get_confirmation;
 			$script:GENERATE_CONFIG_FILES="on"
 			generate_config_files;
 			Write-Host "Done!"
