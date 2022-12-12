@@ -674,6 +674,8 @@ function parse_user_input {
 	###################################################
 	g)	# regenerate config files
 		echo ""
+		echo "Do yoy want to regenerate OH configuration files with script values ?"
+		get_confirmation;
 		GENERATE_CONFIG_FILES="on"
 		generate_config_files;
 		echo "Done!"
