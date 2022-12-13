@@ -179,7 +179,7 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 - **q**    quit (windows only)
 - **h**    help (linux only)
 
-## Script configuration
+# Script configuration
 
 Some advanced options can be configured manually by editing the scripts (oh.sh and oh.ps1 - do not modify oh.bat unless legacymode is used) and setting the specific script variables.
 This might also be useful to set different combinations of options (language, debug level, ...) for specific needs.
@@ -205,7 +205,6 @@ The default is set to off, so the configuration files are not regenerated and ov
 #
 #GENERATE_CONFIG_FILES="off" # linux
 #$script:GENERATE_CONFIG_FILES="off" # windows
-
 ```
 
 ### Distribution type - CLIENT | PORTABLE
@@ -227,8 +226,8 @@ DEMO_DATA=off # linux
 ### Interface and software language:
 ```
 # Language setting - default set to en
-#OH_LANGUAGE=en fr es it pt # linux
-#$script:OH_LANGUAGE="en" # fr es it pt # windows
+#OH_LANGUAGE=en fr es it pt ar # linux
+#$script:OH_LANGUAGE="en" # fr es it pt ar # windows
 ```
 ### (Windows only) Enable / disable DICOM features
 ```
