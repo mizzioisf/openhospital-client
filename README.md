@@ -395,17 +395,10 @@ Option parameters can be added at the end of Target string separated by spaces, 
 C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 -loglevel DEBUG
 ```
 
-### Windows - legacy mode
-
-It's also possible to start Open Hospital with the legacy batch file (old oh.bat behaviour):
-- open cmd.exe, browse to the OH installation directory and run **.\oh.bat -legacymode**
-- to see available options in legacymode, run **.\oh.bat -h**
+### Powershell configuration
 
 Powershell minimun version 5.1 is required to run oh.ps1.
 To install Powershell 5.1 go to https://www.microsoft.com/en-us/download/details.aspx?id=54616
-
-Dicom functionalities are only available on 32bit JAVA environment. If DICOM is needed, 32bit jre is mandatory.
-If you need DICOM on Windows 64 bit set **DICOM_ENABLE="on"** in the script.
 
 If you get this error:
 
@@ -422,6 +415,10 @@ set-executionpolicy remotesigned
 - You might also be required to enable access on Windows Firewall to oh.ps1 and/or to the TCP port used for the local database (PORTABLE mode).
 
 ## Windows - legacy mode
+
+It's also possible to start Open Hospital with the legacy batch file (old oh.bat behaviour):
+- open cmd.exe, browse to the OH installation directory and run **.\oh.bat -legacymode**
+- to see available options in legacymode, run **.\oh.bat -h**
 
 (*) If you are using oh.bat in legacy mode, you might have to download and unzip java ad mysql manually.
 In order to download and unzip Java:
