@@ -367,7 +367,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 Administrator and User manuals are available in the **doc** folder.
 Online version can be found on the [Open Hospital website](https://www.open-hospital.org/documentation)
 
-## Known issues
+# Known issues
 
 If you experience problems in starting up the script, avoid long folder path and path with special characters / spaces in it.
 
@@ -464,7 +464,7 @@ A short description of changes for the Linux version (mostly the same behavior a
     Portable 64bit (default) and 32bit (with automatic architecture detection)
     Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
 
--> **Interactive menu:** it is possible to navigate through menu options
+-> **Interactive menu**: it is possible to navigate through menu options
 -> **New**: Added "-m" option to configure OH manually
 -> **New**: SERVER mode support
 -> **New**: Arabic Language support **oh.sh -l ar**
@@ -498,5 +498,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2022.11.22*
+*last updated: 2022.12.13*
 
