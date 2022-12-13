@@ -460,12 +460,12 @@ A short description of changes for the Linux version (mostly the same behavior a
     Portable 64bit (default) and 32bit (with automatic architecture detection)
     Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
 
--> **Interactive menu**: it is possible to navigate through menu options
--> **New**: Added "-m" option to configure OH manually
--> **New**: SERVER mode support
--> **New**: Arabic Language support **oh.sh -l ar**
--> **New**: Full 64bit support on Windows, also for DICOM !
--> **New**: Set default to MULTIUSER environment, so login mask is presented at startup
+- **Interactive menu**: it is possible to navigate through menu options
+- **New**: Added "-m" option to configure OH manually
+- **New**: SERVER mode support
+- **New**: Arabic Language support **oh.sh -l ar**
+- **New**: Full 64bit support on Windows, also for DICOM !
+- **New**: Set default to MULTIUSER environment, so login mask is presented at startup
 -----
 - Language support (both via variable in the script or user input option: **oh.sh -l fr**)
 - Demo database support (See oh.sh -D)
