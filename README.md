@@ -306,8 +306,10 @@ Created at runtime:
 ```
 /tmp 
 data/db
-data/log
 data/dicom_storage
+data/dump
+data/log
+data/photo
 ```
 External software package downloaded at first run:
 
