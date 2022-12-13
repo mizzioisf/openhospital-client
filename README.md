@@ -120,6 +120,7 @@ cd openhospital-client
  D    initialize OH with Demo data
  g    generate configuration files
  G    setup GSM
+ h    show this help
  i    initialize / install OH database
  l    set language: en|fr|it|es|pt
  m    configure OH manually
