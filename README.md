@@ -317,7 +317,7 @@ Mariadb 10.x.x server
 Java JRE, Zulu or OpenJDK distribution
 ```
 
-### Windows - tips
+## Windows - tips
 
 ### Windows - create startup shortcut
 
@@ -365,6 +365,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 # Documentation
 
 Administrator and User manuals are available in the **doc** folder.
+Online version can be found on the [Open Hospital website][https://www.open-hospital.org/documentation]
 
 ## Known issues
 
