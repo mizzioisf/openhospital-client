@@ -466,7 +466,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **New** **Interactive menu**: it is possible to navigate through menu options
 - **New**: Added "-m" option to configure OH manually
 - **New**: SERVER mode support
-- **New**: Arabic Language support **oh.sh -l ar**
+- **New**: Arabic Language support: **oh.sh -l ar**
 - **New**: Full 64bit support on Windows, also for DICOM !
 - **New**: Set default to MULTIUSER environment, so login mask is presented at startup
 -----
