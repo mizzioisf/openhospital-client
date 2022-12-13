@@ -64,30 +64,33 @@ cd openhospital-client
 - to see available options, run **./oh.sh -h**
 
 ```
- ---------------------------------------------------------
-|                                                         |
-|                   Open Hospital | OH                    |
-|                                                         |
- ---------------------------------------------------------
- lang en | arch x86_64 | mode PORTABLE | log level INFO 
- ---------------------------------------------------------
+ -----------------------------------------------------------------
+|                                                                 |
+|                       Open Hospital | OH                        |
+|                                                                 |
+ -----------------------------------------------------------------
+ arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
+ -----------------------------------------------------------------
 
- Usage: oh.sh [ -l en|fr|it|es|pt ] 
+ Usage: oh.sh [ -l en|fr|es|it|pt|ar ]
 
    -C    start OH in CLIENT mode (client / server configuration)
    -P    start OH in PORTABLE mode
+   -S    start OH in SERVER (Portable) mode
    -d    start OH in debug mode
-   -D    start OH with Demo data
-   -g    generate configuration files
+   -D    initialize OH with Demo data
+   -g    regenerate configuration files
    -G    setup GSM
    -h    show this help
    -i    initialize/install OH database
-   -l    set language: en|fr|it|es|pt
+   -l    set language: en|fr|it|es|pt|ar
+   -m    configure OH manually
    -s    save OH database
    -r    restore OH database
    -t    test database connection (CLIENT mode only)
    -v    show OH software version and configuration
    -X    clean/reset OH installation
+   -q    quit
 ```
 
 ## Windows
@@ -95,29 +98,31 @@ cd openhospital-client
 - double click on the **oh.bat** batch file and choose among available options:
 
 ```
- ---------------------------------------------------------
-|                                                         |
-|                   Open Hospital | OH                    |
-|                                                         |
- ---------------------------------------------------------
- lang en | arch x86_64 | mode PORTABLE/CLIENT | log level INFO
+ -----------------------------------------------------------------
+|                                                                 |
+|                       Open Hospital | OH                        |
+|                                                                 |
+ -----------------------------------------------------------------
+ arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
+ -----------------------------------------------------------------
 
-Usage: oh.ps1 [ -lang en|fr|it|es|pt ] 
-              [ -mode PORTABLE|CLIENT ]
-              [ -loglevel INFO|DEBUG ] 
-              [ -dicom on|off ]
-              [ -interactive on|off ]
-              [ -generate_config on|off ]
+ Usage: oh.ps1 [ -lang en|fr|it|es|pt|ar ] 
+               [ -mode PORTABLE|CLIENT ]
+               [ -loglevel INFO|DEBUG ] 
+               [ -dicom on|off ]
+               [ -interactive on|off ]
+               [ -generate_config on|off ]
 
 
  C    start OH in CLIENT mode (client / server configuration)
  P    start OH in PORTABLE mode
  d    start OH in debug mode
- D    start OH in Demo mode
+ D    initialize OH with Demo data
  g    generate configuration files
  G    setup GSM
  i    initialize / install OH database
  l    set language: en|fr|it|es|pt
+ m    configure OH manually
  s    save OH database
  r    restore OH database
  t    test database connection (Client mode only)
@@ -151,72 +156,8 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 ```
 ./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -generate_config on
 ```
-### Windows - create startup shortcut
-
-Follow these instruction to create a Windows OH launch icon on desktop:
-
-**Method 1 (with launch parameters configured in oh.ps1)**
-- Rigth click on Desktop
-- New Shortcut
-- Browse to OH folder location and select oh.bat
-- Assign a name to the shortcut
-- Right click on the shortcut and select Properties
-- Change icon
-- Specify a different file
-- Browse to OH folder location and select oh.ico
-- Apply
-
-**Method 2 (with launch parameters stored on execution command)**
-- Rigth click on Desktop
-- New Shortcut
-- Browse to OH folder location and select oh.ps1
-- Assign a name to the shortcut
-- Right click on the shortcut and select Properties
-- Change icon
-- Specify a different file
-- Browse to OH folder location and select oh.ico
-- Modify Target with
-
-```
-C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1
-```
-- Apply
- 
-Option parameters can be added at the end of Target string separated by spaces, example:
-
-```
-C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 -loglevel DEBUG
-```
-
-### Windows - legacy mode
-
-It's also possible to start Open Hospital with the legacy batch file (old oh.bat behaviour):
-- open cmd.exe, browse to the OH installation directory and run **.\oh.bat -legacymode**
-- to see available options in legacymode, run **.\oh.bat -h**
 
 # Options 
-
-
-        echo "   -C    start OH in CLIENT mode (client / server configuration)"
-        echo "   -P    start OH in PORTABLE mode"
-	echo "   -S    start OH in SERVER (Portable) mode"
-        echo "   -d    start OH in debug mode"
-        echo "   -D    initialize OH with Demo data"
-        echo "   -g    regenerate configuration files"
-        echo "   -G    setup GSM"
-        echo "   -h    show this help"
-        echo "   -i    initialize/install OH database"
-        echo "   -l    set language: en|fr|it|es|pt|ar"
-        echo "   -m    configure OH manually"
-        echo "   -s    save OH database"
-        echo "   -r    restore OH database"
-        echo "   -t    test database connection (CLIENT mode only)"
-        echo "   -v    show OH software version and configuration"
-        echo "   -X    clean/reset OH installation"
-        echo "   -q    quit"
-        echo ""
-}
-
 
 - **C**    start Open Hospital in CLIENT mode, usually when an external database server is used (Client / Server configuration)
 - **P**    start Open Hospital in PORTABLE mode, where data is saved locally
@@ -375,6 +316,49 @@ External software package downloaded at first run:
 Mariadb 10.x.x server
 Java JRE, Zulu or OpenJDK distribution
 ```
+
+### Windows - create startup shortcut
+
+Follow these instruction to create a Windows OH launch icon on desktop:
+
+**Method 1 (with launch parameters configured in oh.ps1)**
+- Rigth click on Desktop
+- New Shortcut
+- Browse to OH folder location and select oh.bat
+- Assign a name to the shortcut
+- Right click on the shortcut and select Properties
+- Change icon
+- Specify a different file
+- Browse to OH folder location and select oh.ico
+- Apply
+
+**Method 2 (with launch parameters stored on execution command)**
+- Rigth click on Desktop
+- New Shortcut
+- Browse to OH folder location and select oh.ps1
+- Assign a name to the shortcut
+- Right click on the shortcut and select Properties
+- Change icon
+- Specify a different file
+- Browse to OH folder location and select oh.ico
+- Modify Target with
+
+```
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1
+```
+- Apply
+ 
+Option parameters can be added at the end of Target string separated by spaces, example:
+
+```
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 -loglevel DEBUG
+```
+
+### Windows - legacy mode
+
+It's also possible to start Open Hospital with the legacy batch file (old oh.bat behaviour):
+- open cmd.exe, browse to the OH installation directory and run **.\oh.bat -legacymode**
+- to see available options in legacymode, run **.\oh.bat -h**
 
 # Documentation
 
