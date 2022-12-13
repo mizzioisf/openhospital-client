@@ -247,6 +247,7 @@ function script_menu {
         Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
         Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
+        Write-Host "   C    start OH in CLIENT mode (client / server configuration)"
 	Write-Host "   P    start OH in PORTABLE mode"
 	Write-Host "   S    start OH in SERVER (Portable) mode"
 	Write-Host "   d    start OH in debug mode"
@@ -377,7 +378,6 @@ function java_lib_setup {
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\icons\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\images\"
-	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\SmsGateway\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\lib\"
 }
 

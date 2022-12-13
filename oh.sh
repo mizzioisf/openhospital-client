@@ -308,7 +308,6 @@ function java_lib_setup {
 	OH_CLASSPATH=$OH_CLASSPATH:"$OH_PATH"/$OH_DIR/rsc
 	OH_CLASSPATH=$OH_CLASSPATH:"$OH_PATH"/$OH_DIR/rsc/icons
 	OH_CLASSPATH=$OH_CLASSPATH:"$OH_PATH"/$OH_DIR/rsc/images
-	OH_CLASSPATH=$OH_CLASSPATH:"$OH_PATH"/$OH_DIR/rsc/SmsGateway
 	OH_CLASSPATH=$OH_CLASSPATH:"$OH_PATH"/$OH_DIR/lib
 
 	# include all jar files under lib/
