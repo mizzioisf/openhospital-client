@@ -269,19 +269,19 @@ OH_DOC_DIR="../doc"
 OH_SINGLE_USER="yes" # set "no" for multiuser
 CONF_DIR="data/conf"
 DATA_DIR="data/db"
+PHOTO_DIR="data/photo"
 BACKUP_DIR="data/dump"
 LOG_DIR="data/log"
 SQL_DIR="sql"
+SQL_EXTRA_DIR="sql/extra"
 TMP_DIR="tmp"
 
 LOG_FILE=startup.log
-
-DB_DEMO="create_all_demo.sql"
-LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 
-```
+DB_DEMO="create_all_demo.sql"
 
+```
 ### (Windows only) Enable interactive mode
 ```
 # Interactive mode
@@ -291,7 +291,6 @@ OH_LOG_FILE=openhospital.log
 # or pass arguments via command line.
 $script:INTERACTIVE_MODE="on"
 ```
-
 ## Default directory structure
 
 The scripts takes care of creating all the needed data directories and configuration files.
@@ -317,7 +316,45 @@ Mariadb 10.x.x server
 Java JRE, Zulu or OpenJDK distribution
 ```
 
-## Windows - tips
+# Documentation
+
+Administrator and User manuals are available in the **doc** folder.
+Online versions of the manuals can be found on the [Open Hospital website](https://www.open-hospital.org/documentation)
+
+# Other issues
+
+If you experience problems in starting up the script, avoid long folder path and path with special characters / spaces in it.
+
+## Linux
+
+- If you get one of these errors:
+
+```
+Error on creating OH Database error while loading shared libraries: libncurses.so.5.
+
+Error: MySQL root password not set! Exiting
+```
+
+You have to install the ncurses librares, on Ubuntu:
+
+```
+sudo apt-get install libncurses5
+```
+
+- If you get this error:
+```
+Error Initializing MySQL database on port 3306 error while loading shared libraries: libaio.so.1.
+```
+
+You have to install the libaio libraries, on Ubuntu:
+
+```
+sudo apt-get install libaio1 
+```
+
+- If you select languages en-fr-it, a ICD10 patologies subset is loaded at startup, languages es-pt don't.
+
+## Windows
 
 ### Windows - create startup shortcut
 
@@ -361,46 +398,6 @@ C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypas
 It's also possible to start Open Hospital with the legacy batch file (old oh.bat behaviour):
 - open cmd.exe, browse to the OH installation directory and run **.\oh.bat -legacymode**
 - to see available options in legacymode, run **.\oh.bat -h**
-
-# Documentation
-
-Administrator and User manuals are available in the **doc** folder.
-Online versions of the manuals can be found on the [Open Hospital website](https://www.open-hospital.org/documentation)
-
-# Known issues
-
-If you experience problems in starting up the script, avoid long folder path and path with special characters / spaces in it.
-
-## Linux
-
-- If you get one of these errors:
-
-```
-Error on creating OH Database error while loading shared libraries: libncurses.so.5.
-
-Error: MySQL root password not set! Exiting
-```
-
-You have to install the ncurses librares, on Ubuntu:
-
-```
-sudo apt-get install libncurses5
-```
-
-- If you get this error:
-```
-Error Initializing MySQL database on port 3306 error while loading shared libraries: libaio.so.1.
-```
-
-You have to install the libaio libraries, on Ubuntu:
-
-```
-sudo apt-get install libaio1 
-```
-
-- If you select languages en-fr-it, a ICD10 patologies subset is loaded at startup, languages es-pt don't.
-
-## Windows
 
 Powershell minimun version 5.1 is required to run oh.ps1.
 To install Powershell 5.1 go to https://www.microsoft.com/en-us/download/details.aspx?id=54616
