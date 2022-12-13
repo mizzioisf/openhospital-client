@@ -36,7 +36,7 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 [**Download latest release from github**](https://github.com/informatici/openhospital/releases/latest) 
 
-[**Download page**](./OH_download_matrix.adoc)
+[**Download page**](https://www.open-hospital.org/download)
 
 
 # Dowloading OH - this repo
@@ -365,7 +365,7 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 # Documentation
 
 Administrator and User manuals are available in the **doc** folder.
-Online version can be found on the [Open Hospital website][https://www.open-hospital.org/documentation]
+Online version can be found on the [Open Hospital website](https://www.open-hospital.org/documentation)
 
 ## Known issues
 
