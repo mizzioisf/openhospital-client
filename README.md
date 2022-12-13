@@ -421,10 +421,12 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 - to see available options in legacymode, run **.\oh.bat -h**
 
 (*) If you are using oh.bat in legacy mode, you might have to download and unzip java ad mysql manually.
+
+### Java
 In order to download and unzip Java:
 
 - Visit  https://cdn.azul.com/zulu/bin/
-- download the **JRE - .zip version**
+- download the latest **JRE** for your architecture:
 
 **x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu11.60.19-ca-fx-jre11.0.17-win_i686.zip
 
@@ -432,7 +434,8 @@ In order to download and unzip Java:
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
-In order to download and unzip mariadb:
+### MariaDB
+In order to download and unzip MariaDB:
 
 - Visit https://mariadb.org/download/
 - Select the Operating System: **Windows**
