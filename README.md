@@ -460,7 +460,7 @@ A short description of changes for the Linux version (mostly the same behavior a
     Portable 64bit (default) and 32bit (with automatic architecture detection)
     Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
 
-- **Interactive menu**: it is possible to navigate through menu options
+- **New** **Interactive menu**: it is possible to navigate through menu options
 - **New**: Added "-m" option to configure OH manually
 - **New**: SERVER mode support
 - **New**: Arabic Language support **oh.sh -l ar**
