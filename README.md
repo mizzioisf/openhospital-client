@@ -453,21 +453,24 @@ A short description of changes for the Linux version (mostly the same behavior a
     Portable 64bit (default) and 32bit (with automatic architecture detection)
     Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
 
-- **New**: SERVER mode support
-- **New**: Arabic Language support **oh.sh -l ar**
-- **New**: Full 64bit support on Windows, also for DICOM !
+-> **Interactive menu:** it is possible to navigate through menu options
+-> **New**: Added "-m" option to configure OH manually
+-> **New**: SERVER mode support
+-> **New**: Arabic Language support **oh.sh -l ar**
+-> **New**: Full 64bit support on Windows, also for DICOM !
+-> **New**: Set default to MULTIUSER environment, so login mask is presented at startup
 -----
-- **New**: Language support (both via variable in the script or user input option: **oh.sh -l fr**)
-- **New**: Demo database support (See oh.sh -D)
-- **New**: Client mode support (see oh.sh -C)
-- **New**: Save (see oh.sh -s) / Restore (oh.sh -r) database, available both for CLIENT and PORTABLE mode !
-- **New**: GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
-- **New**: debug mode -> set log4.properties to DEBUG mode (default is INFO)
-- **New**: configuration file generation (set GENERATE_CONFIG_FILES=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
-- **New**: test database connection option (see oh.sh -t)
-- **New**: displays software versions and current configuration (see oh.sh -v)
-- **New**: generate config files (see oh.sh -g)
-- **New**: install / initialize database (see oh.sh -i)
+- Language support (both via variable in the script or user input option: **oh.sh -l fr**)
+- Demo database support (See oh.sh -D)
+- Client mode support (see oh.sh -C)
+- Save (see oh.sh -s) / Restore (oh.sh -r) database, available both for CLIENT and PORTABLE mode !
+- GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
+- debug mode -> set log4.properties to DEBUG mode (default is INFO)
+- configuration file generation (set GENERATE_CONFIG_FILES=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
+- test database connection option (see oh.sh -t)
+- displays software versions and current configuration (see oh.sh -v)
+- generate config files (see oh.sh -g)
+- install / initialize database (see oh.sh -i)
 - Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
 - More flexible execution and configuration options
 - Automatic configuration files generation
