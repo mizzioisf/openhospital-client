@@ -292,7 +292,7 @@ OH_LOG_FILE=openhospital.log
 $script:INTERACTIVE_MODE="on"
 ```
 
-# Default directory structure
+## Default directory structure
 
 The scripts takes care of creating all the needed data directories and configuration files.
 Everything is also parametric and user adjustable in the scripts with variables (or via command line options).
@@ -316,6 +316,8 @@ External software package downloaded at first run:
 Mariadb 10.x.x server
 Java JRE, Zulu or OpenJDK distribution
 ```
+
+### Windows - tips
 
 ### Windows - create startup shortcut
 
