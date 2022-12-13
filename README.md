@@ -196,15 +196,39 @@ It's also possible to start Open Hospital with the legacy batch file (old oh.bat
 
 # Options 
 
+
+        echo "   -C    start OH in CLIENT mode (client / server configuration)"
+        echo "   -P    start OH in PORTABLE mode"
+	echo "   -S    start OH in SERVER (Portable) mode"
+        echo "   -d    start OH in debug mode"
+        echo "   -D    initialize OH with Demo data"
+        echo "   -g    regenerate configuration files"
+        echo "   -G    setup GSM"
+        echo "   -h    show this help"
+        echo "   -i    initialize/install OH database"
+        echo "   -l    set language: en|fr|it|es|pt|ar"
+        echo "   -m    configure OH manually"
+        echo "   -s    save OH database"
+        echo "   -r    restore OH database"
+        echo "   -t    test database connection (CLIENT mode only)"
+        echo "   -v    show OH software version and configuration"
+        echo "   -X    clean/reset OH installation"
+        echo "   -q    quit"
+        echo ""
+}
+
+
 - **C**    start Open Hospital in CLIENT mode, usually when an external database server is used (Client / Server configuration)
 - **P**    start Open Hospital in PORTABLE mode, where data is saved locally
 - **S**    start Open Hospital in SERVER mode: the local portable instance of MariaDB is launched
 - **d**    start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations to log file
-- **D**    start OH with Demo data - loads a demo database in order to test the software 
-- **g**    generate OH configuration files (oh/rsc/\*.properties) and exit
+- **D**    initialize OH with Demo data - loads a demo database in order to test the software 
+- **g**    regenerate OH configuration files (oh/rsc/\*.properties) and exit
 - **G**    setup GSM modem to enable sms interaction
+- **h**    show help
 - **i**    initialize / install OH database
-- **l**    set local language: en|fr|it|es|pt
+- **l**    set local language: en|fr|it|es|pt|ar
+- **m**    configure OH manually
 - **s**    save / dump the Open Hospital database in sql format
 - **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
 - **t**    test database connection to the configured database server (Client mode only)
