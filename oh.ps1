@@ -62,11 +62,10 @@ https://www.open-hospital.org
 #Requires -Version 5.1
 
 ######## command line parameters
-param ($lang, $mode, $loglevel, $dicom, $generate_config, $interactive)
+param ($lang, $mode, $loglevel, $generate_config, $interactive)
 $script:OH_LANGUAGE=$lang
 $script:OH_MODE=$mode
 $script:LOG_LEVEL=$loglevel
-$script:DICOM_ENABLE=$dicom
 $script:GENERATE_CONFIG_FILES=$generate_config
 $script:INTERACTIVE_MODE=$interactive
 
@@ -113,9 +112,6 @@ $global:ProgressPreference= 'SilentlyContinue'
 # language setting - default set to en
 $script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
 #$script:OH_LANGUAGE="en" # default
-
-# enable DICOM (default set to on)
-$script:DICOM_ENABLE="on"
 
 # set log level to INFO | DEBUG - default set to INFO
 #$script:LOG_LEVEL="INFO"
@@ -166,6 +162,9 @@ $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 # available languages - do not modify
 $script:languagearray= @("en","fr","it","es","pt","ar") 
 
+# mysql configuration file
+$script:MYSQL_CONF_FILE="my.cnf"
+
 ############## Architecture and external software ##############
 
 ######## MariaDB/MySQL Software
@@ -195,17 +194,6 @@ else {
 	Read-Host; exit 1
 }
 
-# workaround to force 32bit JAVA in order to have DICOM working on 64bit arch
-#
-# NOT NEEDED ANYMORE FROM OH 1.12-dev !
-#
-
-#if ( $DICOM_ENABLE -eq "on" ) {
-#	Write-Host "DICOM_ENABLE=on, forcing JAVA architecture to 32bit" 
-#	$script:JAVA_ARCH=32;
-#	$script:JAVA_PACKAGE_ARCH="i686";
-#	#$script:MYSQL_ARCH=32;
-#}
 
 # set MariaDB download URL / package
 $script:MYSQL_URL="https://archive.mariadb.org/mariadb-$script:MYSQL_VERSION/win$script:MYSQL_ARCH-packages/"
@@ -461,8 +449,8 @@ function mysql_check {
 function config_database {
 	Write-Host "Checking for $MYSQL_NAME config file..."
 
-	if ( ($script:GENERATE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$CONF_DIR/my.cnf" -PathType leaf) ) {
-	if (Test-Path "$OH_PATH/$CONF_DIR/my.cnf" -PathType leaf) { mv -Force "$OH_PATH/$CONF_DIR/my.cnf" "$OH_PATH/$CONF_DIR/my.cnf.old" }
+	if ( ($script:GENERATE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" -PathType leaf) ) {
+	if (Test-Path "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" -PathType leaf) { mv -Force "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE.old" }
 
 		# find a free TCP port to run MariaDB/MySQL starting from the default port
 		Write-Host "Looking for a free TCP port for $MYSQL_NAME database..."
@@ -489,14 +477,14 @@ function config_database {
 		Write-Host "Found TCP port $DATABASE_PORT!"
 
 		Write-Host "Generating $MYSQL_NAME config files..."
-		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
-		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("OH_PATH_SUBSTITUTE","$OH_PATH_SUBSTITUTE") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
-		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("DATABASE_SERVER","$DATABASE_SERVER") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
-		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("DATABASE_PORT","$DATABASE_PORT") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
-		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
-		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
-		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("TMP_DIR","$TMP_DIR") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
-		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/$CONF_DIR/my.cnf"
+		(Get-Content "$OH_PATH/$CONF_DIR/my.cnf.dist").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
+		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("OH_PATH_SUBSTITUTE","$OH_PATH_SUBSTITUTE") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
+		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("DATABASE_SERVER","$DATABASE_SERVER") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
+		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("DATABASE_PORT","$DATABASE_PORT") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
+		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("MYSQL_DISTRO","$MYSQL_DIR") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
+		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
+		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("TMP_DIR","$TMP_DIR") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
+		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
 	}
 }
 
@@ -536,7 +524,7 @@ function start_database {
 
 	Write-Host "Starting $MYSQL_NAME server... "
 	try {
-		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=`"$OH_PATH\$CONF_DIR\my.cnf`" --tmpdir=`"$OH_PATH\$TMP_DIR`" --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -ArgumentList ("--defaults-file=`"$OH_PATH\$CONF_DIR\$MYSQL_CONF_FILE`" --tmpdir=`"$OH_PATH\$TMP_DIR`" --standalone") -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 		Start-Sleep -Seconds 2
 	}
 	catch {
@@ -756,8 +744,8 @@ function clean_files {
 	Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Removing configuration files..."
-	$filetodel="$OH_PATH\$CONF_DIR\my.cnf"; if (Test-Path $filetodel -PathType leaf){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$CONF_DIR\my.cnf.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$CONF_DIR\$MYSQL_CONF_FILE"; if (Test-Path $filetodel -PathType leaf){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$CONF_DIR\$MYSQL_CONF_FILE"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\database.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
@@ -1167,8 +1155,8 @@ if ( $OH_MODE -eq "SERVER" ) {
 	Write-Host "*******************************"
 	Write-Host "* Database server listening on:"
 	Write-Host ""
-	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "bind-address" | Select-Object -First 1 -Unique
-	Get-Content "$OH_PATH/$CONF_DIR/my.cnf" | Select-String -Pattern "port" | Select-Object -First 1 -Unique
+	Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" | Select-String -Pattern "bind-address" | Select-Object -First 1 -Unique
+	Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" | Select-String -Pattern "port" | Select-Object -First 1 -Unique
 	Write-Host ""
 	Write-Host "*******************************"
 	Write-Host "Database server ready for connections..."
