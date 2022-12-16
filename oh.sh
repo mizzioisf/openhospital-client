@@ -200,7 +200,7 @@ function script_menu {
 }
 
 function get_confirmation {
-	read -p "(y/n)? " choice
+	read -p "(y/n) ? " choice
 	case "$choice" in 
 		y|Y ) echo "yes";;
 		n|N ) echo "Exiting."; exit 0;;
@@ -357,7 +357,7 @@ echo "Using $JAVA_BIN"
 function mysql_check {
 if [ ! -d "./$MYSQL_DIR" ]; then
 	if [ ! -f "./$MYSQL_DIR.$EXT" ]; then
-		echo "Warning - $MYSQL_NAME not found. Do you want to download it?"
+		echo "Warning - $MYSQL_NAME not found. Do you want to download it ?"
 		get_confirmation;
 		# download mysql binary
 		echo "Downloading $MYSQL_DIR..."
@@ -684,7 +684,7 @@ function parse_user_input {
 	###################################################
 	g)	# regenerate config files
 		echo ""
-		echo "Do yoy want to regenerate OH configuration files with script values ?"
+		echo "Do yoy want to save OH configuration files with script values ?"
 		get_confirmation;
 		GENERATE_CONFIG_FILES="on"
 		generate_config_files;
@@ -770,6 +770,9 @@ function parse_user_input {
 		read -p "Enter database database name [DATABASE_NAME]: " DATABASE_NAME
 		read -p "Enter database user name [DATABASE_USER]: " DATABASE_USER
 		read -p "Enter database password [DATABASE_PASSWORD]: " DATABASE_PASSWORD
+
+		echo "Do yoy want to save OH configuration files with entered values ?"
+		get_confirmation;
 		GENERATE_CONFIG_FILES="on"
 		generate_config_files;
 		#DATABASE_LANGUAGE=en # default to en
