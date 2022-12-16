@@ -738,7 +738,7 @@ function parse_user_input {
 	###################################################
 	l)	# set language
 		echo ""
-		GENERATE_CONFIG_FILES="on"
+		#GENERATE_CONFIG_FILES="on"
 		if (( $2==0 )); then
 			OH_LANGUAGE="$OPTARG"
 			echo "Language set to $OH_LANGUAGE."
