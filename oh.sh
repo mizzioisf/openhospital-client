@@ -211,25 +211,22 @@ function get_confirmation {
 function set_defaults {
 	# set default values for script variables
 	# config file generation - set default to off
-#	if [ -n ${GENERATE_CONFIG_FILES+x} ]; then
+#####	if [ -n ${GENERATE_CONFIG_FILES+x} ]; then
 	if [ -z "$GENERATE_CONFIG_FILES" ]; then
 		GENERATE_CONFIG_FILES="off"
 	fi
 
-	# OH mode - set default to PORTABLE
-#	if [ -n ${OH_MODE+x} ]; then
-	if [ -z "$OH_MODE" ]; then
-		OH_MODE="PORTABLE"
-	fi
+#	# OH mode - set default to PORTABLE
+#	if [ -z "$OH_MODE" ]; then
+#		OH_MODE="PORTABLE"
+#	fi
 
-	# log level - set default to INFO
-#	if [ -z ${LOG_LEVEL+x} ]; then
-	if [ -z "$LOG_LEVEL" ]; then
-		LOG_LEVEL="INFO"
-	fi
+#	# log level - set default to INFO
+#	if [ -z "$LOG_LEVEL" ]; then
+#		LOG_LEVEL="INFO"
+#	fi
 
 	# demo data - set default to off
-#	if [ -n ${DEMO_DATA+x} ]; then
 	if [ -z "$DEMO_DATA" ]; then
 		DEMO_DATA="off"
 	fi
@@ -259,11 +256,11 @@ function set_path {
 
 function set_language {
 	# set OH interface language - default to en if not defined
-	if [ -z ${OH_LANGUAGE+x} ]; then
+	if [ -z "$OH_LANGUAGE" ]; then
 		OH_LANGUAGE=en
 	fi
 	# set OH database language - default to en if not defined
-	if [ -z ${DATABASE_LANGUAGE+x} ]; then
+	if [ -z "$DATABASE_LANGUAGE" ]; then
 		DATABASE_LANGUAGE=en
 	fi
 	# check for valid language selection
@@ -964,9 +961,8 @@ fi
 
 ######## Environment setup
 
-#set_defaults;
+set_defaults;
 set_path;
-set_language;
 
 # set working dir to OH base dir
 cd "$OH_PATH"
@@ -1009,6 +1005,8 @@ fi
 ######################## OH start ########################
 
 echo ""
+
+set_language;
 
 # check OH mode
 if [ -z ${OH_MODE+x} ]; then
