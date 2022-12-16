@@ -176,23 +176,25 @@ function script_menu {
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
         echo ""
-        echo "   -C    configure OH in CLIENT mode (client / server configuration)"
+        echo "   -C    configure OH manually to start in CLIENT mode"
         echo "   -P    start OH in PORTABLE mode"
-	echo "   -S    configure OH to start as a SERVER (Portable)"
+	echo "   -S    start OH to start as a SERVER (Portable)"
         echo "   -h    show help"
-        echo "   -l    change language: en|fr|it|es|pt|ar"
-        echo "   -D    install Demo data"
+        echo "   -l    set language: $OH_LANGUAGE_LIST"
+        echo "   -D    initialize OH with Demo data"
         echo "   -g    save OH configuration"
         echo "   -v    show configuration"
         echo "   -X    clean/reset OH installation"
         echo "   -q    quit"
-        echo "   ----- other options"
+        echo "   ----- "
+        echo "   ----- advanced options"
+        echo "   ---- "
         echo "   -d    toggle log level INFO/DEBUG"
         echo "   -G    setup GSM"
         echo "   -i    initialize/install OH database"
-        echo "   -m    configure OH manually"
         echo "   -s    save OH database"
         echo "   -r    restore OH database"
+        echo "   -m    configure OH manually"
         echo "   -t    test database connection (CLIENT mode only)"
         echo ""
 }
@@ -635,6 +637,7 @@ function parse_user_input {
 	###################################################
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
+		DEMO_DATA="off"
 		echo ""
 		echo "OH_MODE set to CLIENT mode."
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
@@ -654,8 +657,14 @@ function parse_user_input {
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
-	d)	# debug
-		LOG_LEVEL=DEBUG
+	d)	# toggle debug mode 
+		#if [[ -z "$LOG_LEVEL" ]] | [[ "$LOG_LEVEL"="INFO" ]] ; then
+		if [[ "$LOG_LEVEL" = "INFO" ]] ; then
+			LOG_LEVEL="DEBUG"
+		else if [[ "$LOG_LEVEL"="DEBUG" ]] ; then
+			LOG_LEVEL="INFO"
+		fi
+		fi
 		echo ""
 		echo "Log level set to $LOG_LEVEL"
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
@@ -955,7 +964,7 @@ fi
 
 ######## Environment setup
 
-set_defaults;
+#set_defaults;
 set_path;
 set_language;
 

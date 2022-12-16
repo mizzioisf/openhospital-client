@@ -235,23 +235,26 @@ function script_menu {
         Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
         Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
-        Write-Host "   C    start OH in CLIENT mode (client / server configuration)"
+        Write-Host "   C    configure OH manually to start in CLIENT mode"
 	Write-Host "   P    start OH in PORTABLE mode"
 	Write-Host "   S    start OH in SERVER (Portable) mode"
-	Write-Host "   d    start OH in debug mode"
 	Write-Host "   D    initialize OH with Demo data"
-	Write-Host "   g    regenerate configuration files"
-	Write-Host "   G    setup GSM"
+	Write-Host "   g    save OH configuration"
 	Write-Host "   h    show help"
-	Write-Host "   i    initialize/install OH database"
 	Write-Host "   l    set language: $OH_LANGUAGE_LIST"
-	Write-Host "   m    configure OH manually"
-	Write-Host "   s    save OH database"
-	Write-Host "   r    restore OH database"
-	Write-Host "   t    test database connection (CLIENT mode only)"
-	Write-Host "   v    show OH software version and configuration"
+	Write-Host "   v    show configuration"
 	Write-Host "   X    clean/reset OH installation"
 	Write-Host "   q    quit"
+	Write-Host "   ----- "
+	Write-Host "   ----- advanced options"
+	Write-Host "   ---- "
+	Write-Host "   d    toggle log level INFO/DEBUG"
+	Write-Host "   G    setup GSM"
+	Write-Host "   i    initialize/install OH database"
+	Write-Host "   s    save OH database"
+	Write-Host "   r    restore OH database"
+	Write-Host "   m    configure OH manually"
+	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host ""
 }
 
@@ -773,7 +776,7 @@ function clean_files {
 
 ######## Environment setup
 
-set_defaults;
+#set_defaults;
 set_path;
 set_language;
 
@@ -807,7 +810,13 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"d"	{ # debug 
+		"d"	{ # toggle debug mode
+			if ( $LOG_LEVE -eq "INFO" ) {
+				$LOG_LEVEL = "DEBUG";
+			}
+			else if ( $LOG_LEVE -eq "DEBUG" ) {
+				$LOG_LEVEL = "INFO";
+			}
 			$script:LOG_LEVEL="DEBUG"
 			Write-Host "Log level set to $LOG_LEVEL"
 			Read-Host "Press any key to continue";
