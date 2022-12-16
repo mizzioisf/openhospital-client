@@ -101,6 +101,9 @@ DB_DEMO="create_all_demo.sql"
 # downloaded file extension
 EXT="tar.gz"
 
+# mysql configuration file
+MYSQL_CONF_FILE="my.cnf"
+
 # date format
 DATE=`date +%Y-%m-%d_%H-%M-%S`
 
@@ -173,23 +176,24 @@ function script_menu {
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
         echo ""
-        echo "   -C    start OH in CLIENT mode (client / server configuration)"
+        echo "   -C    configure OH in CLIENT mode (client / server configuration)"
         echo "   -P    start OH in PORTABLE mode"
-	echo "   -S    start OH in SERVER (Portable) mode"
-        echo "   -d    start OH in debug mode"
-        echo "   -D    initialize OH with Demo data"
-        echo "   -g    regenerate configuration files"
+	echo "   -S    configure OH to start as a SERVER (Portable)"
+        echo "   -h    show help"
+        echo "   -l    change language: en|fr|it|es|pt|ar"
+        echo "   -D    install Demo data"
+        echo "   -g    save OH configuration"
+        echo "   -v    show configuration"
+        echo "   -X    clean/reset OH installation"
+        echo "   -q    quit"
+        echo "   ----- other options"
+        echo "   -d    toggle log level INFO/DEBUG"
         echo "   -G    setup GSM"
-        echo "   -h    show this help"
         echo "   -i    initialize/install OH database"
-        echo "   -l    set language: en|fr|it|es|pt|ar"
         echo "   -m    configure OH manually"
         echo "   -s    save OH database"
         echo "   -r    restore OH database"
         echo "   -t    test database connection (CLIENT mode only)"
-        echo "   -v    show OH software version and configuration"
-        echo "   -X    clean/reset OH installation"
-        echo "   -q    quit"
         echo ""
 }
 
@@ -395,8 +399,8 @@ fi
 
 function config_database {
 	echo "Checking for $MYSQL_NAME config file..."
-	if [ "$GENERATE_CONFIG_FILES" = "on" ] || [ ! -f ./$CONF_DIR/my.cnf ]; then
-		[ -f ./$CONF_DIR/my.cnf ] && mv -f ./$CONF_DIR/my.cnf ./$CONF_DIR/my.cnf.old
+	if [ "$GENERATE_CONFIG_FILES" = "on" ] || [ ! -f ./$CONF_DIR/$MYSQL_CONF_FILE ]; then
+		[ -f ./$CONF_DIR/$MYSQL_CONF_FILE ] && mv -f ./$CONF_DIR/$MYSQL_CONF_FILE ./$CONF_DIR/$MYSQL_CONF_FILE.old
 
 		# find a free TCP port to run MariaDB/MySQL starting from the default port
 		echo "Looking for a free TCP port for $MYSQL_NAME database..."
@@ -408,7 +412,7 @@ function config_database {
 		echo "Generating $MYSQL_NAME config file..."
 		sed -e "s/DATABASE_SERVER/$DATABASE_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
 		-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
-		-e "s/DATABASE_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/my.cnf
+		-e "s/DATABASE_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/$MYSQL_CONF_FILE
 	fi
 }
 
@@ -441,7 +445,7 @@ function start_database {
 	fi
 
 	echo "Starting $MYSQL_NAME server... "
-	./$MYSQL_DIR/bin/mysqld_safe --defaults-file=./$CONF_DIR/my.cnf >> ./$LOG_DIR/$LOG_FILE 2>&1 &
+	./$MYSQL_DIR/bin/mysqld_safe --defaults-file=./$CONF_DIR/$MYSQL_CONF_FILE >> ./$LOG_DIR/$LOG_FILE 2>&1 &
 	if [ $? -ne 0 ]; then
 		echo "Error: $MYSQL_NAME server not started! Exiting."
 		exit 2
@@ -575,8 +579,8 @@ function clean_files {
 	echo "Warning: do you want to remove all existing configuration files ?"
 	get_confirmation;
 	echo "Removing configuration files..."
-	rm -f ./$CONF_DIR/my.cnf
-	rm -f ./$CONF_DIR/my.cnf.old
+	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
+	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
 	rm -f ./$OH_DIR/rsc/settings.properties
 	rm -f ./$OH_DIR/rsc/settings.properties.old
 	rm -f ./$OH_DIR/rsc/database.properties
@@ -694,6 +698,7 @@ function parse_user_input {
 	###################################################
 	h)	# help
 		script_menu;
+		#cat README.md | less;
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
@@ -1073,8 +1078,8 @@ if [ "$OH_MODE" = "SERVER" ]; then
 	echo "***************************************"
 	echo "* Database server listening on:"
 	echo ""
-	cat ./$CONF_DIR/my.cnf | grep bind-address
-	cat ./$CONF_DIR/my.cnf | grep port | head -1
+	cat ./$CONF_DIR/$MYSQL_CONF_FILE | grep bind-address
+	cat ./$CONF_DIR/$MYSQL_CONF_FILE | grep port | head -1
 	echo ""
 	echo "***************************************"
 	echo "Database server ready for connections..."
