@@ -1006,8 +1006,6 @@ fi
 
 echo ""
 
-set_language;
-
 # check OH mode
 if [ -z ${OH_MODE+x} ]; then
 	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
@@ -1108,6 +1106,10 @@ else
 
 	# generate config files
 	generate_config_files;
+
+	# set language
+	set_language;
+
 
 	echo "Starting Open Hospital GUI..."
 	# OH GUI launch
