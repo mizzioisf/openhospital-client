@@ -35,12 +35,11 @@ Open Hospital CLIENT | PORTABLE | SERVER
 Usage: oh.ps1 [ -lang en|fr|it|es|pt|ar ] [default set to en]
               [ -mode PORTABLE|CLIENT|SERVER ]
               [ -loglevel INFO|DEBUG ] [default set to INFO]
-              [ -dicom on|off ]
               [ -generate_config on|off ]
               [ -interactive on|off ]
 
 .EXAMPLE
-./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -generate_config on
+./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -interactive off -generate_config on
 
 .NOTES
 Developed by Informatici Senza Frontiere - 2022
@@ -107,7 +106,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 #
 # -> Warning -> __requires deletion of all portable data__
 #
-#$script:DEMO_DATA="off"
+$script:DEMO_DATA="off"
 
 # language setting - default set to en
 $script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
@@ -279,10 +278,10 @@ function set_defaults {
 		$script:GENERATE_CONFIG_FILES="off"
 	}
 
-	# OH mode - set default to PORTABLE
-	if ( [string]::IsNullOrEmpty($OH_MODE) ) {
-		$script:OH_MODE="PORTABLE"
-	}
+#	# OH mode - set default to PORTABLE
+#	if ( [string]::IsNullOrEmpty($OH_MODE) ) {
+#		$script:OH_MODE="PORTABLE"
+#	}
 
 	# log level - set default to INFO
 	if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
@@ -886,7 +885,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host " Usage: $SCRIPT_NAME [ -lang $OH_LANGUAGE_LIST ] "
 			Write-Host "               [ -mode PORTABLE|CLIENT|SERVER ]"
 			Write-Host "               [ -loglevel INFO|DEBUG ] "
-			Write-Host "               [ -dicom on|off ] "
 			Write-Host "               [ -generate_config on|off ] "
 			Write-Host "               [ -interactive on|off ] "
 			Write-Host ""
@@ -901,7 +899,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:OH_LANGUAGE = Read-Host "Select language: $OH_LANGUAGE_LIST (default is en)"
 			set_language;
 			Write-Host "Language set to $OH_LANGUAGE."
-			$script:GENERATE_CONFIG_FILES="on"
+			#$script:GENERATE_CONFIG_FILES="on"
 			Read-Host "Press any key to continue";
 		}
 		###################################################
@@ -989,6 +987,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"v"	{ # show version
+			set_defaults;
+			set_language;
 	        	Write-Host "--------- Software version ---------"
 			Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 			$var = $_.Split('=',2).Trim()
@@ -1003,11 +1003,14 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	 		Write-Host "Architecture is $ARCH"
 	 		Write-Host "Config file generation is set to $GENERATE_CONFIG_FILES"
 			Write-Host ""
-	 		Write-Host "--------- OH Configuration ---------"
-	 		Write-Host "Open Hospital is configured in $OH_MODE mode"
+	 		Write-Host "--------- OH default configuration ---------"
 			Write-Host "Language is set to $OH_LANGUAGE"
 			Write-Host "Demo data is set to $DEMO_DATA"
 			Write-Host "Log level is set to $LOG_LEVEL"
+			# unset variables
+			$OH_LANGUAGE=$null
+			$LOG_LEVEL=$null
+			#
 			Write-Host ""
 			Write-Host "--- Database ---"
 			Write-Host "DATABASE_SERVER=$DATABASE_SERVER"

@@ -52,7 +52,7 @@ SCRIPT_NAME=$(basename "$0")
 #
 # -> Warning -> __requires deletion of all portable data__
 #
-#DEMO_DATA=off
+DEMO_DATA="off"
 
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
@@ -221,10 +221,10 @@ function set_defaults {
 #		OH_MODE="PORTABLE"
 #	fi
 
-#	# log level - set default to INFO
-#	if [ -z "$LOG_LEVEL" ]; then
-#		LOG_LEVEL="INFO"
-#	fi
+	# log level - set default to INFO
+	if [ -z "$LOG_LEVEL" ]; then
+		LOG_LEVEL="INFO"
+	fi
 
 	# demo data - set default to off
 	if [ -z "$DEMO_DATA" ]; then
@@ -846,6 +846,8 @@ function parse_user_input {
 		;;
 	###################################################
 	v)	# show version
+		set_defaults;
+		set_language;
 		echo ""
 		echo "--------- Software version ---------"
 		source "./$OH_DIR/rsc/version.properties"
@@ -857,11 +859,14 @@ function parse_user_input {
 		echo "Architecture is $ARCH"
 		echo "Config file generation is set to $GENERATE_CONFIG_FILES"
 		echo ""
-		echo "--------- OH Configuration ---------"
-		echo "Open Hospital is configured in $OH_MODE mode"
+		echo "--------- OH default configuration ---------"
 		echo "Language is set to $OH_LANGUAGE"
 		echo "Demo data is set to $DEMO_DATA"
 		echo "Log level is set to $LOG_LEVEL"
+		# unset variables
+		unset OH_LANGUAGE
+		unset LOG_LEVEL
+		#
 		echo ""
 		echo "--- Database ---"
 		echo "DATABASE_SERVER=$DATABASE_SERVER"
@@ -961,7 +966,7 @@ fi
 
 ######## Environment setup
 
-set_defaults;
+#set_defaults;
 set_path;
 
 # set working dir to OH base dir
