@@ -1038,7 +1038,9 @@ fi
 echo "Generate config files is set to $GENERATE_CONFIG_FILES"
 echo "Starting Open Hospital in $OH_MODE mode..."
 echo "OH_PATH is set to $OH_PATH"
+if [ -n ${OH_LANGUAGE+x} ]; then echo "OH language is st to $OH_LANGUAGE ---------"; fi
 if [ -n "$OH_LANGUAGE" ]; then echo "OH language is set to $OH_LANGUAGE"; fi
+if [ -n "{LOG_LEVEL+x} " ]; then echo "OH log level is set to $LOG_LEVEL......"; fi
 if [ -n "$LOG_LEVEL" ]; then echo "OH log level is set to $LOG_LEVEL"; fi
 
 # check for java
