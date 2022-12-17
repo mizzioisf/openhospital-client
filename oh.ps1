@@ -110,7 +110,7 @@ $script:DEMO_DATA="off"
 
 # language setting - default set to en
 $script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
-#$script:OH_LANGUAGE="en" # default
+$script:OH_LANGUAGE="en" # default
 
 # set log level to INFO | DEBUG - default set to INFO
 $script:LOG_LEVEL="INFO"
@@ -737,7 +737,6 @@ function write_config_files {
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old }
 		Write-Host "Writing OH configuration file -> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set DOC_DIR in OH config file
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set PHOTO_DIR in OH config file
@@ -745,6 +744,8 @@ function write_config_files {
 		# set singleuser = yes / no
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
+	Write-Host "Writing OH configuration file -> settings.properties..."
+	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE=","LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 }
 
 function clean_files {

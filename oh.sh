@@ -56,7 +56,7 @@ DEMO_DATA="off"
 
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
-#OH_LANGUAGE=en # default
+OH_LANGUAGE=en # default
 
 # set log level to INFO | DEBUG - default set to INFO
 LOG_LEVEL="INFO"
@@ -176,7 +176,7 @@ function script_menu {
         echo ""
         echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
         echo ""
-        echo "   -C    configure OH manually to start in CLIENT mode"
+        echo "   -C    set OH in CLIENT mode"
         echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER (Portable)"
         echo "   -l    set language: $OH_LANGUAGE_LIST"
@@ -265,7 +265,7 @@ function set_language {
 		DATABASE_LANGUAGE=en
 	fi
 	# check for valid language selection
-	case $OH_LANGUAGE in 
+	case "$OH_LANGUAGE" in 
 		en|fr|it|es|pt) 
 			DATABASE_LANGUAGE=$OH_LANGUAGE
 			;;
@@ -640,6 +640,8 @@ function write_config_files {
 		sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
 		-e "s&PHOTO_DIR&$PHOTO_DIR&g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
 	fi
+	echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
+		sed  -e 's/^"LANGUAGE="/"LANGUAGE=$OH_LANGUAGE"/g' -i ./$OH_DIR/rsc/settings.properties
 }
 
 function parse_user_input {
