@@ -1009,7 +1009,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	 		Write-Host "--------- OH default configuration ---------"
 			Write-Host "Language is set to $OH_LANGUAGE"
 			Write-Host "Demo data is set to $DEMO_DATA"
-			Write-Host "Log level is set to $LOG_LEVEL"
 			# unset variables
 			$OH_LANGUAGE=$null
 			$LOG_LEVEL=$null
@@ -1039,6 +1038,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "TMP_DIR=$TMP_DIR"
 			Write-Host ""
 			Write-Host "--- Logging ---"
+			Write-Host "Log level is set to $LOG_LEVEL"
 			Write-Host "LOG_FILE=$LOG_FILE"
 			Write-Host "LOG_FILE_ERR=$LOG_FILE_ERR"
 			Write-Host "OH_LOG_FILE=$OH_LOG_FILE"
