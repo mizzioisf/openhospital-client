@@ -603,7 +603,7 @@ function write_config_files {
 		./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
 	fi
 	# set log level
-	echo "Setting LOG_LEVEL=$LOG_LEVEL in OH configuration file -> log4j.properties..."
+	echo "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
 	case "$LOG_LEVEL" in
 		*INFO*)
 			sed -e "s/DEBUG/INFO/g" -i ./$OH_DIR/rsc/log4j.properties 
@@ -867,7 +867,6 @@ function parse_user_input {
 		echo "--------- OH default configuration ---------"
 		echo "Language is set to $OH_LANGUAGE"
 		echo "Demo data is set to $DEMO_DATA"
-		echo "Log level is set to $LOG_LEVEL"
 		# unset variables
 		unset OH_LANGUAGE
 		unset LOG_LEVEL
@@ -897,6 +896,7 @@ function parse_user_input {
 		echo "TMP_DIR=$TMP_DIR"
 		echo ""
 		echo "---  Logging ---"
+		echo "Log level is set to $LOG_LEVEL"
 		echo "LOG_FILE=$LOG_FILE"
 		echo "OH_LOG_FILE=$OH_LOG_FILE"
 		echo ""
