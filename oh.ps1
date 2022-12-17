@@ -821,10 +821,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"d"	{ # toggle debug mode
-			if ( $LOG_LEVE -eq "INFO" ) {
+			if ( $LOG_LEVEL -eq "INFO" ) {
 				$LOG_LEVEL = "DEBUG";
 			}
-			else if ( $LOG_LEVE -eq "DEBUG" ) {
+			elseif ( $LOG_LEVEL -eq "DEBUG" ) {
 				$LOG_LEVEL = "INFO";
 			}
 			$script:LOG_LEVEL="DEBUG"
