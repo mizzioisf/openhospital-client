@@ -113,7 +113,7 @@ $script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
 #$script:OH_LANGUAGE="en" # default
 
 # set log level to INFO | DEBUG - default set to INFO
-#$script:LOG_LEVEL="INFO"
+$script:LOG_LEVEL="INFO"
 
 # set JAVA_BIN 
 # Uncomment this if you want to use system wide JAVA
@@ -827,7 +827,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			elseif ( $LOG_LEVEL -eq "DEBUG" ) {
 				$LOG_LEVEL = "INFO";
 			}
-			$script:LOG_LEVEL="DEBUG"
 			Write-Host "Log level set to $LOG_LEVEL"
 			Read-Host "Press any key to continue";
 		}
