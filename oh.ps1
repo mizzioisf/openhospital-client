@@ -704,14 +704,15 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("LOG_DEST","../$LOG_DIR/$OH_LOG_FILE") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 	}
 
-	Write-Host "Setting LOG_LEVEL=$LOG_LEVEL in OH configuration file -> log4j.properties..."
+	Write-Host "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
 		switch -casesensitive( "$LOG_LEVEL" ) {
 		###################################################
 		"INFO"	{ # 
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","INFO") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
-		}
+			}
 		"DEBUG"	{ # 
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","DEBUG") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			}
 		}
 
 	######## database.properties setup 
