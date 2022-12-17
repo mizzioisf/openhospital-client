@@ -92,7 +92,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 # interaction menu (script_menu). Useful if automatic startup of OH is needed.
 # In order to use this mode, setup all the OH configuration variables in the script
 # or pass arguments via command line.
-#$script:INTERACTIVE_MODE="off"
+$script:INTERACTIVE_MODE="on"
 
 ############## OH general configuration - change at your own risk :-) ##############
 
