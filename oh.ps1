@@ -713,17 +713,6 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("LOG_DEST","../$LOG_DIR/$OH_LOG_FILE") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 	}
 
-	Write-Host "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
-		switch -casesensitive( "$LOG_LEVEL" ) {
-		###################################################
-		"INFO"	{ # 
-			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","INFO") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
-			}
-		"DEBUG"	{ # 
-			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","DEBUG") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
-			}
-		}
-
 	######## database.properties setup 
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old }
@@ -753,6 +742,29 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
+
+function configure_log_level {
+		if ( $LOG_LEVEL -eq "INFO" ) {
+			$LOG_LEVEL = "DEBUG";
+		}
+		elseif ( $LOG_LEVEL -eq "DEBUG" ) {
+			$LOG_LEVEL = "INFO";
+		}
+
+	######## settings.properties log_level configuration
+	Write-Host "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
+		switch -casesensitive( "$LOG_LEVEL" ) {
+		###################################################
+		"INFO"	{ # 
+			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","INFO") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			}
+		"DEBUG"	{ # 
+			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","DEBUG") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			}
+		}
+
+}
+
 
 function clean_files {
 	# remove all log files
@@ -828,13 +840,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"d"	{ # toggle debug mode
-			if ( $LOG_LEVEL -eq "INFO" ) {
-				$LOG_LEVEL = "DEBUG";
-			}
-			elseif ( $LOG_LEVEL -eq "DEBUG" ) {
-				$LOG_LEVEL = "INFO";
-			}
+			configure_log_level;
 			Write-Host "Log level set to $LOG_LEVEL"
+
 			Read-Host "Press any key to continue";
 		}
 		###################################################
