@@ -325,16 +325,24 @@ function set_language {
 		# set database creation script in chosen language
 		$script:DATABASE_LANGUAGE=$OH_LANGUAGE
 	}
-	if ($script:languagearray -contains "ar") { 
-		# set database in english - en
-		$script:DATABASE_LANGUAGE="en"
-	}
+	#if ($script:languagearray -contains "ar") { 
+	# set database in english - en
+	# $script:DATABASE_LANGUAGE="en"
+	#	}
 	else {
 		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
 		Read-Host; exit 1
 	}
 	# set database creation script in chosen language
 	$script:DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
+	
+	Write-Host "Configuring OH language..."
+        ######## settings.properties language configuration
+	# if language is not default write change
+	if ( "$OH_LANGUAGE" -neq "$OH_LANGUAGE_DEFAULT") {
+		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE=","LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	}
 }
 
 function initialize_dir_structure {
@@ -744,11 +752,6 @@ function write_config_files {
 		# set singleuser = yes / no
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
-	# if language is not default write change
-	if ( "$OH_LANGUAGE" -neq "$OH_LANGUAGE_DEFAULT") {
-		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE=","LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-	}
 }
 
 function clean_files {
@@ -905,6 +908,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: $OH_LANGUAGE_LIST (default is en)"
+			write_config_files;
 			set_language;
 			Write-Host "Language set to $OH_LANGUAGE."
 			#$script:WRITE_CONFIG_FILES="on"
@@ -1230,6 +1234,9 @@ else {
 
 	# generate config files
 	write_config_files;
+
+	# configure language settings
+	set_language;
 
 	Write-Host "Starting Open Hospital GUI..."
 
