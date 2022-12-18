@@ -761,7 +761,7 @@ function parse_user_input {
 		fi
 		write_config_files;
 		set_language;
-		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	m)	# configure OH manually
