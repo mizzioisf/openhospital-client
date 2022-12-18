@@ -421,7 +421,8 @@ function java_check {
 			Read-Host; exit 1
 		}
 		Write-Host "Java unpacked successfully!"
-        	Write-Host "Removing downloaded file..."
+		Write-Host "Removing downloaded file..."
+		Remove-Item "$OH_PATH\$JAVA_DISTRO.$EXT"
         	Write-Host "Done!"
 	}
 	Write-Host "JAVA found!"
@@ -445,6 +446,9 @@ function mysql_check {
 			Read-Host; exit 1
 		}
 	        Write-Host "$MYSQL_NAME unpacked successfully!"
+		Write-Host "Removing downloaded file..."
+		Remove-Item "$OH_PATH\$MYSQL_DIR.$EXT"
+        	Write-Host "Done!"
 	}
 	# check for mysqld binary
 	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -PathType leaf) {
@@ -750,13 +754,11 @@ function configure_log_level {
 		###################################################
 		"INFO"	{ # 
 			$script:LOG_LEVEL = "DEBUG";
-			Write-Host  "DEBUGGGGGG";
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			break;
 			}
 		"DEBUG"	{ # 
 			$script:LOG_LEVEL = "INFO";
-			Write-Host  "INFOOOOOOOOOOOO";
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			}
 		}
@@ -935,6 +937,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			get_confirmation;
 			$script:WRITE_CONFIG_FILES="on"
 			write_config_files;
+			Write-Host "Done!"
 			#DATABASE_LANGUAGE=en # default to en
 			Read-Host "Press any key to continue";
 		}
@@ -1004,7 +1007,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"v"	{ # show version
 			set_defaults;
-			set_language;
 	        	Write-Host "--------- Software version ---------"
 			Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 			$var = $_.Split('=',2).Trim()
@@ -1022,10 +1024,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	 		Write-Host "--------- OH default configuration ---------"
 			Write-Host "Language is set to $OH_LANGUAGE"
 			Write-Host "Demo data is set to $DEMO_DATA"
-			# unset variables
-			$OH_LANGUAGE=$null
-			$LOG_LEVEL=$null
-			#
 			Write-Host ""
 			Write-Host "--- Database ---"
 			Write-Host "DATABASE_SERVER=$DATABASE_SERVER"

@@ -632,7 +632,6 @@ function write_config_files {
 		sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
 		-e "s&PHOTO_DIR&$PHOTO_DIR&g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
 	fi
-
 }
 
 function configure_log_level {
@@ -783,6 +782,7 @@ function parse_user_input {
 		write_config_files;
 		#DATABASE_LANGUAGE=en # default to en
 		echo "Done!"
+		echo ""
 		# set_defaults;
 
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
@@ -856,7 +856,6 @@ function parse_user_input {
 	###################################################
 	v)	# show version
 		set_defaults;
-		set_language;
 		echo ""
 		echo "--------- Software version ---------"
 		source "./$OH_DIR/rsc/version.properties"
@@ -871,10 +870,6 @@ function parse_user_input {
 		echo "--------- OH default configuration ---------"
 		echo "Language is set to $OH_LANGUAGE"
 		echo "Demo data is set to $DEMO_DATA"
-		# unset variables
-		unset OH_LANGUAGE
-		unset LOG_LEVEL
-		#
 		echo ""
 		echo "--- Database ---"
 		echo "DATABASE_SERVER=$DATABASE_SERVER"
