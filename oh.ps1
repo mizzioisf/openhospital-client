@@ -746,7 +746,7 @@ function write_config_files {
 function configure_log_level {
 	######## settings.properties log_level configuration
 	Write-Host "Setting log level in OH configuration file -> log4j.properties..."
-		switch -casesensitive( $LOG_LEVEL ) {
+		switch -CaseSensitive( $LOG_LEVEL ) {
 		###################################################
 		"INFO"	{ # 
 			$LOG_LEVEL = "DEBUG";
@@ -815,7 +815,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	do {
 		script_menu;
 		$opt = Read-Host "Please select an option or press enter to start OH"
-		switch -casesensitive( "$opt" ) {
+		switch -CaseSensitive ( "$opt" ) {
 		###################################################
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
