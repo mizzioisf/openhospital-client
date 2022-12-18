@@ -744,25 +744,19 @@ function write_config_files {
 }
 
 function configure_log_level {
-		if ( $LOG_LEVEL -eq "INFO" ) {
-			$LOG_LEVEL = "DEBUG";
-		}
-		elseif ( $LOG_LEVEL -eq "DEBUG" ) {
-			$LOG_LEVEL = "INFO";
-		}
-
 	######## settings.properties log_level configuration
-	Write-Host "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
+	Write-Host "Setting log level in OH configuration file -> log4j.properties..."
 		switch -casesensitive( "$LOG_LEVEL" ) {
 		###################################################
 		"INFO"	{ # 
-			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","INFO") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			$LOG_LEVEL = "DEBUG";
+			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			}
 		"DEBUG"	{ # 
-			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","DEBUG") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			$LOG_LEVEL = "INFO";
+			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			}
 		}
-
 }
 
 
