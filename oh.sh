@@ -46,7 +46,7 @@ SCRIPT_NAME=$(basename "$0")
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
-#OH_MODE=PORTABLE 
+OH_MODE=PORTABLE 
 
 # set DEMO_DATA to on to enable demo database loading - default set to off
 #
@@ -56,7 +56,8 @@ DEMO_DATA="off"
 
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
-OH_LANGUAGE=en # default
+OH_LANGUAGE_DEFAULT=en # default
+#OH_LANGUAGE=en 
 
 # set log level to INFO | DEBUG - default set to INFO
 LOG_LEVEL="INFO"
@@ -258,7 +259,7 @@ function set_path {
 function set_language {
 	# set OH interface language - default to en if not defined
 	if [ -z "$OH_LANGUAGE" ]; then
-		OH_LANGUAGE=en
+		OH_LANGUAGE=$OH_LANGUAGE_DEFAULT
 	fi
 	# set OH database language - default to en if not defined
 	if [ -z "$DATABASE_LANGUAGE" ]; then
@@ -266,20 +267,25 @@ function set_language {
 	fi
 	# check for valid language selection
 	case "$OH_LANGUAGE" in 
-		en|fr|it|es|pt) 
+		en|fr|it|es|pt|ar) # TBD - language array direct check
 			DATABASE_LANGUAGE=$OH_LANGUAGE
-			;;
-		ar*)	# default to en for other languages
- 			# set database creation script in english for arab interface
-			DATABASE_LANGUAGE=en
 			;;
 		*)
 			echo "Invalid language option: $OH_LANGUAGE. Exiting."
 			exit 1
 		;;
 	esac
+	
 	# set database creation script in chosen language
 	DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
+
+	echo "Configuring OH language..."
+	######## settings.properties language configuration
+	# if language is not set to default write change
+#	if [ "$OH_LANGUAGE" != "$OH_LANGUAGE_DEFAULT" ]; then
+		echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
+		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+#	fi
 }
 
 function initialize_dir_structure {
@@ -594,6 +600,13 @@ function clean_files {
 function write_config_files {
 	# set up configuration files
 	echo "Checking for OH configuration files..."
+	######## DICOM setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/dicom.properties ]; then
+		[ -f ./$OH_DIR/rsc/dicom.properties ] && mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
+		echo "Writing OH configuration file -> dicom.properties..."
+		sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
+		-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
+	fi
 	######## log4j.properties setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/log4j.properties ]; then
 		OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
@@ -603,16 +616,6 @@ function write_config_files {
 		-e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
 		./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
 	fi
-	# set log level
-	echo "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
-	case "$LOG_LEVEL" in
-		*INFO*)
-			sed -e "s/DEBUG/INFO/g" -i ./$OH_DIR/rsc/log4j.properties 
-		;;
-		*DEBUG*)
-			sed -e "s/INFO/DEBUG/g" -i ./$OH_DIR/rsc/log4j.properties 
-		;;
-	esac
 	######## database.properties setup 
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/database.properties ]; then
 		[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
@@ -620,17 +623,6 @@ function write_config_files {
 		sed -e "s/DBSERVER/$DATABASE_SERVER/g" -e "s/DBPORT/$DATABASE_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
 		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
-	fi
-#}
-#
-#function configure_oh {
-#	echo "Checking for OH configuration files..."
-	######## DICOM setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/dicom.properties ]; then
-		[ -f ./$OH_DIR/rsc/dicom.properties ] && mv -f ./$OH_DIR/rsc/dicom.properties ./$OH_DIR/rsc/dicom.properties.old
-		echo "Writing OH configuration file -> dicom.properties..."
-		sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-		-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/dicom.properties.dist > ./$OH_DIR/rsc/dicom.properties
 	fi
 	######## settings.properties setup
 	# set language and DOC_DIR in OH config file
@@ -640,8 +632,28 @@ function write_config_files {
 		sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
 		-e "s&PHOTO_DIR&$PHOTO_DIR&g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
 	fi
-	echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
-		sed  -e 's/^"LANGUAGE="/"LANGUAGE=$OH_LANGUAGE"/g' -i ./$OH_DIR/rsc/settings.properties
+
+}
+
+function configure_debug_mode {
+		if [[ "$LOG_LEVEL" = "INFO" ]] ; then
+				LOG_LEVEL="DEBUG"
+			else if [[ "$LOG_LEVEL"="DEBUG" ]] ; then
+				LOG_LEVEL="INFO"
+			fi
+		fi
+		echo ""
+		######## settings.properties log_level configuration
+		echo "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
+		case "$LOG_LEVEL" in
+			*INFO*)
+				sed -e "s/DEBUG/INFO/g" -i ./$OH_DIR/rsc/log4j.properties 
+			;;
+			*DEBUG*)
+				sed -e "s/INFO/DEBUG/g" -i ./$OH_DIR/rsc/log4j.properties 
+			;;
+		esac
+
 }
 
 function parse_user_input {
@@ -671,13 +683,7 @@ function parse_user_input {
 	###################################################
 	d)	# toggle debug mode 
 		#if [[ -z "$LOG_LEVEL" ]] | [[ "$LOG_LEVEL"="INFO" ]] ; then
-		if [[ "$LOG_LEVEL" = "INFO" ]] ; then
-			LOG_LEVEL="DEBUG"
-		else if [[ "$LOG_LEVEL"="DEBUG" ]] ; then
-			LOG_LEVEL="INFO"
-		fi
-		fi
-		echo ""
+		configure_debug_mode;
 		echo "Log level set to $LOG_LEVEL"
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
@@ -752,10 +758,9 @@ function parse_user_input {
 		read -n 2 -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 			echo ""
 			echo "Language set to $OH_LANGUAGE."
-			echo "Press any key to continue";
-			read;
 		fi
 		set_language;
+		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	m)	# configure OH manually
@@ -1132,8 +1137,8 @@ else
 	# generate config files
 	write_config_files;
 
-	# set language
-	# set_language;
+	# configure language settings
+	set_language;
 
 	echo "Starting Open Hospital GUI..."
 	# OH GUI launch

@@ -744,8 +744,11 @@ function write_config_files {
 		# set singleuser = yes / no
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
-	Write-Host "Writing OH configuration file -> settings.properties..."
-	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE=","LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	# if language is not default write change
+	if ( "$OH_LANGUAGE" -neq "$OH_LANGUAGE_DEFAULT") {
+		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE=","LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	}
 }
 
 function clean_files {
@@ -790,6 +793,8 @@ function clean_files {
 
 #set_defaults;
 set_path;
+	
+# configure language settings
 set_language;
 
 # set working dir to OH base dir
