@@ -750,12 +750,12 @@ function configure_log_level {
 		###################################################
 		"INFO"	{ # 
 			$LOG_LEVEL = "DEBUG";
-			Write-Host  "INFOOOOOOOO";
+			Write-Host  "DEBUGGGGGG";
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			}
 		"DEBUG"	{ # 
 			$LOG_LEVEL = "INFO";
-			Write-Host  "DDDDDDDDDdDEBUG";
+			Write-Host  "INFOOOOOOOOOOOO";
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			}
 		}
