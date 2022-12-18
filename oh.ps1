@@ -339,7 +339,7 @@ function set_language {
 	Write-Host "Configuring OH language..."
         ######## settings.properties language configuration
 	# if language is not default write change
-	if ( "$OH_LANGUAGE" -neq "$OH_LANGUAGE_DEFAULT") {
+	if ( ! "$OH_LANGUAGE" neq "$OH_LANGUAGE_DEFAULT") {
 		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE=","LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
