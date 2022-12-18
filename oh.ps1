@@ -746,7 +746,7 @@ function write_config_files {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old }
 		Write-Host "Writing OH configuration file -> settings.properties..."
 		# set DOC_DIR in OH config file
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set PHOTO_DIR in OH config file
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("PHOTO_DIR","$PHOTO_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set singleuser = yes / no
