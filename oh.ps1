@@ -797,9 +797,6 @@ function clean_files {
 #set_defaults;
 set_path;
 	
-# configure language settings
-set_language;
-
 # set working dir to OH base dir
 cd "$OH_PATH" # workaround for hard coded paths
 
