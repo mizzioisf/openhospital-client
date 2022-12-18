@@ -752,6 +752,7 @@ function configure_log_level {
 			$script:LOG_LEVEL = "DEBUG";
 			Write-Host  "DEBUGGGGGG";
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			break;
 			}
 		"DEBUG"	{ # 
 			$script:LOG_LEVEL = "INFO";
@@ -837,7 +838,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"d"	{ # toggle debug mode
 			configure_log_level;
-			Write-Host "Log level set to $script:$LOG_LEVEL" -ForeGroundcolor Green
+			Write-Host "Log level set to $script:LOG_LEVEL" -ForeGroundcolor Green
 
 			Read-Host "Press any key to continue";
 		}
