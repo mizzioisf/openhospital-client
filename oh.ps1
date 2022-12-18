@@ -746,14 +746,16 @@ function write_config_files {
 function configure_log_level {
 	######## settings.properties log_level configuration
 	Write-Host "Setting log level in OH configuration file -> log4j.properties..."
-		switch -casesensitive( "$LOG_LEVEL" ) {
+		switch -casesensitive( $LOG_LEVEL ) {
 		###################################################
 		"INFO"	{ # 
 			$LOG_LEVEL = "DEBUG";
+			Write-Host  "INFOOOOOOOO";
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			}
 		"DEBUG"	{ # 
 			$LOG_LEVEL = "INFO";
+			Write-Host  "DDDDDDDDDdDEBUG";
 			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			}
 		}
@@ -835,7 +837,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"d"	{ # toggle debug mode
 			configure_log_level;
-			Write-Host "Log level set to $LOG_LEVEL"
+			Write-Host "Log level set to $LOG_LEVEL" -ForeGroundcolor Green
 
 			Read-Host "Press any key to continue";
 		}
