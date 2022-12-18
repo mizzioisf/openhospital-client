@@ -57,7 +57,7 @@ DEMO_DATA="off"
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
 OH_LANGUAGE_DEFAULT=en # default
-#OH_LANGUAGE=en 
+OH_LANGUAGE=en 
 
 # set log level to INFO | DEBUG - default set to INFO
 LOG_LEVEL="INFO"
@@ -635,25 +635,20 @@ function write_config_files {
 
 }
 
-function configure_debug_mode {
-		if [[ "$LOG_LEVEL" = "INFO" ]] ; then
-				LOG_LEVEL="DEBUG"
-			else if [[ "$LOG_LEVEL"="DEBUG" ]] ; then
-				LOG_LEVEL="INFO"
-			fi
-		fi
+function configure_log_level {
 		echo ""
 		######## settings.properties log_level configuration
-		echo "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
+		echo "Setting log level to in OH configuration file -> log4j.properties..."
 		case "$LOG_LEVEL" in
 			*INFO*)
-				sed -e "s/DEBUG/INFO/g" -i ./$OH_DIR/rsc/log4j.properties 
+				LOG_LEVEL="DEBUG";
+				sed -e "s/INFO/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
 			;;
 			*DEBUG*)
-				sed -e "s/INFO/DEBUG/g" -i ./$OH_DIR/rsc/log4j.properties 
+				LOG_LEVEL="INFO";
+				sed -e "s/DEBUG/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
 			;;
 		esac
-
 }
 
 function parse_user_input {
@@ -683,7 +678,7 @@ function parse_user_input {
 	###################################################
 	d)	# toggle debug mode 
 		#if [[ -z "$LOG_LEVEL" ]] | [[ "$LOG_LEVEL"="INFO" ]] ; then
-		configure_debug_mode;
+		configure_log_level;
 		echo "Log level set to $LOG_LEVEL"
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
