@@ -243,7 +243,7 @@ function script_menu {
 	Write-Host "   X    clean/reset OH installation"
 	Write-Host "   q    quit"
         Write-Host ""
-        Write-Host "    --------------------- "
+        Write-Host "   --------------------- "
         Write-Host "    advanced options"
         write-Host ""
 	Write-Host "   d    toggle log level INFO/DEBUG"
@@ -342,7 +342,7 @@ function set_language {
 	# if language is not default write change
 	if ( ! "$OH_LANGUAGE" -eq "$OH_LANGUAGE_DEFAULT") {
 		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE=","LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('LANGUAGE=','LANGUAGE=$OH_LANGUAGE') | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
 

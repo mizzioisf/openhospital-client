@@ -186,7 +186,7 @@ function script_menu {
         echo "   -X    clean/reset OH installation"
         echo "   -q    quit"
         echo ""
-        echo "    --------------------- "
+        echo "   --------------------- "
         echo "    advanced options"
         echo ""
         echo "   -d    toggle log level INFO/DEBUG"
