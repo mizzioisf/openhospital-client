@@ -849,6 +849,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$script:LOG_LEVEL="INFO"
 				}
 			}
+			# create config files if not present
+			write_config_files;
 			# set configuration
 			configure_log_level;
 			Write-Host "Log level set to $script:LOG_LEVEL" -ForeGroundcolor Green
@@ -923,6 +925,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: $OH_LANGUAGE_LIST (default is en)"
+			# create config files if not present
 			write_config_files;
 			set_language;
 			Write-Host "Language set to $OH_LANGUAGE."

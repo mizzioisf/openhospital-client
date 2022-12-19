@@ -686,6 +686,8 @@ function parse_user_input {
 				LOG_LEVEL="INFO";
 			;;
 		esac
+		# create config files if not present
+		write_config_files;
 		# set configuration
 		configure_log_level;
 		echo "Log level set to $LOG_LEVEL"
@@ -763,6 +765,7 @@ function parse_user_input {
 			echo ""
 			echo "Language set to $OH_LANGUAGE."
 		fi
+		# create config files if not present
 		write_config_files;
 		set_language;
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
