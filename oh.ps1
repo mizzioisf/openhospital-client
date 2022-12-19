@@ -748,7 +748,7 @@ function write_config_files {
 	}
 }
 
-function configure_log_level {
+function set_log_level {
 	######## settings.properties log_level configuration
 	Write-Host "Setting log level in OH configuration file -> log4j.properties..."
 		switch -CaseSensitive( $script:LOG_LEVEL ) {
@@ -852,7 +852,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# create config files if not present
 			write_config_files;
 			# set configuration
-			configure_log_level;
+			set_log_level;
 			Write-Host "Log level set to $script:LOG_LEVEL" -ForeGroundcolor Green
 
 			Read-Host "Press any key to continue";
@@ -934,28 +934,25 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"m"	{ # configure OH manually
-			echo ""
-			$script:OH_LANGUAGE=Read-Host     "Please select language [$OH_LANGUAGE_LIST]"
-			Write-Host ""
-			$script:OH_SINGLE_USER=Read-Host  "Please select Single user configuration (yes/no):" 
+			$script:OH_LANGUAGE=Read-Host		"Please select language [$OH_LANGUAGE_LIST]"
+			Write-Host 				""
+			$script:OH_SINGLE_USER=Read-Host	"Please select Single user configuration (yes/no)" 
 	                # script:OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
-			Write-Host ""
-                	$script:LOG_LEVEL=Read-Host        "Please select log level (INFO|DEBUG):"
-			Write-Host ""
-			Write-Host "***** Database configuration *****"
-			Write-Host ""
-
-			$script:DATABASE_SERVER=Read-Host "Enter database server IP address [DATABASE_SERVER]"
-			$script:DATABASE_PORT=Read-Host "Enter database server TCP port [DATABASE_PORT]"
-			$script:DATABASE_NAME=Read-Host "Enter database database name [DATABASE_NAME]"
-			$script:DATABASE_USER=Read-Host "Enter database user name [DATABASE_USER]"
-			$script:DATABASE_PASSWORD=Read-Host "Enter database password [DATABASE_PASSWORD][DATABASE_PASSWORD]"
-			
-			Write-Host "Do yoy want to save OH configuration files with entered values ?"
+			Write-Host 				""
+                	$script:LOG_LEVEL=Read-Host		"Please select log level (INFO|DEBUG)"
+			Write-Host 				""
+			Write-Host 				"***** Database configuration *****"
+			Write-Host 				""
+			$script:DATABASE_SERVER=Read-Host	"Enter database server IP address [DATABASE_SERVER]"
+			$script:DATABASE_PORT=Read-Host		"Enter database server TCP port [DATABASE_PORT]"
+			$script:DATABASE_NAME=Read-Host		"Enter database database name [DATABASE_NAME]"
+			$script:DATABASE_USER=Read-Host		"Enter database user name [DATABASE_USER]"
+			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD][DATABASE_PASSWORD]"
+			Write-Host				"Do yoy want to save OH configuration files with entered values ?"
 			get_confirmation;
 			$script:WRITE_CONFIG_FILES="on"
 			write_config_files;
-			configure_log_level;
+			set_log_level;
 			set_language;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
@@ -1082,7 +1079,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			get_confirmation;
 			$script:WRITE_CONFIG_FILES="on"
 			write_config_files;
-			configure_log_level;
+			set_log_level;
 			set_language;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
@@ -1258,6 +1255,9 @@ else {
 
 	# configure language settings
 	set_language;
+
+	# configure log level
+        set_log_level;
 
 	Write-Host "Starting Open Hospital GUI..."
 

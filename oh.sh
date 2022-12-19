@@ -634,7 +634,7 @@ function write_config_files {
 	fi
 }
 
-function configure_log_level {
+function set_log_level {
 	echo ""
 	######## settings.properties log_level configuration
 	echo "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
@@ -688,8 +688,8 @@ function parse_user_input {
 		esac
 		# create config files if not present
 		write_config_files;
-		# set configuration
-		configure_log_level;
+		# set log level
+		set_log_level;
 		echo "Log level set to $LOG_LEVEL"
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
@@ -776,11 +776,10 @@ function parse_user_input {
 		read -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 		echo ""
 		read -p "Please select Single user configuration (yes/no): " OH_SINGLE_USER
-		#OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default
-		#echo "OH    $OH_SINGLE_USER "
+		#OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
 		echo ""
 		read -p "Please select log level (INFO|DEBUG): " LOG_LEVEL
-		echo "LOGLEVEL $LOG_LEVEL"
+		echo ""
 		echo "***** Database configuration *****"
 		echo ""
 		read -p "Enter database server IP address [DATABASE_SERVER]: " DATABASE_SERVER
@@ -794,7 +793,7 @@ function parse_user_input {
 		WRITE_CONFIG_FILES="on"
 		write_config_files;
 		set_language;
-		configure_log_level;
+		set_log_level;
 		echo "Done!"
 		echo ""
 		# set_defaults;
@@ -923,7 +922,7 @@ function parse_user_input {
 		get_confirmation;
 		WRITE_CONFIG_FILES="on"
 		write_config_files;
-		configure_log_level;
+		set_log_level;
 		set_language;
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
@@ -1146,6 +1145,9 @@ else
 
 	# configure language settings
 	set_language;
+	
+	# configure log level
+	set_log_level;
 
 	echo "Starting Open Hospital GUI..."
 	# OH GUI launch
