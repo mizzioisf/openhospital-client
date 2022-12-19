@@ -56,8 +56,7 @@ DEMO_DATA="off"
 
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
-OH_LANGUAGE_DEFAULT=en # default
-OH_LANGUAGE=en 
+OH_LANGUAGE=en # default
 
 # set log level to INFO | DEBUG - default set to INFO
 LOG_LEVEL="INFO"
@@ -258,14 +257,11 @@ function set_path {
 }
 
 function set_language {
-	# set OH interface language - default to en if not defined
-	if [ -z "$OH_LANGUAGE" ]; then
-		OH_LANGUAGE=$OH_LANGUAGE_DEFAULT
-	fi
-	# set OH database language - default to en if not defined
-	if [ -z "$DATABASE_LANGUAGE" ]; then
-		DATABASE_LANGUAGE=en
-	fi
+#	# set OH database language - default to en if not defined
+#	if [ -z "$DATABASE_LANGUAGE" ]; then
+#		DATABASE_LANGUAGE=en
+#	fi
+
 	# check for valid language selection
 	case "$OH_LANGUAGE" in 
 		en|fr|it|es|pt|ar) # TBD - language array direct check
