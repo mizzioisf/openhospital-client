@@ -1074,6 +1074,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			get_confirmation;
 			$script:WRITE_CONFIG_FILES="on"
 			write_config_files;
+			configure_log_level;
+			set_language;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}

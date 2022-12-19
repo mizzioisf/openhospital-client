@@ -920,6 +920,8 @@ function parse_user_input {
 		get_confirmation;
 		WRITE_CONFIG_FILES="on"
 		write_config_files;
+		configure_log_level;
+		set_language;
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
