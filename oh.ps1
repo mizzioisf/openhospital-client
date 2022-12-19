@@ -344,7 +344,6 @@ function set_language {
 
 	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	Read-Host;
-	}
 }
 
 function initialize_dir_structure {
@@ -842,6 +841,15 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"d"	{ # toggle debug mode
+			switch -CaseSensitive( $script:LOG_LEVEL ) {
+			"INFO"	{ # 
+				$script:LOG_LEVEL="DEBUG"
+				}
+			"DEBUG"	{ # 
+				$script:LOG_LEVEL="INFO"
+				}
+			}
+			# set configuration
 			configure_log_level;
 			Write-Host "Log level set to $script:LOG_LEVEL" -ForeGroundcolor Green
 
