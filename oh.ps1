@@ -348,7 +348,7 @@ function set_language {
 #^(LANGUAGE=)[a-zA-Z0-9]{2}$
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('^(LANGUAGE=.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		#$script:content = (Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('^(LANGUAGE=.+)',"LANGUAGE=$OH_LANGUAGE"));
-		$script:content = (Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('LANGUAGE',"LANGUAGE=$OH_LANGUAGE"));
+		$script:content = (Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE","LANGUAGE=$OH_LANGUAGE"));
 		Write-Host "CONTENT = $content";
 		Read-Host;
 	}
