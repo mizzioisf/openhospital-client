@@ -937,6 +937,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			echo ""
 			$script:OH_LANGUAGE=Read-Host "Please select language [$OH_LANGUAGE_LIST]"
 			Write-Host ""
+			$script:OH_SINGLE_USER=Read-Host "Please select Single user configuration (yes/no): 
+	                # $script:OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
+			Write-Host ""
+                	$script:LOG_LEVEL=Read-Host "Please select log level (INFO|DEBUG):"
+			Write-Host ""
 			Write-Host "***** Database configuration *****"
 			Write-Host ""
 
