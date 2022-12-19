@@ -347,8 +347,8 @@ function set_language {
 # $content = [System.IO.File]::ReadAllText("c:\bla.txt").Replace("[MYID]","MyValue") [System.IO.File]::WriteAllText("c:\bla.txt", $content)
 #^(LANGUAGE=)[a-zA-Z0-9]{2}$
 		Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('^(LANGUAGE=.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-		$script:content = Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('^(LANGUAGE=.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-		Write-Host "CONTENT = $content";
+#		$script:content = Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('^(LANGUAGE=.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties";
+#		Write-Host "CONTENT = $content";
 		Read-Host;
 	}
 }
