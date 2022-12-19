@@ -343,7 +343,6 @@ function set_language {
 	Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
 
 	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-	Read-Host;
 }
 
 function initialize_dir_structure {
