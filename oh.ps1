@@ -342,7 +342,11 @@ function set_language {
 	# if language is not default write change
 	if ( ! "$OH_LANGUAGE" -eq "$OH_LANGUAGE_DEFAULT") {
 		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('LANGUAGE=??',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+#		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('LANGUAGE=??',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+
+# $content = [System.IO.File]::ReadAllText("c:\bla.txt").Replace("[MYID]","MyValue") [System.IO.File]::WriteAllText("c:\bla.txt", $content)
+#^(LANGUAGE=)[a-zA-Z0-9]{2}$
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('^(LANGUAGE=)[a-zA-Z0-9]{2}$',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
 
