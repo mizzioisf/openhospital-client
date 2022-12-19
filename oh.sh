@@ -280,9 +280,12 @@ function set_language {
 	######## settings.properties language configuration
 	# if language is not set to default write change
 #	if [ "$OH_LANGUAGE" != "$OH_LANGUAGE_DEFAULT" ]; then
-		echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
-		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+
+	echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
+	sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+
 #	fi
+
 }
 
 function initialize_dir_structure {
@@ -632,19 +635,21 @@ function write_config_files {
 }
 
 function configure_log_level {
-		echo ""
-		######## settings.properties log_level configuration
-		echo "Setting log level to in OH configuration file -> log4j.properties..."
-		case "$LOG_LEVEL" in
-			*INFO*)
-				LOG_LEVEL="DEBUG";
-				sed -e "s/INFO/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
-			;;
-			*DEBUG*)
-				LOG_LEVEL="INFO";
-				sed -e "s/DEBUG/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
-			;;
-		esac
+	echo ""
+	######## settings.properties log_level configuration
+	echo "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
+	case "$LOG_LEVEL" in
+		*INFO*)
+			sed -e "s/DEBUG/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
+		;;
+		*DEBUG*)
+			sed -e "s/INFO/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
+		;;
+		*)
+			echo "Invalid log level: $LOG_LEVEL. Exiting."
+			exit 1
+		;;
+	esac
 }
 
 function parse_user_input {
@@ -673,7 +678,15 @@ function parse_user_input {
 		;;
 	###################################################
 	d)	# toggle debug mode 
-		#if [[ -z "$LOG_LEVEL" ]] | [[ "$LOG_LEVEL"="INFO" ]] ; then
+		case "$LOG_LEVEL" in
+			*INFO*)
+				LOG_LEVEL="DEBUG";
+			;;
+			*DEBUG*)
+				LOG_LEVEL="INFO";
+			;;
+		esac
+		# set configuration
 		configure_log_level;
 		echo "Log level set to $LOG_LEVEL"
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
@@ -757,14 +770,14 @@ function parse_user_input {
 	###################################################
 	m)	# configure OH manually
 		echo ""
-#		read -p "Please select OH_MODE [CLIENT|PORTABLE|SERVER]: " OH_MODE
 		read -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 		echo ""
 		read -p "Please select Single user configuration (yes/no): " OH_SINGLE_USER
-		#OH_SINGLE_USER=${OH_SINGLE_USER:-Off}
+		#OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default
 		#echo "OH    $OH_SINGLE_USER "
 		echo ""
 		read -p "Please select log level (INFO|DEBUG): " LOG_LEVEL
+		echo "LOGLEVEL $LOG_LEVEL"
 		echo "***** Database configuration *****"
 		echo ""
 		read -p "Enter database server IP address [DATABASE_SERVER]: " DATABASE_SERVER
@@ -777,7 +790,8 @@ function parse_user_input {
 		get_confirmation;
 		WRITE_CONFIG_FILES="on"
 		write_config_files;
-		#DATABASE_LANGUAGE=en # default to en
+		set_language;
+		configure_log_level;
 		echo "Done!"
 		echo ""
 		# set_defaults;

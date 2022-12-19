@@ -314,22 +314,20 @@ function set_path {
 
 function set_language {
 	# set OH interface language - default to en if not defined
-	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
-		$script:OH_LANGUAGE="en"
-	}
-	# set OH database language - default to en if not defined
-	if ( [string]::IsNullOrEmpty($DATABASE_LANGUAGE) ) {
-		$script:DATABASE_LANGUAGE="en"
-	}
+#	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
+#		$script:OH_LANGUAGE="en"
+#	}
+
+#	# set OH database language - default to en if not defined
+#	if ( [string]::IsNullOrEmpty($DATABASE_LANGUAGE) ) {
+#		$script:DATABASE_LANGUAGE="en"
+#	}
+
 	# check for valid language selection
 	if ($script:languagearray -contains "$OH_LANGUAGE") {
 		# set database creation script in chosen language
 		$script:DATABASE_LANGUAGE=$OH_LANGUAGE
 	}
-	#if ($script:languagearray -contains "ar") { 
-	# set database in english - en
-	# $script:DATABASE_LANGUAGE="en"
-	#	}
 	else {
 		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
 		Read-Host; exit 1
@@ -340,17 +338,12 @@ function set_language {
 	Write-Host "Configuring OH language..."
         ######## settings.properties language configuration
 	# if language is not default write change
-	if ( ! "$OH_LANGUAGE" -eq "$OH_LANGUAGE_DEFAULT") {
-		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
-#		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('LANGUAGE=??',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+#	if ( ! "$OH_LANGUAGE" -eq "$OH_LANGUAGE_DEFAULT") {
 
-# $content = [System.IO.File]::ReadAllText("c:\bla.txt").Replace("[MYID]","MyValue") [System.IO.File]::WriteAllText("c:\bla.txt", $content)
-#^(LANGUAGE=)[a-zA-Z0-9]{2}$
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-#		$script:content = (Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace('^(LANGUAGE=.+)',"LANGUAGE=$OH_LANGUAGE");
-#		$script:content = (Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("LANGUAGE","LANGUAGE=$OH_LANGUAGE");
-		Write-Host "CONTENT = $content";
-		Read-Host;
+	Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
+
+	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	Read-Host;
 	}
 }
 
@@ -762,13 +755,14 @@ function configure_log_level {
 		switch -CaseSensitive( $script:LOG_LEVEL ) {
 		###################################################
 		"INFO"	{ # 
-			$script:LOG_LEVEL = "DEBUG";
-			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 			break;
 			}
 		"DEBUG"	{ # 
-			$script:LOG_LEVEL = "INFO";
-			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			}
+		default { Write-Host "Invalid log level option: $LOG_LEVEL." -ForegroundColor Red
+			exit 2;
 			}
 		}
 }
@@ -930,7 +924,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"m"	{ # configure OH manually
 			echo ""
-#			$script:OH_MODE=Read-Host "Please select OH_MODE [CLIENT|PORTABLE|SERVER]"
 			$script:OH_LANGUAGE=Read-Host "Please select language [$OH_LANGUAGE_LIST]"
 			Write-Host ""
 			Write-Host "***** Database configuration *****"
@@ -946,8 +939,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			get_confirmation;
 			$script:WRITE_CONFIG_FILES="on"
 			write_config_files;
+			configure_log_level;
+			set_language;
 			Write-Host "Done!"
-			#DATABASE_LANGUAGE=en # default to en
 			Read-Host "Press any key to continue";
 		}
 		###################################################
