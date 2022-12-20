@@ -228,9 +228,9 @@ function script_menu {
 	# Clear-Host # clear console
         Write-Host " -----------------------------------------------------------------"
         Write-Host "|                                                                 |"
-        write-Host "|                       Open Hospital | OH                        |"
+        Write-Host "|                       Open Hospital | OH                        |"
         Write-Host "|                                                                 |"
-        write-Host " -----------------------------------------------------------------"
+        Write-Host " -----------------------------------------------------------------"
         Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
         Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
@@ -245,7 +245,7 @@ function script_menu {
         Write-Host ""
         Write-Host "   --------------------- "
         Write-Host "    advanced options"
-        write-Host ""
+        Write-Host ""
 	Write-Host "   d    toggle log level INFO/DEBUG"
 	Write-Host "   D    initialize OH with Demo data"
 	Write-Host "   G    setup GSM"
@@ -337,8 +337,6 @@ function set_language {
 	
 	Write-Host "Configuring OH language..."
         ######## settings.properties language configuration
-	# if language is not default write change
-#	if ( ! "$OH_LANGUAGE" -eq "$OH_LANGUAGE_DEFAULT") {
 
 	Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
 
@@ -738,9 +736,11 @@ function write_config_files {
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old }
 		Write-Host "Writing OH configuration file -> settings.properties..."
-		# set DOC_DIR in OH config file
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-		# set PHOTO_DIR in OH config file
+		# set LANGUAGE
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		# set DOC_DIR
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		# set PHOTO_DIR
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("PHOTO_DIR","$PHOTO_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set singleuser = yes / no
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
