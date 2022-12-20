@@ -177,7 +177,7 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 - **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
 - **q**    quit (windows only)
 
-**advanced options**
+### Advanced options
 
 - **d**    toggle log level between INFo and DEBUG - useful to execute OH in debug mode in order to log errors or bugs with more extended informations to log file
 - **G**    setup GSM modem to enable sms interaction
