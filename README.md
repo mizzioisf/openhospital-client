@@ -71,26 +71,30 @@ cd openhospital-client
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
  -----------------------------------------------------------------
+ Usage: oh.sh [ -l en|fr|es|it|pt|ar ] 
 
- Usage: oh.sh [ -l en|fr|es|it|pt|ar ]
-
-   -C    start OH in CLIENT mode (client / server configuration)
-   -P    start OH in PORTABLE mode
-   -S    start OH in SERVER (Portable) mode
-   -d    start OH in debug mode
-   -D    initialize OH with Demo data
-   -g    regenerate configuration files
-   -G    setup GSM
-   -h    show this help
-   -i    initialize/install OH database
-   -l    set language: en|fr|it|es|pt|ar
-   -m    configure OH manually
-   -s    save OH database
-   -r    restore OH database
-   -t    test database connection (CLIENT mode only)
-   -v    show OH software version and configuration
+   -C    set OH in CLIENT mode
+   -P    set OH in PORTABLE mode
+   -S    set OH in SERVER (Portable)
+   -l    set language: en|fr|es|it|pt|ar
+   -w    save OH configuration
+   -v    show configuration
    -X    clean/reset OH installation
    -q    quit
+
+   --------------------- 
+    advanced options
+
+   -d    toggle log level INFO/DEBUG
+   -G    setup GSM
+   -D    initialize OH with Demo data
+   -i    initialize/install OH database
+   -s    save OH database
+   -r    restore OH database
+   -m    configure OH manually
+   -t    test database connection (CLIENT mode only)
+
+   -h    show help
 ```
 
 ## Windows
@@ -109,27 +113,31 @@ cd openhospital-client
  Usage: oh.ps1 [ -lang en|fr|it|es|pt|ar ] 
                [ -mode PORTABLE|CLIENT ]
                [ -loglevel INFO|DEBUG ] 
-               [ -dicom on|off ]
                [ -interactive on|off ]
                [ -generate_config on|off ]
 
+   C    set OH in CLIENT mode
+   P    set OH in PORTABLE mode
+   S    set OH in SERVER (Portable)
+   l    set language: en|fr|es|it|pt|ar
+   w    save OH configuration
+   v    show configuration
+   X    clean/reset OH installation
+   q    quit
 
- C    start OH in CLIENT mode (client / server configuration)
- P    start OH in PORTABLE mode
- d    start OH in debug mode
- D    initialize OH with Demo data
- g    generate configuration files
- G    setup GSM
- h    show this help
- i    initialize / install OH database
- l    set language: en|fr|it|es|pt
- m    configure OH manually
- s    save OH database
- r    restore OH database
- t    test database connection (Client mode only)
- v    show OH software version and configuration
- X    clean/reset OH installation
- q    quit
+   --------------------- 
+    advanced options
+
+   d    toggle log level INFO/DEBUG
+   G    setup GSM
+   D    initialize OH with Demo data
+   i    initialize/install OH database
+   s    save OH database
+   r    restore OH database
+   m    configure OH manually
+   t    test database connection (CLIENT mode only)
+
+   h    show help
 ```
 
 Note: The **oh.bat** launches the **oh.ps1** startup file automatically.
@@ -168,9 +176,9 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 - **v**    show Open Hospital external software version and configuration
 - **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
 - **q**    quit (windows only)
--
-- **advanced options**
--
+
+**advanced options**
+
 - **d**    toggle log level between INFo and DEBUG - useful to execute OH in debug mode in order to log errors or bugs with more extended informations to log file
 - **G**    setup GSM modem to enable sms interaction
 - **D**    initialize OH database with Demo data - loads a demo database in order to test the software 
