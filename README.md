@@ -160,24 +160,27 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 
 # Options 
 
-- **C**    start Open Hospital in CLIENT mode, usually when an external database server is used (Client / Server configuration)
-- **P**    start Open Hospital in PORTABLE mode, where data is saved locally
-- **S**    start Open Hospital in SERVER mode: the local portable instance of MariaDB is launched
-- **d**    start OH in DEBUG mode - useful to debug errors or bugs by logging more extended informations to log file
-- **D**    initialize OH with Demo data - loads a demo database in order to test the software 
-- **g**    regenerate OH configuration files (oh/rsc/\*.properties) and exit
-- **G**    setup GSM modem to enable sms interaction
-- **h**    show help
-- **i**    initialize / install OH database
+- **C**    set Open Hospital to start in CLIENT mode, usually when an external database server is used (Client / Server configuration)
+- **P**    set Open Hospital to start in PORTABLE mode, where data is saved locally
+- **S**    set Open Hospital to start in SERVER mode: the local portable instance of MariaDB is launched to act as a portable database server
 - **l**    set local language: en|fr|it|es|pt|ar
-- **m**    configure OH manually
-- **s**    save / dump the Open Hospital database in sql format
-- **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
-- **t**    test database connection to the configured database server (Client mode only)
+- **w**    save / write / reenerate OH configuration files (oh/rsc/\*.properties) and exit
 - **v**    show Open Hospital external software version and configuration
 - **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
 - **q**    quit (windows only)
-- **h**    help (linux only)
+-
+- **advanced options**
+-
+- **d**    toggle log level between INFo and DEBUG - useful to execute OH in debug mode in order to log errors or bugs with more extended informations to log file
+- **G**    setup GSM modem to enable sms interaction
+- **D**    initialize OH database with Demo data - loads a demo database in order to test the software 
+- **h**    show help
+- **i**    initialize / install OH database
+- **s**    save / dump the Open Hospital database in sql format
+- **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
+- **m**    configure OH manually
+- **t**    test database connection to the configured database server (Client mode only)
+- **h**    show help 
 
 # Script configuration
 
