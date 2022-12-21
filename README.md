@@ -201,7 +201,15 @@ This might also be useful to set different combinations of options (language, de
 # -> OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 ```
-
+### (Windows only) Enable interactive mode
+```
+# Interactive mode
+# set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
+# interaction menu (script_menu). Useful if automatic startup of OH is needed.
+# In order to use this mode, setup all the OH configuration variables in the script
+# or pass arguments via command line.
+$script:INTERACTIVE_MODE="on"
+```
 ### Config file generation
 
 It is possibile to set the WRITE_CONFIG_FILES option to "on" to regenerate the OH configuration files at startup (this is also possibile by selecting the *g* script option).
@@ -218,21 +226,12 @@ The default is set to off, so the configuration files are not regenerated and ov
 #$script:WRITE_CONFIG_FILES="off" # windows
 ```
 
-### Distribution type - CLIENT | PORTABLE
+### Distribution type - CLIENT | PORTABLE | SERVER
 
 ```
 ############## OH general configuration - change at your own risk :-) ##############
-OH_MODE=PORTABLE # set functioning mode to PORTABLE | CLIENT # linux
+OH_MODE=PORTABLE # set functioning mode to CLIENT | PORTABLE | CLIENT # linux
 $script:OH_MODE="PORTABLE" # windows
-```
-### Demo mode
-```
-# set DEMO_DATA to on to enable demo database loading - default set to off
-#
-# -> Warning -> __requires deletion of all portable data__
-#
-DEMO_DATA=off # linux
-#$script:DEMO_DATA="off" # windows
 ```
 ### Interface and software language:
 ```
@@ -253,12 +252,18 @@ LOG_LEVEL=INFO # linux
 #JAVA_BIN=`which java` # linux
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
+### Demo mode
+```
+# set DEMO_DATA to on to enable demo database loading - default set to off
+# -> Warning -> __requires deletion of all portable data__
+DEMO_DATA=off # linux
+#$script:DEMO_DATA="off" # windows
+```
 ### Database and software configuration
 
 If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
 ```
 ############## OH local configuration - change at your own risk :-) ##############
-# Database
 DATABASE_SERVER=localhost
 DATABASE_PORT=3306
 DATABASE_ROOT_PW="xxxxxxxxxx"
@@ -270,6 +275,7 @@ DICOM_MAX_SIZE="4M"
 DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
 DICOM_DIR="data/dicom_storage"
 
+# path and directories
 OH_DIR="oh"
 OH_DOC_DIR="../doc"
 OH_SINGLE_USER="yes" # set "no" for multiuser
@@ -282,20 +288,14 @@ SQL_DIR="sql"
 SQL_EXTRA_DIR="sql/extra"
 TMP_DIR="tmp"
 
+# logging
 LOG_FILE=startup.log
 OH_LOG_FILE=openhospital.log
 
+# SQL creation files
+DB_CREATE_SQL="create_all_en.sql" # default to en
 DB_DEMO="create_all_demo.sql"
 
-```
-### (Windows only) Enable interactive mode
-```
-# Interactive mode
-# set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
-# interaction menu (script_menu). Useful if automatic startup of OH is needed.
-# In order to use this mode, setup all the OH configuration variables in the script
-# or pass arguments via command line.
-$script:INTERACTIVE_MODE="on"
 ```
 ## Default directory structure
 
