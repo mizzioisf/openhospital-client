@@ -229,7 +229,7 @@ The default is set to off, so the configuration files are not regenerated and ov
 ### Distribution type - CLIENT | PORTABLE | SERVER
 
 ```
-############## OH general configuration - change at your own risk :-) ##############
+#######################  OH configuration  #########################
 OH_MODE=PORTABLE # set functioning mode to CLIENT | PORTABLE | CLIENT # linux
 $script:OH_MODE="PORTABLE" # windows
 ```
@@ -259,18 +259,20 @@ LOG_LEVEL=INFO # linux
 DEMO_DATA=off # linux
 #$script:DEMO_DATA="off" # windows
 ```
-### Database and software configuration
+### Database configuration
 
 If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
 ```
-############## OH local configuration - change at your own risk :-) ##############
+##################### Database configuration #######################
 DATABASE_SERVER=localhost
 DATABASE_PORT=3306
 DATABASE_ROOT_PW="xxxxxxxxxx"
 DATABASE_NAME=oh
 DATABASE_USER=isf
 DATABASE_PASSWORD="xxxxx"
-
+```
+### OH configuration
+```
 DICOM_MAX_SIZE="4M"
 DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
 DICOM_DIR="data/dicom_storage"
