@@ -85,7 +85,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 #
 # Default is set to "off": configuration files will not be regenerated or overwritten if already present.
 #
-#$script:WRITE_CONFIG_FILES="off"
+$script:WRITE_CONFIG_FILES="off"
 
 # Interactive mode
 # set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
@@ -268,17 +268,17 @@ function get_confirmation {
 	}
 }
 
-function set_defaults {
+#function set_defaults {
         # set default values for script variables
 	# interactive mode - set default to on
-	if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
-		$script:INTERACTIVE_MODE="on"
-	}
+#	if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
+#		$script:INTERACTIVE_MODE="on"
+#	}
 
 	# config files generation - set default to off
-	if ( [string]::IsNullOrEmpty($WRITE_CONFIG_FILES) ) {
-		$script:WRITE_CONFIG_FILES="off"
-	}
+#	if ( [string]::IsNullOrEmpty($WRITE_CONFIG_FILES) ) {
+#		$script:WRITE_CONFIG_FILES="off"
+#	}
 
 #	# OH mode - set default to PORTABLE
 #	if ( [string]::IsNullOrEmpty($OH_MODE) ) {
@@ -286,15 +286,15 @@ function set_defaults {
 #	}
 
 	# log level - set default to INFO
-	if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
-		$script:LOG_LEVEL="INFO"
-	}
+#	if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
+#		$script:LOG_LEVEL="INFO"
+#	}
 	
 	# demo data - set default to off
-	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
-		$script:DEMO_DATA="off"
-	}
-}
+#	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
+#		$script:DEMO_DATA="off"
+#	}
+#}
 
 function set_path {
 	# get current directory
@@ -1020,18 +1020,17 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"v"	{ # show version
-			set_defaults;
+		"v"	{ # display software version and configuration
 	        	Write-Host "--------- Software version ---------"
 			Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 			$var = $_.Split('=',2).Trim()
 			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
 			}
+			# show configuration
 			Write-Host "Open Hospital version:" $VER_MAJOR $VER_MINOR $VER_RELEASE
 			Write-Host "$MYSQL_NAME version: $MYSQL_DIR"
 			Write-Host "JAVA version: $JAVA_DISTRO"
 			Write-Host ""
-			# show configuration
 	 		Write-Host "--------- Script Configuration ---------"
 	 		Write-Host "Architecture is $ARCH"
 	 		Write-Host "Config file generation is set to $WRITE_CONFIG_FILES"

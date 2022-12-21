@@ -38,7 +38,7 @@ SCRIPT_NAME=$(basename "$0")
 #
 # Default is set to "off": configuration files will not be regenerated or overwritten if already present.
 #
-#WRITE_CONFIG_FILES="off"
+WRITE_CONFIG_FILES="off"
 
 ############## OH general configuration - change at your own risk :-) ##############
 
@@ -46,7 +46,7 @@ SCRIPT_NAME=$(basename "$0")
 # OH_PATH=/usr/local/OpenHospital/oh-1.11
 
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
-OH_MODE=PORTABLE 
+OH_MODE="PORTABLE" 
 
 # set DEMO_DATA to on to enable demo database loading - default set to off
 #
@@ -70,8 +70,8 @@ LOG_LEVEL="INFO"
 DATABASE_SERVER=localhost
 DATABASE_PORT="3306"
 DATABASE_ROOT_PW="tmp2021oh111"
-DATABASE_NAME=oh
-DATABASE_USER=isf
+DATABASE_NAME="oh"
+DATABASE_USER="isf"
 DATABASE_PASSWORD="isf123"
 #DATABASE_LANGUAGE=en # default to en
 
@@ -91,8 +91,8 @@ SQL_DIR="sql"
 SQL_EXTRA_DIR="sql/extra"
 TMP_DIR="tmp"
 
-LOG_FILE=startup.log
-OH_LOG_FILE=openhospital.log
+LOG_FILE="startup.log"
+OH_LOG_FILE="openhospital.log"
 
 #DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
@@ -210,13 +210,13 @@ function get_confirmation {
 	esac
 }
 
-function set_defaults {
+#function set_defaults {
 	# set default values for script variables
 	# config file generation - set default to off
 #####	if [ -n ${WRITE_CONFIG_FILES+x} ]; then
-	if [ -z "$WRITE_CONFIG_FILES" ]; then
-		WRITE_CONFIG_FILES="off"
-	fi
+#	if [ -z "$WRITE_CONFIG_FILES" ]; then
+#		WRITE_CONFIG_FILES="off"
+#	fi
 
 #	# OH mode - set default to PORTABLE
 #	if [ -z "$OH_MODE" ]; then
@@ -229,10 +229,10 @@ function set_defaults {
 #	fi
 
 	# demo data - set default to off
-	if [ -z "$DEMO_DATA" ]; then
-		DEMO_DATA="off"
-	fi
-}
+#	if [ -z "$DEMO_DATA" ]; then
+#		DEMO_DATA="off"
+#	fi
+#}
 
 function set_path {
 	# get current directory
@@ -731,7 +731,7 @@ function parse_user_input {
 		echo ""
 		echo "Do you want to initialize/install the OH database on:"
 		echo ""
-		echo " Server -> $DATABASE_SERVER"
+		echo " Database Server -> $DATABASE_SERVER"
 		echo " TCP port -> $DATABASE_PORT" 
 		echo ""
 		get_confirmation;
@@ -796,8 +796,6 @@ function parse_user_input {
 		set_log_level;
 		echo "Done!"
 		echo ""
-		# set_defaults;
-
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
@@ -867,15 +865,14 @@ function parse_user_input {
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
-	v)	# show version
-		set_defaults;
+	v)	# display software version and configuration
 		echo ""
 		echo "--------- Software version ---------"
 		source "./$OH_DIR/rsc/version.properties"
 		echo "Open Hospital version:" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
 		echo "$MYSQL_NAME version: $MYSQL_DIR"
 		echo "JAVA version: $JAVA_DISTRO"
-		# show configuration
+		echo ""
 		echo "--------- Script Configuration ---------"
 		echo "Architecture is $ARCH"
 		echo "Config file generation is set to $WRITE_CONFIG_FILES"
