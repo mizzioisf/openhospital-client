@@ -907,20 +907,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"h"	{ # show help
-			Write-Host " ---------------------------------------------------------"
-			Write-Host "|                   Open Hospital | OH                    |"
-			Write-Host " ---------------------------------------------------------"
-			Write-Host ""
-			Write-Host " Usage: $SCRIPT_NAME [ -lang $OH_LANGUAGE_LIST ] "
-			Write-Host "               [ -mode PORTABLE|CLIENT|SERVER ]"
-			Write-Host "               [ -loglevel INFO|DEBUG ] "
-			Write-Host "               [ -generate_config on|off ] "
-			Write-Host "               [ -interactive on|off ] "
-			Write-Host ""
-			Write-Host "Launch oh.bat to run the oh.ps1 interactive startup script"
-			Write-Host "Select any available option from the menu"
-			Write-Host "Choose CLIENT, PORTABLE or SERVER mode"
-			Write-Host ""
+			Get-content "./Readme.md" | less
 			Read-Host "Press any key to continue";
 		}
 		###################################################
