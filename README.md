@@ -34,10 +34,9 @@ bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client
 
 # Dowloading OH - Releases
 
-[**Download latest release from github**](https://github.com/informatici/openhospital/releases/latest) 
-
 [**Official download page**](https://www.open-hospital.org/download)
 
+[**Download latest release from github**](https://github.com/informatici/openhospital/releases/latest) 
 
 # Dowloading OH - this repo
 
