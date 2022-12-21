@@ -204,18 +204,18 @@ This might also be useful to set different combinations of options (language, de
 
 ### Config file generation
 
-It is possibile to set the GENERATE_CONFIG_FILES option to "on" to regenerate the OH configuration files at startup (this is also possibile by selecting the *g* script option).
+It is possibile to set the WRITE_CONFIG_FILES option to "on" to regenerate the OH configuration files at startup (this is also possibile by selecting the *g* script option).
 The default is set to off, so the configuration files are not regenerated and overwritten at every startup. This is useful for production environment where the configuration is fixed.
 
 ```
-# set GENERATE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
+# set WRITE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
 # data/conf/my.cnf and oh/rsc/*.properties files will be regenerated from the original .dist files
 # with the settings defined in this script.
 #
 # Default is set to "off": configuration files will not be generated or overwritten if already present.
 #
-#GENERATE_CONFIG_FILES="off" # linux
-#$script:GENERATE_CONFIG_FILES="off" # windows
+#WRITE_CONFIG_FILES="off" # linux
+#$script:WRITE_CONFIG_FILES="off" # windows
 ```
 
 ### Distribution type - CLIENT | PORTABLE
@@ -237,18 +237,13 @@ DEMO_DATA=off # linux
 ### Interface and software language:
 ```
 # Language setting - default set to en
-#OH_LANGUAGE=en fr es it pt ar # linux
-#$script:OH_LANGUAGE="en" # fr es it pt ar # windows
-```
-### (Windows only) Enable / disable DICOM features
-```
-# enable / disable DICOM (on|off)
-#$script:DICOM_ENABLE="off"
+OH_LANGUAGE=en fr es it pt ar # linux
+$script:OH_LANGUAGE="en" # fr es it pt ar # windows
 ```
 ### Log level / debug mode
 ```
 # set log level to INFO | DEBUG - default set to INFO
-#LOG_LEVEL=INFO # linux
+LOG_LEVEL=INFO # linux
 #$script:LOG_LEVEL="INFO" # windows
 ```
 ### Enable system wide JAVA
@@ -475,8 +470,9 @@ A short description of changes for the Linux version (mostly the same behavior a
     Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
 
 - **New** **Interactive menu**: it is possible to navigate through menu options
+- **New**: Direct modification of OH settings files for language and debug mode
+- **New**: SERVER mode support (see oh.sh -S)
 - **New**: Added "-m" option to configure OH manually
-- **New**: SERVER mode support
 - **New**: Arabic Language support: **oh.sh -l ar**
 - **New**: Full 64bit support on Windows, also for DICOM !
 - **New**: Set default to MULTIUSER environment, so login mask is presented at startup
@@ -487,10 +483,10 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Save (see oh.sh -s) / Restore (oh.sh -r) database, available both for CLIENT and PORTABLE mode !
 - GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
 - debug mode -> set log4.properties to DEBUG mode (default is INFO)
-- configuration file generation (set GENERATE_CONFIG_FILES=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
+- configuration file generation (set WRITE_CONFIG_FILES=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
 - test database connection option (see oh.sh -t)
 - displays software versions and current configuration (see oh.sh -v)
-- generate config files (see oh.sh -g)
+- write / generate config files (see oh.sh -w)
 - install / initialize database (see oh.sh -i)
 - Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
 - More flexible execution and configuration options
@@ -508,5 +504,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Fixed _a_few_ bugs ;-)
 
 
-*last updated: 2022.12.13*
+*last updated: 2022.12.21*
 
