@@ -721,9 +721,12 @@ function parse_user_input {
 		;;
 	###################################################
 	h)	# help
-		script_menu;
-		cat README.md | less;
-		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then
+			script_menu;
+			exit 0;
+		fi
+		cat OH-readme.txt | less;
+		echo "Press any key to continue"; read;
 		;;
 	###################################################
 	i)	# initialize/install OH database
