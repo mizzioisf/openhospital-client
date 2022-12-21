@@ -17,12 +17,6 @@ OH is released under the GNU GPL 3.0 License.
 The Linux version has been tested on different distributions and versions, including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 22.04 x64 (64bit).
 The Windows version has been tested on Windows 7/10/11 (64bit)
 
-```
-- browse to the directory:
-```
-cd openhospital-client
-```
-
 # Running OH - Quickstart
 
 ## Common to all Operating Systems / architectures
