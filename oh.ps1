@@ -674,7 +674,9 @@ function test_database_connection {
 		# test connection to the OH MariaDB/MySQL database
 		Write-Host "Testing database connection..."
 		try {
-			Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e $([char]34)USE $DATABASE_NAME$([char]34) " ) -Wait -NoNewWindow
+	#		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e $([char]34)USE $DATABASE_NAME$([char]34) " ) -Wait -NoNewWindow
+	$outt = Invoke-Command -ScriptBlock { ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e $([char]34)USE $DATABASE_NAME$([char]34) " }
+		Write-Host "OUTTTT $outt"
 		}
 		catch {
 			Write-Host "Error: can't connect to database! Exiting." -ForegroundColor Red
@@ -883,7 +885,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$OH_MODE="CLIENT"
 			Write-Host "Do you want to initialize/install the OH database on:"
 			Write-Host ""
-			Write-Host " Server -> $DATABASE_SERVER"
+			Write-Host " Database Server -> $DATABASE_SERVER"
 			Write-Host " TCP port -> $DATABASE_PORT"
 			Write-Host ""
 			get_confirmation;
