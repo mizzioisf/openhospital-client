@@ -1158,6 +1158,7 @@ if ( $DEMO_DATA -eq "on" ) {
 Write-Host "Write config files is set to $WRITE_CONFIG_FILES"
 Write-Host "Starting Open Hospital in $OH_MODE mode..."
 Write-Host "OH_PATH is set to $OH_PATH"
+
 # display OH settings only if defined
 if (Get-Variable $OH_LANGUAGE -Scope 'Global' -ErrorAction 'Ignore') {
 	Write-Host "OH language is set to $OH_LANGUAGE"
