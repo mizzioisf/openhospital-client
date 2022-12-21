@@ -102,18 +102,19 @@ $script:WRITE_CONFIG_FILES="off"
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
 #$script:OH_MODE="PORTABLE"
 
-# set DEMO_DATA to on to enable demo database loading - default set to off
-#
-# -> Warning -> __requires deletion of all portable data__
-#
-$script:DEMO_DATA="off"
-
 # language setting - default set to en
 $script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
 $script:OH_LANGUAGE="en" # default
 
+# single / multiuser - set "yes" for single user configuration
+$script:OH_SINGLE_USER="no"
+
 # set log level to INFO | DEBUG - default set to INFO
 $script:LOG_LEVEL="INFO"
+
+# set DEMO_DATA to on to enable demo database loading - default set to off
+# ---> Warning <--- __requires deletion of all portable data__
+$script:DEMO_DATA="off"
 
 # set JAVA_BIN 
 # Uncomment this if you want to use system wide JAVA
@@ -134,9 +135,9 @@ $script:DICOM_MAX_SIZE="4M"
 $script:DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
 $script:DICOM_DIR="data/dicom_storage"
 
+# path and directories
 $script:OH_DIR="oh"
 $script:OH_DOC_DIR="../doc"
-$script:OH_SINGLE_USER="no" # set "yes" for singleuser
 $script:CONF_DIR="data/conf"
 $script:DATA_DIR="data/db"
 $script:PHOTO_DIR="data/photo"
@@ -146,10 +147,12 @@ $script:SQL_DIR="sql"
 $script:SQL_EXTRA_DIR="sql/extra"
 $script:TMP_DIR="tmp"
 
+# logging
 $script:LOG_FILE="startup.log"
 $script:LOG_FILE_ERR="startup.err"
 $script:OH_LOG_FILE="openhospital.log"
 
+# SQL creation files
 $script:DB_CREATE_SQL="create_all_en.sql" # default to en
 $script:DB_DEMO="create_all_demo.sql"
 

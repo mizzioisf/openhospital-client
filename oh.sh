@@ -48,18 +48,19 @@ WRITE_CONFIG_FILES="off"
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
 #OH_MODE="PORTABLE" 
 
-# set DEMO_DATA to on to enable demo database loading - default set to off
-#
-# -> Warning -> __requires deletion of all portable data__
-#
-DEMO_DATA="off"
-
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
 OH_LANGUAGE=en # default
 
+# single / multiuser - set "yes" for single user configuration
+OH_SINGLE_USER="no"
+
 # set log level to INFO | DEBUG - default set to INFO
 LOG_LEVEL="INFO"
+
+# set DEMO_DATA to on to enable demo database loading - default set to off
+# ---> Warning <--- __requires deletion of all portable data__
+DEMO_DATA="off"
 
 # set JAVA_BIN
 # Uncomment this if you want to use system wide JAVA
@@ -80,9 +81,9 @@ DICOM_MAX_SIZE="4M"
 DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
 DICOM_DIR="data/dicom_storage"
 
+# path and directories
 OH_DIR="oh"
 OH_DOC_DIR="../doc"
-OH_SINGLE_USER="no" # set "yes" for singleuser
 CONF_DIR="data/conf"
 DATA_DIR="data/db"
 PHOTO_DIR="data/photo"
@@ -92,9 +93,11 @@ SQL_DIR="sql"
 SQL_EXTRA_DIR="sql/extra"
 TMP_DIR="tmp"
 
+# logging
 LOG_FILE="startup.log"
 OH_LOG_FILE="openhospital.log"
 
+# SQL creation files
 DB_CREATE_SQL="create_all_en.sql" # default to en
 DB_DEMO="create_all_demo.sql"
 
