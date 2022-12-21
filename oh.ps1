@@ -907,7 +907,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"h"	{ # show help
-			Get-content "./Readme.md" | less
+			Get-content ./Readme.md 
 			Read-Host "Press any key to continue";
 		}
 		###################################################
