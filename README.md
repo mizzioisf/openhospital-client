@@ -163,7 +163,7 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 -> To run oh.ps1 with command line options (example):
 
 ```
-./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -dicom off -interactive off -generate_config on
+./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -interactive off -generate_config on
 ```
 
 # Options 
