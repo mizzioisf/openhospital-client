@@ -14,8 +14,7 @@ All you have to do is to copy the root installation directory of OH to your favo
 OH uses its own version of the Java Virtual Machine (JRE) and the MariaDB/MySQL server.
 OH is released under the GNU GPL 3.0 License.
 
-The Linux version has been tested on different distributions and versions,
-including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 22.04 x64 (64bit).
+The Linux version has been tested on different distributions and versions, including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 22.04 x64 (64bit).
 The Windows version has been tested on Windows 7/10/11 (64bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
@@ -197,6 +196,7 @@ This might also be useful to set different combinations of options (language, de
 ### OH directory path
 ```
 ############## OH general configuration - change at your own risk :-) ##############
+#
 # -> OH_PATH is the directory where Open Hospital files are located
 # OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
 ```
@@ -503,7 +503,6 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Windows -> addedd support for path with spaces / special characters 
 - Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
 - Fixed _a_few_ bugs ;-)
-
 
 *last updated: 2022.12.21*
 
