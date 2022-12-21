@@ -245,19 +245,19 @@ $script:OH_LANGUAGE="en" # fr es it pt ar # windows
 LOG_LEVEL=INFO # linux
 #$script:LOG_LEVEL="INFO" # windows
 ```
-### Enable system wide JAVA
-```
-# set JAVA_BIN 
-# Uncomment this if you want to use system wide JAVA
-#JAVA_BIN=`which java` # linux
-#$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
-```
 ### Demo mode
 ```
 # set DEMO_DATA to on to enable demo database loading - default set to off
 # -> Warning -> __requires deletion of all portable data__
 DEMO_DATA=off # linux
 #$script:DEMO_DATA="off" # windows
+```
+### Enable system wide JAVA
+```
+# set JAVA_BIN 
+# Uncomment this if you want to use system wide JAVA
+#JAVA_BIN=`which java` # linux
+#$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
 ### Database configuration
 
