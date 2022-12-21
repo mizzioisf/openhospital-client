@@ -121,7 +121,6 @@ $script:DEMO_DATA="off"
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
 
 ##################### Database configuration #######################
-# Database
 $script:DATABASE_SERVER="127.0.0.1"
 $script:DATABASE_PORT=3306
 $script:DATABASE_ROOT_PW="tmp2021oh111"

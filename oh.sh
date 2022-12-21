@@ -67,7 +67,6 @@ DEMO_DATA="off"
 #JAVA_BIN=`which java`
 
 ##################### Database configuration #######################
-# Database
 DATABASE_SERVER=localhost
 DATABASE_PORT="3306"
 DATABASE_ROOT_PW="tmp2021oh111"
