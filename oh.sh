@@ -94,7 +94,7 @@ TMP_DIR="tmp"
 LOG_FILE="startup.log"
 OH_LOG_FILE="openhospital.log"
 
-#DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
+DB_CREATE_SQL="create_all_en.sql" # default to en
 DB_DEMO="create_all_demo.sql"
 
 ################ Other settings ################
