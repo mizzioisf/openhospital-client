@@ -77,9 +77,16 @@ $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
 # disable progress bar
 $global:ProgressPreference= 'SilentlyContinue'
 
-############## Script startup configuration - change at your own risk :-) ##############
+######################## Script configuration #######################
 #
-# set WRITE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
+# Interactive mode
+# set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
+# interaction menu (script_menu). Useful if automatic startup of OH is needed.
+# In order to use this mode, setup all the OH configuration variables in the script
+# or pass arguments via command line.
+$script:INTERACTIVE_MODE="on"
+#
+# set WRITE_CONFIG_FILES=on "on" to force generation / overwriting of OH configuration files:
 # data/conf/my.cnf and oh/rsc/*.properties files will be regenerated from the original .dist files
 # with the settings defined in this script.
 #
@@ -87,17 +94,10 @@ $global:ProgressPreference= 'SilentlyContinue'
 #
 $script:WRITE_CONFIG_FILES="off"
 
-# Interactive mode
-# set INTERACTIVE_MODE to "off" to launch oh.ps1 without calling the user
-# interaction menu (script_menu). Useful if automatic startup of OH is needed.
-# In order to use this mode, setup all the OH configuration variables in the script
-# or pass arguments via command line.
-$script:INTERACTIVE_MODE="on"
-
-############## OH general configuration - change at your own risk :-) ##############
+##################### OH general configuration ####################
 
 # -> OH_PATH is the directory where Open Hospital files are located
-# OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
+# OH_PATH="c:\Users\OH\OpenHospital\oh-1.12"
 
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
 #$script:OH_MODE="PORTABLE"
@@ -119,7 +119,7 @@ $script:LOG_LEVEL="INFO"
 # Uncomment this if you want to use system wide JAVA
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
 
-############## OH local configuration - change at your own risk :-) ##############
+##################### Database configuration #######################
 # Database
 $script:DATABASE_SERVER="127.0.0.1"
 $script:DATABASE_PORT=3306
@@ -129,6 +129,7 @@ $script:DATABASE_USER="isf"
 $script:DATABASE_PASSWORD="isf123"
 #$script:DATABASE_LANGUAGE="en" # default to en
 
+#######################  OH configuration  #########################
 $script:DICOM_MAX_SIZE="4M"
 $script:DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
 $script:DICOM_DIR="data/dicom_storage"
@@ -155,7 +156,7 @@ $script:DB_DEMO="create_all_demo.sql"
 # downloaded file extension
 $script:EXT="zip"
 
-################ Other settings ################
+######################## Other settings ########################
 # date format
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
@@ -338,9 +339,7 @@ function set_language {
 	
 	Write-Host "Configuring OH language..."
         ######## settings.properties language configuration
-
 	Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
-
 	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 }
 

@@ -30,7 +30,7 @@
 ######## get name of this shell script
 SCRIPT_NAME=$(basename "$0")
 
-############## Script startup configuration - change at your own risk :-) ##############
+######################## Script configuration #######################
 #
 # set WRITE_CONFIG_FILES=on "on" to force generation / overwriting of configuration files:
 # data/conf/my.cnf and oh/rsc/*.properties files will be regenerated from the original .dist files
@@ -43,10 +43,10 @@ WRITE_CONFIG_FILES="off"
 ############## OH general configuration - change at your own risk :-) ##############
 
 # OH_PATH is the directory where Open Hospital files are located
-# OH_PATH=/usr/local/OpenHospital/oh-1.11
+# OH_PATH=/usr/local/OpenHospital/oh-1.12
 
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
-OH_MODE="PORTABLE" 
+#OH_MODE="PORTABLE" 
 
 # set DEMO_DATA to on to enable demo database loading - default set to off
 #
@@ -65,7 +65,7 @@ LOG_LEVEL="INFO"
 # Uncomment this if you want to use system wide JAVA
 #JAVA_BIN=`which java`
 
-############## OH local configuration - change at your own risk :-) ##############
+##################### Database configuration #######################
 # Database
 DATABASE_SERVER=localhost
 DATABASE_PORT="3306"
@@ -75,6 +75,7 @@ DATABASE_USER="isf"
 DATABASE_PASSWORD="isf123"
 #DATABASE_LANGUAGE=en # default to en
 
+#######################  OH configuration  #########################
 DICOM_MAX_SIZE="4M"
 DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
 DICOM_DIR="data/dicom_storage"
@@ -97,7 +98,7 @@ OH_LOG_FILE="openhospital.log"
 DB_CREATE_SQL="create_all_en.sql" # default to en
 DB_DEMO="create_all_demo.sql"
 
-################ Other settings ################
+######################## Other settings ########################
 # downloaded file extension
 EXT="tar.gz"
 
@@ -279,8 +280,6 @@ function set_language {
 	echo "Configuring OH language..."
 	######## settings.properties language configuration
 	# if language is not set to default write change
-#	if [ "$OH_LANGUAGE" != "$OH_LANGUAGE_DEFAULT" ]; then
-
 	echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
 	sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
 
