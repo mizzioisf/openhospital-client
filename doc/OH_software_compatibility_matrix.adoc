@@ -1,4 +1,5 @@
-[width="99%",cols="^14%,^13%,^13%,^13,^13%,^13%,^13%,^12%,^12%,^12%",options="header"]
+#[width="99%",cols="^14%,^13%,^13%,^13,^13%,^13%,^13%,^12%,^12%,^12%",options="header"]
+[width="99%",cols="^16%,^14%,^14%,^14,^14%,^14%,^14%,^14%,^14%",options="header"]
 |===
 9+|*Open Hospital compatibility matrix*
 
