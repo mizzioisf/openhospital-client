@@ -48,7 +48,7 @@
 
 [width="60%",cols="30%,70%",]
 |===
-|(*) | Before 1.12.0, with Java 9+ loading a JPG/JPEG as DICOM image may not work
+|(*) | Before 1.12.0, DICOM imaging functionality may not work
 |(**) | Windows Powershell 5.1 is required
 |*v* |_working_ 
 |*x* |_not working_ 
