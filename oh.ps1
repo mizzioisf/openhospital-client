@@ -157,7 +157,7 @@ $script:DB_DEMO="create_all_demo.sql"
 
 ######################## Other settings ########################
 # available languages - do not modify
-$script:languagearray= @("en","fr","it","es","pt","ar") 
+$script:languagearray= @("en","fr","es","it","pt","ar")
 
 # date format
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
