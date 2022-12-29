@@ -155,18 +155,21 @@ $script:OH_LOG_FILE="openhospital.log"
 $script:DB_CREATE_SQL="create_all_en.sql" # default to en
 $script:DB_DEMO="create_all_demo.sql"
 
-# downloaded file extension
-$script:EXT="zip"
-
 ######################## Other settings ########################
-# date format
-$script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-
 # available languages - do not modify
 $script:languagearray= @("en","fr","it","es","pt","ar") 
 
+# date format
+$script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+
+# downloaded file extension
+$script:EXT="zip"
+
 # mysql configuration file
 $script:MYSQL_CONF_FILE="my.cnf"
+
+# help file
+$script:HELP_FILE="OH-readme.txt"
 
 ############## Architecture and external software ##############
 
@@ -907,7 +910,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"h"	{ # show help
-			Get-content ./OH-readme.txt | more
+			Get-content $HELP_FILE | more
 			Read-Host "Press any key to continue";
 		}
 		###################################################
