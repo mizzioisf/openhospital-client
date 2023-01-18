@@ -396,13 +396,13 @@ fi
 # check for libaio
 ldconfig -p | grep libaio > /dev/null;
 if [ $? -eq 1 ]; then
-	echo "libaio not found! Please install the library. Exiting."
+	echo "Error: libaio not found! Please install the library. Exiting."
 	exit 1
 fi
 # check for libncurses - version 5
 ldconfig -p | grep libncurses.so.5 > /dev/null;
 if [ $? -eq 1 ]; then
-	echo "libncurses not found! Please install the library. Exiting."
+	echo "Error: libncurses version 5 not found! Please install the library. Exiting."
 	exit 1
 fi
 }
