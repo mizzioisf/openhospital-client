@@ -399,8 +399,8 @@ if [ $? -eq 1 ]; then
 	echo "libaio not found! Please install the library. Exiting."
 	exit 1
 fi
-# check for libncurses
-ldconfig -p | grep libncurses > /dev/null;
+# check for libncurses - version 5
+ldconfig -p | grep libncurses.so.5 > /dev/null;
 if [ $? -eq 1 ]; then
 	echo "libncurses not found! Please install the library. Exiting."
 	exit 1
