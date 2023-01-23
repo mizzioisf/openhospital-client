@@ -186,7 +186,7 @@ function script_menu {
         echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER (Portable)"
         echo "   -l    set language: $OH_LANGUAGE_LIST"
-        echo "   -w    save OH configuration"
+        echo "   -s    save OH configuration"
         echo "   -v    show configuration"
         echo "   -X    clean/reset OH installation"
         echo "   -q    quit"
@@ -194,12 +194,12 @@ function script_menu {
         echo "   --------------------- "
         echo "    advanced options"
         echo ""
+        echo "   -e    export/save OH database"
+        echo "   -r    restore OH database"
         echo "   -d    toggle log level INFO/DEBUG"
         echo "   -G    setup GSM"
         echo "   -D    initialize OH with Demo data"
         echo "   -i    initialize/install OH database"
-        echo "   -s    save OH database"
-        echo "   -r    restore OH database"
         echo "   -m    configure OH manually"
         echo "   -t    test database connection (CLIENT mode only)"
         echo ""
@@ -807,7 +807,7 @@ function parse_user_input {
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
-	s)	# save database
+	e)	# export/save database
 		echo ""
 		# check if mysql utilities exist
 		mysql_check;
@@ -921,7 +921,7 @@ function parse_user_input {
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
-	w)	# write config files
+	s)	# write config files
 		echo ""
 		echo "Do yoy want to save OH configuration files with script values ?"
 		get_confirmation;
@@ -1011,7 +1011,7 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CPSdDGhil:msrtvwXqQ?" 
+OPTSTRING=":CPSdDGhil:msrtveXqQ?" 
 
 PASSED_ARGS=$@
 # Parse arguments passed via command line
@@ -1048,6 +1048,7 @@ echo ""
 # check OH mode
 if [ -z ${OH_MODE+x} ]; then
 	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
+	# if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 	exit 1
 fi
 

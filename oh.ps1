@@ -246,19 +246,19 @@ function script_menu {
 	Write-Host "   S    set OH in SERVER (Portable) mode"
 	Write-Host "   l    set language: $OH_LANGUAGE_LIST"
 	Write-Host "   v    show configuration"
-	Write-Host "   w    save OH configuration"
+	Write-Host "   s    save OH configuration"
 	Write-Host "   X    clean/reset OH installation"
 	Write-Host "   q    quit"
         Write-Host ""
         Write-Host "   --------------------- "
         Write-Host "    advanced options"
         Write-Host ""
+	Write-Host "   e    export/save OH database"
+	Write-Host "   r    restore OH database"
 	Write-Host "   d    toggle log level INFO/DEBUG"
 	Write-Host "   D    initialize OH with Demo data"
 	Write-Host "   G    setup GSM"
 	Write-Host "   i    initialize/install OH database"
-	Write-Host "   s    save OH database"
-	Write-Host "   r    restore OH database"
 	Write-Host "   m    configure OH manually"
 	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host ""
@@ -953,7 +953,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"s"	{ # save database
+		"e"	{ # export/save database
 			# check if mysql utilities exist
 			mysql_check;
 			# check if portable mode is on
@@ -1068,7 +1068,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"w"	{ # write config files and exit
+		"s"	{ # write config files
 			Write-Host "Do yoy want to save OH configuration files with script values ?"
 			get_confirmation;
 			$script:WRITE_CONFIG_FILES="on"
