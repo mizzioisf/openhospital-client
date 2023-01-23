@@ -72,6 +72,7 @@ $script:INTERACTIVE_MODE=$interactive
 # determine script name and location for PowerShell
 $script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
 $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
+$script:$POWERSHELL_EXE = (get-command PowerShell.exe).Path
 
 ######## global preferences
 # disable progress bar
@@ -934,7 +935,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	$WshShell = New-Object -comObject WScript.Shell
 #	$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
 	$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
-	$Shortcut.TargetPath = "$SCRIPT_DIR\$SCRIPT_NAME"
+	$Shortcut.TargetPath = "$POWERSHELL_EXE $SCRIPT_DIR\$SCRIPT_NAME"
 	$script:OH_MODE="PORTABLE"
 	$script:OH_LANGUAGE="en"
 	$Shortcut.Arguments = "-interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
