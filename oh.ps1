@@ -936,7 +936,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 #	$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
 #
 
-	$script:desktop_path="Home\Desktop"
+	$script:desktop_path="$Home\Desktop"
 
 	$Shortcut = $WshShell.CreateShortcut("$desktop_path\OpenHospital.lnk")
 	$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
