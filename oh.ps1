@@ -72,7 +72,7 @@ $script:INTERACTIVE_MODE=$interactive
 # determine script name and location for PowerShell
 $script:SCRIPT_DIR = Split-Path $script:MyInvocation.MyCommand.Path
 $script:SCRIPT_NAME = $MyInvocation.MyCommand.Name
-$script:$POWERSHELL_EXE = (get-command PowerShell.exe).Path
+$script:POWERSHELL_EXE = (get-command PowerShell.exe).Path
 
 ######## global preferences
 # disable progress bar
