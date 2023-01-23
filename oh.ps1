@@ -947,6 +947,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 	$Shortcut.Save()
 
+	Add-Content $path "HotKey=0"
+
 	Add-Content $path "$iconfile"
 
 	Add-Content $path "IconIndex=0"
