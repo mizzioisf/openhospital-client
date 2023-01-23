@@ -927,7 +927,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	$WshShell = New-Object -comObject WScript.Shell
 #	$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
 	$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
-	$Shortcut.TargetPath = "SCRIPT_DIR/$SCRIPT_NAME"
+	$Shortcut.TargetPath = "$SCRIPT_DIR/$SCRIPT_NAME"
 	$Shortcut.Arguments = "-mode $OH_MODE -lang $OH_LANGUAGE"
 	$Shortcut.WorkingDirectory = "$OH_DIR"
 	$Shortcut.Save()
