@@ -44,7 +44,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
    -P    set OH in PORTABLE mode
    -S    set OH in SERVER (Portable)
    -l    set language: en|fr|es|it|pt|ar
-   -w    save OH configuration
+   -s    save OH configuration
    -v    show configuration
    -X    clean/reset OH installation
    -q    quit
@@ -52,12 +52,12 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
    --------------------- 
     advanced options
 
+   -e    export/save OH database
+   -r    restore OH database
    -d    toggle log level INFO/DEBUG
    -G    setup GSM
    -D    initialize OH with Demo data
    -i    initialize/install OH database
-   -s    save OH database
-   -r    restore OH database
    -m    configure OH manually
    -t    test database connection (CLIENT mode only)
 
@@ -87,7 +87,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
    P    set OH in PORTABLE mode
    S    set OH in SERVER (Portable)
    l    set language: en|fr|es|it|pt|ar
-   w    save OH configuration
+   s    save OH configuration
    v    show configuration
    X    clean/reset OH installation
    q    quit
@@ -95,12 +95,12 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
    --------------------- 
     advanced options
 
+   e    export/save OH database
+   r    restore OH database
    d    toggle log level INFO/DEBUG
    G    setup GSM
    D    initialize OH with Demo data
    i    initialize/install OH database
-   s    save OH database
-   r    restore OH database
    m    configure OH manually
    t    test database connection (CLIENT mode only)
 
@@ -139,20 +139,20 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 - **P**    set Open Hospital to start in PORTABLE mode, where data is saved locally
 - **S**    set Open Hospital to start in SERVER mode: the local portable instance of MariaDB is launched to act as a portable database server
 - **l**    set local language: en|fr|it|es|pt|ar
-- **w**    save / write / reenerate OH configuration files (oh/rsc/\*.properties) and exit
+- **s**    save / write / reenerate OH configuration files (oh/rsc/\*.properties) and exit
 - **v**    show Open Hospital external software version and configuration
 - **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
 - **q**    quit (windows only)
 
 ### Advanced options
 
+- **e**    export / save / dump the Open Hospital database in sql format
+- **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
 - **d**    toggle log level between INFo and DEBUG - useful to execute OH in debug mode in order to log errors or bugs with more extended informations to log file
 - **G**    setup GSM modem to enable sms interaction
 - **D**    initialize OH database with Demo data - loads a demo database in order to test the software 
 - **h**    show help
 - **i**    initialize / install OH database
-- **s**    save / dump the Open Hospital database in sql format
-- **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
 - **m**    configure OH manually
 - **t**    test database connection to the configured database server (Client mode only)
 - **h**    show help 
