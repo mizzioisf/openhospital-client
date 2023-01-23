@@ -934,7 +934,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 #
 	$WshShell = New-Object -comObject WScript.Shell
 #	$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
-	$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
+#
+
+	$script:desktop_path="Home\Desktop"
+
+	$Shortcut = $WshShell.CreateShortcut("$desktop_path\OpenHospital.lnk")
 	$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
 	$script:OH_MODE="PORTABLE"
 	$script:OH_LANGUAGE="en"
@@ -947,11 +951,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 	$Shortcut.Save()
 
-	Add-Content $path "HotKey=0"
+	Add-Content $desktop_path "HotKey=0"
 
-	Add-Content $path "$iconfile"
+	Add-Content $desktop_path "$iconfile"
 
-	Add-Content $path "IconIndex=0"
+	Add-Content $desktop_path "IconIndex=0"
 
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
