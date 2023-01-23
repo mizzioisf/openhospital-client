@@ -939,8 +939,18 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	$script:OH_MODE="PORTABLE"
 	$script:OH_LANGUAGE="en"
 	$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
-	$Shortcut.WorkingDirectory = "$OH_DIR"
+	$Shortcut.WorkingDirectory = "$OH_PATH"
+
+	$iconlocation = "$OH_PATH/oh/rsc/icons/oh.png"
+
+	$iconfile = "IconFile=" + $iconlocation
+
+	$Shortcut.IconLocation = "$IconLocation, $IconArrayIndex"
 	$Shortcut.Save()
+
+	Add-Content $path "$iconfile"
+
+	Add-Content $path "IconIndex=0"
 
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
