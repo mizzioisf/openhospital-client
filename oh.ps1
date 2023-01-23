@@ -935,10 +935,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	$WshShell = New-Object -comObject WScript.Shell
 #	$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
 	$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
-	$Shortcut.TargetPath = "$POWERSHELL_EXE $SCRIPT_DIR\$SCRIPT_NAME"
+	$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
 	$script:OH_MODE="PORTABLE"
 	$script:OH_LANGUAGE="en"
-	$Shortcut.Arguments = "-interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
+	$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
 	$Shortcut.WorkingDirectory = "$OH_DIR"
 	$Shortcut.Save()
 
