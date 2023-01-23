@@ -921,7 +921,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"k"	{ # create symbolic lynk
 			Write-Host "Creating symbolic link on Desktop"
-			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME -mode $OH_MODE -lang $OH_LANGUAGE"
+#			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME" -mode $OH_MODE -lang $OH_LANGUAGE"
+			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME" # -mode $OH_MODE -lang $OH_LANGUAGE"
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
