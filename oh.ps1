@@ -922,7 +922,16 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"k"	{ # create symbolic lynk
 			Write-Host "Creating symbolic link on Desktop"
 #			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME" -mode $OH_MODE -lang $OH_LANGUAGE"
-			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME" # -mode $OH_MODE -lang $OH_LANGUAGE"
+#			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME" # -mode $OH_MODE -lang $OH_LANGUAGE"
+#
+	$WshShell = New-Object -comObject WScript.Shell
+#	$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
+	$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
+	$Shortcut.TargetPath = "SCRIPT_DIR/$SCRIPT_NAME"
+	$Shortcut.Arguments = "-mode $OH_MODE -lang $OH_LANGUAGE"
+	$Shortcut.WorkingDirectory = "$OH_DIR"
+	$Shortcut.Save()
+
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
