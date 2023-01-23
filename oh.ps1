@@ -945,7 +945,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 	$iconfile = "IconFile=" + $iconlocation
 
-	$Shortcut.IconLocation = "$IconLocation, $IconArrayIndex"
 	$Shortcut.Save()
 
 	Add-Content $path "$iconfile"
