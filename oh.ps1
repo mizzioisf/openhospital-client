@@ -341,11 +341,15 @@ function set_language {
 	}
 	# set database creation script in chosen language
 	$script:DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
-	
-	Write-Host "Configuring OH language..."
-        ######## settings.properties language configuration
-	Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
-	(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+
+
+	# if settings.properties is preset set language
+	if ( Test-Path /$OH_DIR/rsc/settings.properties -PathType leaf ) {
+		Write-Host "Configuring OH language..."
+	        ######## settings.properties language configuration
+		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	}
 }
 
 function initialize_dir_structure {
