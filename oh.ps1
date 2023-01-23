@@ -84,7 +84,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 # interaction menu (script_menu). Useful if automatic startup of OH is needed.
 # In order to use this mode, setup all the OH configuration variables in the script
 # or pass arguments via command line.
-$script:INTERACTIVE_MODE="on"
+#$script:INTERACTIVE_MODE="on"
 #
 # set WRITE_CONFIG_FILES=on "on" to force generation / overwriting of OH configuration files:
 # data/conf/my.cnf and oh/rsc/*.properties files will be regenerated from the original .dist files
@@ -92,7 +92,7 @@ $script:INTERACTIVE_MODE="on"
 #
 # Default is set to "off": configuration files will not be regenerated or overwritten if already present.
 #
-$script:WRITE_CONFIG_FILES="off"
+#$script:WRITE_CONFIG_FILES="off"
 
 ##################### OH general configuration ####################
 
@@ -107,10 +107,10 @@ $script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
 $script:OH_LANGUAGE="en" # default
 
 # single / multiuser - set "yes" for single user configuration
-$script:OH_SINGLE_USER="no"
+#$script:OH_SINGLE_USER="no"
 
 # set log level to INFO | DEBUG - default set to INFO
-$script:LOG_LEVEL="INFO"
+#$script:LOG_LEVEL="INFO"
 
 # set DEMO_DATA to on to enable demo database loading - default set to off
 # ---> Warning <--- __requires deletion of all portable data__
@@ -276,17 +276,17 @@ function get_confirmation {
 	}
 }
 
-#function set_defaults {
+function set_defaults {
         # set default values for script variables
 	# interactive mode - set default to on
-#	if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
-#		$script:INTERACTIVE_MODE="on"
-#	}
+	if ( [string]::IsNullOrEmpty($INTERACTIVE_MODE) ) {
+		$script:INTERACTIVE_MODE="on"
+	}
 
 	# config files generation - set default to off
-#	if ( [string]::IsNullOrEmpty($WRITE_CONFIG_FILES) ) {
-#		$script:WRITE_CONFIG_FILES="off"
-#	}
+	if ( [string]::IsNullOrEmpty($WRITE_CONFIG_FILES) ) {
+		$script:WRITE_CONFIG_FILES="off"
+	}
 
 #	# OH mode - set default to PORTABLE
 #	if ( [string]::IsNullOrEmpty($OH_MODE) ) {
@@ -294,15 +294,22 @@ function get_confirmation {
 #	}
 
 	# log level - set default to INFO
-#	if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
-#		$script:LOG_LEVEL="INFO"
-#	}
+	if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
+		$script:LOG_LEVEL="INFO"
+	}
 	
+	# single / multiuser - set "yes" for single user configuration
+	if ( [string]::IsNullOrEmpty($OH_SINGLE_USER) ) {
+		$script:OH_SINGLE_USER="no"
+	}
+
+
+
 	# demo data - set default to off
 #	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
 #		$script:DEMO_DATA="off"
 #	}
-#}
+}
 
 function set_path {
 	# get current directory
@@ -816,7 +823,7 @@ function clean_files {
 
 ######## Environment setup
 
-#set_defaults;
+set_defaults;
 set_path;
 	
 # set working dir to OH base dir
