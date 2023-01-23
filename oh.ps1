@@ -259,6 +259,7 @@ function script_menu {
 	Write-Host "   D    initialize OH with Demo data"
 	Write-Host "   G    setup GSM"
 	Write-Host "   i    initialize/install OH database"
+	Write-Host "   k    create symbolic link"
 	Write-Host "   m    configure OH manually"
 	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host ""
@@ -915,6 +916,13 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"h"	{ # show help
 			Get-content $HELP_FILE | more
+			Read-Host "Press any key to continue";
+		}
+		###################################################
+		"k"	{ # create symbolic lynk
+			Write-Host "Creating symbolic link on Desktop"
+			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME -mode $OH_MODE -lang $OH_LANGUAGE"
+			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
 		###################################################
