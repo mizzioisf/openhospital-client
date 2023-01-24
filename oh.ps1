@@ -310,6 +310,14 @@ function set_defaults {
 #	}
 }
 
+function check_oh_mode {
+	if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
+		Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
+		Read-Host;
+		exit 1
+	}
+}
+
 function set_path {
 	# get current directory
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
@@ -943,6 +951,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"k"	{ # create Desktop shortcupt
+			check_oh_mode;
 			create_desktop_shortcut;
 			Read-Host "Press any key to continue";
 		}
@@ -1151,11 +1160,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
 
 # check OH mode 
-if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
-	Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
-	Read-Host;
-	exit 1
-}
+check_oh_mode;
+
 
 # check demo mode
 if ( $DEMO_DATA -eq "on" ) {
