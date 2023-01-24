@@ -940,8 +940,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 	$Shortcut = $WshShell.CreateShortcut("$desktop_path\OpenHospital.lnk")
 	$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
-	$script:OH_MODE="PORTABLE"
-	$script:OH_LANGUAGE="en"
 	$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
 	$Shortcut.WorkingDirectory = "$OH_PATH"
 
