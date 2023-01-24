@@ -260,7 +260,7 @@ function script_menu {
 	Write-Host "   D    initialize OH with Demo data"
 	Write-Host "   G    setup GSM"
 	Write-Host "   i    initialize/install OH database"
-	Write-Host "   k    create symbolic link"
+	Write-Host "   k    create Desktop shortcut with current params"
 	Write-Host "   m    configure OH manually"
 	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host ""
