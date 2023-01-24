@@ -282,7 +282,7 @@ function set_language {
 	# set database creation script in chosen language
 	DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
 
-	# if settings.properties is preset set language
+	# if settings.properties is present set language
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Configuring OH language..."
 		######## settings.properties language configuration

@@ -349,8 +349,7 @@ function set_language {
 	# set database creation script in chosen language
 	$script:DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
 
-
-	# if settings.properties is preset set language
+	# if settings.properties is present set language
 	if ( Test-Path /$OH_DIR/rsc/settings.properties -PathType leaf ) {
 		Write-Host "Configuring OH language..."
 	        ######## settings.properties language configuration
@@ -367,6 +366,24 @@ function initialize_dir_structure {
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$PHOTO_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
 }
+
+
+function create_desktop_shortcut {
+	Write-Host "Creating/updating OH shortcut on Desktop..."
+	
+	$WshShell = New-Object -comObject WScript.Shell
+
+	#$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\OpenHospital.lnk")
+
+	$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
+	$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
+	$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive off -mode $OH_MODE -lang $OH_LANGUAGE"
+	$Shortcut.WorkingDirectory = "$OH_PATH"
+	$ShortCut.IconLocation = "$OH_PATH\$OH_DIR\rsc\icons\oh.ico"
+	$Shortcut.Save()
+	Write-Host "Done!"
+}
+
 
 function java_lib_setup {
 	# NATIVE LIB setup
@@ -926,20 +943,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"k"	{ # create Desktop shortcupt
-			Write-Host "Creating OH shortcut on Desktop"
-	
-			$WshShell = New-Object -comObject WScript.Shell
-			
-			#$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\OpenHospital.lnk")
-
-			$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
-			$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
-			$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
-			$Shortcut.WorkingDirectory = "$OH_PATH"
-			$ShortCut.IconLocation = "$OH_PATH\$OH_DIR\rsc\icons\oh.ico"
-			$Shortcut.Save()
-
-			Write-Host "Done!"
+			create_desktop_shortcut;
 			Read-Host "Press any key to continue";
 		}
 		###################################################
