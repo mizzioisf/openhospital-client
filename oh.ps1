@@ -1104,6 +1104,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			write_config_files;
 			set_log_level;
 			set_language;
+			# if Desktop link is present update it
+			if (Test-Path -Path "$Home\Desktop\OpenHospital.lnk" -PathType leaf) {
+				create_desktop_shortcut;
+			}
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
