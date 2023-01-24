@@ -1035,6 +1035,21 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
+		"s"	{ # save / write config files
+			Write-Host "Do yoy want to save current settings to OH configuration files?"
+			get_confirmation;
+			$script:WRITE_CONFIG_FILES="on"
+			write_config_files;
+			set_log_level;
+			set_language;
+			# if Desktop link is present update it
+			if (Test-Path -Path "$Home\Desktop\OpenHospital.lnk" -PathType leaf) {
+				create_desktop_shortcut;
+			}
+			Write-Host "Done!"
+			Read-Host "Press any key to continue";
+		}
+		###################################################
 		"t"	{ # test database connection 
 			if ( !($OH_MODE -eq "CLIENT") ) {
 				Write-Host "Error: Only for CLIENT mode." -ForegroundColor Red
@@ -1094,21 +1109,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "OH_LOG_FILE=$OH_LOG_FILE"
 			Write-Host ""
 
-			Read-Host "Press any key to continue";
-		}
-		###################################################
-		"s"	{ # write config files
-			Write-Host "Do yoy want to save current settings to OH configuration files?"
-			get_confirmation;
-			$script:WRITE_CONFIG_FILES="on"
-			write_config_files;
-			set_log_level;
-			set_language;
-			# if Desktop link is present update it
-			if (Test-Path -Path "$Home\Desktop\OpenHospital.lnk" -PathType leaf) {
-				create_desktop_shortcut;
-			}
-			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
 		###################################################

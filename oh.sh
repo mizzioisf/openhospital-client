@@ -862,6 +862,18 @@ function parse_user_input {
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
+	s)	# save / write config files
+		echo ""
+		echo "Do yoy want to save current settings to OH configuration files?"
+		get_confirmation;
+		WRITE_CONFIG_FILES="on"
+		write_config_files;
+		set_log_level;
+		set_language;
+		echo "Done!"
+		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
+		;;
+	###################################################
 	t)	# test database connection
 		echo ""
 		if [ "$OH_MODE" != "CLIENT" ]; then
@@ -918,18 +930,6 @@ function parse_user_input {
 		echo "OH_LOG_FILE=$OH_LOG_FILE"
 		echo ""
 		
-		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
-		;;
-	###################################################
-	s)	# write config files
-		echo ""
-		echo "Do yoy want to save current settings to OH configuration files?"
-		get_confirmation;
-		WRITE_CONFIG_FILES="on"
-		write_config_files;
-		set_log_level;
-		set_language;
-		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
