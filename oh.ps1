@@ -949,13 +949,15 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 	$iconfile = "IconFile=" + $iconlocation
 
+	$ShortCut.IconLocation
+
 	$Shortcut.Save()
 
-	Add-Content $desktop_path "HotKey=0"
+#	Add-Content $desktop_path "HotKey=0"
 
-	Add-Content $desktop_path "$iconfile"
+#	Add-Content $desktop_path "$iconfile"
 
-	Add-Content $desktop_path "IconIndex=0"
+#	Add-Content $desktop_path "IconIndex=0"
 
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
