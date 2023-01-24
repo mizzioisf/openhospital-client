@@ -796,7 +796,7 @@ function parse_user_input {
 		read -p "Enter database user name [DATABASE_USER]: " DATABASE_USER
 		read -p "Enter database password [DATABASE_PASSWORD]: " DATABASE_PASSWORD
 
-		echo "Do yoy want to save OH configuration files with entered values ?"
+		echo "Do you want to save entered settings to OH configuration files?"
 		get_confirmation;
 		WRITE_CONFIG_FILES="on"
 		write_config_files;
@@ -923,7 +923,7 @@ function parse_user_input {
 	###################################################
 	s)	# write config files
 		echo ""
-		echo "Do yoy want to save OH configuration files with script values ?"
+		echo "Do yoy want to save current settings to OH configuration files?"
 		get_confirmation;
 		WRITE_CONFIG_FILES="on"
 		write_config_files;
