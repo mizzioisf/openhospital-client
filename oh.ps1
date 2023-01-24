@@ -947,7 +947,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 #	$iconfile = "IconFile=" + $iconlocation
 
-	$ShortCut.IconLocation = "$OH_PATH/oh/rsc/icons/oh.png"
+	$ShortCut.IconLocation = "$OH_PATH\oh\rsc\icons\oh.ico"
 
 	$Shortcut.Save()
 
