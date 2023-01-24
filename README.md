@@ -132,6 +132,7 @@ cd openhospital-client
    G    setup GSM
    D    initialize OH with Demo data
    i    initialize/install OH database
+   k    create Desktop shortcut with current params
    m    configure OH manually
    t    test database connection (CLIENT mode only)
 
@@ -184,6 +185,7 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 - **D**    initialize OH database with Demo data - loads a demo database in order to test the software 
 - **h**    show help
 - **i**    initialize / install OH database
+- **k**    create Desktop shortcut with current params (Windows only)
 - **m**    configure OH manually
 - **t**    test database connection to the configured database server (Client mode only)
 - **h**    show help 
