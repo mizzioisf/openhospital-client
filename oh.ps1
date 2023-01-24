@@ -108,7 +108,7 @@ $script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
 $script:OH_LANGUAGE="en" # default
 
 # single / multiuser - set "yes" for single user configuration
-#$script:OH_SINGLE_USER="no"
+$script:OH_SINGLE_USER="no"
 
 # set log level to INFO | DEBUG - default set to INFO
 #$script:LOG_LEVEL="INFO"
@@ -303,8 +303,6 @@ function set_defaults {
 	if ( [string]::IsNullOrEmpty($OH_SINGLE_USER) ) {
 		$script:OH_SINGLE_USER="no"
 	}
-
-
 
 	# demo data - set default to off
 #	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
@@ -931,15 +929,14 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Creating OH shortcut on Desktop"
 	
 			$WshShell = New-Object -comObject WScript.Shell
-			$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
+			
+			#$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\OpenHospital.lnk")
 
-			$script:desktop_path="$Home\Desktop"
-
-			$Shortcut = $WshShell.CreateShortcut("$desktop_path\OpenHospital.lnk")
+			$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
 			$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
 			$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
 			$Shortcut.WorkingDirectory = "$OH_PATH"
-			$ShortCut.IconLocation = "$OH_PATH\oh\rsc\icons\oh.ico"
+			$ShortCut.IconLocation = "$OH_PATH\$OH_DIR\rsc\icons\oh.ico"
 			$Shortcut.Save()
 
 			Write-Host "Done!"
