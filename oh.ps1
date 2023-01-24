@@ -943,11 +943,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
 	$Shortcut.WorkingDirectory = "$OH_PATH"
 
-	$iconlocation = "$OH_PATH/oh/rsc/icons/oh.png"
+#	$iconlocation = "$OH_PATH/oh/rsc/icons/oh.png"
 
-	$iconfile = "IconFile=" + $iconlocation
+#	$iconfile = "IconFile=" + $iconlocation
 
-	$ShortCut.IconLocation
+	$ShortCut.IconLocation = "$OH_PATH/oh/rsc/icons/oh.png"
 
 	$Shortcut.Save()
 
