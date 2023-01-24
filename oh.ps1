@@ -927,35 +927,20 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"k"	{ # create symbolic lynk
-			Write-Host "Creating symbolic link on Desktop"
-#			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME" -mode $OH_MODE -lang $OH_LANGUAGE"
-#			New-Item -ItemType SymbolicLink -Path "$Home\Desktop\" -Name "OpenHospital.lnk" -Value "$SCRIPT_DIR/$SCRIPT_NAME" # -mode $OH_MODE -lang $OH_LANGUAGE"
-#
-	$WshShell = New-Object -comObject WScript.Shell
-#	$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
-#
+		"k"	{ # create Desktop shortcupt
+			Write-Host "Creating OH shortcut on Desktop"
+	
+			$WshShell = New-Object -comObject WScript.Shell
+			$Shortcut = $WshShell.CreateShortcut("$env:ProgramData\Microsoft\Windows\Start Menu\Programs\supercoolprogram\mrincredible.lnk")
 
-	$script:desktop_path="$Home\Desktop"
+			$script:desktop_path="$Home\Desktop"
 
-	$Shortcut = $WshShell.CreateShortcut("$desktop_path\OpenHospital.lnk")
-	$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
-	$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
-	$Shortcut.WorkingDirectory = "$OH_PATH"
-
-#	$iconlocation = "$OH_PATH/oh/rsc/icons/oh.png"
-
-#	$iconfile = "IconFile=" + $iconlocation
-
-	$ShortCut.IconLocation = "$OH_PATH\oh\rsc\icons\oh.ico"
-
-	$Shortcut.Save()
-
-#	Add-Content $desktop_path "HotKey=0"
-
-#	Add-Content $desktop_path "$iconfile"
-
-#	Add-Content $desktop_path "IconIndex=0"
+			$Shortcut = $WshShell.CreateShortcut("$desktop_path\OpenHospital.lnk")
+			$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
+			$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive OFF -mode $OH_MODE -lang $OH_LANGUAGE"
+			$Shortcut.WorkingDirectory = "$OH_PATH"
+			$ShortCut.IconLocation = "$OH_PATH\oh\rsc\icons\oh.ico"
+			$Shortcut.Save()
 
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
