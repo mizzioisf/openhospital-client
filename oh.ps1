@@ -340,7 +340,7 @@ function read_settings {
 		# if language is not set to default write change
 #		echo "Language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
 #		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
-	fi
+	}
 }
 
 ###################################################################
