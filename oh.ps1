@@ -153,7 +153,7 @@ $script:LOG_FILE_ERR="startup.err"
 $script:OH_LOG_FILE="openhospital.log"
 
 # SQL creation files
-$script:DB_CREATE_SQL="create_all_en.sql" # default to en
+#$script:DB_CREATE_SQL="create_all_en.sql" # default to en
 $script:DB_DEMO="create_all_demo.sql"
 
 ######################## Other settings ########################
@@ -291,10 +291,20 @@ function set_defaults {
 		$script:WRITE_CONFIG_FILES="off"
 	}
 
-#	# OH mode - set default to PORTABLE
-#	if ( [string]::IsNullOrEmpty($OH_MODE) ) {
-#		$script:OH_MODE="PORTABLE"
-#	}
+	# OH mode - set default to PORTABLE
+	if ( [string]::IsNullOrEmpty($OH_MODE) ) {
+		$script:OH_MODE="PORTABLE"
+	}
+	
+	# OH language - set default to en
+	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
+		$script:OH_LANGUAGE="en"
+	}
+
+	# set database creation script in chosen language
+	if ( [string]::IsNullOrEmpty($DB_CREATE_SQL) ) {
+		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
+	}
 
 	# log level - set default to INFO
 	if ( [string]::IsNullOrEmpty($LOG_LEVEL) ) {
@@ -313,11 +323,18 @@ function set_defaults {
 }
 
 ###################################################################
-function check_oh_mode {
-	if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
-		Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
-		Read-Host;
-		exit 1
+function set_oh_mode {
+	#if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
+	#	Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
+	#	Read-Host;
+	#	exit 1
+	}
+	# if settings.properties is present set OH mode
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+		Write-Host "Configuring OH mode..."
+	        ######## settings.properties language configuration
+		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> settings.properties..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
 
@@ -326,15 +343,12 @@ function read_settings {
 	# read values for script variables from existing settings file
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
-#		$values = Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" | Out-String | ConvertFrom-StringData
-		$ohvalues = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" -Raw | ConvertFrom-StringData)
-		$script:OH_MODE=$ohvalues.MODE
-		$script:OH_LANGUAGE=$ohvalues.LANGUAGE
-
-		######## settings.properties language configuration
-		# if language is not set to default write change
-#		echo "Language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
-#		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+		$oh_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" -Raw | ConvertFrom-StringData)
+		##############   saved settings   ##############
+		$script:OH_MODE=$oh_settings.MODE
+		$script:OH_LANGUAGE=$oh_settings.LANGUAGE
+		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
+		################################################
 	}
 }
 
@@ -357,16 +371,6 @@ function set_path {
 
 ###################################################################
 function set_language {
-	# set OH interface language - default to en if not defined
-#	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
-#		$script:OH_LANGUAGE="en"
-#	}
-
-#	# set OH database language - default to en if not defined
-#	if ( [string]::IsNullOrEmpty($DATABASE_LANGUAGE) ) {
-#		$script:DATABASE_LANGUAGE="en"
-#	}
-
 	# check for valid language selection
 	if ($script:languagearray -contains "$OH_LANGUAGE") {
 		# set database creation script in chosen language
@@ -385,8 +389,6 @@ function set_language {
 	        ######## settings.properties language configuration
 		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
 
@@ -904,18 +906,21 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
+			set_oh_mode;
 			Write-Host "OH_MODE set to CLIENT mode." -ForeGroundcolor Green
 			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"P"	{ # start in PORTABLE mode
 			$script:OH_MODE="PORTABLE"
+			set_oh_mode;
 			Write-Host "OH_MODE set to PORTABLE mode." -ForeGroundcolor Green
 			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"S"	{ # start in SERVER (Portable) mode
 			$script:OH_MODE="SERVER"
+			set_oh_mode;
 			Write-Host "OH_MODE set to SERVER mode." -ForeGroundcolor Green
 			Read-Host "Press any key to continue";
 		}
@@ -991,7 +996,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"k"	{ # create Desktop shortcut
-			check_oh_mode;
 			create_desktop_shortcut;
 			Read-Host "Press any key to continue";
 		}
@@ -1011,8 +1015,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host 				""
 			$script:OH_SINGLE_USER=Read-Host	"Please select Single user configuration (yes/no)" 
 	                # script:OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
-			Write-Host 				""
-                	$script:LOG_LEVEL=Read-Host		"Please select log level (INFO|DEBUG)"
 			Write-Host 				""
 			Write-Host 				"***** Database configuration *****"
 			Write-Host 				""
@@ -1199,9 +1201,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
 
-# check for valid OH mode 
-check_oh_mode;
-
 # check demo mode
 if ( $DEMO_DATA -eq "on" ) {
 	# exit if OH is configured in CLIENT mode
@@ -1233,13 +1232,9 @@ Write-Host "Write config files is set to $WRITE_CONFIG_FILES"
 Write-Host "Starting Open Hospital in $OH_MODE mode..."
 Write-Host "OH_PATH is set to $OH_PATH"
 
-# display OH settings only if defined
-if (Get-Variable $OH_LANGUAGE -Scope 'Global' -ErrorAction 'Ignore') {
-	Write-Host "OH language is set to $OH_LANGUAGE"
-}
-if (Get-Variable $LOG_LEVEL -Scope 'Global' -ErrorAction 'Ignore') {
-	Write-Host "OH log level is set to $LOG_LEVEL"
-}
+# display OH settings
+Write-Host "OH language is set to $OH_LANGUAGE"
+Write-Host "OH log level is set to $LOG_LEVEL"
 
 # check for java
 java_check;

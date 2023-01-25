@@ -50,10 +50,10 @@ WRITE_CONFIG_FILES="off"
 
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
-OH_LANGUAGE=en # default
+#OH_LANGUAGE="en" # default
 
 # single / multiuser - set "yes" for single user configuration
-OH_SINGLE_USER="no"
+#OH_SINGLE_USER="no"
 
 # set log level to INFO | DEBUG - default set to INFO
 LOG_LEVEL="INFO"
@@ -67,7 +67,7 @@ DEMO_DATA="off"
 #JAVA_BIN=`which java`
 
 ##################### Database configuration #######################
-DATABASE_SERVER=localhost
+DATABASE_SERVER="localhost"
 DATABASE_PORT="3306"
 DATABASE_ROOT_PW="tmp2021oh111"
 DATABASE_NAME="oh"
@@ -97,7 +97,7 @@ LOG_FILE="startup.log"
 OH_LOG_FILE="openhospital.log"
 
 # SQL creation files
-DB_CREATE_SQL="create_all_en.sql" # default to en
+#DB_CREATE_SQL="create_all_en.sql" # default to en
 DB_DEMO="create_all_demo.sql"
 
 ######################## Other settings ########################
@@ -215,26 +215,16 @@ function get_confirmation {
 }
 
 ###################################################################
-function check_oh_mode {
-	if [ -z ${OH_MODE+x} ]; then
-		echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
-		# if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
-		exit 1
-	fi
-}
-
-###################################################################
 function read_settings {
 	# read values for script variables from existing settings file
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Reading OH settings file..."
 		. ./$OH_DIR/rsc/settings.properties
+		#####  saved settings  #####
 		OH_LANGUAGE=$LANGUAGE
 		OH_MODE=$MODE
-		######## settings.properties language configuration
-		# if language is not set to default write change
-#		echo "Language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
-#		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+		OH_SINGLE_USER=$SINGLE_USER
+		############################
 	fi
 }
 
@@ -247,10 +237,20 @@ function set_defaults {
 		WRITE_CONFIG_FILES="off"
 	fi
 
-#	# OH mode - set default to PORTABLE
-#	if [ -z "$OH_MODE" ]; then
-#		OH_MODE="PORTABLE"
-#	fi
+	# OH mode - set default to PORTABLE
+	if [ -z "$OH_MODE" ]; then
+		OH_MODE="PORTABLE"
+	fi
+
+	# OH language - set default to en
+	if [ -z "$OH_LANGUAGE" ]; then
+		OH_LANGUAGE="en"
+	fi
+
+	# set database creation script in chosen language
+	if [ -z "$DB_CREATE_SQL" ]; then
+		DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
+	fi
 
 	# log level - set default to INFO
 	if [ -z "$LOG_LEVEL" ]; then
@@ -265,6 +265,22 @@ function set_defaults {
 	# demo data - set default to off
 	if [ -z "$DEMO_DATA" ]; then
 		DEMO_DATA="off"
+	fi
+}
+
+###################################################################
+function set_oh_mode {
+	#if [ -z ${OH_MODE+x} ]; then
+	#	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
+	#	# if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
+	#	exit 1
+	#fi
+	# if settings.properties is present set OH mode
+	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+		echo "Configuring OH mode..."
+		######## settings.properties language configuration
+		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
+		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
 	fi
 }
 
@@ -293,11 +309,6 @@ function set_path {
 
 ###################################################################
 function set_language {
-#	# set OH database language - default to en if not defined
-#	if [ -z "$DATABASE_LANGUAGE" ]; then
-#		DATABASE_LANGUAGE=en
-#	fi
-
 	# check for valid language selection
 	case "$OH_LANGUAGE" in 
 		en|fr|it|es|pt|ar) # TBD: language array direct check
@@ -309,9 +320,6 @@ function set_language {
 		;;
 	esac
 	
-	# set database creation script in chosen language
-	DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
-
 	# if settings.properties is present set language
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Configuring OH language..."
@@ -734,6 +742,7 @@ function parse_user_input {
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
 		DEMO_DATA="off"
+		set_oh_mode;
 		echo ""
 		echo "OH_MODE set to CLIENT mode."
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
@@ -741,6 +750,7 @@ function parse_user_input {
 	###################################################
 	P)	# start in PORTABLE mode
 		OH_MODE="PORTABLE"
+		set_oh_mode;
 		echo ""
 		echo "OH_MODE set to PORTABLE mode."
 		if (( $2==0 )); then opt="Z"; else read; fi
@@ -748,6 +758,7 @@ function parse_user_input {
 	###################################################
 	S)	# start in SERVER mode
 		OH_MODE="SERVER"
+		set_oh_mode;
 		echo ""
 		echo "OH_MODE set to SERVER mode."
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
@@ -805,7 +816,6 @@ function parse_user_input {
 		;;
 	###################################################
 	k)	# create Desktop shortcut
-		check_oh_mode;
 		create_desktop_shortcut;
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
@@ -862,8 +872,6 @@ function parse_user_input {
 		echo ""
 		read -p "Please select Single user configuration (yes/no): " OH_SINGLE_USER
 		#OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
-		echo ""
-		read -p "Please select log level (INFO|DEBUG): " LOG_LEVEL
 		echo ""
 		echo "***** Database configuration *****"
 		echo ""
@@ -1123,9 +1131,6 @@ fi
 
 echo ""
 
-# check for valid OH mode 
-check_oh_mode;
-
 # check for demo mode
 if [ "$DEMO_DATA" = "on" ]; then
 	# exit if OH is configured in CLIENT mode
@@ -1153,9 +1158,9 @@ echo "Write config files is set to $WRITE_CONFIG_FILES"
 echo "Starting Open Hospital in $OH_MODE mode..."
 echo "OH_PATH is set to $OH_PATH"
 
-# display OH settings only if defined
-if [ -n "$OH_LANGUAGE" ]; then echo "OH language is set to $OH_LANGUAGE"; fi
-if [ -n "$LOG_LEVEL" ]; then echo "OH log level is set to $LOG_LEVEL"; fi
+# display OH settings
+echo "OH language is set to $OH_LANGUAGE";
+echo "OH log level is set to $LOG_LEVEL"
 
 # check for java
 java_check;
