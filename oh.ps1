@@ -337,12 +337,6 @@ function read_settings {
 		$script:OH_MODE=$values.MODE
 		$script:OH_LANGUAGE=$values.LANGUAGE
 
-		Write-Host "OOOOOOOOOOOOOOOOOOO"
-		Write-Host "OH_MODE= $OH_MODE"
-		Write-Host "OH_LANGUAGE= $OH_LANGUAGE"
-		Write-Host "OOOOOOOOOOOOOOOOOOO"
-		Read-Host;
-		exit 0
 		######## settings.properties language configuration
 		# if language is not set to default write change
 #		echo "Language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
