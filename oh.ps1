@@ -392,7 +392,7 @@ function set_language {
 	}
 	else {
 		Write-Host "Error: settings.properties file not found. Exiting." -ForegroundColor Red
-		Read-Host; exit 1
+		Read-Host; 
 	}
 }
 
