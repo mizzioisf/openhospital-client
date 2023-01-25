@@ -323,6 +323,8 @@ function check_oh_mode {
 
 ###################################################################
 function read_settings {
+		Write-Host "Reading OH settings file..."
+		Read-Host;
 	# read values for script variables from existing settings file
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
