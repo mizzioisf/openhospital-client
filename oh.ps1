@@ -326,8 +326,10 @@ function read_settings {
 	# read values for script variables from existing settings file
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
+		Read-Host;
 		
-		$values = Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" | Out-String | ConvertFrom-StringData
+#		$values = Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" | Out-String | ConvertFrom-StringData
+		$values = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" -Raw | ConvertFrom-StringData)
 		OH_MODE=$values.MODE
 		OH_LANGUAGE=$values.LANGUAGE
 
