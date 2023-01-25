@@ -322,6 +322,22 @@ function check_oh_mode {
 }
 
 ###################################################################
+function read_settings {
+	# read values for script variables from existing settings file
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+		Write-Host "Reading OH settings file..."
+		
+		$values = Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" | Out-String | ConvertFrom-StringData
+		OH_MODE=$values.MODE
+		OH_LANGUAGE=$values.LANGUAGE
+		######## settings.properties language configuration
+		# if language is not set to default write change
+#		echo "Language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
+#		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+	fi
+}
+
+###################################################################
 function set_path {
 	# get current directory
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
@@ -368,6 +384,8 @@ function set_language {
 	        ######## settings.properties language configuration
 		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> settings.properties..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
 
@@ -791,12 +809,13 @@ function write_config_files {
 	}
 
 	######## settings.properties setup
-	# set language in OH config file
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old }
 		Write-Host "Writing OH configuration file -> settings.properties..."
+		# set OH mode
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_MODE","$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set LANGUAGE
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set DOC_DIR
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set PHOTO_DIR
@@ -866,6 +885,7 @@ function clean_files {
 
 ######## Environment setup
 
+read_settings;
 set_defaults;
 set_path;
 	

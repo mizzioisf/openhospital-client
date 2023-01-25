@@ -224,6 +224,21 @@ function check_oh_mode {
 }
 
 ###################################################################
+function read_settings {
+	# read values for script variables from existing settings file
+	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+		echo "Reading OH settings file..."
+		. ./$OH_DIR/rsc/settings.properties
+		OH_LANGUAGE=$LANGUAGE
+		OH_MODE=$MODE
+		######## settings.properties language configuration
+		# if language is not set to default write change
+#		echo "Language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
+#		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+	fi
+}
+
+###################################################################
 function set_defaults {
 	# set default values for script variables
 	# config file generation - set default to off
@@ -301,9 +316,10 @@ function set_language {
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Configuring OH language..."
 		######## settings.properties language configuration
-		# if language is not set to default write change
 		echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
 		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
+		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
 	fi
 }
 
@@ -684,11 +700,10 @@ function write_config_files {
 		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
 	fi
 	######## settings.properties setup
-	# set language and DOC_DIR in OH config file
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/settings.properties ]; then
 		[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
 		echo "Writing OH configuration file -> settings.properties..."
-		sed -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
+		sed -e "s/OH_MODE/$OH_MODE/g" -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
 		-e "s&PHOTO_DIR&$PHOTO_DIR&g" ./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
 	fi
 }
@@ -1062,6 +1077,7 @@ fi
 
 ######## Environment setup
 
+read_settings;
 set_defaults;
 set_path;
 
