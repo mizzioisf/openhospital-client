@@ -323,22 +323,6 @@ function set_defaults {
 }
 
 ###################################################################
-function set_oh_mode {
-	#if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
-	#	Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
-	#	Read-Host;
-	#	exit 1
-	#}
-	# if settings.properties is present set OH mode
-	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
-		Write-Host "Configuring OH mode..."
-	        ######## settings.properties language configuration
-		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-	}
-}
-
-###################################################################
 function read_settings {
 	# read values for script variables from existing settings file
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
@@ -370,6 +354,27 @@ function set_path {
 }
 
 ###################################################################
+function set_oh_mode {
+	#if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
+	#	Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
+	#	Read-Host;
+	#	exit 1
+	#}
+	# if settings.properties is present set OH mode
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+		Write-Host "Configuring OH mode..."
+	        ######## settings.properties language configuration
+		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> settings.properties..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		Write-Host "OH mode set to $OH_MODE."
+	}
+	else {
+		Write-Host "Warning: settings.properties file not found." -ForegroundColor Red
+		Read-Host; 
+	}
+}
+
+###################################################################
 function set_language {
 	# check for valid language selection
 	if ($script:languagearray -contains "$OH_LANGUAGE") {
@@ -389,9 +394,10 @@ function set_language {
 	        ######## settings.properties language configuration
 		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		Write-Host "Language set to $OH_LANGUAGE."
 	}
 	else {
-		Write-Host "Error: settings.properties file not found. Exiting." -ForegroundColor Red
+		Write-Host "Warning: settings.properties file not found." -ForegroundColor Red
 		Read-Host; 
 	}
 }
@@ -1009,14 +1015,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# create config files if not present
 			#write_config_files;
 			set_language;
-			Write-Host "Language set to $OH_LANGUAGE."
 			#$script:WRITE_CONFIG_FILES="on"
 			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"m"	{ # configure OH manually
-			$script:OH_LANGUAGE=Read-Host		"Please select language [$OH_LANGUAGE_LIST]"
-			Write-Host 				""
 			$script:OH_SINGLE_USER=Read-Host	"Please select Single user configuration (yes/no)" 
 	                # script:OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
 			Write-Host 				""
@@ -1091,12 +1094,12 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"s"	{ # save / write config files
-			Write-Host "Do yoy want to save current settings to OH configuration files?"
+			Write-Host "Do you want to save current settings to OH configuration files?"
 			get_confirmation;
-			$script:WRITE_CONFIG_FILES="on"
 			write_config_files;
-			set_log_level;
+			set_oh_mode;
 			set_language;
+			set_log_level;
 			# if Desktop link is present update it
 			if (Test-Path -Path "$Home\Desktop\OpenHospital.lnk" -PathType leaf) {
 				create_desktop_shortcut;
