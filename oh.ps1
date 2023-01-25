@@ -898,9 +898,9 @@ function clean_files {
 
 ######## Environment setup
 
+set_path;
 read_settings;
 set_defaults;
-set_path;
 	
 # set working dir to OH base dir
 cd "$OH_PATH" # workaround for hard coded paths
