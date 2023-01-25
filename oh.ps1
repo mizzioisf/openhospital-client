@@ -326,6 +326,8 @@ function read_settings {
 		Write-Host "Reading OH settings file..."
 		Read-Host;
 	# read values for script variables from existing settings file
+		Write-Host "OH_PATH= $OH_PATH"
+		Write-Host "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
 		Read-Host;
