@@ -204,6 +204,7 @@ function script_menu {
         echo ""
 }
 
+###################################################################
 function get_confirmation {
 	read -p "(y/n) ? " choice
 	case "$choice" in 
@@ -213,6 +214,7 @@ function get_confirmation {
 	esac
 }
 
+###################################################################
 function check_oh_mode {
 	if [ -z ${OH_MODE+x} ]; then
 		echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
@@ -221,6 +223,7 @@ function check_oh_mode {
 	fi
 }
 
+###################################################################
 function set_defaults {
 	# set default values for script variables
 	# config file generation - set default to off
@@ -250,6 +253,7 @@ function set_defaults {
 	fi
 }
 
+###################################################################
 function set_path {
 	# get current directory
 	CURRENT_DIR=$PWD
@@ -272,6 +276,7 @@ function set_path {
 	DICOM_DIR_ESCAPED=$(echo $DICOM_DIR | sed -e 's/\//\\\//g')
 }
 
+###################################################################
 function set_language {
 #	# set OH database language - default to en if not defined
 #	if [ -z "$DATABASE_LANGUAGE" ]; then
@@ -302,6 +307,7 @@ function set_language {
 	fi
 }
 
+###################################################################
 function initialize_dir_structure {
 	# create directory structure
 	mkdir -p "./$TMP_DIR"
@@ -310,7 +316,8 @@ function initialize_dir_structure {
 	mkdir -p "./$PHOTO_DIR"
 	mkdir -p "./$BACKUP_DIR"
 }
-		
+
+###################################################################
 function create_desktop_shortcut {
 # Create Desktop application entry
 desktop_path=$(xdg-user-dir DESKTOP)
@@ -335,6 +342,7 @@ Categories=Utility;Application;
 " > $desktop_path/OpenHospital.desktop
 }
 
+###################################################################
 function java_lib_setup {
 	# NATIVE LIB setup
 	case $JAVA_ARCH in
@@ -366,6 +374,7 @@ function java_lib_setup {
 	done
 }
 
+###################################################################
 function java_check {
 # check if JAVA_BIN is already set and it exists
 if ( [ -z ${JAVA_BIN+x} ] || [ ! -x "$JAVA_BIN" ] ); then
@@ -399,6 +408,7 @@ echo "JAVA found!"
 echo "Using $JAVA_BIN"
 }
 
+###################################################################
 function mysql_check {
 if [ ! -d "./$MYSQL_DIR" ]; then
 	if [ ! -f "./$MYSQL_DIR.$EXT" ]; then
@@ -441,6 +451,7 @@ if [ $? -eq 1 ]; then
 fi
 }
 
+###################################################################
 function config_database {
 	echo "Checking for $MYSQL_NAME config file..."
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$CONF_DIR/$MYSQL_CONF_FILE ]; then
@@ -460,6 +471,7 @@ function config_database {
 	fi
 }
 
+###################################################################
 function initialize_database {
 	# create data directory
 	mkdir -p "./$DATA_DIR"
@@ -481,6 +493,7 @@ function initialize_database {
 	fi
 }
 
+###################################################################
 function start_database {
 	echo "Checking if $MYSQL_NAME is running..."
 	if [ -f "$OH_PATH/$TMP_DIR/mysql.sock" ] || [ -f "$OH_PATH/$TMP_DIR/mysql.pid" ] ; then
@@ -499,6 +512,7 @@ function start_database {
 	echo "$MYSQL_NAME server started! "
 }
 
+###################################################################
 function set_database_root_pw {
 	# if using MySQL/MariaDB root password need to be set
 	echo "Setting $MYSQL_NAME root password..."
@@ -511,6 +525,7 @@ function set_database_root_pw {
 	fi
 }
 
+###################################################################
 function import_database {
 	echo "Creating OH Database..."
 	# create OH database and user
@@ -548,6 +563,7 @@ function import_database {
 	cd "$OH_PATH"
 }
 
+###################################################################
 function dump_database {
 	# save OH database if existing
 	if [ -x ./$MYSQL_DIR/bin/mysqldump ]; then
@@ -569,6 +585,7 @@ function dump_database {
 	echo "$MYSQL_NAME dump file $BACKUP_DIR/mysqldump_$DATE.sql completed!"
 }
 
+###################################################################
 function shutdown_database {
 	if [ "$OH_MODE" != "CLIENT" ]; then
 		echo "Shutting down $MYSQL_NAME..."
@@ -582,6 +599,7 @@ function shutdown_database {
 	fi
 }
 
+###################################################################
 function clean_database {
 	echo "Warning: do you want to remove all existing data and databases ?"
 	get_confirmation;
@@ -595,6 +613,7 @@ function clean_database {
 	rm -rf ./$TMP_DIR/*
 }
 
+###################################################################
 function test_database_connection {
         # test if mysql client is available
 	if [ -x ./$MYSQL_DIR/bin/mysql ]; then
@@ -612,6 +631,7 @@ function test_database_connection {
 	fi
 }
 
+###################################################################
 function clean_files {
 	# remove all log files
 	echo "Warning: do you want to remove all existing log files ?"
@@ -635,6 +655,7 @@ function clean_files {
 	rm -f ./$OH_DIR/rsc/dicom.properties.old
 }
 
+###################################################################
 function write_config_files {
 	# set up configuration files
 	echo "Checking for OH configuration files..."
@@ -672,6 +693,7 @@ function write_config_files {
 	fi
 }
 
+###################################################################
 function set_log_level {
 	echo ""
 	######## settings.properties log_level configuration
@@ -690,6 +712,7 @@ function set_log_level {
 	esac
 }
 
+###################################################################
 function parse_user_input {
 	case $1 in
 	###################################################

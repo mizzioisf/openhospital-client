@@ -268,6 +268,7 @@ function script_menu {
 	Write-Host ""
 }
 
+###################################################################
 function get_confirmation {
 	$choice = Read-Host -Prompt "(y/n) ? "
 	switch ("$choice") {
@@ -277,6 +278,7 @@ function get_confirmation {
 	}
 }
 
+###################################################################
 function set_defaults {
         # set default values for script variables
 	# interactive mode - set default to on
@@ -310,6 +312,7 @@ function set_defaults {
 	}
 }
 
+###################################################################
 function check_oh_mode {
 	if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
 		Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
@@ -318,6 +321,7 @@ function check_oh_mode {
 	}
 }
 
+###################################################################
 function set_path {
 	# get current directory
 	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
@@ -334,6 +338,7 @@ function set_path {
 	}
 }
 
+###################################################################
 function set_language {
 	# set OH interface language - default to en if not defined
 #	if ( [string]::IsNullOrEmpty($OH_LANGUAGE) ) {
@@ -366,6 +371,7 @@ function set_language {
 	}
 }
 
+###################################################################
 function initialize_dir_structure {
 	# create directory structure
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$TMP_DIR") > $null
@@ -375,7 +381,7 @@ function initialize_dir_structure {
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
 }
 
-
+###################################################################
 function create_desktop_shortcut {
 	Write-Host "Creating/updating OH shortcut on Desktop..."
 	
@@ -393,6 +399,7 @@ function create_desktop_shortcut {
 }
 
 
+###################################################################
 function java_lib_setup {
 	# NATIVE LIB setup
 	switch ( "$JAVA_ARCH" ) {
@@ -419,6 +426,7 @@ function java_lib_setup {
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\lib\"
 }
 
+###################################################################
 function download_file ($download_url,$download_file){
 	Write-Host "Downloading $download_file from $download_url..."
 	try {
@@ -435,6 +443,7 @@ function download_file ($download_url,$download_file){
 	}
 }
 
+###################################################################
 function java_check {
 	# check if JAVA_BIN is already set and it exists
 	if ( !( $JAVA_BIN ) -or !(Test-Path $JAVA_BIN -PathType leaf ) ) {
@@ -500,6 +509,7 @@ function mysql_check {
 	}
 }
 
+###################################################################
 function config_database {
 	Write-Host "Checking for $MYSQL_NAME config file..."
 
@@ -542,6 +552,7 @@ function config_database {
 	}
 }
 
+###################################################################
 function initialize_database {
 	# create data directory
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR") > $null
@@ -569,6 +580,7 @@ function initialize_database {
 	}
 }
 
+###################################################################
 function start_database {
 	Write-Host "Checking if $MYSQL_NAME is running..."
 	if ( ( Test-Path "$OH_PATH/$TMP_DIR/mysql.sock" ) -or ( Test-Path "$OH_PATH/$TMP_DIR/mysql.pid" ) ) {
@@ -594,6 +606,7 @@ function start_database {
 	Write-Host "$MYSQL_NAME server started! "
 }
 
+###################################################################
 function set_database_root_pw {
 	# if using MySQL root password need to be set
 	switch -Regex ( $MYSQL_DIR ) {
@@ -614,6 +627,7 @@ function set_database_root_pw {
 	}
 }
 
+###################################################################
 function import_database {
 	Write-Host "Creating OH Database..."
 	# create OH database and user
@@ -660,6 +674,7 @@ function import_database {
 	cd "$OH_PATH"
 }
 
+###################################################################
 function dump_database {
 	# save OH database if existing
 	if (Test-Path "$OH_PATH/$MYSQL_DIR/bin/mysqldump.exe" -PathType leaf) {
@@ -693,6 +708,7 @@ function shutdown_database {
 	}
 }
 
+###################################################################
 function clean_database {
 	Write-Host "Warning: do you want to remove all existing data and databases ?" -ForegroundColor Red
 	get_confirmation;
@@ -709,6 +725,7 @@ function clean_database {
 	$filetodel="$OH_PATH\$TMP_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
+###################################################################
 function test_database_connection {
 	# test if mysql client is available
 	if (Test-Path "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -PathType leaf) {
@@ -729,6 +746,7 @@ function test_database_connection {
 	}
 }
 
+###################################################################
 function write_config_files {
 	# set up configuration files
 	Write-Host "Checking for OH configuration files..."
@@ -788,6 +806,7 @@ function write_config_files {
 	}
 }
 
+###################################################################
 function set_log_level {
 	######## settings.properties log_level configuration
 	Write-Host "Setting log level in OH configuration file -> log4j.properties..."
@@ -806,7 +825,7 @@ function set_log_level {
 		}
 }
 
-
+###################################################################
 function clean_files {
 	# remove all log files
 	Write-Host "Warning: do you want to remove all existing log files ?" -ForegroundColor Red
