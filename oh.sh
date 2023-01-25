@@ -219,11 +219,11 @@ function read_settings {
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Reading OH settings file..."
 		. ./$OH_DIR/rsc/settings.properties
-		#####  saved settings  #####
+		###  read saved settings  ###
 		OH_LANGUAGE=$LANGUAGE
 		OH_MODE=$MODE
 		OH_SINGLE_USER=$SINGLE_USER
-		############################
+		#############################
 	fi
 }
 
@@ -248,11 +248,7 @@ function set_defaults {
 
 	# set database creation script in chosen language
 	if [ -z "$DB_CREATE_SQL" ]; then
-		echo "-------------"
-		echo "DBCREATE -> $DB_CREATE_SQL"
 		DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
-		echo "DBCREATE -> $DB_CREATE_SQL"
-		echo "-------------"
 	fi
 
 	# log level - set default to INFO
@@ -341,6 +337,31 @@ function set_language {
 	fi
 }
 
+
+###################################################################
+function set_log_level {
+	if [ -f ./$OH_DIR/rsc/log4j.properties ]; then
+		echo ""
+		######## log4j.properties log_level configuration
+		echo "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
+		case "$LOG_LEVEL" in
+			*INFO*)
+				sed -e "s/DEBUG/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
+			;;
+			*DEBUG*)
+				sed -e "s/INFO/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
+			;;
+			*)
+				echo "Invalid log level: $LOG_LEVEL. Exiting."
+				exit 1
+			;;
+		esac
+		echo "Log level set to $LOG_LEVEL"
+	else 
+		echo ""
+		echo "Warning: log4j.properties file not found."
+	fi
+}
 ###################################################################
 function initialize_dir_structure {
 	# create directory structure
@@ -727,25 +748,6 @@ function write_config_files {
 }
 
 ###################################################################
-function set_log_level {
-	echo ""
-	######## settings.properties log_level configuration
-	echo "Setting log level to $LOG_LEVEL in OH configuration file -> log4j.properties..."
-	case "$LOG_LEVEL" in
-		*INFO*)
-			sed -e "s/DEBUG/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
-		;;
-		*DEBUG*)
-			sed -e "s/INFO/$LOG_LEVEL/g" -i ./$OH_DIR/rsc/log4j.properties 
-		;;
-		*)
-			echo "Invalid log level: $LOG_LEVEL. Exiting."
-			exit 1
-		;;
-	esac
-}
-
-###################################################################
 function parse_user_input {
 	case $1 in
 	###################################################
@@ -784,10 +786,9 @@ function parse_user_input {
 			;;
 		esac
 		# create config files if not present
-		write_config_files;
+		#write_config_files;
 		# set log level
 		set_log_level;
-		echo "Log level set to $LOG_LEVEL"
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
@@ -875,8 +876,8 @@ function parse_user_input {
 	###################################################
 	m)	# configure OH manually
 		echo ""
-		read -p "Please select Single user configuration (yes/no): " OH_SINGLE_USER
-		#OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
+		#read -p "Please select Single user configuration (yes/no): " OH_SINGLE_USER
+		###### OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
 		echo ""
 		echo "***** Database configuration *****"
 		echo ""
@@ -1165,7 +1166,6 @@ echo "OH_PATH is set to $OH_PATH"
 
 # display OH settings
 echo "OH language is set to $OH_LANGUAGE";
-echo "OH log level is set to $LOG_LEVEL"
 
 # check for java
 java_check;
@@ -1230,11 +1230,8 @@ else
 	# test if database connection is working
 	test_database_connection;
 
-	# generate config files
+	# generate config files if not existent
 	write_config_files;
-
-	# configure log level
-	set_log_level;
 
 	echo "Starting Open Hospital GUI..."
 	# OH GUI launch

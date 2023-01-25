@@ -368,7 +368,7 @@ function set_oh_mode {
 		Write-Host "OH mode set to $OH_MODE."
 	}
 	else {
-		Write-Host "Warning: settings.properties file not found." -ForegroundColor Red
+		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
 	}
 }
 
@@ -395,10 +395,35 @@ function set_language {
 		Write-Host "Language set to $OH_LANGUAGE."
 	}
 	else {
-		Write-Host "Warning: settings.properties file not found." -ForegroundColor Red
+		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
 	}
 }
 
+
+###################################################################
+function set_log_level {
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/log4j.properties" -PathType leaf ) {
+		######## log4j.properties log_level configuration
+		Write-Host "Setting log level in OH configuration file -> log4j.properties..."
+		switch -CaseSensitive( $script:LOG_LEVEL ) {
+		###################################################
+		"INFO"	{
+			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			break;
+			}
+		"DEBUG"	{
+			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
+			}
+		default {
+			Write-Host "Invalid log level option: $LOG_LEVEL." -ForegroundColor Red
+			exit 2;
+			}
+		}
+	}
+	else {
+		Write-Host "Warning: log4j.properties file not found." -ForegroundColor Yellow
+	}
+}
 ###################################################################
 function initialize_dir_structure {
 	# create directory structure
@@ -836,25 +861,6 @@ function write_config_files {
 }
 
 ###################################################################
-function set_log_level {
-	######## settings.properties log_level configuration
-	Write-Host "Setting log level in OH configuration file -> log4j.properties..."
-		switch -CaseSensitive( $script:LOG_LEVEL ) {
-		###################################################
-		"INFO"	{ # 
-			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("DEBUG","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
-			break;
-			}
-		"DEBUG"	{ # 
-			(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("INFO","$LOG_LEVEL") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
-			}
-		default { Write-Host "Invalid log level option: $LOG_LEVEL." -ForegroundColor Red
-			exit 2;
-			}
-		}
-}
-
-###################################################################
 function clean_files {
 	# remove all log files
 	Write-Host "Warning: do you want to remove all existing log files ?" -ForegroundColor Red
@@ -885,10 +891,10 @@ function clean_files {
 ######## Pre-flight checks
 
 # check user running the script
-# Write-Host "Checking for elevated permissions..."
-# if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`[Security.Principal.WindowsBuiltInRole] "Administrator")) {
-# Write-Host "Error: Cannot run as Administrator user. Exiting" -ForegroundColor Red
-# exit 1
+#Write-Host "Checking for elevated permissions..."
+#	if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`[Security.Principal.WindowsBuiltInRole] "Administrator")) {
+#	Write-Host "Error: Cannot run as Administrator user. Exiting" -ForegroundColor Red
+#	exit 1
 #}
 # else { Write-Host "User ok — go on executing the script..." -ForegroundColor Green }
 
@@ -898,7 +904,7 @@ function clean_files {
 set_path;
 read_settings;
 set_defaults;
-	
+
 # set working dir to OH base dir
 cd "$OH_PATH" # workaround for hard coded paths
 
@@ -946,7 +952,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# set configuration
 			set_log_level;
 			Write-Host "Log level set to $script:LOG_LEVEL" -ForeGroundcolor Green
-
 			Read-Host "Press any key to continue";
 		}
 		###################################################
@@ -1238,7 +1243,6 @@ Write-Host "OH_PATH is set to $OH_PATH"
 
 # display OH settings
 Write-Host "OH language is set to $OH_LANGUAGE"
-Write-Host "OH log level is set to $LOG_LEVEL"
 
 # check for java
 java_check;
@@ -1322,11 +1326,8 @@ else {
 	# test if database connection is working
 	test_database_connection;
 
-	# generate config files
+	# generate config files if not existent
 	write_config_files;
-
-	# configure log level
-        set_log_level;
 
 	Write-Host "Starting Open Hospital GUI..."
 
