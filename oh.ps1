@@ -323,19 +323,19 @@ function check_oh_mode {
 
 ###################################################################
 function read_settings {
-		Write-Host "Reading OH settings file..."
-		Read-Host;
+	Write-Host "Reading OH settings file..."
 	# read values for script variables from existing settings file
-		Write-Host "OH_PATH= $OH_PATH"
-		Write-Host "$OH_PATH/$OH_DIR/rsc/settings.properties"
+#Write-Host "OH_PATH= $OH_PATH"
+#	Write-Host "$OH_PATH/$OH_DIR/rsc/settings.properties"
+
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
 		Read-Host;
 		
 #		$values = Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" | Out-String | ConvertFrom-StringData
 		$values = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" -Raw | ConvertFrom-StringData)
-		OH_MODE=$values.MODE
-		OH_LANGUAGE=$values.LANGUAGE
+		$script:OH_MODE=$values.MODE
+		$script:OH_LANGUAGE=$values.LANGUAGE
 
 		Write-Host "OOOOOOOOOOOOOOOOOOO"
 		Write-Host "OH_MODE= $OH_MODE"
