@@ -948,7 +948,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				}
 			}
 			# create config files if not present
-			write_config_files;
+			#write_config_files;
 			# set configuration
 			set_log_level;
 			Write-Host "Log level set to $script:LOG_LEVEL" -ForeGroundcolor Green
