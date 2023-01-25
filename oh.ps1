@@ -325,7 +325,7 @@ function set_path {
 	if ( ! $OH_PATH ) {
 		Write-Host "Info: OH_PATH not defined - setting to script path"
 		$script:OH_PATH=$PSScriptRoot
-		if ( !(Test-Path "$OH_PATH\$SCRIPT_NAME" -PathType leaf) ) {
+		if ( !(Test-Path "$OH_PATH/$SCRIPT_NAME" -PathType leaf) ) {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
 			Read-Host; exit 1
 		}
@@ -358,7 +358,7 @@ function set_language {
 	$script:DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
 
 	# if settings.properties is present set language
-	if ( Test-Path /$OH_DIR/rsc/settings.properties -PathType leaf ) {
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Configuring OH language..."
 	        ######## settings.properties language configuration
 		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
@@ -445,7 +445,7 @@ function java_check {
 
 	# if JAVA_BIN is not found download JRE
 	if ( !(Test-Path $JAVA_BIN  -PathType leaf ) ) {
-        	if ( !(Test-Path "$OH_PATH\$JAVA_DISTRO.$EXT" -PathType leaf ) ) {
+        	if ( !(Test-Path "$OH_PATH/$JAVA_DISTRO.$EXT" -PathType leaf ) ) {
 			Write-Host "Warning - JAVA not found. Do you want to download it ?" -ForegroundColor Yellow
 			get_confirmation;
 			# Download java binaries
@@ -469,8 +469,8 @@ function java_check {
 }
 
 function mysql_check {
-	if (  !(Test-Path "$OH_PATH\$MYSQL_DIR") ) {
-		if ( !(Test-Path "$OH_PATH\$MYSQL_DIR.$EXT" -PathType leaf) ) {
+	if (  !(Test-Path "$OH_PATH/$MYSQL_DIR") ) {
+		if ( !(Test-Path "$OH_PATH/$MYSQL_DIR.$EXT" -PathType leaf) ) {
 			Write-Host "Warning - $MYSQL_NAME not found. Do you want to download it ?" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading mysql binary
@@ -490,7 +490,7 @@ function mysql_check {
         	Write-Host "Done!"
 	}
 	# check for mysqld binary
-	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqld.exe" -PathType leaf) {
+	if (Test-Path "$OH_PATH/$MYSQL_DIR/bin/mysqld.exe" -PathType leaf) {
         	Write-Host "$MYSQL_NAME found!"
 		Write-Host "Using $MYSQL_DIR"
 	}
@@ -630,7 +630,7 @@ function import_database {
 		Read-Host; exit 2
 	}
 	# check for database creation script
-	if (Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" -PathType leaf) {
+	if (Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf) {
  		Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
 	}
 	else {
@@ -662,7 +662,7 @@ function import_database {
 
 function dump_database {
 	# save OH database if existing
-	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysqldump.exe" -PathType leaf) {
+	if (Test-Path "$OH_PATH/$MYSQL_DIR/bin/mysqldump.exe" -PathType leaf) {
 		[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
 		Write-Host "Dumping $MYSQL_NAME database..."	
         $SQLCOMMAND=@"
@@ -711,7 +711,7 @@ function clean_database {
 
 function test_database_connection {
 	# test if mysql client is available
-	if (Test-Path "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -PathType leaf) {
+	if (Test-Path "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -PathType leaf) {
 		# test connection to the OH MariaDB/MySQL database
 		Write-Host "Testing database connection..."
 		try {
@@ -997,7 +997,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# check if portable mode is on
 			if ( !($OH_MODE -eq "CLIENT" )) {
 				# check if database already exists
-				if ( !(Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME")) {
+				if ( !(Test-Path "$OH_PATH/$DATA_DIR/$DATABASE_NAME")) {
 			        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
 					exit 2;
 				}
@@ -1021,7 +1021,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		       	Write-Host "Restoring Open Hospital database...."
 			# ask user for database to restore
 			$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
-			if ( !(Test-Path "$OH_PATH\$SQL_DIR\$DB_CREATE_SQL" -PathType leaf)) {
+			if ( !(Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf)) {
 				Write-Host "Error: No SQL file found!" -ForegroundColor Red
 			}
 			else {
@@ -1177,7 +1177,7 @@ if ( $DEMO_DATA -eq "on" ) {
 	$script:DATABASE_NAME="ohdemo" # TBD
 	#$script:DATABASE_NAME="oh"
 
-	if (Test-Path -Path "$OH_PATH\$SQL_DIR\$DB_DEMO" -PathType leaf) {
+	if (Test-Path -Path "$OH_PATH/$SQL_DIR/$DB_DEMO" -PathType leaf) {
 	        Write-Host "Found SQL demo database, starting OH with Demo data..."
 		$DB_CREATE_SQL=$DB_DEMO
 	}
@@ -1219,7 +1219,7 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 	# config database
 	config_database;
 	# check if OH database already exists
-	if ( !(Test-Path "$OH_PATH\$DATA_DIR\$DATABASE_NAME") ) {
+	if ( !(Test-Path "$OH_PATH/$DATA_DIR/$DATABASE_NAME") ) {
 		Write-Host "OH database not found, starting from scratch..."
 		# prepare database
 		initialize_database;
