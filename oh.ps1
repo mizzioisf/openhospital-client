@@ -328,7 +328,7 @@ function set_oh_mode {
 	#	Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
 	#	Read-Host;
 	#	exit 1
-	}
+	#}
 	# if settings.properties is present set OH mode
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Configuring OH mode..."
