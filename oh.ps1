@@ -234,15 +234,15 @@ $script:JAVA_DIR=$JAVA_DISTRO
 function script_menu {
 	# show menu
 	# Clear-Host # clear console
-        Write-Host " -----------------------------------------------------------------"
-        Write-Host "|                                                                 |"
-        Write-Host "|                       Open Hospital | OH                        |"
-        Write-Host "|                                                                 |"
-        Write-Host " -----------------------------------------------------------------"
-        Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
-        Write-Host " -----------------------------------------------------------------"
+	Write-Host " -----------------------------------------------------------------"
+	Write-Host "|                                                                 |"
+	Write-Host "|                       Open Hospital | OH                        |"
+	Write-Host "|                                                                 |"
+	Write-Host " -----------------------------------------------------------------"
+	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
+	Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
-        Write-Host "   C    configure OH manually to start in CLIENT mode"
+	Write-Host "   C    configure OH manually to start in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"
 	Write-Host "   S    set OH in SERVER (Portable) mode"
 	Write-Host "   l    set language: $OH_LANGUAGE_LIST"
@@ -250,10 +250,10 @@ function script_menu {
 	Write-Host "   s    save OH configuration"
 	Write-Host "   X    clean/reset OH installation"
 	Write-Host "   q    quit"
-        Write-Host ""
-        Write-Host "   --------------------- "
-        Write-Host "    advanced options"
-        Write-Host ""
+	Write-Host ""
+	Write-Host "   --------------------- "
+	Write-Host "    advanced options"
+	Write-Host ""
 	Write-Host "   e    export/save OH database"
 	Write-Host "   r    restore OH database"
 	Write-Host "   d    toggle log level INFO/DEBUG"
@@ -261,7 +261,7 @@ function script_menu {
 	Write-Host "   G    setup GSM"
 	Write-Host "   i    initialize/install OH database"
 	Write-Host "   k    create Desktop shortcut with current params"
-	Write-Host "   m    configure OH manually"
+	Write-Host "   m    configure database connection manually"
 	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host ""
 	Write-Host "   h    show help"
@@ -370,7 +370,6 @@ function set_oh_mode {
 	}
 	else {
 		Write-Host "Warning: settings.properties file not found." -ForegroundColor Red
-		Read-Host; 
 	}
 }
 
@@ -398,7 +397,6 @@ function set_language {
 	}
 	else {
 		Write-Host "Warning: settings.properties file not found." -ForegroundColor Red
-		Read-Host; 
 	}
 }
 
