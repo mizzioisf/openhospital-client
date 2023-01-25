@@ -1003,7 +1003,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: $OH_LANGUAGE_LIST (default is en)"
 			# create config files if not present
-			write_config_files;
+			#write_config_files;
 			set_language;
 			Write-Host "Language set to $OH_LANGUAGE."
 			#$script:WRITE_CONFIG_FILES="on"

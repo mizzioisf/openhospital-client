@@ -861,7 +861,7 @@ function parse_user_input {
 			echo "Language set to $OH_LANGUAGE."
 		fi
 		# create config files if not present
-		write_config_files;
+		#write_config_files;
 		set_language;
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
