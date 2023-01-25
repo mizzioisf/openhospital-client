@@ -128,7 +128,6 @@ $script:DATABASE_ROOT_PW="tmp2021oh111"
 $script:DATABASE_NAME="oh"
 $script:DATABASE_USER="isf"
 $script:DATABASE_PASSWORD="isf123"
-#$script:DATABASE_LANGUAGE="en" # default to en
 
 #######################  OH configuration  #########################
 $script:DICOM_MAX_SIZE="4M"
@@ -377,15 +376,15 @@ function set_oh_mode {
 function set_language {
 	# check for valid language selection
 	if ($script:languagearray -contains "$OH_LANGUAGE") {
-		# set database creation script in chosen language
-		$script:DATABASE_LANGUAGE=$OH_LANGUAGE
+		# set localized database creation script
+		$Script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 	}
 	else {
 		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
 		Read-Host; exit 1
 	}
 	# set database creation script in chosen language
-	$script:DB_CREATE_SQL="create_all_$DATABASE_LANGUAGE.sql"
+	$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 
 	# if settings.properties is present set language
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {

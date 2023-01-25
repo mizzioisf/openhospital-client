@@ -73,7 +73,6 @@ DATABASE_ROOT_PW="tmp2021oh111"
 DATABASE_NAME="oh"
 DATABASE_USER="isf"
 DATABASE_PASSWORD="isf123"
-#DATABASE_LANGUAGE=en # default to en
 
 #######################  OH configuration  #########################
 DICOM_MAX_SIZE="4M"
@@ -249,7 +248,11 @@ function set_defaults {
 
 	# set database creation script in chosen language
 	if [ -z "$DB_CREATE_SQL" ]; then
+		echo "-------------"
+		echo "DBCREATE -> $DB_CREATE_SQL"
 		DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
+		echo "DBCREATE -> $DB_CREATE_SQL"
+		echo "-------------"
 	fi
 
 	# log level - set default to INFO
@@ -306,6 +309,7 @@ function set_oh_mode {
 		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
 		echo "OH mode set to $OH_MODE"
 	else 
+		echo ""
 		echo "Warning: settings.properties file not found."
 	fi
 }
@@ -315,7 +319,8 @@ function set_language {
 	# check for valid language selection
 	case "$OH_LANGUAGE" in 
 		en|fr|it|es|pt|ar) # TBD: language array direct check
-			DATABASE_LANGUAGE=$OH_LANGUAGE
+			# set localized database creation script
+			DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 			;;
 		*)
 			echo "Invalid language option: $OH_LANGUAGE. Exiting."
@@ -331,6 +336,7 @@ function set_language {
 		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
 		echo "Language set to $OH_LANGUAGE."
 	else 
+		echo ""
 		echo "Warning: settings.properties file not found."
 	fi
 }
