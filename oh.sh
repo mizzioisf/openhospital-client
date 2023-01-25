@@ -782,7 +782,6 @@ function parse_user_input {
 		echo " TCP port -> $DATABASE_PORT" 
 		echo ""
 		get_confirmation;
-		set_language;
 		initialize_dir_structure;
 		mysql_check;
 		# ask user for database root password

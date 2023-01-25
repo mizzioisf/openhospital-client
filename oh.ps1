@@ -928,7 +928,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host " TCP port -> $DATABASE_PORT"
 			Write-Host ""
 			get_confirmation;
-			set_language;
 			initialize_dir_structure;
 			mysql_check;
 			# ask user for database root password
