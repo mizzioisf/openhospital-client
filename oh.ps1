@@ -390,6 +390,10 @@ function set_language {
 		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
+	else {
+		Write-Host "Error: settings.properties file not found. Exiting." -ForegroundColor Red
+		Read-Host; exit 1
+	}
 }
 
 ###################################################################
@@ -1320,9 +1324,6 @@ else {
 
 	# generate config files
 	write_config_files;
-
-	# configure language settings
-	set_language;
 
 	# configure log level
         set_log_level;
