@@ -322,7 +322,7 @@ function set_language {
 			exit 1
 		;;
 	esac
-	
+
 	# if settings.properties is present set language
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Configuring OH language..."
@@ -857,12 +857,9 @@ function parse_user_input {
 		#WRITE_CONFIG_FILES="on"
 		if (( $2==0 )); then
 			OH_LANGUAGE="$OPTARG"
-			echo "Language set to $OH_LANGUAGE."
 			opt="Z";
 		else
-		read -n 2 -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
-			echo ""
-			echo "Language set to $OH_LANGUAGE."
+			read -n 2 -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 		fi
 		# create config files if not present
 		#write_config_files;
