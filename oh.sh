@@ -783,6 +783,7 @@ function parse_user_input {
 		echo ""
 		get_confirmation;
 		initialize_dir_structure;
+		set_language;
 		mysql_check;
 		# ask user for database root password
 		read -p "Please insert the MariaDB / MySQL database root password (root@$DATABASE_SERVER) -> " DATABASE_ROOT_PW

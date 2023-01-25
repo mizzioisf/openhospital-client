@@ -929,6 +929,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host ""
 			get_confirmation;
 			initialize_dir_structure;
+			set_language;
 			mysql_check;
 			# ask user for database root password
 			$script:DATABASE_ROOT_PW = Read-Host "Please insert the MariaDB / MySQL database root password (root@$DATABASE_SERVER) -> "
