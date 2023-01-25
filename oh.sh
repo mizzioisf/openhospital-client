@@ -160,10 +160,6 @@ MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 ### JRE 11 - zulu distribution
 JAVA_DISTRO="zulu11.62.17-ca-jre11.0.18-linux_$JAVA_PACKAGE_ARCH"
 JAVA_URL="https://cdn.azul.com/zulu/bin"
-
-### JRE 8 - zulu distribution
-#JAVA_DISTRO="zulu8.60.0.21-ca-jre8.0.322-linux_$JAVA_PACKAGE_ARCH"
-#JAVA_URL="https://cdn.azul.com/zulu/bin/"
 JAVA_DIR=$JAVA_DISTRO
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
@@ -199,6 +195,7 @@ function script_menu {
         echo "   -d    toggle log level INFO/DEBUG"
         echo "   -G    setup GSM"
         echo "   -D    initialize OH with Demo data"
+        echo "   -k    create Desktop shortcut"
         echo "   -i    initialize/install OH database"
         echo "   -m    configure OH manually"
         echo "   -t    test database connection (CLIENT mode only)"
@@ -216,13 +213,21 @@ function get_confirmation {
 	esac
 }
 
-#function set_defaults {
+function check_oh_mode {
+	if [ -z ${OH_MODE+x} ]; then
+		echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
+		# if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
+		exit 1
+	fi
+}
+
+function set_defaults {
 	# set default values for script variables
 	# config file generation - set default to off
 #####	if [ -n ${WRITE_CONFIG_FILES+x} ]; then
-#	if [ -z "$WRITE_CONFIG_FILES" ]; then
-#		WRITE_CONFIG_FILES="off"
-#	fi
+	if [ -z "$WRITE_CONFIG_FILES" ]; then
+		WRITE_CONFIG_FILES="off"
+	fi
 
 #	# OH mode - set default to PORTABLE
 #	if [ -z "$OH_MODE" ]; then
@@ -230,15 +235,20 @@ function get_confirmation {
 #	fi
 
 	# log level - set default to INFO
-#	if [ -z "$LOG_LEVEL" ]; then
-#		LOG_LEVEL="INFO"
-#	fi
+	if [ -z "$LOG_LEVEL" ]; then
+		LOG_LEVEL="INFO"
+	fi
+	
+	# single / multiuser - set "yes" for single user configuration
+	if [ -z "$OH_SINGLE_USER" ]; then
+		OH_SINGLE_USER="no"
+	fi
 
 	# demo data - set default to off
-#	if [ -z "$DEMO_DATA" ]; then
-#		DEMO_DATA="off"
-#	fi
-#}
+	if [ -z "$DEMO_DATA" ]; then
+		DEMO_DATA="off"
+	fi
+}
 
 function set_path {
 	# get current directory
@@ -270,7 +280,7 @@ function set_language {
 
 	# check for valid language selection
 	case "$OH_LANGUAGE" in 
-		en|fr|it|es|pt|ar) # TBD - language array direct check
+		en|fr|it|es|pt|ar) # TBD: language array direct check
 			DATABASE_LANGUAGE=$OH_LANGUAGE
 			;;
 		*)
@@ -290,7 +300,6 @@ function set_language {
 		echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
 		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
 	fi
-
 }
 
 function initialize_dir_structure {
@@ -300,6 +309,30 @@ function initialize_dir_structure {
 	mkdir -p "./$DICOM_DIR"
 	mkdir -p "./$PHOTO_DIR"
 	mkdir -p "./$BACKUP_DIR"
+}
+		
+function create_desktop_shortcut {
+# Create Desktop application entry
+desktop_path=$(xdg-user-dir DESKTOP)
+echo "[Desktop Entry]
+Type=Application
+# The version of the Desktop Entry Specification
+Version=1.12.0
+# The name of the application
+Name=OpenHospital
+# A comment which will be used as a tooltip
+Comment=Open Hospital 1.12 shortcut
+# The path to the folder in which the executable is run
+Path=$OH_PATH
+# The executable of the application, possibly with arguments
+Exec=$OH_PATH/$SCRIPT_NAME -P
+# The icon to display
+Icon=$OH_PATH/$OH_DIR/rsc/icons/oh.ico
+# Describes whether this application needs to be run in a terminal or not
+Terminal=true
+# Describes the categories in which this entry should be shown
+Categories=Utility;Application;
+" > $desktop_path/OpenHospital.desktop
 }
 
 function java_lib_setup {
@@ -733,6 +766,12 @@ function parse_user_input {
 		echo "Press any key to continue"; read;
 		;;
 	###################################################
+	k)	# create Desktop shortcut
+		check_oh_mode;
+		create_desktop_shortcut;
+		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
+		;;
+	###################################################
 	i)	# initialize/install OH database
 		# set mode to CLIENT
 		OH_MODE="CLIENT"
@@ -1000,7 +1039,7 @@ fi
 
 ######## Environment setup
 
-#set_defaults;
+set_defaults;
 set_path;
 
 # set working dir to OH base dir
@@ -1011,7 +1050,7 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CPSdDGhil:msrtveXqQ?" 
+OPTSTRING=":CPSdDGhikl:msrtveXqQ?" 
 
 PASSED_ARGS=$@
 # Parse arguments passed via command line
@@ -1045,12 +1084,8 @@ fi
 
 echo ""
 
-# check OH mode
-if [ -z ${OH_MODE+x} ]; then
-	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
-	# if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
-	exit 1
-fi
+# check for valid OH mode 
+check_oh_mode;
 
 # check for demo mode
 if [ "$DEMO_DATA" = "on" ]; then

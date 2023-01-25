@@ -305,9 +305,9 @@ function set_defaults {
 	}
 
 	# demo data - set default to off
-#	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
-#		$script:DEMO_DATA="off"
-#	}
+	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
+		$script:DEMO_DATA="off"
+	}
 }
 
 function check_oh_mode {
@@ -950,7 +950,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"k"	{ # create Desktop shortcupt
+		"k"	{ # create Desktop shortcut
 			check_oh_mode;
 			create_desktop_shortcut;
 			Read-Host "Press any key to continue";
@@ -1159,9 +1159,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
 
-# check OH mode 
+# check for valid OH mode 
 check_oh_mode;
-
 
 # check demo mode
 if ( $DEMO_DATA -eq "on" ) {
