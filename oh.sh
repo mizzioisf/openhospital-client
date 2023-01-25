@@ -269,22 +269,6 @@ function set_defaults {
 }
 
 ###################################################################
-function set_oh_mode {
-	#if [ -z ${OH_MODE+x} ]; then
-	#	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
-	#	# if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
-	#	exit 1
-	#fi
-	# if settings.properties is present set OH mode
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
-		echo "Configuring OH mode..."
-		######## settings.properties language configuration
-		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
-		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
-	fi
-}
-
-###################################################################
 function set_path {
 	# get current directory
 	CURRENT_DIR=$PWD
@@ -308,6 +292,25 @@ function set_path {
 }
 
 ###################################################################
+function set_oh_mode {
+	#if [ -z ${OH_MODE+x} ]; then
+	#	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
+	#	# if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
+	#	exit 1
+	#fi
+	# if settings.properties is present set OH mode
+	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+		echo "Configuring OH mode..."
+		######## settings.properties language configuration
+		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
+		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
+		echo "OH mode set to $OH_MODE"
+	else 
+		echo "Warning: settings.properties file not found."
+	fi
+}
+
+###################################################################
 function set_language {
 	# check for valid language selection
 	case "$OH_LANGUAGE" in 
@@ -326,8 +329,9 @@ function set_language {
 		######## settings.properties language configuration
 		echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
 		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
-		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
-		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
+		echo "Language set to $OH_LANGUAGE."
+	else 
+		echo "Warning: settings.properties file not found."
 	fi
 }
 
@@ -868,8 +872,6 @@ function parse_user_input {
 	###################################################
 	m)	# configure OH manually
 		echo ""
-		read -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
-		echo ""
 		read -p "Please select Single user configuration (yes/no): " OH_SINGLE_USER
 		#OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
 		echo ""
@@ -949,12 +951,12 @@ function parse_user_input {
 	###################################################
 	s)	# save / write config files
 		echo ""
-		echo "Do yoy want to save current settings to OH configuration files?"
+		echo "Do you want to save current settings to OH configuration files?"
 		get_confirmation;
-		WRITE_CONFIG_FILES="on"
 		write_config_files;
-		set_log_level;
+		set_oh_mode;
 		set_language;
+		set_log_level;
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
@@ -1228,9 +1230,6 @@ else
 	# generate config files
 	write_config_files;
 
-	# configure language settings
-	set_language;
-	
 	# configure log level
 	set_log_level;
 
