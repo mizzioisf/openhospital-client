@@ -974,6 +974,7 @@ function parse_user_input {
 		;;
 	###################################################
 	u)	# create Desktop shortcut
+		echo ""
 		echo "Creating/updating OH shortcut on Desktop..."
 		create_desktop_shortcut;
 		echo "Done!"
