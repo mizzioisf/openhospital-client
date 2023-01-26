@@ -1021,9 +1021,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"m"	{ # configure OH manually
-			$script:OH_SINGLE_USER=Read-Host	"Please select Single user configuration (yes/no)" 
-	                # script:OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
+		"m"	{ # configure OH database connection manually
+			#$script:OH_SINGLE_USER=Read-Host	"Please select Single user configuration (yes/no)" 
+	                #### script:OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
 			Write-Host 				""
 			Write-Host 				"***** Database configuration *****"
 			Write-Host 				""

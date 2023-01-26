@@ -876,7 +876,7 @@ function parse_user_input {
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
-	m)	# configure OH manually
+	m)	# configure OH database connection manually
 		echo ""
 		#read -p "Please select Single user configuration (yes/no): " OH_SINGLE_USER
 		###### OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
