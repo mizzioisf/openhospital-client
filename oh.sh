@@ -179,11 +179,11 @@ function script_menu {
 	echo ""
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
-	echo "   -S    set OH in SERVER (Portable)"
+	echo "   -S    set OH in SERVER (Portable) mode"
 	echo "   -l    set language: $OH_LANGUAGE_LIST"
 	echo "   -s    save OH configuration"
-	echo "   -v    show configuration"
 	echo "   -X    clean/reset OH installation"
+	echo "   -v    show configuration"
 	echo "   -q    quit"
 	echo ""
 	echo "   --------------------- "
@@ -377,24 +377,24 @@ function create_desktop_shortcut {
 # Create Desktop application entry
 desktop_path=$(xdg-user-dir DESKTOP)
 echo "[Desktop Entry]
-Type=Application
-# The version of the Desktop Entry Specification
-Version=1.12.0
-# The name of the application
-Name=OpenHospital
-# A comment which will be used as a tooltip
-Comment=Open Hospital 1.12 shortcut
-# The path to the folder in which the executable is run
-Path=$OH_PATH
-# The executable of the application, possibly with arguments
-Exec=$OH_PATH/$SCRIPT_NAME -P
-# The icon to display
-Icon=$OH_PATH/$OH_DIR/rsc/icons/oh.ico
-# Describes whether this application needs to be run in a terminal or not
-Terminal=true
-# Describes the categories in which this entry should be shown
-Categories=Utility;Application;
-" > $desktop_path/OpenHospital.desktop
+	Type=Application
+	# The version of the Desktop Entry Specification
+	Version=1.12.0
+	# The name of the application
+	Name=OpenHospital
+	# A comment which will be used as a tooltip
+	Comment=Open Hospital 1.12 shortcut
+	# The path to the folder in which the executable is run
+	Path=$OH_PATH
+	# The executable of the application, possibly with arguments
+	Exec=$OH_PATH/$SCRIPT_NAME -P
+	# The icon to display
+	Icon=$OH_PATH/$OH_DIR/rsc/icons/oh.ico
+	# Describes whether this application needs to be run in a terminal or not
+	Terminal=true
+	# Describes the categories in which this entry should be shown
+	Categories=Utility;Application;
+	" > $desktop_path/OpenHospital.desktop
 }
 
 ###################################################################
@@ -827,7 +827,9 @@ function parse_user_input {
 		;;
 	###################################################
 	k)	# create Desktop shortcut
+		echo "Creating/updating OH shortcut on Desktop..."
 		create_desktop_shortcut;
+		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
@@ -891,8 +893,8 @@ function parse_user_input {
 		get_confirmation;
 		WRITE_CONFIG_FILES="on"
 		write_config_files;
-		set_language;
-		set_log_level;
+		#set_language;
+		#set_log_level;
 		echo "Done!"
 		echo ""
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi

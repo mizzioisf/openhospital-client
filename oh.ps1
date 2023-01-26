@@ -241,13 +241,13 @@ function script_menu {
 	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
-	Write-Host "   C    configure OH manually to start in CLIENT mode"
+	Write-Host "   C    set OH in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"
 	Write-Host "   S    set OH in SERVER (Portable) mode"
 	Write-Host "   l    set language: $OH_LANGUAGE_LIST"
-	Write-Host "   v    show configuration"
 	Write-Host "   s    save OH configuration"
 	Write-Host "   X    clean/reset OH installation"
+	Write-Host "   v    show configuration"
 	Write-Host "   q    quit"
 	Write-Host ""
 	Write-Host "   --------------------- "
@@ -1036,8 +1036,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			get_confirmation;
 			$script:WRITE_CONFIG_FILES="on"
 			write_config_files;
-			set_log_level;
-			set_language;
+			#set_log_level;
+			#set_language;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
