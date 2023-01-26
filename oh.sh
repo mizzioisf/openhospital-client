@@ -387,7 +387,7 @@ echo "[Desktop Entry]
 	# The path to the folder in which the executable is run
 	Path=$OH_PATH
 	# The executable of the application, possibly with arguments
-	Exec=$OH_PATH/$SCRIPT_NAME -P
+	Exec=$OH_PATH/$SCRIPT_NAME -Z
 	# The icon to display
 	Icon=$OH_PATH/$OH_DIR/rsc/icons/oh.ico
 	# Describes whether this application needs to be run in a terminal or not
@@ -1105,7 +1105,7 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CPSdDGhikl:msrtveXqQ?" 
+OPTSTRING=":CPSdDGhikl:msrtveXqQZ?" 
 
 PASSED_ARGS=$@
 # Parse arguments passed via command line
