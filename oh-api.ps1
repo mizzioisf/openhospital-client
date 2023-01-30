@@ -1061,9 +1061,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:DATABASE_SERVER=Read-Host	"Enter database server IP address [DATABASE_SERVER]"
 			$script:DATABASE_PORT=Read-Host		"Enter database server TCP port [DATABASE_PORT]"
 			# convert to integer
-			Write-Host "----------------$DATABASE_PORT-----"
 			$script:DATABASE_PORT=[int]$DATABASE_PORT
-			Write-Host "----------------$DATABASE_PORT-----"
 			$script:DATABASE_NAME=Read-Host		"Enter database database name [DATABASE_NAME]"
 			$script:DATABASE_USER=Read-Host		"Enter database user name [DATABASE_USER]"
 			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD]"
