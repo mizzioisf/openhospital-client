@@ -3,6 +3,7 @@
 ###########################################
 # external settings
 MODE=OH_MODE
+###########################################
 # internal settings, modules, directories
 LANGUAGE=OH_LANGUAGE
 SINGLEUSER=YES_OR_NO
@@ -13,6 +14,7 @@ INTERNALVIEWER=yes
 SMSENABLED=no
 VIDEOMODULEENABLED=yes
 XMPPMODULEENABLED=no
+###########################################
 # application settings
 ENHANCEDSEARCH=no
 INTERNALPHARMACIES=yes
@@ -23,8 +25,10 @@ MATERNITYRESTARTINJUNE=no
 OPDEXTENDED=yes
 PATIENTEXTENDED=yes
 PATIENTVACCINEEXTENDED=yes
+###########################################
 # GUI settings
 MAINMENUALWAYSONTOP=no
+###########################################
 # accounting
 ALLOWPRINTOPENEDBILL=yes
 ALLOWMULTIPLEOPENEDBILL=yes
@@ -35,6 +39,7 @@ PATIENTBILL=PatientBill
 PATIENTBILLGROUPED=PatientBillGrouped
 PATIENTBILLSTATEMENT=PatientBillStatement
 RECEIPTPRINTER=yes
+###########################################
 # pharmacy
 AUTOMATICLOT_IN=no
 AUTOMATICLOT_OUT=no
@@ -44,19 +49,23 @@ PHARMACEUTICALORDER=PharmaceuticalOrder
 PHARMACEUTICALSTOCK=PharmaceuticalStock_ver4
 PHARMACEUTICALSTOCKLOT=PharmaceuticalStock_ver5
 PHARMACEUTICALAMC=PharmaceuticalAMC
+###########################################
 # dicom / imaging settings
 DICOMMODULEENABLED=yes
 DICOMTHUMBNAILS=yes
+###########################################
 # reports
 ADMCHART=patient_adm_chart
 DISCHART=patient_dis_chart
 PATIENTSHEET=patient_clinical_sheet_ver3
 OPDCHART=patient_opd_chart
+###########################################
 # security
 SESSIONTIMEOUT=5
 STRONGPASSWORD=yes
 STRONGLENGTH=10
 USERSLISTLOGIN=no
+###########################################
 # to document
 EXAMINATIONCHART=patient_examination
 VISITSHEET=WardVisits
