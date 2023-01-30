@@ -960,7 +960,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		###################################################
 		"P"	{ # start in PORTABLE mode
 			$script:OH_MODE="PORTABLE"
 			set_oh_mode;
@@ -1061,6 +1060,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host 				""
 			$script:DATABASE_SERVER=Read-Host	"Enter database server IP address [DATABASE_SERVER]"
 			$script:DATABASE_PORT=Read-Host		"Enter database server TCP port [DATABASE_PORT]"
+			# convert to integer
+			Write-Host "----------------$DATABASE_PORT-----"
+			$script:DATABASE_PORT=[int]$DATABASE_PORT
 			$script:DATABASE_NAME=Read-Host		"Enter database database name [DATABASE_NAME]"
 			$script:DATABASE_USER=Read-Host		"Enter database user name [DATABASE_USER]"
 			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD]"
