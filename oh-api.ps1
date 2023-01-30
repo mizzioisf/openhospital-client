@@ -150,6 +150,7 @@ $script:TMP_DIR="tmp"
 $script:LOG_FILE="startup.log"
 $script:LOG_FILE_ERR="startup.err"
 $script:OH_LOG_FILE="openhospital.log"
+$script:API_LOG_FILE="api.log"
 
 # SQL creation files
 #$script:DB_CREATE_SQL="create_all_en.sql" # default to en
@@ -892,11 +893,13 @@ function start_api {
         # set up configuration files
         Write-Host "Starting API server..."
 
-        #$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
-        #$JAVA_BIN -client -Xms64m -Xmx1024m -cp "bin/openhospital-api-0.0.2.jar:rsc:static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$LOG_FILE 2>&1
-
         cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
-        $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher
+
+	$JAVA_ARGS="-client -Xms64m -Xmx1024m -cp ./bin/openhospital-api-0.0.2.jar:./rsc::./static org.springframework.boot.loader.JarLauncher"
+
+	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$API_LOG_FILE"
+
+        # $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher
 
 #        if [ $? -ne 0 ]; then
 #                echo "An error occurred while starting Open Hospital API. Exiting."
