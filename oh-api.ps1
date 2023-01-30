@@ -1319,9 +1319,6 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if ( $OH_MODE -eq "SERVER" ) {
-	# Start API server
-	# check for database.properties - TBD
-	start_api;
 
 	Write-Host "Open Hospital - SERVER mode started"
 	# show MariaDB/MySQL server running configuration
@@ -1333,6 +1330,10 @@ if ( $OH_MODE -eq "SERVER" ) {
 	Write-Host ""
 	Write-Host "*******************************"
 	Write-Host "Database server ready for connections..."
+
+	# Start API server
+	# check for database.properties - TBD
+	start_api;
 	
 	while ($true) {
 		$choice = Read-Host -Prompt "Press Q to exit"

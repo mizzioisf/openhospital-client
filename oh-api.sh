@@ -1239,8 +1239,6 @@ fi
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if [ "$OH_MODE" = "SERVER" ]; then
-	# Start API server
-	# check for database.properties - TBD
 	echo "Open Hospital - SERVER mode started"
 
 	# show MariaDB/MySQL server running configuration
@@ -1253,7 +1251,11 @@ if [ "$OH_MODE" = "SERVER" ]; then
 	echo "***************************************"
 	echo "Database server ready for connections..."
 	echo "Press Ctrl + C to exit"
+
+	# Start API server
+	# check for database.properties - TBD
 	start_api;
+	
 	while true; do
 		trap ctrl_c INT
 		function ctrl_c() {
