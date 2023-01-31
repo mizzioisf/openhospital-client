@@ -445,7 +445,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **New**: Direct reading/writing of OH settings files for language and debug mode
 - **New**: Desktop shortcut creation with icon (Windows and Linux)
 - **New**: SERVER mode support (see oh.sh -S)
-- **New**: Added "-m" option to configure OH manually
+- **New**: Added "-m" option to configure OH database settings manually
 - **New**: Arabic Language support: **oh.sh -l ar**
 - **New**: Full 64bit support on Windows, also for DICOM !
 - **New**: Set default to MULTIUSER environment, so login mask is presented at startup
