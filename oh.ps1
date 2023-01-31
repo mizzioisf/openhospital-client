@@ -148,7 +148,7 @@ $script:TMP_DIR="tmp"
 
 # logging
 $script:LOG_FILE="startup.log"
-$script:LOG_FILE_ERR="startup.err"
+$script:LOG_FILE_ERR="startup_error.log"
 $script:OH_LOG_FILE="openhospital.log"
 
 # SQL creation files

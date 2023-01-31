@@ -148,7 +148,7 @@ $script:TMP_DIR="tmp"
 
 # logging
 $script:LOG_FILE="startup.log"
-$script:LOG_FILE_ERR="startup.error.log"
+$script:LOG_FILE_ERR="startup_error.log"
 $script:OH_LOG_FILE="openhospital.log"
 $script:API_LOG_FILE="api.log"
 $script:API_ERR_LOG_FILE="api_error.log"
