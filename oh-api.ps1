@@ -148,9 +148,10 @@ $script:TMP_DIR="tmp"
 
 # logging
 $script:LOG_FILE="startup.log"
-$script:LOG_FILE_ERR="startup.err"
+$script:LOG_FILE_ERR="startup.error.log"
 $script:OH_LOG_FILE="openhospital.log"
 $script:API_LOG_FILE="api.log"
+$script:API_ERR_LOG_FILE="api_error.log"
 
 # SQL creation files
 #$script:DB_CREATE_SQL="create_all_en.sql" # default to en
@@ -897,7 +898,7 @@ function start_api {
 
 	$JAVA_ARGS="-client -Xms64m -Xmx1024m -cp ./bin/openhospital-api-0.0.2.jar;./rsc;./static org.springframework.boot.loader.JarLauncher"
 
-	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$LOG_DIR/$API_LOG_FILE"
+	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$LOG_DIR/$API_ERR_LOG_FILE"
 
         # $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher
 
