@@ -752,13 +752,16 @@ function write_config_files {
 
 function start_api {
 	# set up configuration files
+	echo "------------------------"
+	echo "---- EXPERIMENTAL ------"
+	echo "------------------------"
 	echo "Starting API server..."
 	
 	#$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
 	#$JAVA_BIN -client -Xms64m -Xmx1024m -cp "bin/openhospital-api-0.0.2.jar:rsc:static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$LOG_FILE 2>&1
 	
 	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
-	nohup $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1
+	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1
 	
 	if [ $? -ne 0 ]; then
 		echo "An error occurred while starting Open Hospital API. Exiting."
@@ -778,6 +781,9 @@ function parse_user_input {
 #		DEMO_DATA="off"
 #		set_oh_mode;
 		echo ""
+		echo "------------------------"
+		echo "---- EXPERIMENTAL ------"
+		echo "------------------------"
 		echo "OH_MODE set to API mode."
 		java_check;
 		java_lib_setup;
@@ -1186,9 +1192,9 @@ if [ "$DEMO_DATA" = "on" ]; then
 		echo "Found SQL demo database, starting OH with Demo data..."
 		DB_CREATE_SQL=$DB_DEMO
 		# reset database if exists
-		clean_database;  
+		# clean_database;  
 		# set DATABASE_NAME
-		#DATABASE_NAME="ohdemo" # TBD
+		DATABASE_NAME="ohdemo"
 	else
 		echo "Error: no $DB_DEMO found! Exiting."
 		exit 1

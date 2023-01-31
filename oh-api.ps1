@@ -892,6 +892,9 @@ function clean_files {
 
 function start_api {
         # set up configuration files
+	Write-Host "------------------------"
+	Write-Host "---- EXPERIMENTAL ------"
+	Write-Host "------------------------"
         Write-Host "Starting API server..."
 
         cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
@@ -945,6 +948,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"a"	{ # start API server
 			#$script:OH_MODE="API"
+			Write-Host "------------------------"
+			Write-Host "---- EXPERIMENTAL ------"
+			Write-Host "------------------------"
 			Write-Host "OH_MODE set to API mode."
 			#set_oh_mode;
 			java_check;
@@ -1259,9 +1265,9 @@ if ( $DEMO_DATA -eq "on" ) {
 	}
 	
 	# reset database if exists
-	clean_database;
+	# clean_database;
 	# set DATABASE_NAME
-	#$script:DATABASE_NAME="ohdemo" # TBD
+	$script:DATABASE_NAME="ohdemo" # TBD
 
 	if (Test-Path -Path "$OH_PATH/$SQL_DIR/$DB_DEMO" -PathType leaf) {
 	        Write-Host "Found SQL demo database, starting OH with Demo data..."
