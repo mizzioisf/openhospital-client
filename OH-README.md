@@ -126,7 +126,7 @@ the MySQL / MariaDB local TCP port.
 -> To run oh.ps1 directly from command line:
 
 ```
-powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
+powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 ```
 
 -> To run oh.ps1 with command line options (example):
@@ -141,7 +141,7 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 - **P**    set Open Hospital to start in PORTABLE mode, where data is saved locally
 - **S**    set Open Hospital to start in SERVER mode: the local portable instance of MariaDB is launched to act as a portable database server
 - **l**    set local language: en|fr|it|es|pt|ar
-- **s**    save / write / reenerate OH configuration files (oh/rsc/\*.properties) and exit
+- **s**    save / write / generate OH configuration files (oh/rsc/\*.properties) and exit
 - **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
 - **v**    show Open Hospital external software version and configuration
 - **q**    quit (windows only)
@@ -156,7 +156,7 @@ powershell.exe -ExecutionPolicy Bypass -File  ./oh.ps1 [options]
 - **i**    initialize / install OH database
 - **m**    configure OH database connection settings manually
 - **t**    test database connection to the configured database server (Client mode only)
-- **u**    create Desktop shortcut with current params (Windows only)
+- **u**    create Desktop shortcut with current params (Windows / Linux)
 - **h**    show help 
 
 # Script configuration
@@ -459,7 +459,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - configuration file generation (set WRITE_CONFIG_FILES=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
 - test database connection option (see oh.sh -t)
 - displays software versions and current configuration (see oh.sh -v)
-- write / generate config files (see oh.sh -w)
+- save / write / generate config files (see oh.sh -s)
 - install / initialize database (see oh.sh -i)
 - Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
 - More flexible execution and configuration options
