@@ -476,5 +476,5 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
 - Fixed _a_few_ bugs ;-)
 
-*last updated: 2023.01.26*
+*last updated: 2023.01.31*
 
