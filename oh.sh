@@ -798,7 +798,6 @@ function parse_user_input {
 			echo "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data, exiting."
 			exit 1;
 		else
-			#OH_MODE="PORTABLE"
 			DEMO_DATA="on"
 			# set database name
 			DATABASE_NAME="ohdemo"
