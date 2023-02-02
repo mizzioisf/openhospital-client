@@ -960,7 +960,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data." -ForeGroundcolor Red
 				Read-Host;
 			}
-			else { $script:OH_MODE="PORTABLE" }
+			#else { $script:OH_MODE="PORTABLE" }
 			$DEMO_DATA="on"
 			# set database name
 			$script:DATABASE_NAME="ohdemo"
