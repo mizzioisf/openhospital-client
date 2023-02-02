@@ -365,11 +365,11 @@ function set_oh_mode {
 	        ######## settings.properties language configuration
 		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-		Write-Host "OH mode set to $OH_MODE." -ForeGroundcolor Green
 	}
 	else {
 		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
 	}
+	Write-Host "OH mode set to $OH_MODE." -ForeGroundcolor Green
 }
 
 ###################################################################

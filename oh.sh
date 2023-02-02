@@ -303,11 +303,12 @@ function set_oh_mode {
 		######## settings.properties language configuration
 		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
 		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
-		echo "OH mode set to $OH_MODE"
 	else 
+		echo ""
 		echo ""
 		echo "Warning: settings.properties file not found."
 	fi
+	echo "OH mode set to $OH_MODE"
 }
 
 ###################################################################
