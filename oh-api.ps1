@@ -896,6 +896,9 @@ function start_api {
 	Write-Host "---- EXPERIMENTAL ------"
 	Write-Host "------------------------"
         Write-Host "Starting API server..."
+	Write-Host ""
+	Write-Host "Connect to http://localhost:8080 for dashboard"
+	Write-Host ""
 
         cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
 
