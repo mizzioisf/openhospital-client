@@ -758,7 +758,6 @@ function parse_user_input {
 		DEMO_DATA="off"
 		set_oh_mode;
 		echo ""
-		echo "OH_MODE set to CLIENT mode."
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
@@ -766,7 +765,6 @@ function parse_user_input {
 		OH_MODE="PORTABLE"
 		set_oh_mode;
 		echo ""
-		echo "OH_MODE set to PORTABLE mode."
 		if (( $2==0 )); then opt="Z"; else read; fi
 		;;
 	###################################################
@@ -774,7 +772,6 @@ function parse_user_input {
 		OH_MODE="SERVER"
 		set_oh_mode;
 		echo ""
-		echo "OH_MODE set to SERVER mode."
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################

@@ -365,7 +365,7 @@ function set_oh_mode {
 	        ######## settings.properties language configuration
 		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-		Write-Host "OH mode set to $OH_MODE."
+		Write-Host "OH mode set to $OH_MODE." -ForeGroundcolor Green
 	}
 	else {
 		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
@@ -922,21 +922,18 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
 			set_oh_mode;
-			Write-Host "OH_MODE set to CLIENT mode." -ForeGroundcolor Green
 			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"P"	{ # start in PORTABLE mode
 			$script:OH_MODE="PORTABLE"
 			set_oh_mode;
-			Write-Host "OH_MODE set to PORTABLE mode." -ForeGroundcolor Green
 			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"S"	{ # start in SERVER (portable) mode
 			$script:OH_MODE="SERVER"
 			set_oh_mode;
-			Write-Host "OH_MODE set to SERVER mode." -ForeGroundcolor Green
 			Read-Host "Press any key to continue";
 		}
 		###################################################
