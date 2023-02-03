@@ -46,7 +46,7 @@ WRITE_CONFIG_FILES="off"
 # OH_PATH=/usr/local/OpenHospital/oh-1.12
 
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
-#OH_MODE="PORTABLE" 
+OH_MODE="SERVER" 
 
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"

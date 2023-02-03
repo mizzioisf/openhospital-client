@@ -1,4 +1,5 @@
 = Open Hospital 1.12.0 - Administrator’s Guide
+<<<
 :icons: font
 :stem:
 :toc: left
@@ -512,10 +513,16 @@ archive remain unchanged once extracted, otherwise the launcher cannot launch or
 NOTE: Important: the PORTABLE mode is meant to try or test the software or to be used in a facility (like a dispensary)
 where only a single computer is available. If the facility is large and more clients/operators need to work on the same data, the full installation (client/server) in a networked architecture is recommended.
 
-include::https://raw.githubusercontent.com/informatici/openhospital/master/oh-bundle/OH-README.md[lines=25..413,leveloffset=+2]
+include::https://raw.githubusercontent.com/informatici/openhospital/master/oh-bundle/OH-README.md[lines=28..429,leveloffset=+2]
+
+=== 2.3 OH - SERVER mode (portable)
+
+Open Hospital can be launched in SERVER (portable) mode. SERVER mode launches a local instance of the database server and listens for connections from other clients.
+This mode is useful to test/simulate a client/server configuration or networked environment; it is not suggested for production setup.
+To setup a complete client / server configuration, refer to chapter <<database-server,2.1.3 - Database Server>>
 
 [#backup-restore]
-=== 2.3 Backup & Restore
+=== 2.4 Backup & Restore
 
 Backup of the Open Hospital database can be performed in several ways.
 
@@ -526,7 +533,7 @@ Restore of the Open Hospital database can be performed also in several ways.
 NOTE: The easiest way is to use the provided scripts: on Linux execute *oh.sh -r*, on Windows launch *oh.bat* and choose the option *r*.
 
 [#backup-data]
-==== 2.3.1 Backup of database (alternative with MySQL Workbench®)
+==== 2.4.1 Backup of database (alternative with MySQL Workbench®)
 
 There are several ways to back up and restore *data* with MySQL. The recommended method is to use a common MySQL client such as MySQL Workbench®:
 
@@ -551,7 +558,7 @@ image:image22.png[image,width=642,height=461]
 image:image22a.png[image,width=642,height=461]
 
 [#restore-data]
-==== 2.3.2 Restore of database (alternative with MySQL Workbench®)
+==== 2.4.2 Restore of database (alternative with MySQL Workbench®)
 
 To restore database data with MySQL Workbench®:
 
@@ -564,14 +571,14 @@ To restore database data with MySQL Workbench®:
 . Click the *Start Import* button at the right bottom corner of the window.
 
 
-==== 2.3.3 Backup of OH code and settings
+==== 2.4.3 Backup of OH code and settings
 
 Backup of the Open Hospital *code and settings* can be performed by saving the *"oh"* folder (configuration files are found under the *"oh/rsc"* folder).
 
 Backup of the client *data files*, useful for "PORTABLE" mode, can be performed by saving/copying the *"data"* folder (including all subfolders) found under the main OH installation path
 
 [#folders]
-=== 2.4 Folders and directory structure
+=== 2.5 Folders and directory structure
 
 Open Hospital has a folder tree hierarchy which is shown here, where *_<version>_* is replaced with the current Open Hospital version, *_<operating_system>_* with windows or linux and *_<arch>_* with the OS architecture (32 or 64 bit):
 
@@ -608,20 +615,13 @@ Depending on the chosen operating system and architecture, the needed external a
 ** _zulu11.<version>-<operating_system>_<arch>/ - Java Virtual Machine
 ** _mariadb-<version>-<arch>/ or _mysql-<version>-<arch>-<build>/_ - MySQL Server or MariaDB Server
 
-<<<
-
-=== 2.5 Appearance
+=== 2.6 Appearance
 
 Open Hospital main menu appearance can be customized by adding a logo of choice. To test the feature, rename the image file _logo_hospital_example.png_ found in the _oh/rsc/images_ folder to _logo_hospital.png_:
 
 image:OH-main_menu_logo.png[OH main menu]
 
 The custom logo has to be a 100x100 pixel png image file.
-
-=== 2.2 OH - SERVER mode (portable)
-
-Starting with version 1.12, Open Hospital can be lauched in SERVER mode. SERVER mode allows to launch a local instance of the database server and listen for connections from other clients.
-It is useful to test/simulate a client/server configuration or networked environment; it is not suggested for production setup.
 
 [#configuration]
 == 3 Configuration
@@ -749,7 +749,7 @@ The following table shows the allowed values for the OH_LANGUAGE variable:
 [cols=",,",options="header",]
 |===
 |Key |Default Value | Allowed Values
-|LANGUAGE |en |ar, de, en, es, fr, it, fr, pt, sw, zh_CN
+|LANGUAGE |en |ar, de, en, es, fr, it, pt, sw, zh_CN
 |===
 
 Open Hospital is available in nine different languages, identified by the international country code:
@@ -1620,7 +1620,7 @@ The following table shows the default value and the allowed ones:
 |EXAMINATIONCHART |patient_examination | any kind of .jasper file name
 |===
 
-Open Hospital can produce a report about the Patient Examinations.
+Open Hospital can produce a report about patient_examinations.
 (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#8-5-2-patient-examination[8.5.2 Patient Examination] in the User's Guide).
 
 By default, EXAMINATIONCHART is set to patient_examination which is the filename of the related report to use for the *Patient Examination* functionality.
