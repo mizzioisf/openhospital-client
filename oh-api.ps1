@@ -950,7 +950,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		switch -CaseSensitive ( "$opt" ) {
 		###################################################
 		"a"	{ # start API server
-			#$script:OH_MODE="API"
+			$script:OH_MODE="SERVER"
 			Write-Host "------------------------"
 			Write-Host "---- EXPERIMENTAL ------"
 			Write-Host "------------------------"

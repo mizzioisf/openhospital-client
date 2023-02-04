@@ -779,8 +779,8 @@ function start_api {
 function parse_user_input {
 	case $1 in
 	###################################################
-	a)	# start in APU mode
-#		OH_MODE="API"
+	a)	# start API server
+		OH_MODE="SERVER"
 #		DEMO_DATA="off"
 #		set_oh_mode;
 		echo ""
