@@ -863,7 +863,6 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
-}
 
 function write_api_config_file {
 	######## application.properties setup
