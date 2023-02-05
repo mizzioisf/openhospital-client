@@ -869,12 +869,7 @@ function write_api_config_file {
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/application.properties" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/application.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/application.properties.old }
 		# set OH API token
-		#JWT_TOKEN_SECRET=`openssl rand -base64 64`
-		#JWT_TOKEN_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 64`
-
 		$JWT_TOKEN_SECRET=(-join ((65..90) + (97..122) | Get-Random -Count 64 | % {[char]$_}))
-		Write-Host $JWT_TOKEN_SECRET
-		exit
 		Write-Host "Writing OH API configuration file -> application.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/application.properties.dist").replace("JWT_SECRET_TOKEN","$JWT_SECRET_TOKEN") | Set-Content "$OH_PATH/$OH_DIR/rsc/application.properties"
 	}
@@ -980,7 +975,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			java_lib_setup;
 			write_api_config_file;
 			start_api;
-			Write-Host "OH_MODE set to API mode." -ForeGroundcolor Green
 			Read-Host "Press any key to continue";
 		}
 		###################################################
