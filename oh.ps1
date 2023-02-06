@@ -686,7 +686,7 @@ function set_database_root_pw {
 				Start-Process -FilePath "$OH_PATH/$MYSQL_DIR/bin/mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 			}
 			catch {
-				Write-Host "Error: MySQL root password not set! Exiting." -ForegroundColor Red
+				Write-Host "Error: MySQL root password not set! Try resetting installation with option [X]. Exiting." -ForegroundColor Red
 				shutdown_database;
 				Read-Host; exit 2
 			}
@@ -1119,10 +1119,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"s"	{ # save / write config files
 			Write-Host "Do you want to save current settings to OH configuration files?"
+			
 			get_confirmation;
+			$script:WRITE_CONFIG_FILES="on"
 			write_config_files;
 			set_oh_mode;
-			set_demo_data;
 			set_language;
 			set_log_level;
 			# if Desktop link is present update it
@@ -1357,7 +1358,7 @@ else {
 	write_config_files;
 
 	# check / set demo data if enabled
-	set_demo_data;
+	#set_demo_data;
 
 	Write-Host "Starting Open Hospital GUI..."
 

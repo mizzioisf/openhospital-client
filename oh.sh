@@ -590,7 +590,7 @@ function set_database_root_pw {
 	./$MYSQL_DIR/bin/mysql -u root --skip-password --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$DATABASE_ROOT_PW';" >> ./$LOG_DIR/$LOG_FILE 2>&1
 	
 	if [ $? -ne 0 ]; then
-		echo "Error: $MYSQL_NAME root password not set! Exiting."
+		echo "Error: $MYSQL_NAME root password not set! Try resetting installation with option [X]. Exiting."
 		shutdown_database;
 		exit 2
 	fi
@@ -1208,11 +1208,12 @@ initialize_dir_structure;
 if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	# check for MariaDB/MySQL software
 	mysql_check;
+	# config database
 	config_database;
 	# check if OH database already exists
 	if [ ! -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
-		echo "Database not initialized, starting from scratch..."
-		# prepare MySQL
+		echo "OH database not found, starting from scratch..."
+		# prepare database
 		initialize_database;
 		# start database
 		start_database;	
@@ -1260,7 +1261,7 @@ else
 	write_config_files;
 
 	# check / set demo data if enabled
-	set_demo_data;
+	#set_demo_data;
 
 	echo "Starting Open Hospital GUI..."
 	# OH GUI launch
