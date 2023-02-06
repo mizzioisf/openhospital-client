@@ -976,12 +976,12 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			"on"	{ # 
 				$script:DEMO_DATA="off"
 				# set database name
-				$script:DATABASE_NAME=$DEMO_DATABASE
+				$script:DATABASE_NAME="oh"
 				}
 			"off"	{ # 
 				$script:DEMO_DATA="on"
 				# set database name
-				$script:DATABASE_NAME="oh"
+				$script:DATABASE_NAME=$DEMO_DATABASE
 				}
 			}
 			set_demo_data;
