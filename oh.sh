@@ -313,7 +313,7 @@ function set_demo_data {
 	# if settings.properties is present set OH mode
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Configuring DEMO data..."
-		######## settings.properties language configuration
+		######## settings.properties DEMO data configuration
 		echo "Setting DEMO data to $DEMO_DATA in OH configuration file -> settings.properties..."
 		sed -e "/^"DEMODATA="/c"DEMODATA=$DEMO_DATA"" -i ./$OH_DIR/rsc/settings.properties
 	else 

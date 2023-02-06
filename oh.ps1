@@ -371,10 +371,10 @@ function set_oh_mode {
 
 ###################################################################
 function set_demo_data {
-	# if settings.properties is present set OH mode
+	# if settings.properties is present set DEMO mode
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
-		Write-Host "Configuring OH mode..."
-	        ######## settings.properties OH mode configuration
+		Write-Host "Configuring DEMO data..."
+	        ######## settings.properties DEMO data configuration
 		Write-Host "Setting DEMO data to $DEMO_DATA in OH configuration files-> settings.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(DEMODATA.+)',"DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
@@ -974,12 +974,12 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 			switch -CaseSensitive( $script:DEMO_DATA ) {
 			"on"	{ # 
-				$script:DEMO_DATA="off"
+				$script:DEMO_DATA=off
 				# set database name
 				$script:DATABASE_NAME=$DEMO_DATABASE
 				}
 			"off"	{ # 
-				$script:DEMO_DATA="on"
+				$script:DEMO_DATA=on
 				# set database name
 				$script:DATABASE_NAME="oh"
 				}
