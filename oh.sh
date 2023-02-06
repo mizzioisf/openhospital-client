@@ -977,6 +977,7 @@ function parse_user_input {
 		get_confirmation;
 		write_config_files;
 		set_oh_mode;
+		set_demo_data;
 		set_language;
 		set_log_level;
 		echo "Done!"
@@ -1257,6 +1258,9 @@ else
 
 	# generate config files if not existent
 	write_config_files;
+
+	# check / set demo data if enabled
+	set_demo_data;
 
 	echo "Starting Open Hospital GUI..."
 	# OH GUI launch

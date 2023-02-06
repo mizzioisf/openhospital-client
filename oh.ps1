@@ -1120,6 +1120,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			get_confirmation;
 			write_config_files;
 			set_oh_mode;
+			set_demo_data;
 			set_language;
 			set_log_level;
 			# if Desktop link is present update it
@@ -1352,6 +1353,9 @@ else {
 
 	# generate config files if not existent
 	write_config_files;
+
+	# check / set demo data if enabled
+	set_demo_data;
 
 	Write-Host "Starting Open Hospital GUI..."
 
