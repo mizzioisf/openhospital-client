@@ -1210,14 +1210,19 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	mysql_check;
 	config_database;
 	# check if OH database already exists
-	if [ ! -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
-		echo "OH database not found, starting from scratch..."
+	if [ ! -d ./"$DATA_DIR"/mysql ]; then
+		echo "Database not initialized, starting from scratch..."
 		# prepare MySQL
 		initialize_database;
 		# start database
 		start_database;	
 		# set database root password
 		set_database_root_pw;
+	fi
+	if [ ! -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
+		# start database
+		start_database;	
+		echo "OH database not found, starting from scratch..."
 		# create database and load data
 		import_database;
 	else
