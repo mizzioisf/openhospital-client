@@ -974,12 +974,12 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 			switch -CaseSensitive( $script:DEMO_DATA ) {
 			"on"	{ # 
-				$script:DEMO_DATA=off
+				$script:DEMO_DATA="off"
 				# set database name
 				$script:DATABASE_NAME=$DEMO_DATABASE
 				}
 			"off"	{ # 
-				$script:DEMO_DATA=on
+				$script:DEMO_DATA="on"
 				# set database name
 				$script:DATABASE_NAME="oh"
 				}
