@@ -331,6 +331,7 @@ function read_settings {
 		$script:OH_MODE=$oh_settings.MODE
 		$script:OH_LANGUAGE=$oh_settings.LANGUAGE
 		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
+		$script:DEMO_DATA=$oh_settings.DEMODATA
 		################################################
 	}
 }
@@ -354,11 +355,6 @@ function set_path {
 
 ###################################################################
 function set_oh_mode {
-	#if ( !( $OH_MODE -eq "PORTABLE" ) -And !( $OH_MODE -eq "CLIENT" ) -And !( $OH_MODE -eq "SERVER" ) ) {
-	#	Write-Host "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting." -ForegroundColor Red
-	#	Read-Host;
-	#	exit 1
-	#}
 	# if settings.properties is present set OH mode
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Configuring OH mode..."
@@ -370,6 +366,21 @@ function set_oh_mode {
 		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
 	}
 	Write-Host "OH mode set to $OH_MODE." -ForeGroundcolor Green
+}
+
+###################################################################
+function set_demo_data {
+	# if settings.properties is present set OH mode
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+		Write-Host "Configuring OH mode..."
+	        ######## settings.properties OH mode configuration
+		Write-Host "Setting DEMO data to $DEMO_DATA in OH configuration files-> settings.properties..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(DEMODATA.+)',"DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	}
+	else {
+		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
+	}
+	Write-Host "DEMO data set to $DEMO_DATA." -ForeGroundcolor Green
 }
 
 ###################################################################
@@ -963,7 +974,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$DEMO_DATA="on"
 			# set database name
 			$script:DATABASE_NAME="ohdemo"
-			Write-Host "Demo data set to on."
+			set_demo_data;
 			Read-Host "Press any key to continue";
 		}
 		###################################################
@@ -1123,13 +1134,15 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"v"	{ # display software version and configuration
-	        	Write-Host "--------- Software version ---------"
+	        	Write-Host "--------- OH version ---------"
 			Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 			$var = $_.Split('=',2).Trim()
 			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
 			}
 			# show configuration
 			Write-Host "Open Hospital version:" $VER_MAJOR $VER_MINOR $VER_RELEASE
+			Write-Host ""
+	        	Write-Host "--------- Software version ---------"
 			Write-Host "$MYSQL_NAME version: $MYSQL_DIR"
 			Write-Host "JAVA version: $JAVA_DISTRO"
 			Write-Host ""
@@ -1147,7 +1160,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "DATABASE_NAME=$DATABASE_NAME"
 			Write-Host "DATABASE_USER=$DATABASE_USER"
 			Write-Host ""
-			Write-Host "--- Dicom ---"
+			Write-Host "--- Imaging / Dicom ---"
 			Write-Host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
 			Write-Host "DICOM_STORAGE=$DICOM_STORAGE"
 			Write-Host "DICOM_DIR=$DICOM_DIR"

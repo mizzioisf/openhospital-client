@@ -223,7 +223,7 @@ function read_settings {
 		OH_LANGUAGE=$LANGUAGE
 		OH_MODE=$MODE
 		OH_SINGLE_USER=$SINGLE_USER
-		#############################
+		DEMO_DATA=$DEMODATA
 	fi
 }
 
@@ -292,15 +292,10 @@ function set_path {
 
 ###################################################################
 function set_oh_mode {
-	#if [ -z ${OH_MODE+x} ]; then
-	#	echo "Error - OH_MODE not defined [CLIENT - PORTABLE - SERVER]! Exiting."
-	#	# if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
-	#	exit 1
-	#fi
 	# if settings.properties is present set OH mode
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Configuring OH mode..."
-		######## settings.properties language configuration
+		######## settings.properties OH mode configuration
 		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
 		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
 	else 
@@ -309,6 +304,23 @@ function set_oh_mode {
 		echo "Warning: settings.properties file not found."
 	fi
 	echo "OH mode set to $OH_MODE"
+}
+
+
+###################################################################
+function set_demo_data {
+	# if settings.properties is present set OH mode
+	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+		echo "Configuring DEMO data..."
+		######## settings.properties language configuration
+		echo "Setting DEMO data to $DEMO_DATA in OH configuration file -> settings.properties..."
+		sed -e "/^"DEMODATA="/c"DEMODATA=$DEMO_DATA"" -i ./$OH_DIR/rsc/settings.properties
+	else 
+		echo ""
+		echo ""
+		echo "Warning: settings.properties file not found."
+	fi
+	echo "DEMO data set to $DEMO_DATA"
 }
 
 ###################################################################
@@ -802,7 +814,7 @@ function parse_user_input {
 			DEMO_DATA="on"
 			# set database name
 			DATABASE_NAME="ohdemo"
-			echo "Demo data set to on."
+			set_demo_data;
 		fi
 
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
@@ -982,9 +994,11 @@ function parse_user_input {
 	###################################################
 	v)	# display software version and configuration
 		echo ""
-		echo "--------- Software version ---------"
+		echo "--------- OH version ---------"
 		source "./$OH_DIR/rsc/version.properties"
 		echo "Open Hospital version:" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
+		echo ""
+		echo "--------- Software version ---------"
 		echo "$MYSQL_NAME version: $MYSQL_DIR"
 		echo "JAVA version: $JAVA_DISTRO"
 		echo ""
@@ -1002,7 +1016,7 @@ function parse_user_input {
 		echo "DATABASE_NAME=$DATABASE_NAME"
 		echo "DATABASE_USER=$DATABASE_USER"
 		echo ""
-		echo "--- Dicom ---"
+		echo "--- Imaging / Dicom ---"
 		echo "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
 		echo "DICOM_STORAGE=$DICOM_STORAGE"
 		echo "DICOM_DIR=$DICOM_DIR"
