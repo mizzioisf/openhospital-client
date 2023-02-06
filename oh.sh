@@ -1218,6 +1218,8 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 		start_database;	
 		# set database root password
 		set_database_root_pw;
+		# shutdown database
+		shutdown_database;	
 	fi
 	if [ ! -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 		# start database
