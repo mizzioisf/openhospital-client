@@ -61,6 +61,7 @@ LOG_LEVEL="INFO"
 # set DEMO_DATA to on to enable demo database loading - default set to off
 # ---> Warning <--- __requires deletion of all portable data__
 DEMO_DATA="off"
+DEMO_DATABASE="ohdemo"
 
 # set JAVA_BIN
 # Uncomment this if you want to use system wide JAVA
@@ -799,7 +800,6 @@ function parse_user_input {
 		esac
 		# create config files if not present
 		#write_config_files;
-		# set log level
 		set_log_level;
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
@@ -808,14 +808,24 @@ function parse_user_input {
 		echo ""
 		# exit if OH is configured in CLIENT mode
 		if [ "$OH_MODE" = "CLIENT" ]; then
-			echo "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data, exiting."
+			echo "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data. Exiting."
 			exit 1;
-		else
-			DEMO_DATA="on"
-			# set database name
-			DATABASE_NAME="ohdemo"
-			set_demo_data;
-		fi
+		fi	
+		case "$DEMO_DATA" in
+			*on*)
+				DEMO_DATA="off";
+				# set database name
+				DATABASE_NAME="oh"
+			;;
+			*off*)
+				DEMO_DATA="on";
+				# set database name
+				DATABASE_NAME=$DEMO_DATABASE
+			;;
+		esac
+		WRITE_CONFIG_FILES=on;
+		write_config_files;
+		set_demo_data;
 
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
@@ -1159,7 +1169,7 @@ echo ""
 if [ "$DEMO_DATA" = "on" ]; then
 	# exit if OH is configured in CLIENT mode
 	if [[ "$OH_MODE" = "CLIENT" ]]; then
-		echo "Error - OH_MODE set to $OH_MODE mode. Cannot run with Demo data, exiting."
+		echo "Error - OH_MODE set to $OH_MODE mode. Cannot run with Demo data. Exiting."
 		exit 1;
 	fi
 

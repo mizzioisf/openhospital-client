@@ -116,6 +116,7 @@ $script:OH_SINGLE_USER="no"
 # set DEMO_DATA to on to enable demo database loading - default set to off
 # ---> Warning <--- __requires deletion of all portable data__
 $script:DEMO_DATA="off"
+$script:DEMO_DATABASE="ohdemo"
 
 # set JAVA_BIN 
 # Uncomment this if you want to use system wide JAVA
@@ -968,13 +969,24 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"D"	{ # demo mode 
 			# exit if OH is configured in CLIENT mode
 			if ( $OH_MODE -eq "CLIENT" ) {
-				Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data." -ForeGroundcolor Red
-				Read-Host;
+				Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data. Exiting" -ForeGroundcolor Red
+				Read-Host; exit 1;
 			}
-			$DEMO_DATA="on"
-			# set database name
-			$script:DATABASE_NAME="ohdemo"
+			switch -CaseSensitive( $script:DEMO_DATA ) {
+			"on"	{ # 
+				$script:DEMO_DATA="off"
+				# set database name
+				$script:DATABASE_NAME=$DEMO_DATABASE
+				}
+			"off"	{ # 
+				$script:DEMO_DATA="on"
+				# set database name
+				$script:DATABASE_NAME="oh"
+				}
+			}
 			set_demo_data;
+			$script:WRITE_CONFIG_FILES="on";
+			write_config_files;
 			Read-Host "Press any key to continue";
 		}
 		###################################################
@@ -1229,7 +1241,7 @@ Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
 if ( $DEMO_DATA -eq "on" ) {
 	# exit if OH is configured in CLIENT mode
 	if ( $OH_MODE -eq "CLIENT" ) {
-		Write-Host "Error - OH_MODE is set to $OH_MODE mode. Cannot run with Demo data, exiting." -ForeGroundcolor Red
+		Write-Host "Error - OH_MODE is set to $OH_MODE mode. Cannot run with Demo data. Exiting." -ForeGroundcolor Red
 		Read-Host; 
 		exit 1
 	}
