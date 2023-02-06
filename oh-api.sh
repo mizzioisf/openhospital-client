@@ -533,7 +533,7 @@ function config_database {
 function initialize_database {
 	# create data directory
 	mkdir -p "./$DATA_DIR"
-	# inizialize MariDB/MySQL
+	# initialize MariDB/MySQL
 	echo "Initializing $MYSQL_NAME database on port $DATABASE_PORT..."
 	case "$MYSQL_DIR" in 
 	*mariadb*)
