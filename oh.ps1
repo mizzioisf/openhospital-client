@@ -984,9 +984,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$script:DATABASE_NAME=$DEMO_DATABASE
 				}
 			}
-			set_demo_data;
 			$script:WRITE_CONFIG_FILES="on";
 			write_config_files;
+			set_demo_data;
 			Read-Host "Press any key to continue";
 		}
 		###################################################
