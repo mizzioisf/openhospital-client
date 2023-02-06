@@ -868,12 +868,12 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set DOC_DIR
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
-		# set DEMO DATA
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("DEMODATA=off","DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set PHOTO_DIR
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("PHOTO_DIR","$PHOTO_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set singleuser = yes / no
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		# set DEMO DATA
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("DEMODATA=off","DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 	}
 }
 
