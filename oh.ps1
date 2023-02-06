@@ -332,6 +332,7 @@ function read_settings {
 		$script:OH_MODE=$oh_settings.MODE
 		$script:OH_LANGUAGE=$oh_settings.LANGUAGE
 		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
+		$script:OH_DOC_DIR=$oh_settings.OH_DOC_DIR
 		$script:DEMO_DATA=$oh_settings.DEMODATA
 		################################################
 	}
@@ -868,7 +869,7 @@ function write_config_files {
 		# set DOC_DIR
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set DEMO DATA
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("DEMODATA","$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("DEMODATA=off","DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set PHOTO_DIR
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("PHOTO_DIR","$PHOTO_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
 		# set singleuser = yes / no
@@ -1121,7 +1122,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Do you want to save current settings to OH configuration files?"
 			
 			get_confirmation;
-			$script:WRITE_CONFIG_FILES="on"
+			# do not overwrite files if existing
 			write_config_files;
 			set_oh_mode;
 			set_language;

@@ -546,7 +546,7 @@ function config_database {
 function initialize_database {
 	# create data directory
 	mkdir -p "./$DATA_DIR"
-	# initialize MariDB/MySQL
+	# initialize MariaDB/MySQL
 	echo "Initializing $MYSQL_NAME database on port $DATABASE_PORT..."
 	case "$MYSQL_DIR" in 
 	*mariadb*)
@@ -975,7 +975,7 @@ function parse_user_input {
 		echo ""
 		echo "Do you want to save current settings to OH configuration files?"
 		get_confirmation;
-		WRITE_CONFIG_FILES=on
+		# do not overwrite files if existing
 		write_config_files;
 		set_oh_mode;
 		set_language;
