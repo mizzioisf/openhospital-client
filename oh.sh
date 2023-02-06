@@ -975,9 +975,9 @@ function parse_user_input {
 		echo ""
 		echo "Do you want to save current settings to OH configuration files?"
 		get_confirmation;
+		WRITE_CONFIG_FILES=on
 		write_config_files;
 		set_oh_mode;
-		set_demo_data;
 		set_language;
 		set_log_level;
 		echo "Done!"
@@ -1210,7 +1210,7 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	mysql_check;
 	config_database;
 	# check if OH database already exists
-	if [ ! -d ./"$DATA_DIR"/mysql ]; then
+	if [ ! -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 		echo "Database not initialized, starting from scratch..."
 		# prepare MySQL
 		initialize_database;
@@ -1218,14 +1218,8 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 		start_database;	
 		# set database root password
 		set_database_root_pw;
-		# shutdown database
-		shutdown_database;
-		sleep 5;
-	fi
-	if [ ! -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
 		# start database
 		start_database;	
-		echo "OH database not found, starting from scratch..."
 		# create database and load data
 		import_database;
 	else
