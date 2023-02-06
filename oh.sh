@@ -1218,8 +1218,6 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 		start_database;	
 		# set database root password
 		set_database_root_pw;
-		# start database
-		start_database;	
 		# create database and load data
 		import_database;
 	else
