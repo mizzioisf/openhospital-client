@@ -354,7 +354,7 @@ function set_path {
 	        # set original data base_dir
 	        $script:DATA_BASEDIR=$DATA_DIR
 	        # set DATA_DIR with db name
-	        $script:DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
+	        $script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
 
 		# set path variable with / in place of \ for configuration files
 		$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
