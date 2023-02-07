@@ -994,7 +994,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				}
 			}
 	        	# set DATA_DIR with db name
-		        $script:"DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME"
+		        $script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
 			$script:WRITE_CONFIG_FILES="on";
 			write_config_files;
 			#set_demo_data;
