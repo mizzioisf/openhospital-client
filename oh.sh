@@ -284,6 +284,12 @@ function set_path {
 			exit 1
 		fi
 	fi
+
+	# set original data base_dir
+	DATA_BASEDIR=$DATA_DIR
+	# set DATA_DIR with db name
+	DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
+
 	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
 	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
 	TMP_DIR_ESCAPED=$(echo $TMP_DIR | sed -e 's/\//\\\//g')
@@ -679,7 +685,7 @@ function clean_database {
 	get_confirmation;
 	echo "Removing data..."
 	# remove database files
-	rm -rf ./"$DATA_DIR"/*
+	rm -rf ./"$DATA_BASEDIR"/*
 	# remove socket and pid file
 	rm -rf ./$TMP_DIR/*
 }
@@ -824,6 +830,11 @@ function parse_user_input {
 				DATABASE_NAME=$DEMO_DATABASE
 			;;
 		esac
+
+		# set DATA_DIR with db name
+		DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
+		DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
+
 		WRITE_CONFIG_FILES=on;
 		write_config_files;
 
@@ -923,7 +934,7 @@ function parse_user_input {
 		# check if portable mode is on
 		if [ "$OH_MODE" != "CLIENT" ]; then
 			# check if database already exists
-			if [ -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
+			if [ -d ./"$DATA_DIR" ]; then
 				config_database;
 				start_database;
 			else
@@ -1211,7 +1222,7 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	# config database
 	config_database;
 	# check if OH database already exists
-	if [ ! -d ./"$DATA_DIR"/$DATABASE_NAME ]; then
+	if [ ! -d ./"$DATA_DIR" ]; then
 		echo "OH database not found, starting from scratch..."
 		# prepare database
 		initialize_database;

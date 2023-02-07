@@ -350,6 +350,12 @@ function set_path {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
 			Read-Host; exit 1
 		}
+	
+	        # set original data base_dir
+	        $script:DATA_BASEDIR=$DATA_DIR
+	        # set DATA_DIR with db name
+	        $script:DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
+
 		# set path variable with / in place of \ for configuration files
 		$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
 	}
@@ -788,7 +794,7 @@ function clean_database {
 	Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
 	Write-Host "Removing data..."
 	# remove database files
-	$filetodel="$OH_PATH\$DATA_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH\$DATA_BASEDIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	# remove socket and pid file
 	$filetodel="$OH_PATH\$TMP_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
@@ -987,6 +993,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$script:DATABASE_NAME=$DEMO_DATABASE
 				}
 			}
+	        	# set DATA_DIR with db name
+		        $script:DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
 			$script:WRITE_CONFIG_FILES="on";
 			write_config_files;
 			#set_demo_data;
@@ -1071,7 +1079,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# check if portable mode is on
 			if ( !($OH_MODE -eq "CLIENT" )) {
 				# check if database already exists
-				if ( !(Test-Path "$OH_PATH/$DATA_DIR/$DATABASE_NAME")) {
+				if ( !(Test-Path "$OH_PATH/$DATA_DIR")) {
 			        	Write-Host "Error: no data found! Exiting." -ForegroundColor Red
 					exit 2;
 				}
@@ -1291,7 +1299,7 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 	# config database
 	config_database;
 	# check if OH database already exists
-	if ( !(Test-Path "$OH_PATH/$DATA_DIR/$DATABASE_NAME") ) {
+	if ( !(Test-Path "$OH_PATH/$DATA_DIR") ) {
 		Write-Host "OH database not found, starting from scratch..."
 		# prepare database
 		initialize_database;
