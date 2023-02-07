@@ -819,6 +819,7 @@ function parse_user_input {
 			echo "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data. Exiting."
 			exit 1;
 		fi	
+		if (( $2==0 )); then DEMO_DATA="off"; fi # workaround for -D option
 		case "$DEMO_DATA" in
 			*on*)
 				DEMO_DATA="off";
@@ -838,7 +839,7 @@ function parse_user_input {
 
 		WRITE_CONFIG_FILES=on; write_config_files;
 
-		if (( $2==0 )); then DATABASE_NAME=$DEMO_DATABASE; opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	G)	# set up GSM
@@ -1179,12 +1180,13 @@ if [ "$DEMO_DATA" = "on" ]; then
 		echo "Error - OH_MODE set to $OH_MODE mode. Cannot run with Demo data. Exiting."
 		exit 1;
 	fi
+	
+	# set database name
+	DATABASE_NAME=$DEMO_DATABASE
 
 	if [ -f ./$SQL_DIR/$DB_DEMO ]; then
 		echo "Found SQL demo database, starting OH with Demo data..."
 		DB_CREATE_SQL=$DB_DEMO
-		# reset database if exists
-		# clean_database;  
 	else
 		echo "Error: no $DB_DEMO found! Exiting."
 		exit 1

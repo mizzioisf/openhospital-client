@@ -1255,9 +1255,9 @@ if ( $DEMO_DATA -eq "on" ) {
 		exit 1
 	}
 	
-	# reset database if exists
-	#clean_database;
-
+	# set database name
+	$script:DATABASE_NAME=$DEMO_DATABASE
+	
 	if (Test-Path -Path "$OH_PATH/$SQL_DIR/$DB_DEMO" -PathType leaf) {
 	        Write-Host "Found SQL demo database, starting OH with Demo data..."
 		$DB_CREATE_SQL=$DB_DEMO
