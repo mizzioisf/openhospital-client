@@ -284,7 +284,8 @@ function set_path {
 			exit 1
 		fi
 	fi
-
+	# set original database name
+	ORIG_DATABASE_NAME="$DATABASE_NAME"
 	# set original data base_dir
 	DATA_BASEDIR=$DATA_DIR
 	# set DATA_DIR with db name
@@ -822,7 +823,7 @@ function parse_user_input {
 			*on*)
 				DEMO_DATA="off";
 				# set database name
-				DATABASE_NAME="oh"
+				DATABASE_NAME="$ORIG_DATABASE_NAME"
 			;;
 			*off*)
 				DEMO_DATA="on";
@@ -835,10 +836,9 @@ function parse_user_input {
 		DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
 		DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
 
-		WRITE_CONFIG_FILES=on;
-		write_config_files;
+		WRITE_CONFIG_FILES=on; write_config_files;
 
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then DATABASE_NAME=$DEMO_DATABASE; opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	G)	# set up GSM
@@ -897,8 +897,6 @@ function parse_user_input {
 		else
 			read -n 2 -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 		fi
-		# create config files if not present
-		#write_config_files;
 		set_language;
 		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
 		;;
@@ -918,10 +916,7 @@ function parse_user_input {
 
 		echo "Do you want to save entered settings to OH configuration files?"
 		get_confirmation;
-		WRITE_CONFIG_FILES="on"
-		write_config_files;
-		#set_language;
-		#set_log_level;
+		WRITE_CONFIG_FILES="on"; write_config_files;
 		echo "Done!"
 		echo ""
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
@@ -986,7 +981,7 @@ function parse_user_input {
 		echo ""
 		echo "Do you want to save current settings to OH configuration files?"
 		get_confirmation;
-		# do not overwrite files if existing
+		# do not overwrite configuration files if existing
 		write_config_files;
 		set_oh_mode;
 		set_language;

@@ -351,6 +351,9 @@ function set_path {
 			Read-Host; exit 1
 		}
 	
+	        # set original database name
+	        $script:ORIG_DATABASE_NAME="$DATABASE_NAME"
+
 	        # set original data base_dir
 	        $script:DATA_BASEDIR=$DATA_DIR
 	        # set DATA_DIR with db name
@@ -985,7 +988,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			"on"	{ # 
 				$script:DEMO_DATA="off"
 				# set database name
-				$script:DATABASE_NAME="oh"
+				$script:DATABASE_NAME="$script:ORIG_DATABASE_NAME"
 				}
 			"off"	{ # 
 				$script:DEMO_DATA="on"
@@ -995,8 +998,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 	        	# set DATA_DIR with db name
 		        $script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
-			$script:WRITE_CONFIG_FILES="on";
-			write_config_files;
+			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			#set_demo_data;
 			Read-Host "Press any key to continue";
 		}
@@ -1043,10 +1045,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: $OH_LANGUAGE_LIST (default is en)"
-			# create config files if not present
-			#write_config_files;
 			set_language;
-			#$script:WRITE_CONFIG_FILES="on"
 			Read-Host "Press any key to continue";
 		}
 		###################################################
@@ -1065,10 +1064,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD]"
 			Write-Host				"Do you want to save entered settings to OH configuration files?"
 			get_confirmation;
-			$script:WRITE_CONFIG_FILES="on"
-			write_config_files;
-			#set_log_level;
-			#set_language;
+			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
@@ -1130,7 +1126,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Do you want to save current settings to OH configuration files?"
 			
 			get_confirmation;
-			# do not overwrite files if existing
+			# do not overwrite configuration files if existing
 			write_config_files;
 			set_oh_mode;
 			set_language;
