@@ -32,8 +32,8 @@
 |Windows 7/10 | x64 | 32bit |✔|✔|✔
 |Windows 7/10 | i386 | 32bit |✔|✔|✔
 
-.7+|*1.9.1* .5+| 5.0.x .5+| 1.6 | Ubuntu 20.04 | x64 | 64bit |✔|n/a |✔
-|Ubuntu 18.04 | i386 | 32bit |✔|| n/t|n/t
+.7+|*1.9.1* .5+| 5.0.x .5+| 1.6 | Ubuntu 20.04 | x64 | 64bit |✔|n/t |✔
+|Ubuntu 18.04 | i386 | 32bit |✔|n/t|n/t
 |Windows 7/10 | x64 | 64bit |❌|✔|✔
 |Windows 7/10 | x64 | 32bit |✔|✔|✔
 |Windows 7/10 | i386 | 32bit |✔|✔|✔
