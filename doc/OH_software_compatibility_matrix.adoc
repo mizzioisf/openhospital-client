@@ -42,11 +42,11 @@
 [width="60%",cols="30%,70%",]
 |===
 |*NOTE*| *32 bit environments are EOL (End Of Life)*
-|(*)| Before 1.12.0, DICOM imaging functionality may not work
+|(*)| Before OH v.1.12.0, Imaging/DICOM functionality may not work
 |(**)| Windows Powershell 5.1 is required
 |✔|_working_ 
 |❌|_not working_ 
 |n/t|_not tested_ 
 |n/a|_not applicable_ 
-|_last updated_ |_2023.02.13_
+|last updated|_2023.02.13_
 |===
