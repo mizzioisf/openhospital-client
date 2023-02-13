@@ -26,13 +26,13 @@
 |Windows 7/10 (**) | x64 | 32bit |✔|✔|✔
 |Windows 7/10 (**) | i686 | 32bit |✔|✔|✔
 
-.5+|*1.10.0* .5+| 5.1.x .5+| 1.6 | Ubuntu 20.04 | x64 | 64bit |✔| n/t|✔
+.5+|*1.10.0* .5+| 5.1.x .5+| 1.6 | Ubuntu 20.04 | x64 | 64bit |✔|n/t|✔
 |Ubuntu 18.04 | i386 | 32bit |✔|❌|n/t
 |Windows 7/10 | x64 | 64bit |❌|✔|✔
 |Windows 7/10 | x64 | 32bit |✔|✔|✔
 |Windows 7/10 | i386 | 32bit |✔|✔|✔
 
-.7+|*1.9.1* .5+| 5.0.x .5+| 1.6 | Ubuntu 20.04 | x64 | 64bit |✔|n/t |✔
+.7+|*1.9.1* .5+| 5.0.x .5+| 1.6 | Ubuntu 20.04 | x64 | 64bit |✔|n/t|✔
 |Ubuntu 18.04 | i386 | 32bit |✔|n/t|n/t
 |Windows 7/10 | x64 | 64bit |❌|✔|✔
 |Windows 7/10 | x64 | 32bit |✔|✔|✔
@@ -42,11 +42,11 @@
 [width="60%",cols="30%,70%",]
 |===
 |*NOTE*| *32 bit environments are EOL (End Of Life)*
-|(*) | Before 1.12.0, DICOM imaging functionality may not work
-|(**) | Windows Powershell 5.1 is required
-|*v* |_working_ 
-|*x* |_not working_ 
-|*n/t* |_not tested_ 
-|n/a |_not applicable_ 
+|(*)| Before 1.12.0, DICOM imaging functionality may not work
+|(**)| Windows Powershell 5.1 is required
+|✔|_working_ 
+|❌|_not working_ 
+|n/t|_not tested_ 
+|n/a|_not applicable_ 
 |_last updated_ |_2023.02.13_
 |===
