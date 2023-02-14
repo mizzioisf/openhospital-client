@@ -176,7 +176,7 @@ $script:HELP_FILE="OH-readme.txt"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-$script:MYSQL_VERSION="10.6.11"
+$script:MYSQL_VERSION="10.6.12"
 $script:MYSQL32_VERSION="10.6.5"
 
 ######## define system and software architecture
