@@ -1321,9 +1321,6 @@ if [ "$OH_MODE" = "SERVER" ]; then
 	
 	while true; do
 		trap ctrl_c INT
-	echo "Press Ctrl + C to exit"
-	while true; do
-		trap ctrl_c INT
 		function ctrl_c() {
 			echo "Exiting Open Hospital..."
 			shutdown_database;		
