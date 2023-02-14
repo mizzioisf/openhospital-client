@@ -19,7 +19,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.12-dev Open Hospital pre-release!**
+**New ! Updated to 1.12-dev Open Hospital official release!**
 
 # Running OH - Ultra-quickstart
 
@@ -507,4 +507,4 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
 - Fixed _a_few_ bugs ;-)
 
-*last updated: 2023.01.31*
+*last updated: 2023.02.14*
