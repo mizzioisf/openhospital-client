@@ -325,6 +325,7 @@ function set_defaults {
 ###################################################################
 function read_settings {
 
+	# check and read OH version file
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/version.properties" -PathType leaf ) {
 		# read Open Hospital Version
 		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {

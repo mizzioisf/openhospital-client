@@ -209,7 +209,12 @@ function get_confirmation {
 	read -p "(y/n) ? " choice
 	case "$choice" in 
 		y|Y ) echo "yes";;
-		n|N ) echo "Exiting."; exit 0;;
+		n|N ) echo "Exiting."; 
+			if [[ ${#COMMAND_LINE_ARGS} -ne 0 ]]; then script_menu;
+				exit 0;
+			fi
+		;;
+
 		* ) echo "Invalid choice. Exiting."; exit 1 ;;
 	esac
 }
@@ -217,7 +222,7 @@ function get_confirmation {
 ###################################################################
 function read_settings {
 
-	# read Open Hospital Version
+	# check and read OH version file
 	if [ -f ./$OH_DIR/rsc/version.properties ]; then
 		source "./$OH_DIR/rsc/version.properties"
 		OH_VERSION=$VER_MAJOR.$VER_MINOR.$VER_RELEASE
@@ -1150,9 +1155,9 @@ OPTIND=1
 # list of arguments expected in user input (- option)
 OPTSTRING=":CPSdDGhil:msrtvequQXZ?" 
 
-PASSED_ARGS=$@
+COMMAND_LINE_ARGS=$@
 # Parse arguments passed via command line
-if [[ ${#PASSED_ARGS} -ne 0 ]]; then
+if [[ ${#COMMAND_LINE_ARGS} -ne 0 ]]; then
 	# function to parse input
 	while getopts ${OPTSTRING} opt; do
 		parse_user_input $opt 0; # non interactive
