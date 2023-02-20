@@ -170,7 +170,7 @@ function script_menu {
 	# show help / user options
 	echo " -----------------------------------------------------------------"
 	echo "|                                                                 |"
-	echo "|                       Open Hospital | OH                        |"
+	echo "|                    Open Hospital - $OH_VERSION                       |"
 	echo "|                                                                 |"
 	echo " -----------------------------------------------------------------"
 	echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
@@ -216,6 +216,16 @@ function get_confirmation {
 
 ###################################################################
 function read_settings {
+
+	# read Open Hospital Version
+	if [ -f ./$OH_DIR/rsc/version.properties ]; then
+		source "./$OH_DIR/rsc/version.properties"
+		OH_VERSION=$VER_MAJOR.$VER_MINOR.$VER_RELEASE
+	else 
+		echo "Error: Open Hospital non found! Exiting."
+		exit 1;
+	fi
+
 	# read values for script variables from existing settings file
 	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
 		echo "Reading OH settings file..."
@@ -1013,10 +1023,9 @@ function parse_user_input {
 	v)	# display software version and configuration
 		echo ""
 		echo "--------- OH version ---------"
-		source "./$OH_DIR/rsc/version.properties"
-		echo "Open Hospital version:" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
+		echo "Open Hospital version: $OH_VERSION"
 		echo ""
-		echo "--------- Software version ---------"
+		echo "--------- Software versions ---------"
 		echo "$MYSQL_NAME version: $MYSQL_DIR"
 		echo "JAVA version: $JAVA_DISTRO"
 		echo ""

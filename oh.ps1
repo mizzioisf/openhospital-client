@@ -236,7 +236,7 @@ function script_menu {
 	# Clear-Host # clear console
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host "|                                                                 |"
-	Write-Host "|                       Open Hospital | OH                        |"
+	Write-Host "|                    Open Hospital - $OH_VERSION                       |"
 	Write-Host "|                                                                 |"
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
@@ -324,6 +324,20 @@ function set_defaults {
 
 ###################################################################
 function read_settings {
+
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/version.properties" -PathType leaf ) {
+		# read Open Hospital Version
+		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
+			$var = $_.Split('=',2).Trim()
+			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
+			$script:OH_VERSION=$VER_MAJOR.$VER_MINOR.$VER_RELEASE
+		}
+	}
+	else {
+		Write-Host "Error: Open Hospital not found. Exiting" -ForegroundColor Red
+		Read-Host; exit 1
+	}
+
 	# read values for script variables from existing settings file
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
@@ -1156,14 +1170,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"v"	{ # display software version and configuration
 	        	Write-Host "--------- OH version ---------"
-			Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
-			$var = $_.Split('=',2).Trim()
-			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
-			}
 			# show configuration
-			Write-Host "Open Hospital version:" $VER_MAJOR $VER_MINOR $VER_RELEASE
+			Write-Host "Open Hospital version:" $OH_VERSION
 			Write-Host ""
-	        	Write-Host "--------- Software version ---------"
+	        	Write-Host "--------- Software versions ---------"
 			Write-Host "$MYSQL_NAME version: $MYSQL_DIR"
 			Write-Host "JAVA version: $JAVA_DISTRO"
 			Write-Host ""
