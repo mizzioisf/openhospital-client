@@ -331,8 +331,8 @@ function read_settings {
 		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
 			$var = $_.Split('=',2).Trim()
 			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
-			$script:OH_VERSION=$VER_MAJOR.$VER_MINOR.$VER_RELEASE
 		}
+		$script:OH_VERSION="$VER_MAJOR.$VER_MINOR.$VER_RELEASE"
 	}
 	else {
 		Write-Host "Error: Open Hospital not found. Exiting" -ForegroundColor Red
