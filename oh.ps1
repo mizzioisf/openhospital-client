@@ -494,7 +494,7 @@ function create_desktop_shortcut {
 
 	$Shortcut = $WshShell.CreateShortcut("$Home\Desktop\OpenHospital.lnk")
 	$Shortcut.TargetPath = "$POWERSHELL_EXE" # $SCRIPT_DIR\$SCRIPT_NAME"
-	$Shortcut.Arguments = "$SCRIPT_DIR\$SCRIPT_NAME -interactive off -mode $OH_MODE -lang $OH_LANGUAGE"
+	$Shortcut.Arguments = "-ExecutionPolicy Bypass $SCRIPT_DIR\$SCRIPT_NAME -interactive off -mode $OH_MODE -lang $OH_LANGUAGE"
 	$Shortcut.WorkingDirectory = "$OH_PATH"
 	$ShortCut.IconLocation = "$OH_PATH\oh.ico"
 	$Shortcut.Save()
