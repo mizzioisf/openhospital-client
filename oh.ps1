@@ -269,12 +269,25 @@ function script_menu {
 }
 
 ###################################################################
-function get_confirmation {
+function get_confirmation ($arg) {
 	$choice = Read-Host -Prompt "(y/n) ? "
 	switch ("$choice") {
 		"y"  { "yes"; break }
-		"n"  { "Exiting."; Read-Host; exit 0 }
-		default { "Invalid choice. Exiting."; Read-Host; exit 1; }
+		"n"  { "Exiting.";
+			Read-Host;
+			if ( $arg -eq 1 ) {
+				interactive_menu;
+			}
+			
+			exit 0;
+			}
+		default { "Invalid choice. Exiting.";
+			Read-Host;
+			if ( $arg -eq 1 ) {
+				interactive_menu;
+			}
+			exit 1;
+			}
 	}
 }
 
@@ -927,30 +940,11 @@ function clean_files {
 }
 
 
-######################## Script start ########################
-
-######## Pre-flight checks
-
-# check user running the script
-#Write-Host "Checking for elevated permissions..."
-#	if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`[Security.Principal.WindowsBuiltInRole] "Administrator")) {
-#	Write-Host "Error: Cannot run as Administrator user. Exiting" -ForegroundColor Red
-#	exit 1
-#}
-# else { Write-Host "User ok — go on executing the script..." -ForegroundColor Green }
-
-
-######## Environment setup
-
-set_path;
-read_settings;
-set_defaults;
-
-# set working dir to OH base dir
-cd "$OH_PATH" # workaround for hard coded paths
 
 ######## Parse user input
 
+###################################################################
+function parse_user_input {
 # If INTERACTIVE_MODE is set to "off" don't show menu for user input
 if ( $INTERACTIVE_MODE -eq "on" ) {
 	do {
@@ -1035,7 +1029,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host " Database Server -> $DATABASE_SERVER"
 			Write-Host " TCP port -> $DATABASE_PORT"
 			Write-Host ""
-			get_confirmation;
+			get_confirmation 1;
 			initialize_dir_structure;
 			set_language;
 			mysql_check;
@@ -1078,7 +1072,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:DATABASE_USER=Read-Host		"Enter database user name [DATABASE_USER]"
 			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD]"
 			Write-Host				"Do you want to save entered settings to OH configuration files?"
-			get_confirmation;
+			get_confirmation 1;
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
@@ -1140,7 +1134,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"s"	{ # save / write config files
 			Write-Host "Do you want to save current settings to OH configuration files?"
 			
-			get_confirmation;
+			get_confirmation 1;
 			# overwrite configuration files if existing
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			set_oh_mode;
@@ -1260,10 +1254,36 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	# execute until quit is pressed or CLIENT/PORTABLE/SERVER mode is select (Z option)
 	until ( ($option -ieq 'q') -Or ($option -ceq 'Z') )
 }
+}
+
+######################## Script start ########################
+
+######## Pre-flight checks
+
+# check user running the script
+#Write-Host "Checking for elevated permissions..."
+#	if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`[Security.Principal.WindowsBuiltInRole] "Administrator")) {
+#	Write-Host "Error: Cannot run as Administrator user. Exiting" -ForegroundColor Red
+#	exit 1
+#}
+# else { Write-Host "User ok — go on executing the script..." -ForegroundColor Green }
+
+
+######## Environment setup
+
+set_path;
+read_settings;
+set_defaults;
+
+# set working dir to OH base dir
+cd "$OH_PATH" # workaround for hard coded paths
+Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
+
+######## Parse user input
+
+parse_user_input;
 
 ######################### OH start ############################
-
-Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
 
 # check demo mode
 if ( $DEMO_DATA -eq "on" ) {

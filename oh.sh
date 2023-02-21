@@ -223,7 +223,6 @@ function interactive_menu {
 #		fi
 	done
 #	OPTIND=1 
-#	option=
 }
 
 ###################################################################
