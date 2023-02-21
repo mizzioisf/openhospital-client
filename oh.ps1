@@ -955,8 +955,8 @@ cd "$OH_PATH" # workaround for hard coded paths
 if ( $INTERACTIVE_MODE -eq "on" ) {
 	do {
 		script_menu;
-		$opt = Read-Host "Please select an option or press enter to start OH"
-		switch -CaseSensitive ( "$opt" ) {
+		$option = Read-Host "Please select an option or press enter to start OH"
+		switch -CaseSensitive ( "$option" ) {
 		###################################################
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
@@ -1247,10 +1247,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		""	{ # Start
 			Write-Host "Starting Open Hospital...";
-			$opt="Z";
+			$option="Z";
 		}
 		###################################################
-		default { Write-Host "Invalid option: $opt."; 
+		default { Write-Host "Invalid option: $option."; 
 			Read-Host "Press any key to continue";
 			break;
 		}
@@ -1258,7 +1258,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	Clear-Host;
 	}
 	# execute until quit is pressed or CLIENT/PORTABLE/SERVER mode is select (Z option)
-	until ( ($opt -ieq 'q') -Or ($opt -ceq 'Z') )
+	until ( ($option -ieq 'q') -Or ($option -ceq 'Z') )
 }
 
 ######################### OH start ############################
@@ -1332,6 +1332,7 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 	}
 }
 
+######## OH startup
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if ( $OH_MODE -eq "SERVER" ) {

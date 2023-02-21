@@ -205,23 +205,56 @@ function script_menu {
 }
 
 ###################################################################
+function interactive_menu {
+	until [[ "$OPTSTRING" != *"$option"* ]]
+	do 
+		clear;
+		script_menu;
+		echo ""
+		IFS=
+		read -n 1 -p "Please select an option or press enter to start OH: " option
+		if [[ $option != "" ]]; then 
+			parse_user_input $option 1; # interactive
+		else
+			break # if enter pressed exit from loop and start OH
+		fi
+#		if [[ "$option" == "Z" ]]; then
+#			break; # start OH
+#		fi
+	done
+#	OPTIND=1 
+#	option=
+}
+
+###################################################################
 function get_confirmation {
+	# if arg = 1 go back to interactive menu
 	read -p "(y/n) ? " choice
 	case "$choice" in 
-		y|Y ) echo "yes";;
+		y|Y ) echo "yes"
+		;;
 		n|N ) echo "Exiting."; 
-			if [[ ${#COMMAND_LINE_ARGS} -ne 0 ]]; then script_menu;
-				exit 0;
+			if [[ ${#COMMAND_LINE_ARGS} -eq 0 ]] && [[ $1 -eq 1 ]]; then
+				option="";
+				interactive_menu;
+			else
+				exit 1;
 			fi
 		;;
-
-		* ) echo "Invalid choice. Exiting."; exit 1 ;;
+		* ) echo "Invalid choice. Press any key to continue."; 
+			read;
+			if [[ ${#COMMAND_LINE_ARGS} -eq 0 ]] && [[ $1 -eq 1 ]]; then
+				option="";
+				interactive_menu;
+			else
+				exit 1;
+			fi
+	exit 0;
 	esac
 }
 
 ###################################################################
 function read_settings {
-
 	# check and read OH version file
 	if [ -f ./$OH_DIR/rsc/version.properties ]; then
 		source "./$OH_DIR/rsc/version.properties"
@@ -795,21 +828,21 @@ function parse_user_input {
 		DEMO_DATA="off"
 		set_oh_mode;
 		echo ""
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	P)	# start in PORTABLE mode
 		OH_MODE="PORTABLE"
 		set_oh_mode;
 		echo ""
-		if (( $2==0 )); then opt="Z"; else read; fi
+		if (( $2==0 )); then option="Z"; else read; fi
 		;;
 	###################################################
 	S)	# start in SERVER mode
 		OH_MODE="SERVER"
 		set_oh_mode;
 		echo ""
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	d)	# toggle debug mode 
@@ -824,7 +857,7 @@ function parse_user_input {
 		# create config files if not present
 		#write_config_files;
 		set_log_level;
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	D)	# demo mode
@@ -854,7 +887,7 @@ function parse_user_input {
 
 		WRITE_CONFIG_FILES=on; write_config_files;
 
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	G)	# set up GSM
@@ -885,7 +918,7 @@ function parse_user_input {
 		echo " Database Server -> $DATABASE_SERVER"
 		echo " TCP port -> $DATABASE_PORT" 
 		echo ""
-		get_confirmation;
+		get_confirmation 1;
 		initialize_dir_structure;
 		set_language;
 		mysql_check;
@@ -909,12 +942,12 @@ function parse_user_input {
 		#WRITE_CONFIG_FILES="on"
 		if (( $2==0 )); then
 			OH_LANGUAGE="$OPTARG"
-			opt="Z";
+			option="Z";
 		else
 			read -n 2 -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 		fi
 		set_language;
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	m)	# configure OH database connection manually
@@ -931,7 +964,7 @@ function parse_user_input {
 		read -p "Enter database password [DATABASE_PASSWORD]: " DATABASE_PASSWORD
 
 		echo "Do you want to save entered settings to OH configuration files?"
-		get_confirmation;
+		get_confirmation 1;
 		WRITE_CONFIG_FILES="on"; write_config_files;
 		echo "Done!"
 		echo ""
@@ -996,7 +1029,7 @@ function parse_user_input {
 	s)	# save / write config files
 		echo ""
 		echo "Do you want to save current settings to OH configuration files?"
-		get_confirmation;
+		get_confirmation 1;
 		# overwrite configuration files if existing
 		WRITE_CONFIG_FILES=on; write_config_files;
 		set_oh_mode;
@@ -1014,7 +1047,7 @@ function parse_user_input {
 			mysql_check;
 			test_database_connection;
 		fi
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	u)	# create Desktop shortcut
@@ -1102,14 +1135,14 @@ function parse_user_input {
 		;;
 	###################################################
 	#"" )	# enter key
-	#	opt="Z"
+	#	option="Z"
 	#	echo "";
 	#	echo "Starting Open Hospital...";
 	#	fi
 	#	;;
 	###################################################
 	"Z" )	# Z key
-		opt="Z"
+		option="Z";
 		echo "";
 		echo "Starting Open Hospital...";
 		;;
@@ -1120,11 +1153,11 @@ function parse_user_input {
 			echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
 			exit 0;
 		else
-			echo "Invalid option: ${opt}. See $SCRIPT_NAME -h for help"
+			echo "Invalid option: ${option}. See $SCRIPT_NAME -h for help"
 			echo "Press any key to continue";
 			read;
 		fi
-		opt="h";
+		option="h";
 		;;
 	esac
 }
@@ -1154,31 +1187,17 @@ cd "$OH_PATH"
 OPTIND=1 
 # list of arguments expected in user input (- option)
 OPTSTRING=":CPSdDGhil:msrtvequQXZ?" 
-
 COMMAND_LINE_ARGS=$@
+
 # Parse arguments passed via command line
 if [[ ${#COMMAND_LINE_ARGS} -ne 0 ]]; then
 	# function to parse input
-	while getopts ${OPTSTRING} opt; do
-		parse_user_input $opt 0; # non interactive
+	while getopts ${OPTSTRING} option; do
+		parse_user_input $option 0; # non interactive
 	done
 else # If no arguments are passed via command line, show the interactive menu
-	until [[ "$OPTSTRING" != *"$opt"* ]]
-	do 
-		clear;
-		script_menu;
-		echo ""
-		IFS=
-		read -n 1 -p "Please select an option or press enter to start OH: " opt
-		if [[ $opt != "" ]]; then 
-			parse_user_input $opt 1; # interactive
-		else
-			break # if enter pressed exit from loop and start OH
-		fi
-		if [[ "$opt" == "Z" ]]; then
-			break; # start OH
-		fi
-	done
+	# call interactive script menu
+	interactive_menu;
 fi
 
 #shift "$((OPTIND-1))"
@@ -1249,6 +1268,8 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 		start_database;
 	fi
 fi
+
+######## OH startup
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if [ "$OH_MODE" = "SERVER" ]; then
