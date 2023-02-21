@@ -276,7 +276,7 @@ function get_confirmation ($arg) {
 		"n"  { "Exiting.";
 			Read-Host;
 			if ( $arg -eq 1 ) {
-				interactive_menu;
+				parse_user_input;
 			}
 			
 			exit 0;
@@ -284,7 +284,7 @@ function get_confirmation ($arg) {
 		default { "Invalid choice. Exiting.";
 			Read-Host;
 			if ( $arg -eq 1 ) {
-				interactive_menu;
+				parse_user_input;
 			}
 			exit 1;
 			}
@@ -945,7 +945,7 @@ function clean_files {
 
 ###################################################################
 function parse_user_input {
-# If INTERACTIVE_MODE is set to "off" don't show menu for user input
+# If INTERACTIVE_MODE is set to "off" don't show menu
 if ( $INTERACTIVE_MODE -eq "on" ) {
 	do {
 		script_menu;
