@@ -1275,8 +1275,7 @@ set_defaults;
 cd "$OH_PATH" # workaround for hard coded paths
 Write-Host "Interactive mode is set to $script:INTERACTIVE_MODE"
 
-######## Parse user input
-
+######## Parse user input and show interactive menu
 parse_user_input;
 
 ######################### OH start ############################
