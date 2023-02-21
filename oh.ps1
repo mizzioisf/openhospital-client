@@ -939,10 +939,6 @@ function clean_files {
 	$filetodel="$OH_PATH\$OH_DIR\$LOG_DIR\*"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
-
-
-######## Parse user input
-
 ###################################################################
 function parse_user_input {
 # If INTERACTIVE_MODE is set to "off" don't show menu

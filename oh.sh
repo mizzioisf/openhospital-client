@@ -1195,7 +1195,6 @@ if [[ ${#COMMAND_LINE_ARGS} -ne 0 ]]; then
 		parse_user_input $option 0; # non interactive
 	done
 else # If no arguments are passed via command line, show the interactive menu
-	# call interactive script menu
 	interactive_menu;
 fi
 
