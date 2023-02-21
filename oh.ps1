@@ -926,7 +926,6 @@ function clean_files {
 	Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
 	get_confirmation;
 	Write-Host "Removing configuration files..."
-	$filetodel="$OH_PATH\$CONF_DIR\$MYSQL_CONF_FILE"; if (Test-Path $filetodel -PathType leaf){ Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$CONF_DIR\$MYSQL_CONF_FILE"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }

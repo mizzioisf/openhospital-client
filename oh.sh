@@ -769,7 +769,6 @@ function clean_files {
 	get_confirmation;
 	echo "Removing configuration files..."
 	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
-	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
 	rm -f ./$OH_DIR/rsc/settings.properties
 	rm -f ./$OH_DIR/rsc/settings.properties.old
 	rm -f ./$OH_DIR/rsc/database.properties
