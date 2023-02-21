@@ -1193,10 +1193,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "OH_SINGLE_USER=$OH_SINGLE_USER"
 			Write-Host "CONF_DIR=$CONF_DIR"
 			Write-Host "DATA_DIR=$DATA_DIR"
+			Write-Host "PHOTO_DIR=$PHOTO_DIR"
 			Write-Host "BACKUP_DIR=$BACKUP_DIR"
 			Write-Host "LOG_DIR=$LOG_DIR"
 			Write-Host "SQL_DIR=$SQL_DIR"
-			Write-Host "SQL_EXTRA_DIR=$SQL_EXTRA_DIR"
 			Write-Host "TMP_DIR=$TMP_DIR"
 			Write-Host ""
 			Write-Host "--- Logging ---"
@@ -1367,7 +1367,8 @@ if ( $OH_MODE -eq "SERVER" ) {
 	while ($true) {
 		$choice = Read-Host -Prompt "Press Q to exit"
 
-		switch -CaseSensitive ("$choice") {
+		# switch -CaseSensitive ("$choice") {
+		switch ("$choice") {
 			"Q" {
 				Write-Host "Exiting Open Hospital..."
 				shutdown_database;		
