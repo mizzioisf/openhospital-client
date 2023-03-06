@@ -253,6 +253,24 @@ function get_confirmation {
 }
 
 ###################################################################
+function set_path {
+	# get current directory
+	CURRENT_DIR=$PWD
+	# set OH_PATH if not defined
+	if [ -z ${OH_PATH+x} ]; then
+		echo "Info: OH_PATH not defined - setting to script path"
+
+		# set OH_PATH to script path
+		OH_PATH=$(dirname "$(realpath "$0")")
+
+		if [ ! -f "$OH_PATH/$SCRIPT_NAME" ]; then
+			echo "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
+			exit 1
+		fi
+	fi
+}
+
+###################################################################
 function read_settings {
 	# check and read OH version file
 	if [ -f ./$OH_DIR/rsc/version.properties ]; then
@@ -313,36 +331,34 @@ function set_defaults {
 	if [ -z "$DEMO_DATA" ]; then
 		DEMO_DATA="off"
 	fi
-}
 
-###################################################################
-function set_path {
-	# get current directory
-	CURRENT_DIR=$PWD
-	# set OH_PATH if not defined
-	if [ -z ${OH_PATH+x} ]; then
-		echo "Info: OH_PATH not defined - setting to script path"
-
-		# set OH_PATH to script path
-		OH_PATH=$(dirname "$(realpath "$0")")
-
-		if [ ! -f "$OH_PATH/$SCRIPT_NAME" ]; then
-			echo "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
-			exit 1
-		fi
-	fi
 	# set original database name
 	ORIG_DATABASE_NAME="$DATABASE_NAME"
 	# set original data base_dir
-	DATA_BASEDIR=$DATA_DIR
-	# set DATA_DIR with db name
-	DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
-
+	DATA_BASEDIR="$DATA_DIR"
+	# set escaped values
 	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
-	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
 	TMP_DIR_ESCAPED=$(echo $TMP_DIR | sed -e 's/\//\\\//g')
 	LOG_DIR_ESCAPED=$(echo $LOG_DIR | sed -e 's/\//\\\//g')
 	DICOM_DIR_ESCAPED=$(echo $DICOM_DIR | sed -e 's/\//\\\//g')
+}
+
+###################################################################
+function set_values {
+	# set database name for demo data
+	case "$DEMO_DATA" in
+			*on*)
+				DATABASE_NAME=$DEMO_DATABASE
+			;;
+			*off*)
+				DATABASE_NAME="$ORIG_DATABASE_NAME"
+			;;
+	esac
+	
+	# set DATA_DIR with db name
+	DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
+	# set escaped values
+	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
 }
 
 ###################################################################
@@ -404,7 +420,6 @@ function set_language {
 		echo "Warning: settings.properties file not found."
 	fi
 }
-
 
 ###################################################################
 function set_log_level {
@@ -578,8 +593,9 @@ fi
 
 ###################################################################
 function config_database {
-	echo "Checking for $MYSQL_NAME config file..."
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$CONF_DIR/$MYSQL_CONF_FILE ]; then
+#	echo "Checking for $MYSQL_NAME config file..."
+	echo "Writing $MYSQL_NAME config file..."
+#	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$CONF_DIR/$MYSQL_CONF_FILE ]; then
 		[ -f ./$CONF_DIR/$MYSQL_CONF_FILE ] && mv -f ./$CONF_DIR/$MYSQL_CONF_FILE ./$CONF_DIR/$MYSQL_CONF_FILE.old
 
 		# find a free TCP port to run MariaDB/MySQL starting from the default port
@@ -593,7 +609,7 @@ function config_database {
 		sed -e "s/DATABASE_SERVER/$DATABASE_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
 		-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
 		-e "s/DATABASE_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/$MYSQL_CONF_FILE
-	fi
+#	fi
 }
 
 ###################################################################
@@ -725,20 +741,6 @@ function shutdown_database {
 }
 
 ###################################################################
-function clean_database {
-	echo "Warning: do you want to remove all existing data and databases ?"
-	get_confirmation;
-	echo "--->>> This operation cannot be undone"
-	echo "--->>> Are you sure ?"
-	get_confirmation;
-	echo "Removing data..."
-	# remove database files
-	rm -rf ./"$DATA_BASEDIR"/*
-	# remove socket and pid file
-	rm -rf ./$TMP_DIR/*
-}
-
-###################################################################
 function test_database_connection {
         # test if mysql client is available
 	if [ -x ./$MYSQL_DIR/bin/mysql ]; then
@@ -757,16 +759,18 @@ function test_database_connection {
 }
 
 ###################################################################
-function clean_files {
-	# remove all log files
-	echo "Warning: do you want to remove all existing log files ?"
-	get_confirmation;
-	echo "Removing log files..."
-	rm -f ./$LOG_DIR/*
+function clean_database {
+	# remove socket and pid file
+	echo "Removing socket and pid file..."
+	rm -rf ./$TMP_DIR/*
+	# remove database files
+	echo "Removing databases..."
+	rm -rf ./"$DATA_DIR"
+}
 
+###################################################################
+function clean_conf_files {
 	# remove configuration files - leave only .dist files
-	echo "Warning: do you want to remove all existing configuration files ?"
-	get_confirmation;
 	echo "Removing configuration files..."
 	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
 	rm -f ./$OH_DIR/rsc/settings.properties
@@ -777,6 +781,13 @@ function clean_files {
 	rm -f ./$OH_DIR/rsc/log4j.properties.old
 	rm -f ./$OH_DIR/rsc/dicom.properties
 	rm -f ./$OH_DIR/rsc/dicom.properties.old
+}
+
+###################################################################
+function clean_log_files {
+	# remove all log files
+	echo "Removing log files..."
+	rm -f ./$LOG_DIR/*
 }
 
 ###################################################################
@@ -866,22 +877,19 @@ function parse_user_input {
 			exit 1;
 		fi	
 		if (( $2==0 )); then DEMO_DATA="off"; fi # workaround for -D option
+
+		# invert values if D is pressed
 		case "$DEMO_DATA" in
-			*on*)
-				DEMO_DATA="off";
-				# set database name
-				DATABASE_NAME="$ORIG_DATABASE_NAME"
-			;;
-			*off*)
-				DEMO_DATA="on";
-				# set database name
-				DATABASE_NAME=$DEMO_DATABASE
-			;;
+				*on*)
+					DEMO_DATA="off";
+				;;
+				*off*)
+					DEMO_DATA="on";
+				;;
 		esac
 
-		# set DATA_DIR with db name
-		DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
-		DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
+		# update confuration settings
+		set_values;
 
 		WRITE_CONFIG_FILES=on; write_config_files;
 
@@ -963,6 +971,7 @@ function parse_user_input {
 
 		echo "Do you want to save entered settings to OH configuration files?"
 		get_confirmation 1;
+		set_values;
 		WRITE_CONFIG_FILES="on"; write_config_files;
 		echo "Done!"
 		echo ""
@@ -996,30 +1005,37 @@ function parse_user_input {
 		;;
 	###################################################
 	r)	# restore database
+		# check if database exists
 		echo ""
-        	echo "Restoring Open Hospital database...."
-		# ask user for database/sql script to restore
-		read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
-		if [ ! -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
-			echo "Error: No SQL file found! Exiting."
+		if [ -d ./"$DATA_DIR" ]; then
+			echo "Error: Database already present. Remove existing database before restoring. Exiting."
+			if (( $2==0 )); then exit 0; fi
 		else
-		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
-			# check if mysql utilities exist
-			mysql_check;
-			if [ "$OH_MODE" != "CLIENT" ]; then
-				# reset database if exists
-				clean_database;
-				config_database;
-				initialize_dir_structure;
-				initialize_database;
-				start_database;
-				set_database_root_pw;
+	
+			echo "Restoring Open Hospital database...."
+			# ask user for database/sql script to restore
+			read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
+			if [ ! -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
+				echo "Error: No SQL file found! Exiting."
+			else
+				echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+				set_values;
+				# check if mysql utilities exist
+				mysql_check;
+				if [ "$OH_MODE" != "CLIENT" ]; then
+					# reset database if exists
+					config_database;
+					initialize_dir_structure;
+					initialize_database;
+					start_database;
+					set_database_root_pw;
+				fi
+				import_database;
+				if [ $OH_MODE != "CLIENT" ]; then
+					shutdown_database;
+				fi
+		        	echo "Done!"
 			fi
-			import_database;
-			if [ $OH_MODE != "CLIENT" ]; then
-				shutdown_database;
-			fi
-	        	echo "Done!"
 		fi
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
@@ -1108,9 +1124,27 @@ function parse_user_input {
 	X)	# clean
 		echo ""
         	echo "Cleaning Open Hospital installation..."
-		clean_files;
-		clean_database;
-        	echo "Done!"
+		echo "Warning: do you want to remove all existing log files ?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then
+			clean_log_files;
+		fi
+		echo "Warning: do you want to remove all existing configuration files ?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then
+			clean_conf_files;
+		fi
+		echo "Warning: do you want to remove all existing data and databases ?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then		
+			echo "--->>> This operation cannot be undone"
+			echo "--->>> Are you sure ?"
+			read -p "(y) ? " choice
+			if [ "$choice" = "y" ]; then		
+				clean_database;
+        			echo "Done!"
+			fi
+		fi
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
@@ -1175,6 +1209,7 @@ fi
 set_path;
 read_settings;
 set_defaults;
+set_values;
 
 # set working dir to OH base dir
 cd "$OH_PATH"

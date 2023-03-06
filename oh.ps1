@@ -214,7 +214,7 @@ $script:MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 #$script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9"
 #$script:JAVA_DIR="jdk-11.0.11+9-jre"
 
-### JRE 11 - zulu
+### JRE 11 - zulu distribution
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin"
 $script:JAVA_DISTRO="zulu11.62.17-ca-jre11.0.18-win_$JAVA_PACKAGE_ARCH"
 
@@ -292,6 +292,32 @@ function get_confirmation ($arg) {
 }
 
 ###################################################################
+function set_path {
+	# get current directory
+	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
+	# set OH_PATH if not defined
+	if ( ! $OH_PATH ) {
+		Write-Host "Info: OH_PATH not defined - setting to script path"
+		$script:OH_PATH=$PSScriptRoot
+		if ( !(Test-Path "$OH_PATH/$SCRIPT_NAME" -PathType leaf) ) {
+			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
+			Read-Host; exit 1
+		}
+	
+	        # set original database name
+	        $script:ORIG_DATABASE_NAME="$DATABASE_NAME"
+
+	        # set original data base_dir
+	        $script:DATA_BASEDIR=$DATA_DIR
+	        # set DATA_DIR with db name
+	        $script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
+
+		# set path variable with / in place of \ for configuration files
+		$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
+	}
+}
+
+###################################################################
 function set_defaults {
         # set default values for script variables
 	# interactive mode - set default to on
@@ -333,6 +359,12 @@ function set_defaults {
 	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
 		$script:DEMO_DATA="off"
 	}
+
+	# set original database name
+	$script:ORIG_DATABASE_NAME="$DATABASE_NAME"
+	# set original data base_dir
+	$script:DATA_BASEDIR="$DATA_DIR"
+	# set escaped values
 }
 
 ###################################################################
@@ -367,29 +399,21 @@ function read_settings {
 }
 
 ###################################################################
-function set_path {
-	# get current directory
-	$script:CURRENT_DIR=Get-Location | select -ExpandProperty Path
-	# set OH_PATH if not defined
-	if ( ! $OH_PATH ) {
-		Write-Host "Info: OH_PATH not defined - setting to script path"
-		$script:OH_PATH=$PSScriptRoot
-		if ( !(Test-Path "$OH_PATH/$SCRIPT_NAME" -PathType leaf) ) {
-			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
-			Read-Host; exit 1
+function set_values {
+	# set database name for demo data
+	#
+	#
+	#
+	switch -CaseSensitive( $script:DEMO_DATA ) {
+	"on"	{ # 
+		$script:DATABASE_NAME=$DEMO_DATABASE
 		}
-	
-	        # set original database name
-	        $script:ORIG_DATABASE_NAME="$DATABASE_NAME"
-
-	        # set original data base_dir
-	        $script:DATA_BASEDIR=$DATA_DIR
-	        # set DATA_DIR with db name
-	        $script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
-
-		# set path variable with / in place of \ for configuration files
-		$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
+	"off"	{ # 
+		$script:DATABASE_NAME="$script:ORIG_DATABASE_NAME"
+		}
 	}
+	# set DATA_DIR with db name
+	$script:DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
 }
 
 ###################################################################
@@ -501,7 +525,6 @@ function create_desktop_shortcut {
 	Write-Host "Done!"
 }
 
-
 ###################################################################
 function java_lib_setup {
 	# NATIVE LIB setup
@@ -582,6 +605,7 @@ function java_check {
 	Write-Host "Using $JAVA_BIN"
 }
 
+###################################################################
 function mysql_check {
 	if (  !(Test-Path "$OH_PATH/$MYSQL_DIR") ) {
 		if ( !(Test-Path "$OH_PATH/$MYSQL_DIR.$EXT" -PathType leaf) ) {
@@ -616,9 +640,10 @@ function mysql_check {
 
 ###################################################################
 function config_database {
-	Write-Host "Checking for $MYSQL_NAME config file..."
+#	Write-Host "Checking for $MYSQL_NAME config file..."
+	Write-Host "Writing $MYSQL_NAME config file..."
 
-	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" -PathType leaf) ) {
+#	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" -PathType leaf) ) {
 	if (Test-Path "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" -PathType leaf) { mv -Force "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE.old" }
 
 		# find a free TCP port to run MariaDB/MySQL starting from the default port
@@ -654,7 +679,7 @@ function config_database {
 		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("DATA_DIR","$DATA_DIR") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
 		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("TMP_DIR","$TMP_DIR") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
 		(Get-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE").replace("LOG_DIR","$LOG_DIR") | Set-Content "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"
-	}
+#	}
 }
 
 ###################################################################
@@ -799,6 +824,7 @@ function dump_database {
 	Write-Host "$MYSQL_NAME dump file $BACKUP_DIR/mysqldump_$DATE.sql completed!" -ForegroundColor Green
 }
 
+###################################################################
 function shutdown_database {
 	if ( !( $OH_MODE -eq "CLIENT" ) ) {
 		Write-Host "Shutting down $MYSQL_NAME..."
@@ -811,23 +837,6 @@ function shutdown_database {
 
 	else { # do nothing
 	}
-}
-
-###################################################################
-function clean_database {
-	Write-Host "Warning: do you want to remove all existing data and databases ?" -ForegroundColor Red
-	get_confirmation;
-	Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
-	Write-Host "--->>> Are you sure ?" -ForegroundColor Red
-	get_confirmation;
-	Write-Host "Killing mysql processes..."
-	# stop mysqld zombies
-	Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
-	Write-Host "Removing data..."
-	# remove database files
-	$filetodel="$OH_PATH\$DATA_BASEDIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	# remove socket and pid file
-	$filetodel="$OH_PATH\$TMP_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 ###################################################################
@@ -915,16 +924,21 @@ function write_config_files {
 }
 
 ###################################################################
-function clean_files {
-	# remove all log files
-	Write-Host "Warning: do you want to remove all existing log files ?" -ForegroundColor Red
-	get_confirmation;
-	Write-Host "Removing log files..."
-	$filetodel="$OH_PATH\$LOG_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	
-	# remove all configuration files - leave only .dist files
-	Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
-	get_confirmation;
+function clean_database {
+	# kill mysqld zombies
+	Write-Host "Killing mysql processes..."
+	Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
+	# remove socket and pid file
+	Write-Host "Removing socket and pid file..."
+	$filetodel="$OH_PATH\$TMP_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	# remove database files
+	Write-Host "Removing databases..."
+	$filetodel="$OH_PATH\$DATA_BASEDIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+}
+
+###################################################################
+function clean_conf_files {
+	# remove configuration files - leave only .dist files
 	Write-Host "Removing configuration files..."
 	$filetodel="$OH_PATH\$CONF_DIR\$MYSQL_CONF_FILE"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\settings.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
@@ -935,8 +949,15 @@ function clean_files {
 	$filetodel="$OH_PATH\$OH_DIR\rsc\log4j.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\dicom.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH\$OH_DIR\rsc\dicom.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH\$OH_DIR\$LOG_DIR\*"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
+
+###################################################################
+function clean_log_files {
+	# remove all log files
+	Write-Host "Removing log files..."
+	$filetodel="$OH_PATH\$LOG_DIR\*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+}
+
 
 ###################################################################
 function parse_user_input {
@@ -988,22 +1009,20 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				Write-Host "Error - OH_MODE set to CLIENT mode. Cannot run with Demo data. Exiting" -ForeGroundcolor Red
 				Read-Host; exit 1;
 			}
+			# invert values if D is pressed
 			switch -CaseSensitive( $script:DEMO_DATA ) {
 			"on"	{ # 
 				$script:DEMO_DATA="off"
-				# set database name
-				$script:DATABASE_NAME="$script:ORIG_DATABASE_NAME"
 				}
 			"off"	{ # 
 				$script:DEMO_DATA="on"
-				# set database name
-				$script:DATABASE_NAME=$DEMO_DATABASE
 				}
 			}
-	        	# set DATA_DIR with db name
-		        $script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
+			# update confuration settings
+			set_values;
+
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
-			#set_demo_data;
+			
 			Read-Host "Press any key to continue";
 		}
 		###################################################
@@ -1068,6 +1087,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD]"
 			Write-Host				"Do you want to save entered settings to OH configuration files?"
 			get_confirmation 1;
+			set_values;
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
@@ -1108,6 +1128,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 			else {
 				Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+				set_values;
 				# check if mysql utilities exist
 				mysql_check;
 				if ( !($OH_MODE -eq "CLIENT" )) {
@@ -1209,9 +1230,22 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"X"	{ # clean
+
 			Write-Host "Cleaning Open Hospital installation..."
-			clean_files;
+			Write-Host "Warning: do you want to remove all existing log files ?" -ForegroundColor Red
+			get_confirmation;
+			clean_log_files;
+			# remove all configuration files - leave only .dist files
+			Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
+			get_confirmation;
+			clean_conf_files;
+			Write-Host "Warning: do you want to remove all existing data and databases ?" -ForegroundColor Red
+			get_confirmation;
+			Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
+			Write-Host "--->>> Are you sure ?" -ForegroundColor Red
+			get_confirmation;
 			clean_database;
+
 			# unset variables
 			Clear-Variable -name OH_MODE
 			Clear-Variable -name OH_LANGUAGE
@@ -1269,6 +1303,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 set_path;
 read_settings;
 set_defaults;
+set_values;
 
 # set working dir to OH base dir
 cd "$OH_PATH" # workaround for hard coded paths
