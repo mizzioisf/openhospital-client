@@ -641,8 +641,6 @@ function mysql_check {
 ###################################################################
 function config_database {
 #	Write-Host "Checking for $MYSQL_NAME config file..."
-	Write-Host "Writing $MYSQL_NAME config file..."
-
 #	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" -PathType leaf) ) {
 	if (Test-Path "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" -PathType leaf) { mv -Force "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE" "$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE.old" }
 

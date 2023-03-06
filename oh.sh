@@ -594,7 +594,6 @@ fi
 ###################################################################
 function config_database {
 #	echo "Checking for $MYSQL_NAME config file..."
-	echo "Writing $MYSQL_NAME config file..."
 #	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$CONF_DIR/$MYSQL_CONF_FILE ]; then
 		[ -f ./$CONF_DIR/$MYSQL_CONF_FILE ] && mv -f ./$CONF_DIR/$MYSQL_CONF_FILE ./$CONF_DIR/$MYSQL_CONF_FILE.old
 
