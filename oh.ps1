@@ -413,7 +413,7 @@ function set_values {
 		}
 	}
 	# set DATA_DIR with db name
-	$script:DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
+	$script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
 }
 
 ###################################################################
