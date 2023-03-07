@@ -1146,8 +1146,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 					}
 					Write-Host "Done!"
 				}
-				Read-Host "Press any key to continue";
 			}
+			Read-Host "Press any key to continue";
 			}
 		###################################################
 		"s"	{ # save / write config files
