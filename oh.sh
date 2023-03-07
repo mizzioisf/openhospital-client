@@ -1147,13 +1147,13 @@ function parse_user_input {
 			fi
 		fi
 		# unset variables
-		unset OH_MODE
-		unset OH_LANGUAGE
-		unset OH_SINGLE_USER
-		unset LOG_LEVEL
-		unset DEMO_DATA
+		#unset OH_MODE
+		#unset OH_LANGUAGE
+		#unset OH_SINGLE_USER
+		#unset LOG_LEVEL
+		#unset DEMO_DATA
 		# set defaults
-		set_defaults;
+		#set_defaults;
 
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;

@@ -1252,13 +1252,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				}
 			}
 			# unset variables
-			Clear-Variable -name OH_MODE
-			Clear-Variable -name OH_LANGUAGE
-			Clear-Variable -name OH_SINGLE_USER
-			Clear-Variable -name LOG_LEVEL
-			Clear-Variable -name DEMO_DATA
-			# set defaults
-			set_defaults;
+			#Clear-Variable -name OH_MODE
+			#Clear-Variable -name OH_LANGUAGE
+			#Clear-Variable -name OH_SINGLE_USER
+			#Clear-Variable -name LOG_LEVEL
+			#Clear-Variable -name DEMO_DATA
 			Read-Host "Press any key to continue";
 		}
 		###################################################
