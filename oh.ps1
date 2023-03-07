@@ -1130,17 +1130,17 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				# check if mysql utilities exist
 				mysql_check;
 				if ( !($OH_MODE -eq "CLIENT" )) {
-					# reset database if exists
-					clean_database;
 					config_database;
 					initialize_dir_structure;
 					initialize_database;
 					start_database;	
 					set_database_root_pw;
-					import_database; # TBD for CLIENT mode
-					shutdown_database;
-					Write-Host "Done!"
 				}
+				import_database;
+				if ( !($OH_MODE -eq "CLIENT" )) {
+					shutdown_database;
+				}
+				Write-Host "Done!"
 			}
 			Read-Host "Press any key to continue";
 		}
@@ -1231,19 +1231,19 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 			Write-Host "Cleaning Open Hospital installation..."
 			Write-Host "Warning: do you want to remove all existing log files ?" -ForegroundColor Red
-			get_confirmation;
+			get_confirmation 1;
 			clean_log_files;
 			# remove all configuration files - leave only .dist files
 			Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
-			get_confirmation;
+			get_confirmation 1;
 			clean_conf_files;
 			Write-Host "Warning: do you want to remove all existing data and databases ?" -ForegroundColor Red
-			get_confirmation;
+			get_confirmation 1;
 			Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
 			Write-Host "--->>> Are you sure ?" -ForegroundColor Red
-			get_confirmation;
+			get_confirmation 1;
 			clean_database;
-
+			
 			# unset variables
 			Clear-Variable -name OH_MODE
 			Clear-Variable -name OH_LANGUAGE

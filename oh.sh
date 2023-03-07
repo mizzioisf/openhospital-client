@@ -1022,7 +1022,6 @@ function parse_user_input {
 				# check if mysql utilities exist
 				mysql_check;
 				if [ "$OH_MODE" != "CLIENT" ]; then
-					# reset database if exists
 					config_database;
 					initialize_dir_structure;
 					initialize_database;
