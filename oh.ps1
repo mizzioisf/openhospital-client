@@ -319,7 +319,6 @@ function set_path {
 
 ###################################################################
 function read_settings {
-
 	# check and read OH version file
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/version.properties" -PathType leaf ) {
 		# read Open Hospital Version
@@ -1122,8 +1121,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			if ( (Test-Path "$OH_PATH/$DATA_DIR" )) {
 				Write-Host "Error: Database already present. Remove existing database before restoring. Exiting." -ForegroundColor Red
 			}
-			else
-			       	Write-Host "Restoring Open Hospital database...."
+			else {
+				Write-Host "Restoring Open Hospital database...."
 				# ask user for database to restore
 				$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
 				if ( !(Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf)) {
