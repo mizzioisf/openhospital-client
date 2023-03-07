@@ -317,8 +317,6 @@ set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\rsc\images
 set CLASSPATH=%CLASSPATH%;%OH_PATH%\%OH_DIR%\bin\OH-gui.jar
 
 REM # Setup native_lib_path for current architecture
-REM # with DICOM workaround - force NATIVE_LIB to 32bit
-
 if %PROCESSOR_ARCHITECTURE%==AMD64 if not %ARCH%==32 (
 	set NATIVE_LIB_PATH=%OH_PATH%\%OH_DIR%\lib\native\Win64
 ) else (
