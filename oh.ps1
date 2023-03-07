@@ -318,6 +318,37 @@ function set_path {
 }
 
 ###################################################################
+function read_settings {
+
+	# check and read OH version file
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/version.properties" -PathType leaf ) {
+		# read Open Hospital Version
+		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
+			$var = $_.Split('=',2).Trim()
+			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
+		}
+		$script:OH_VERSION="$VER_MAJOR.$VER_MINOR.$VER_RELEASE"
+	}
+	else {
+		Write-Host "Error: Open Hospital not found. Exiting" -ForegroundColor Red
+		Read-Host; exit 1
+	}
+
+	# read values for script variables from existing settings file
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+		Write-Host "Reading OH settings file..."
+		$oh_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" -Raw | ConvertFrom-StringData)
+		##############   saved settings   ##############
+		$script:OH_MODE=$oh_settings.MODE
+		$script:OH_LANGUAGE=$oh_settings.LANGUAGE
+		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
+		$script:OH_DOC_DIR=$oh_settings.OH_DOC_DIR
+		$script:DEMO_DATA=$oh_settings.DEMODATA
+		################################################
+	}
+}
+
+###################################################################
 function set_defaults {
         # set default values for script variables
 	# interactive mode - set default to on
@@ -368,42 +399,8 @@ function set_defaults {
 }
 
 ###################################################################
-function read_settings {
-
-	# check and read OH version file
-	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/version.properties" -PathType leaf ) {
-		# read Open Hospital Version
-		Get-Content $OH_PATH\$OH_DIR\rsc\version.properties | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
-			$var = $_.Split('=',2).Trim()
-			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
-		}
-		$script:OH_VERSION="$VER_MAJOR.$VER_MINOR.$VER_RELEASE"
-	}
-	else {
-		Write-Host "Error: Open Hospital not found. Exiting" -ForegroundColor Red
-		Read-Host; exit 1
-	}
-
-	# read values for script variables from existing settings file
-	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
-		Write-Host "Reading OH settings file..."
-		$oh_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" -Raw | ConvertFrom-StringData)
-		##############   saved settings   ##############
-		$script:OH_MODE=$oh_settings.MODE
-		$script:OH_LANGUAGE=$oh_settings.LANGUAGE
-		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
-		$script:OH_DOC_DIR=$oh_settings.OH_DOC_DIR
-		$script:DEMO_DATA=$oh_settings.DEMODATA
-		################################################
-	}
-}
-
-###################################################################
 function set_values {
 	# set database name for demo data
-	#
-	#
-	#
 	switch -CaseSensitive( $script:DEMO_DATA ) {
 	"on"	{ # 
 		$script:DATABASE_NAME=$DEMO_DATABASE
@@ -412,7 +409,9 @@ function set_values {
 		$script:DATABASE_NAME="$script:ORIG_DATABASE_NAME"
 		}
 	}
+	#
 	# set DATA_DIR with db name
+	# 
 	$script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
 }
 
@@ -498,6 +497,7 @@ function set_log_level {
 		Write-Host "Warning: log4j.properties file not found." -ForegroundColor Yellow
 	}
 }
+
 ###################################################################
 function initialize_dir_structure {
 	# create directory structure
@@ -1126,10 +1126,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 			else {
 				Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
-				set_values;
 				# check if mysql utilities exist
 				mysql_check;
 				if ( !($OH_MODE -eq "CLIENT" )) {
+					set_values;
 					config_database;
 					initialize_dir_structure;
 					initialize_database;
@@ -1228,7 +1228,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"X"	{ # clean
-
 			Write-Host "Cleaning Open Hospital installation..."
 			Write-Host "Warning: do you want to remove all existing log files ?" -ForegroundColor Red
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
@@ -1237,15 +1236,21 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 			# remove all configuration files - leave only .dist files
 			Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
-			get_confirmation 1;
-			clean_conf_files;
+			$choice = Read-Host -Prompt "Press [y] to confirm: "
+			if (( "$choice" -eq "y" )) {
+				clean_conf_files;
+			}
 			Write-Host "Warning: do you want to remove all existing data and databases ?" -ForegroundColor Red
-			get_confirmation 1;
-			Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
-			Write-Host "--->>> Are you sure ?" -ForegroundColor Red
-			get_confirmation 1;
-			clean_database;
-			
+			$choice = Read-Host -Prompt "Press [y] to confirm: "
+			if (( "$choice" -eq "y" )) {
+				Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
+				Write-Host "--->>> Are you sure ?" -ForegroundColor Red
+				$choice = Read-Host -Prompt "Press [y] to confirm: "
+				if (( "$choice" -eq "y" )) {
+					clean_database;
+					Write-Host "Done!"
+				}
+			}
 			# unset variables
 			Clear-Variable -name OH_MODE
 			Clear-Variable -name OH_LANGUAGE
@@ -1254,7 +1259,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Clear-Variable -name DEMO_DATA
 			# set defaults
 			set_defaults;
-			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
 		###################################################

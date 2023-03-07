@@ -286,9 +286,10 @@ function read_settings {
 		echo "Reading OH settings file..."
 		. ./$OH_DIR/rsc/settings.properties
 		###  read saved settings  ###
-		OH_LANGUAGE=$LANGUAGE
 		OH_MODE=$MODE
+		OH_LANGUAGE=$LANGUAGE
 		OH_SINGLE_USER=$SINGLE_USER
+		OH_DOC_DIR=$OH_DOC_DIR
 		DEMO_DATA=$DEMODATA
 	fi
 }
@@ -354,8 +355,9 @@ function set_values {
 				DATABASE_NAME="$ORIG_DATABASE_NAME"
 			;;
 	esac
-	
+	#
 	# set DATA_DIR with db name
+	#
 	DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
 	# set escaped values
 	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
@@ -445,6 +447,7 @@ function set_log_level {
 		echo "Warning: log4j.properties file not found."
 	fi
 }
+
 ###################################################################
 function initialize_dir_structure {
 	# create directory structure
@@ -1018,10 +1021,10 @@ function parse_user_input {
 				echo "Error: No SQL file found! Exiting."
 			else
 				echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
-				set_values;
 				# check if mysql utilities exist
 				mysql_check;
 				if [ "$OH_MODE" != "CLIENT" ]; then
+					set_values;
 					config_database;
 					initialize_dir_structure;
 					initialize_database;
@@ -1143,6 +1146,15 @@ function parse_user_input {
         			echo "Done!"
 			fi
 		fi
+		# unset variables
+		unset OH_MODE
+		unset OH_LANGUAGE
+		unset OH_SINGLE_USER
+		unset LOG_LEVEL
+		unset DEMO_DATA
+		# set defaults
+		set_defaults;
+
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
