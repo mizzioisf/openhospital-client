@@ -1011,9 +1011,7 @@ function parse_user_input {
 		echo ""
 		if [ -d ./"$DATA_DIR" ]; then
 			echo "Error: Database already present. Remove existing database before restoring. Exiting."
-			if (( $2==0 )); then exit 0; fi
 		else
-	
 			echo "Restoring Open Hospital database...."
 			# ask user for database/sql script to restore
 			read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL

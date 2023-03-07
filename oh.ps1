@@ -1118,32 +1118,37 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"r"	{ # restore database
-		       	Write-Host "Restoring Open Hospital database...."
-			# ask user for database to restore
-			$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
-			if ( !(Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf)) {
-				Write-Host "Error: No SQL file found!" -ForegroundColor Red
+			# check if database exists
+			if ( (Test-Path "$OH_PATH/$DATA_DIR" )) {
+				Write-Host "Error: Database already present. Remove existing database before restoring. Exiting." -ForegroundColor Red
 			}
-			else {
-				Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
-				# check if mysql utilities exist
-				mysql_check;
-				if ( !($OH_MODE -eq "CLIENT" )) {
-					set_values;
-					config_database;
-					initialize_dir_structure;
-					initialize_database;
-					start_database;	
-					set_database_root_pw;
+			else
+			       	Write-Host "Restoring Open Hospital database...."
+				# ask user for database to restore
+				$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $script:SQL_DIR subdirectory) -> "
+				if ( !(Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf)) {
+					Write-Host "Error: No SQL file found!" -ForegroundColor Red
 				}
-				import_database;
-				if ( !($OH_MODE -eq "CLIENT" )) {
-					shutdown_database;
+				else {
+					Write-Host "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+					# check if mysql utilities exist
+					mysql_check;
+					if ( !($OH_MODE -eq "CLIENT" )) {
+						set_values;
+						config_database;
+						initialize_dir_structure;
+						initialize_database;
+						start_database;	
+						set_database_root_pw;
+					}
+					import_database;
+					if ( !($OH_MODE -eq "CLIENT" )) {
+						shutdown_database;
+					}
+					Write-Host "Done!"
 				}
-				Write-Host "Done!"
+				Read-Host "Press any key to continue";
 			}
-			Read-Host "Press any key to continue";
-		}
 		###################################################
 		"s"	{ # save / write config files
 			Write-Host "Do you want to save current settings to OH configuration files?"
