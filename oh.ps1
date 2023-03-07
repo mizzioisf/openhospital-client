@@ -1148,6 +1148,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				}
 				Read-Host "Press any key to continue";
 			}
+			}
 		###################################################
 		"s"	{ # save / write config files
 			Write-Host "Do you want to save current settings to OH configuration files?"
