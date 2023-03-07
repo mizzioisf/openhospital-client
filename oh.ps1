@@ -1231,8 +1231,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 
 			Write-Host "Cleaning Open Hospital installation..."
 			Write-Host "Warning: do you want to remove all existing log files ?" -ForegroundColor Red
-			get_confirmation 1;
-			clean_log_files;
+			$choice = Read-Host -Prompt "Press [y] to confirm: "
+			if (( "$choice" -eq "y" )) {
+				clean_log_files;
+			}
 			# remove all configuration files - leave only .dist files
 			Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
 			get_confirmation 1;
