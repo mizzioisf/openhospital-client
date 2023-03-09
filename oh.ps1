@@ -270,7 +270,7 @@ function script_menu {
 
 ###################################################################
 function get_confirmation ($arg) {
-	$choice = Read-Host -Prompt "(y/n) ? "
+	$choice = Read-Host -Prompt "(y/n)? "
 	switch ("$choice") {
 		"y"  { "yes"; break }
 		"n"  { "Exiting.";
@@ -582,7 +582,7 @@ function java_check {
 	# if JAVA_BIN is not found download JRE
 	if ( !(Test-Path $JAVA_BIN  -PathType leaf ) ) {
         	if ( !(Test-Path "$OH_PATH/$JAVA_DISTRO.$EXT" -PathType leaf ) ) {
-			Write-Host "Warning - JAVA not found. Do you want to download it ?" -ForegroundColor Yellow
+			Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Download java binaries
 			download_file "$JAVA_URL" "$JAVA_DISTRO.$EXT"
@@ -608,7 +608,7 @@ function java_check {
 function mysql_check {
 	if (  !(Test-Path "$OH_PATH/$MYSQL_DIR") ) {
 		if ( !(Test-Path "$OH_PATH/$MYSQL_DIR.$EXT" -PathType leaf) ) {
-			Write-Host "Warning - $MYSQL_NAME not found. Do you want to download it ?" -ForegroundColor Yellow
+			Write-Host "Warning - $MYSQL_NAME not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Downloading mysql binary
 			download_file "$MYSQL_URL" "$MYSQL_DIR.$EXT" 
