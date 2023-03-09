@@ -923,7 +923,7 @@ function write_config_files {
 ###################################################################
 function clean_database {
 	# kill mysqld zombies
-	Write-Host "Killing mysql processes..."
+	Write-Host "Killing mariadb/mysql processes..."
 	Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
 	# remove socket and pid file
 	Write-Host "Removing socket and pid file..."
@@ -1234,22 +1234,22 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"X"	{ # clean
 			Write-Host "Cleaning Open Hospital installation..."
-			Write-Host "Warning: do you want to remove all existing log files ?" -ForegroundColor Red
+			Write-Host "Warning: do you want to remove all existing log files?" -ForegroundColor Red
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
 			if (( "$choice" -eq "y" )) {
 				clean_log_files;
 			}
 			# remove all configuration files - leave only .dist files
-			Write-Host "Warning: do you want to remove all existing configuration files ?" -ForegroundColor Red
+			Write-Host "Warning: do you want to remove all existing configuration files?" -ForegroundColor Red
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
 			if (( "$choice" -eq "y" )) {
 				clean_conf_files;
 			}
-			Write-Host "Warning: do you want to remove all existing data and databases ?" -ForegroundColor Red
+			Write-Host "Warning: do you want to remove all existing data and databases?" -ForegroundColor Red
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
 			if (( "$choice" -eq "y" )) {
 				Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
-				Write-Host "--->>> Are you sure ?" -ForegroundColor Red
+				Write-Host "--->>> Are you sure?" -ForegroundColor Red
 				$choice = Read-Host -Prompt "Press [y] to confirm: "
 				if (( "$choice" -eq "y" )) {
 					clean_database;
