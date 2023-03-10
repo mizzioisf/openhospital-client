@@ -1,6 +1,6 @@
 # ![](./doc/media/OH-icon.png) OH - Open Hospital Portable | Client 
 
-OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Electronic Health Record (EHR) software application.
+OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Health Information Management System (HIMS) software application.
 Open Hospital is deployed as a desktop application that can be used in a standalone, single user mode (PORTABLE mode)
 or in a client / server network configuration (CLIENT mode), where multiple clients and users connect to the same database server.
 
@@ -73,7 +73,7 @@ cd openhospital-client
 
    -C    set OH in CLIENT mode
    -P    set OH in PORTABLE mode
-   -S    set OH in SERVER (Portable) mode
+   -S    set OH in SERVER mode (portable)
    -l    set language: en|fr|es|it|pt|ar
    -s    save OH configuration
    -X    clean/reset OH installation
@@ -117,7 +117,7 @@ cd openhospital-client
 
     C    set OH in CLIENT mode
     P    set OH in PORTABLE mode
-    S    set OH in SERVER (Portable) mode
+    S    set OH in SERVER mode (portable)
     l    set language: en|fr|es|it|pt|ar
     s    save OH configuration
     X    clean/reset OH installation
@@ -187,7 +187,7 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 - **i**    initialize / install OH database
 - **m**    configure OH database connection settings manually
 - **t**    test database connection to the configured database server (Client mode only)
-- **u**    create Desktop shortcut with current params (Windows only)
+- **u**    create Desktop shortcut with current params (Windows / Linux)
 - **h**    show help 
 
 # Script configuration
@@ -476,7 +476,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - **New**: Direct reading/writing of OH settings files for language and debug mode
 - **New**: Desktop shortcut creation with icon (Windows and Linux)
 - **New**: SERVER mode support (see oh.sh -S)
-- **New**: Added "-m" option to configure OH manually
+- **New**: Added "-m" option to configure OH database settings manually
 - **New**: Arabic Language support: **oh.sh -l ar**
 - **New**: Full 64bit support on Windows, also for DICOM !
 - **New**: Set default to MULTIUSER environment, so login mask is presented at startup
@@ -490,7 +490,7 @@ A short description of changes for the Linux version (mostly the same behavior a
 - configuration file generation (set WRITE_CONFIG_FILES=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
 - test database connection option (see oh.sh -t)
 - displays software versions and current configuration (see oh.sh -v)
-- save / write / generate config files (see oh.sh -w)
+- save / write / generate config files (see oh.sh -s)
 - install / initialize database (see oh.sh -i)
 - Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
 - More flexible execution and configuration options
@@ -507,4 +507,4 @@ A short description of changes for the Linux version (mostly the same behavior a
 - Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
 - Fixed _a_few_ bugs ;-)
 
-*last updated: 2023.02.14*
+*last updated: 2023.03.10*
