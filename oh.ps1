@@ -304,17 +304,6 @@ function set_path {
 			Read-Host; exit 1
 		}
 	
-	        # set original database name
-	        $script:ORIG_DATABASE_NAME="$DATABASE_NAME"
-
-	        # set original data base_dir
-	        $script:DATA_BASEDIR=$DATA_DIR
-	        # set DATA_DIR with db name
-	        $script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
-
-		# set path variable with / in place of \ for configuration files
-		$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
-	}
 }
 
 ###################################################################
@@ -394,7 +383,8 @@ function set_defaults {
 	$script:ORIG_DATABASE_NAME="$DATABASE_NAME"
 	# set original data base_dir
 	$script:DATA_BASEDIR="$DATA_DIR"
-	# set escaped values
+	# set escaped values (/ in place of \)
+	$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
 }
 
 ###################################################################
@@ -408,10 +398,12 @@ function set_values {
 		$script:DATABASE_NAME="$script:ORIG_DATABASE_NAME"
 		}
 	}
-	#
+	
 	# set DATA_DIR with db name
-	# 
 	$script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
+	#
+	# set escaped values (/ in place of \)
+	$script:DATA_DIR=$DATA_DIR -replace "\\", "/"
 }
 
 ###################################################################
@@ -1201,7 +1193,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host ""
 			Write-Host "--- Database ---"
 			Write-Host "DATABASE_SERVER=$DATABASE_SERVER"
-			Write-Host "DATABASE_PORT=$DATABASE_PORT"
+			Write-Host "DATABASE_PORT=$DATABASE_PORT (default)"
 			Write-Host "DATABASE_NAME=$DATABASE_NAME"
 			Write-Host "DATABASE_USER=$DATABASE_USER"
 			Write-Host ""
