@@ -383,7 +383,7 @@ function set_defaults {
 	# set original database name
 	$script:ORIG_DATABASE_NAME="$DATABASE_NAME"
 	# set original data base_dir
-	$script:DATA_BASEDIR="$DATA_DIR"
+	$script:ORIG_DATADIR="$DATA_DIR"
 	# set escaped values (/ in place of \)
 	$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
 }
@@ -401,7 +401,7 @@ function set_values {
 	}
 	
 	# set DATA_DIR with db name
-	$script:DATA_DIR="$DATA_BASEDIR/$DATABASE_NAME"
+	$script:DATA_DIR="$ORIG_DATADIR/$DATABASE_NAME"
 	#
 	# set escaped values (/ in place of \)
 	$script:DATA_DIR=$DATA_DIR -replace "\\", "/"
