@@ -303,6 +303,7 @@ function set_path {
 			Write-Host "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly." -ForegroundColor Yellow
 			Read-Host; exit 1
 		}
+	}
 	
 }
 
