@@ -110,6 +110,9 @@ EXT="tar.gz"
 # mysql configuration file
 MYSQL_CONF_FILE="my.cnf"
 
+# settings file
+SETTINGS_FILE="settings.properties"
+
 # help file
 HELP_FILE="OH-readme.txt"
 
@@ -282,9 +285,9 @@ function read_settings {
 	fi
 
 	# read values for script variables from existing settings file
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Reading OH settings file..."
-		. ./$OH_DIR/rsc/settings.properties
+		. ./$OH_DIR/rsc/$SETTINGS_FILE
 		###  read saved settings  ###
 		OH_MODE=$MODE
 		OH_LANGUAGE=$LANGUAGE
@@ -365,16 +368,16 @@ function set_values {
 
 ###################################################################
 function set_oh_mode {
-	# if settings.properties is present set OH mode
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+	# if $SETTINGS_FILE is present set OH mode
+	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Configuring OH mode..."
-		######## settings.properties OH mode configuration
-		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
-		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
+		######## $SETTINGS_FILE OH mode configuration
+		echo "Setting OH mode to $OH_MODE in OH configuration file -> $SETTINGS_FILE..."
+		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/$SETTINGS_FILE
 	else 
 		echo ""
 		echo ""
-		echo "Warning: settings.properties file not found."
+		echo "Warning: $SETTINGS_FILE file not found."
 	fi
 	echo "OH mode set to $OH_MODE"
 }
@@ -382,16 +385,16 @@ function set_oh_mode {
 
 ###################################################################
 function set_demo_data {
-	# if settings.properties is present set OH mode
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+	# if $SETTINGS_FILE is present set OH mode
+	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Configuring DEMO data..."
-		######## settings.properties DEMO data configuration
-		echo "Setting DEMO data to $DEMO_DATA in OH configuration file -> settings.properties..."
-		sed -e "/^"DEMODATA="/c"DEMODATA=$DEMO_DATA"" -i ./$OH_DIR/rsc/settings.properties
+		######## $SETTINGS_FILE DEMO data configuration
+		echo "Setting DEMO data to $DEMO_DATA in OH configuration file -> $SETTINGS_FILE..."
+		sed -e "/^"DEMODATA="/c"DEMODATA=$DEMO_DATA"" -i ./$OH_DIR/rsc/$SETTINGS_FILE
 	else 
 		echo ""
 		echo ""
-		echo "Warning: settings.properties file not found."
+		echo "Warning: $SETTINGS_FILE file not found."
 	fi
 	echo "DEMO data set to $DEMO_DATA"
 }
@@ -410,16 +413,16 @@ function set_language {
 		;;
 	esac
 
-	# if settings.properties is present set language
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+	# if $SETTINGS_FILE is present set language
+	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Configuring OH language..."
-		######## settings.properties language configuration
-		echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
-		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+		######## $SETTINGS_FILE language configuration
+		echo "Setting language to $OH_LANGUAGE in OH configuration file -> $SETTINGS_FILE..."
+		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/$SETTINGS_FILE
 		echo "Language set to $OH_LANGUAGE."
 	else 
 		echo ""
-		echo "Warning: settings.properties file not found."
+		echo "Warning: $SETTINGS_FILE file not found."
 	fi
 }
 
@@ -775,8 +778,8 @@ function clean_conf_files {
 	# remove configuration files - leave only .dist files
 	echo "Removing configuration files..."
 	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
-	rm -f ./$OH_DIR/rsc/settings.properties
-	rm -f ./$OH_DIR/rsc/settings.properties.old
+	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE
+	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE.old
 	rm -f ./$OH_DIR/rsc/database.properties
 	rm -f ./$OH_DIR/rsc/database.properties.old
 	rm -f ./$OH_DIR/rsc/log4j.properties
@@ -820,13 +823,13 @@ function write_config_files {
 		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
 	fi
-	######## settings.properties setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/settings.properties ]; then
-		[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
-		echo "Writing OH configuration file -> settings.properties..."
+	######## $SETTINGS_FILE setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
+		[ -f ./$OH_DIR/rsc/$SETTINGS_FILE ] && mv -f ./$OH_DIR/rsc/$SETTINGS_FILE ./$OH_DIR/rsc/$SETTINGS_FILE.old
+		echo "Writing OH configuration file -> $SETTINGS_FILE..."
 		sed -e "s/OH_MODE/$OH_MODE/g" -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" \
 		-e "s/DEMODATA=off/"DEMODATA=$DEMO_DATA"/g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" -e "s&PHOTO_DIR&$PHOTO_DIR&g" \
-		./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
+		./$OH_DIR/rsc/$SETTINGS_FILE.dist > ./$OH_DIR/rsc/$SETTINGS_FILE
 	fi
 }
 

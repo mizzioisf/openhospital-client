@@ -169,6 +169,9 @@ $script:EXT="zip"
 # mysql configuration file
 $script:MYSQL_CONF_FILE="my.cnf"
 
+# settings file
+$script:SETTINGS_FILE="settings.properties"
+
 # help file
 $script:HELP_FILE="OH-readme.txt"
 
@@ -324,9 +327,9 @@ function read_settings {
 	}
 
 	# read values for script variables from existing settings file
-	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
-		$oh_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties" -Raw | ConvertFrom-StringData)
+		$oh_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -Raw | ConvertFrom-StringData)
 		##############   saved settings   ##############
 		$script:OH_MODE=$oh_settings.MODE
 		$script:OH_LANGUAGE=$oh_settings.LANGUAGE
@@ -409,30 +412,30 @@ function set_values {
 
 ###################################################################
 function set_oh_mode {
-	# if settings.properties is present set OH mode
-	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+	# if $SETTINGS_FILE is present set OH mode
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -PathType leaf ) {
 		Write-Host "Configuring OH mode..."
-	        ######## settings.properties language configuration
-		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	        ######## $SETTINGS_FILE language configuration
+		Write-Host "Setting OH mode to $OH_MODE in OH configuration files-> $SETTINGS_FILE..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE") -replace('^(MODE.+)',"MODE=$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 	}
 	else {
-		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
+		Write-Host "Warning: $SETTINGS_FILE file not found." -ForegroundColor Yellow
 	}
 	Write-Host "OH mode set to $OH_MODE." -ForeGroundcolor Green
 }
 
 ###################################################################
 function set_demo_data {
-	# if settings.properties is present set DEMO mode
-	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+	# if $SETTINGS_FILE is present set DEMO mode
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -PathType leaf ) {
 		Write-Host "Configuring DEMO data..."
-	        ######## settings.properties DEMO data configuration
-		Write-Host "Setting DEMO data to $DEMO_DATA in OH configuration files-> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(DEMODATA.+)',"DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	        ######## $SETTINGS_FILE DEMO data configuration
+		Write-Host "Setting DEMO data to $DEMO_DATA in OH configuration files-> $SETTINGS_FILE..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE") -replace('^(DEMODATA.+)',"DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 	}
 	else {
-		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
+		Write-Host "Warning: $SETTINGS_FILE file not found." -ForegroundColor Yellow
 	}
 	Write-Host "DEMO data set to $DEMO_DATA." -ForeGroundcolor Green
 }
@@ -451,16 +454,16 @@ function set_language {
 	# set database creation script in chosen language
 	$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 
-	# if settings.properties is present set language
-	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf ) {
+	# if $SETTINGS_FILE is present set language
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -PathType leaf ) {
 		Write-Host "Configuring OH language..."
-	        ######## settings.properties language configuration
-		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> settings.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+	        ######## $SETTINGS_FILE language configuration
+		Write-Host "Setting language to $OH_LANGUAGE in OH configuration files-> $SETTINGS_FILE..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE") -replace('^(LANGUAGE.+)',"LANGUAGE=$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 		Write-Host "Language set to $OH_LANGUAGE."
 	}
 	else {
-		Write-Host "Warning: settings.properties file not found." -ForegroundColor Yellow
+		Write-Host "Warning: $SETTINGS_FILE file not found." -ForegroundColor Yellow
 	}
 }
 
@@ -894,22 +897,22 @@ function write_config_files {
 		#Add-Content -Path $OH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.password=$DATABASE_PASSWORD"
 	}
 
-	######## settings.properties setup
-	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) ) {
-		if (Test-Path "$OH_PATH/$OH_DIR/rsc/settings.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/settings.properties.old }
-		Write-Host "Writing OH configuration file -> settings.properties..."
+	######## $SETTINGS_FILE setup
+	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -PathType leaf) ) {
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE $OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE.old }
+		Write-Host "Writing OH configuration file -> $SETTINGS_FILE..."
 		# set OH mode
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties.dist").replace("OH_MODE","$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE.dist").replace("OH_MODE","$OH_MODE") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 		# set LANGUAGE
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 		# set DOC_DIR
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 		# set PHOTO_DIR
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("PHOTO_DIR","$PHOTO_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE").replace("PHOTO_DIR","$PHOTO_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 		# set singleuser = yes / no
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 		# set DEMO DATA
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/settings.properties").replace("DEMODATA=off","DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/settings.properties"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE").replace("DEMODATA=off","DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"
 	}
 }
 
@@ -931,8 +934,8 @@ function clean_conf_files {
 	# remove configuration files - leave only .dist files
 	Write-Host "Removing configuration files..."
 	$filetodel="$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH/$OH_DIR/rsc/settings.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH/$OH_DIR/rsc/settings.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/database.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/database.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/log4j.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
