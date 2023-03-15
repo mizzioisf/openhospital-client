@@ -1453,6 +1453,7 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 		if ( $API_SERVER -eq "on" ) {
 			start_api_server;
 		}
+	}
 }
 
 ######## OH startup
