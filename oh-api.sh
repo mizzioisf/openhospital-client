@@ -184,7 +184,7 @@ function script_menu {
 	echo ""
 	echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
 	echo ""
-	echo "   -A    start OH in FULL [API+GUI+UI] mode - EXPERIMENTAL"
+	echo "   -A    activate API server - EXPERIMENTAL"
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
@@ -893,7 +893,7 @@ function write_config_files {
 function parse_user_input {
 	case $1 in
 	###################################################
-	A)	# toggle OH + API server
+	A)	# activate API server
 		case "$API_SERVER" in
 			*on*)
 				API_SERVER="off";
