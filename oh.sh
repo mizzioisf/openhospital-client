@@ -765,6 +765,9 @@ function test_database_connection {
 
 ###################################################################
 function clean_database {
+	# kill mariadb/mysqld processes
+	echo "Killing mariadb/mysql processes..."
+	killall mariadbd
 	# remove socket and pid file
 	echo "Removing socket and pid file..."
 	rm -rf ./$TMP_DIR/*

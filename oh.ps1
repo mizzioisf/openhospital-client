@@ -918,7 +918,7 @@ function write_config_files {
 
 ###################################################################
 function clean_database {
-	# kill mysqld zombies
+	# kill mariadb/mysqld processes
 	Write-Host "Killing mariadb/mysql processes..."
 	Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
 	# remove socket and pid file
