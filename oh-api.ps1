@@ -1004,7 +1004,7 @@ function clean_conf_files {
 function clean_log_files {
 	# remove all log files
 	Write-Host "Removing log files..."
-	$filetodel="$OH_PATH/$LOG_DIR/*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$LOG_DIR/*.log"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 
@@ -1027,7 +1027,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				}
 			}
 			write_api_config_file;
-			Read-Host "Press any key to continue";
+			#Read-Host "Press any key to continue";
 		}
 		###################################################
 		###################################################
