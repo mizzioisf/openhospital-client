@@ -46,7 +46,7 @@ WRITE_CONFIG_FILES="off"
 # OH_PATH=/usr/local/OpenHospital/oh-1.12
 
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
-OH_MODE="SERVER" 
+#OH_MODE="PORTABLE" 
 
 # language setting - default set to en
 OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
@@ -111,6 +111,9 @@ EXT="tar.gz"
 # mysql configuration file
 MYSQL_CONF_FILE="my.cnf"
 
+# settings file
+SETTINGS_FILE="settings.properties"
+
 # help file
 HELP_FILE="OH-readme.txt"
 
@@ -171,17 +174,20 @@ function script_menu {
 	# show help / user options
 	echo " -----------------------------------------------------------------"
 	echo "|                                                                 |"
-	echo "|                       Open Hospital | OH                        |"
+	echo "|                    Open Hospital - $OH_VERSION                       |"
 	echo "|                                                                 |"
 	echo " -----------------------------------------------------------------"
 	echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	echo " -----------------------------------------------------------------"
+	echo " API server set to $API_SERVER"
+	echo " -----------------------------------------------------------------"
 	echo ""
 	echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
 	echo ""
+	echo "   -A    start OH in FULL [API+GUI+UI] mode - EXPERIMENTAL"
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
-	echo "   -S    set OH in SERVER mode (portable) with API server"
+	echo "   -S    set OH in SERVER mode (portable)"
 	echo "   -l    set language: $OH_LANGUAGE_LIST"
 	echo "   -s    save OH configuration"
 	echo "   -X    clean/reset OH installation"
@@ -206,25 +212,91 @@ function script_menu {
 }
 
 ###################################################################
+function interactive_menu {
+	until [[ "$OPTSTRING" != *"$option"* ]]
+	do 
+		clear;
+		script_menu;
+		echo ""
+		IFS=
+		read -n 1 -p "Please select an option or press enter to start OH: " option
+		if [[ $option != "" ]]; then 
+			parse_user_input $option 1; # interactive
+		else
+			break # if enter pressed exit from loop and start OH
+		fi
+#		if [[ "$option" == "Z" ]]; then
+#			break; # start OH
+#		fi
+	done
+#	OPTIND=1 
+}
+
+###################################################################
 function get_confirmation {
+	# if arg = 1 go back to interactive menu
 	read -p "(y/n) ? " choice
 	case "$choice" in 
-		y|Y ) echo "yes";;
-		n|N ) echo "Exiting."; exit 0;;
-		* ) echo "Invalid choice. Exiting."; exit 1 ;;
+		y|Y ) echo "yes"
+		;;
+		n|N ) echo "Exiting."; 
+			if [[ ${#COMMAND_LINE_ARGS} -eq 0 ]] && [[ $1 -eq 1 ]]; then
+				option="";
+				interactive_menu;
+			else
+				exit 1;
+			fi
+		;;
+		* ) echo "Invalid choice. Press any key to continue."; 
+			read;
+			if [[ ${#COMMAND_LINE_ARGS} -eq 0 ]] && [[ $1 -eq 1 ]]; then
+				option="";
+				interactive_menu;
+			else
+				exit 1;
+			fi
+	exit 0;
 	esac
 }
 
 ###################################################################
+function set_path {
+	# get current directory
+	CURRENT_DIR=$PWD
+	# set OH_PATH if not defined
+	if [ -z ${OH_PATH+x} ]; then
+		echo "Info: OH_PATH not defined - setting to script path"
+
+		# set OH_PATH to script path
+		OH_PATH=$(dirname "$(realpath "$0")")
+
+		if [ ! -f "$OH_PATH/$SCRIPT_NAME" ]; then
+			echo "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
+			exit 1
+		fi
+	fi
+}
+
+###################################################################
 function read_settings {
+	# check and read OH version file
+	if [ -f ./$OH_DIR/rsc/version.properties ]; then
+		source "./$OH_DIR/rsc/version.properties"
+		OH_VERSION=$VER_MAJOR.$VER_MINOR.$VER_RELEASE
+	else 
+		echo "Error: Open Hospital non found! Exiting."
+		exit 1;
+	fi
+
 	# read values for script variables from existing settings file
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Reading OH settings file..."
-		. ./$OH_DIR/rsc/settings.properties
+		. ./$OH_DIR/rsc/$SETTINGS_FILE
 		###  read saved settings  ###
-		OH_LANGUAGE=$LANGUAGE
 		OH_MODE=$MODE
+		OH_LANGUAGE=$LANGUAGE
 		OH_SINGLE_USER=$SINGLE_USER
+		OH_DOC_DIR=$OH_DOC_DIR
 		DEMO_DATA=$DEMODATA
 	fi
 }
@@ -267,50 +339,54 @@ function set_defaults {
 	if [ -z "$DEMO_DATA" ]; then
 		DEMO_DATA="off"
 	fi
-}
-
-###################################################################
-function set_path {
-	# get current directory
-	CURRENT_DIR=$PWD
-	# set OH_PATH if not defined
-	if [ -z ${OH_PATH+x} ]; then
-		echo "Info: OH_PATH not defined - setting to script path"
-
-		# set OH_PATH to script path
-		OH_PATH=$(dirname "$(realpath "$0")")
-
-		if [ ! -f "$OH_PATH/$SCRIPT_NAME" ]; then
-			echo "Error - $SCRIPT_NAME not found in the current PATH. Please browse to the directory where Open Hospital was unzipped or set up OH_PATH properly."
-			exit 1
-		fi
+	
+	# api server - set default to off
+	if [ -z "$API_SERVER" ]; then
+		API_SERVER="off"
 	fi
+
 	# set original database name
 	ORIG_DATABASE_NAME="$DATABASE_NAME"
 	# set original data base_dir
-	DATA_BASEDIR=$DATA_DIR
-	# set DATA_DIR with db name
-	DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
-
+	ORIG_DATADIR="$DATA_DIR"
+	# set escaped values
 	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
-	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
 	TMP_DIR_ESCAPED=$(echo $TMP_DIR | sed -e 's/\//\\\//g')
 	LOG_DIR_ESCAPED=$(echo $LOG_DIR | sed -e 's/\//\\\//g')
 	DICOM_DIR_ESCAPED=$(echo $DICOM_DIR | sed -e 's/\//\\\//g')
 }
 
 ###################################################################
+function set_values {
+	# set database name for demo data
+	case "$DEMO_DATA" in
+			*on*)
+				DATABASE_NAME=$DEMO_DATABASE
+			;;
+			*off*)
+				DATABASE_NAME="$ORIG_DATABASE_NAME"
+			;;
+	esac
+	
+	# set DATA_DIR with db name
+	DATA_DIR=$ORIG_DATADIR/$DATABASE_NAME
+	#
+	# set escaped values
+	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
+}
+
+###################################################################
 function set_oh_mode {
-	# if settings.properties is present set OH mode
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+	# if $SETTINGS_FILE is present set OH mode
+	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Configuring OH mode..."
-		######## settings.properties OH mode configuration
-		echo "Setting OH mode to $OH_MODE in OH configuration file -> settings.properties..."
-		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/settings.properties
+		######## $SETTINGS_FILE OH mode configuration
+		echo "Setting OH mode to $OH_MODE in OH configuration file -> $SETTINGS_FILE..."
+		sed -e "/^"MODE="/c"MODE=$OH_MODE"" -i ./$OH_DIR/rsc/$SETTINGS_FILE
 	else 
 		echo ""
 		echo ""
-		echo "Warning: settings.properties file not found."
+		echo "Warning: $SETTINGS_FILE file not found."
 	fi
 	echo "OH mode set to $OH_MODE"
 }
@@ -318,16 +394,16 @@ function set_oh_mode {
 
 ###################################################################
 function set_demo_data {
-	# if settings.properties is present set OH mode
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+	# if $SETTINGS_FILE is present set OH mode
+	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Configuring DEMO data..."
-		######## settings.properties DEMO data configuration
-		echo "Setting DEMO data to $DEMO_DATA in OH configuration file -> settings.properties..."
-		sed -e "/^"DEMODATA="/c"DEMODATA=$DEMO_DATA"" -i ./$OH_DIR/rsc/settings.properties
+		######## $SETTINGS_FILE DEMO data configuration
+		echo "Setting DEMO data to $DEMO_DATA in OH configuration file -> $SETTINGS_FILE..."
+		sed -e "/^"DEMODATA="/c"DEMODATA=$DEMO_DATA"" -i ./$OH_DIR/rsc/$SETTINGS_FILE
 	else 
 		echo ""
 		echo ""
-		echo "Warning: settings.properties file not found."
+		echo "Warning: $SETTINGS_FILE file not found."
 	fi
 	echo "DEMO data set to $DEMO_DATA"
 }
@@ -346,19 +422,18 @@ function set_language {
 		;;
 	esac
 
-	# if settings.properties is present set language
-	if [ -f ./$OH_DIR/rsc/settings.properties ]; then
+	# if $SETTINGS_FILE is present set language
+	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Configuring OH language..."
-		######## settings.properties language configuration
-		echo "Setting language to $OH_LANGUAGE in OH configuration file -> settings.properties..."
-		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/settings.properties
+		######## $SETTINGS_FILE language configuration
+		echo "Setting language to $OH_LANGUAGE in OH configuration file -> $SETTINGS_FILE..."
+		sed -e "/^"LANGUAGE="/c"LANGUAGE=$OH_LANGUAGE"" -i ./$OH_DIR/rsc/$SETTINGS_FILE
 		echo "Language set to $OH_LANGUAGE."
 	else 
 		echo ""
-		echo "Warning: settings.properties file not found."
+		echo "Warning: $SETTINGS_FILE file not found."
 	fi
 }
-
 
 ###################################################################
 function set_log_level {
@@ -384,6 +459,7 @@ function set_log_level {
 		echo "Warning: log4j.properties file not found."
 	fi
 }
+
 ###################################################################
 function initialize_dir_structure {
 	# create directory structure
@@ -491,7 +567,7 @@ echo "Using $JAVA_BIN"
 function mysql_check {
 if [ ! -d "./$MYSQL_DIR" ]; then
 	if [ ! -f "./$MYSQL_DIR.$EXT" ]; then
-		echo "Warning - $MYSQL_NAME not found. Do you want to download it ?"
+		echo "Warning - $MYSQL_NAME not found. Do you want to download it?"
 		get_confirmation;
 		# download mysql binary
 		echo "Downloading $MYSQL_DIR..."
@@ -679,20 +755,6 @@ function shutdown_database {
 }
 
 ###################################################################
-function clean_database {
-	echo "Warning: do you want to remove all existing data and databases ?"
-	get_confirmation;
-	echo "--->>> This operation cannot be undone"
-	echo "--->>> Are you sure ?"
-	get_confirmation;
-	echo "Removing data..."
-	# remove database files
-	rm -rf ./"$DATA_BASEDIR"/*
-	# remove socket and pid file
-	rm -rf ./$TMP_DIR/*
-}
-
-###################################################################
 function test_database_connection {
         # test if mysql client is available
 	if [ -x ./$MYSQL_DIR/bin/mysql ]; then
@@ -711,27 +773,82 @@ function test_database_connection {
 }
 
 ###################################################################
-function clean_files {
-	# remove all log files
-	echo "Warning: do you want to remove all existing log files ?"
-	get_confirmation;
-	echo "Removing log files..."
-	rm -f ./$LOG_DIR/*
+function write_api_config_file {
+	######## application.properties setup - OH API
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/application.properties ]; then
+		[ -f ./$OH_DIR/rsc/application.properties ] && mv -f ./$OH_DIR/rsc/application.properties ./$OH_DIR/rsc/application.properties.old
+		# set OH API token
+		# JWT_TOKEN_SECRET=`openssl rand -base64 64 | xargs`
+		JWT_TOKEN_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 64`
+		echo "Writing OH API configuration file -> application.properties..."
+		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" ./$OH_DIR/rsc/application.properties.dist > ./$OH_DIR/rsc/application.properties
+	fi
+}
 
+###################################################################
+function start_api_server {
+	# check for configuration files
+	if [ ! -f ./$OH_DIR/rsc/application.properties ]; then
+		echo "Error: missing application.properties settings file. Exiting"
+		exit 1;
+	fi
+
+	echo "------------------------"
+	echo "---- EXPERIMENTAL ------"
+	echo "------------------------"
+	echo "Starting API server..."
+	echo ""
+	echo "Connect to http://localhost:8080 for dashboard"
+	echo ""
+	
+	#$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
+	#$JAVA_BIN -client -Xms64m -Xmx1024m -cp "bin/openhospital-api-0.0.2.jar:rsc:static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$LOG_FILE 2>&1
+	
+	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1 &
+	
+	if [ $? -ne 0 ]; then
+		echo "An error occurred while starting Open Hospital API. Exiting."
+		shutdown_database;
+		cd "$CURRENT_DIR"
+		exit 4
+	fi
+	cd "$OH_PATH"
+}
+
+###################################################################
+function clean_database {
+	# kill mariadb/mysqld processes
+	echo "Killing mariadb/mysql processes..."
+	killall mariadbd
+	# remove socket and pid file
+	echo "Removing socket and pid file..."
+	rm -rf ./$TMP_DIR/*
+	# remove database files
+	echo "Removing databases..."
+	rm -rf ./"$DATA_DIR"
+}
+
+###################################################################
+function clean_conf_files {
 	# remove configuration files - leave only .dist files
-	echo "Warning: do you want to remove all existing configuration files ?"
-	get_confirmation;
 	echo "Removing configuration files..."
 	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
-	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
-	rm -f ./$OH_DIR/rsc/settings.properties
-	rm -f ./$OH_DIR/rsc/settings.properties.old
+	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE
+	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE.old
 	rm -f ./$OH_DIR/rsc/database.properties
 	rm -f ./$OH_DIR/rsc/database.properties.old
 	rm -f ./$OH_DIR/rsc/log4j.properties
 	rm -f ./$OH_DIR/rsc/log4j.properties.old
 	rm -f ./$OH_DIR/rsc/dicom.properties
 	rm -f ./$OH_DIR/rsc/dicom.properties.old
+}
+
+###################################################################
+function clean_log_files {
+	# remove all log files
+	echo "Removing log files..."
+	rm -f ./$LOG_DIR/*
 }
 
 ###################################################################
@@ -762,77 +879,34 @@ function write_config_files {
 		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
 	fi
-	######## settings.properties setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/settings.properties ]; then
-		[ -f ./$OH_DIR/rsc/settings.properties ] && mv -f ./$OH_DIR/rsc/settings.properties ./$OH_DIR/rsc/settings.properties.old
-		echo "Writing OH configuration file -> settings.properties..."
+	######## $SETTINGS_FILE setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
+		[ -f ./$OH_DIR/rsc/$SETTINGS_FILE ] && mv -f ./$OH_DIR/rsc/$SETTINGS_FILE ./$OH_DIR/rsc/$SETTINGS_FILE.old
+		echo "Writing OH configuration file -> $SETTINGS_FILE..."
 		sed -e "s/OH_MODE/$OH_MODE/g" -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" \
 		-e "s/DEMODATA=off/"DEMODATA=$DEMO_DATA"/g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" -e "s&PHOTO_DIR&$PHOTO_DIR&g" \
-		./$OH_DIR/rsc/settings.properties.dist > ./$OH_DIR/rsc/settings.properties
+		./$OH_DIR/rsc/$SETTINGS_FILE.dist > ./$OH_DIR/rsc/$SETTINGS_FILE
 	fi
 }
-
-function write_api_config_file {
-	######## application.properties setup - OH API
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/application.properties ]; then
-		[ -f ./$OH_DIR/rsc/application.properties ] && mv -f ./$OH_DIR/rsc/application.properties ./$OH_DIR/rsc/application.properties.old
-		# set OH API token
-		# JWT_TOKEN_SECRET=`openssl rand -base64 64 | xargs`
-		JWT_TOKEN_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 64`
-		echo "Writing OH API configuration file -> application.properties..."
-		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" ./$OH_DIR/rsc/application.properties.dist > ./$OH_DIR/rsc/application.properties
-	fi
-}
-
-function start_api {
-	# check for configuration files
-	if [ ! -f ./$OH_DIR/rsc/application.properties ]; then
-		echo "Error: missing application.properties settings file. Exiting"
-		exit 1;
-	fi
-
-	echo "------------------------"
-	echo "---- EXPERIMENTAL ------"
-	echo "------------------------"
-	echo "Starting API server..."
-	echo ""
-	echo "Connect to http://localhost:8080 for dashboard"
-	echo ""
-	
-	#$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
-	#$JAVA_BIN -client -Xms64m -Xmx1024m -cp "bin/openhospital-api-0.0.2.jar:rsc:static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$LOG_FILE 2>&1
-	
-	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
-	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1
-	
-	if [ $? -ne 0 ]; then
-		echo "An error occurred while starting Open Hospital API. Exiting."
-		shutdown_database;
-		cd "$CURRENT_DIR"
-		exit 4
-	fi
-	cd "$OH_PATH"
-}
-
 
 ###################################################################
 function parse_user_input {
 	case $1 in
 	###################################################
-	a)	# start API server
-		OH_MODE="SERVER"
-		echo ""
-		echo "------------------------"
-		echo "---- EXPERIMENTAL ------"
-		echo "------------------------"
-		echo ""
-		echo "-   SERVER mode + API  -"
-		echo ""
-		java_check;
-		java_lib_setup;
+	A)	# toggle OH + API server
+		case "$API_SERVER" in
+			*on*)
+				API_SERVER="off";
+			;;
+			*off*)
+				API_SERVER="on";
+			;;
+		esac
+		#
 		write_api_config_file;
-		start_api;
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		#if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
+		option="Z";
+		#interactive_menu;
 		;;
 	###################################################
 	C)	# start in CLIENT mode
@@ -840,21 +914,21 @@ function parse_user_input {
 		DEMO_DATA="off"
 		set_oh_mode;
 		echo ""
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	P)	# start in PORTABLE mode
 		OH_MODE="PORTABLE"
 		set_oh_mode;
 		echo ""
-		if (( $2==0 )); then opt="Z"; else read; fi
+		if (( $2==0 )); then option="Z"; else read; fi
 		;;
 	###################################################
 	S)	# start in SERVER mode
 		OH_MODE="SERVER"
 		set_oh_mode;
 		echo ""
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	d)	# toggle debug mode 
@@ -869,7 +943,7 @@ function parse_user_input {
 		# create config files if not present
 		#write_config_files;
 		set_log_level;
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	D)	# demo mode
@@ -880,26 +954,23 @@ function parse_user_input {
 			exit 1;
 		fi	
 		if (( $2==0 )); then DEMO_DATA="off"; fi # workaround for -D option
+
+		# invert values if D is pressed
 		case "$DEMO_DATA" in
-			*on*)
-				DEMO_DATA="off";
-				# set database name
-				DATABASE_NAME="$ORIG_DATABASE_NAME"
-			;;
-			*off*)
-				DEMO_DATA="on";
-				# set database name
-				DATABASE_NAME=$DEMO_DATABASE
-			;;
+				*on*)
+					DEMO_DATA="off";
+				;;
+				*off*)
+					DEMO_DATA="on";
+				;;
 		esac
 
-		# set DATA_DIR with db name
-		DATA_DIR=$DATA_BASEDIR/$DATABASE_NAME
-		DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
+		# update confuration settings
+		set_values;
 
 		WRITE_CONFIG_FILES=on; write_config_files;
 
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	G)	# set up GSM
@@ -930,7 +1001,7 @@ function parse_user_input {
 		echo " Database Server -> $DATABASE_SERVER"
 		echo " TCP port -> $DATABASE_PORT" 
 		echo ""
-		get_confirmation;
+		get_confirmation 1;
 		initialize_dir_structure;
 		set_language;
 		mysql_check;
@@ -954,12 +1025,12 @@ function parse_user_input {
 		#WRITE_CONFIG_FILES="on"
 		if (( $2==0 )); then
 			OH_LANGUAGE="$OPTARG"
-			opt="Z";
+			option="Z";
 		else
 			read -n 2 -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
 		fi
 		set_language;
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	m)	# configure OH database connection manually
@@ -976,7 +1047,8 @@ function parse_user_input {
 		read -p "Enter database password [DATABASE_PASSWORD]: " DATABASE_PASSWORD
 
 		echo "Do you want to save entered settings to OH configuration files?"
-		get_confirmation;
+		get_confirmation 1;
+		set_values;
 		WRITE_CONFIG_FILES="on"; write_config_files;
 		echo "Done!"
 		echo ""
@@ -1010,30 +1082,34 @@ function parse_user_input {
 		;;
 	###################################################
 	r)	# restore database
+		# check if database exists
 		echo ""
-        	echo "Restoring Open Hospital database...."
-		# ask user for database/sql script to restore
-		read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
-		if [ ! -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
-			echo "Error: No SQL file found! Exiting."
+		if [ -d ./"$DATA_DIR" ]; then
+			echo "Error: Database already present. Remove existing database before restoring. Exiting."
 		else
-		        echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
-			# check if mysql utilities exist
-			mysql_check;
-			if [ "$OH_MODE" != "CLIENT" ]; then
-				# reset database if exists
-				clean_database;
-				config_database;
-				initialize_dir_structure;
-				initialize_database;
-				start_database;
-				set_database_root_pw;
+			echo "Restoring Open Hospital database...."
+			# ask user for database/sql script to restore
+			read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
+			if [ ! -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
+				echo "Error: No SQL file found! Exiting."
+			else
+				echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+				# check if mysql utilities exist
+				mysql_check;
+				if [ "$OH_MODE" != "CLIENT" ]; then
+					set_values;
+					config_database;
+					initialize_dir_structure;
+					initialize_database;
+					start_database;
+					set_database_root_pw;
+				fi
+				import_database;
+				if [ $OH_MODE != "CLIENT" ]; then
+					shutdown_database;
+				fi
+		        	echo "Done!"
 			fi
-			import_database;
-			if [ $OH_MODE != "CLIENT" ]; then
-				shutdown_database;
-			fi
-	        	echo "Done!"
 		fi
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
@@ -1041,7 +1117,7 @@ function parse_user_input {
 	s)	# save / write config files
 		echo ""
 		echo "Do you want to save current settings to OH configuration files?"
-		get_confirmation;
+		get_confirmation 1;
 		# overwrite configuration files if existing
 		WRITE_CONFIG_FILES=on; write_config_files;
 		set_oh_mode;
@@ -1059,7 +1135,7 @@ function parse_user_input {
 			mysql_check;
 			test_database_connection;
 		fi
-		if (( $2==0 )); then opt="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	u)	# create Desktop shortcut
@@ -1073,10 +1149,9 @@ function parse_user_input {
 	v)	# display software version and configuration
 		echo ""
 		echo "--------- OH version ---------"
-		source "./$OH_DIR/rsc/version.properties"
-		echo "Open Hospital version:" $VER_MAJOR.$VER_MINOR.$VER_RELEASE
+		echo "Open Hospital version: $OH_VERSION"
 		echo ""
-		echo "--------- Software version ---------"
+		echo "--------- Software versions ---------"
 		echo "$MYSQL_NAME version: $MYSQL_DIR"
 		echo "JAVA version: $JAVA_DISTRO"
 		echo ""
@@ -1090,7 +1165,7 @@ function parse_user_input {
 		echo ""
 		echo "--- Database ---"
 		echo "DATABASE_SERVER=$DATABASE_SERVER"
-		echo "DATABASE_PORT=$DATABASE_PORT"
+		echo "DATABASE_PORT=$DATABASE_PORT (default)"
 		echo "DATABASE_NAME=$DATABASE_NAME"
 		echo "DATABASE_USER=$DATABASE_USER"
 		echo ""
@@ -1105,10 +1180,10 @@ function parse_user_input {
 		echo "OH_SINGLE_USER=$OH_SINGLE_USER"
 		echo "CONF_DIR=$CONF_DIR"
 		echo "DATA_DIR=$DATA_DIR"
+		echo "PHOTO_DIR=$PHOTO_DIR"
 		echo "BACKUP_DIR=$BACKUP_DIR"
 		echo "LOG_DIR=$LOG_DIR"
 		echo "SQL_DIR=$SQL_DIR"
-		echo "SQL_EXTRA_DIR=$SQL_EXTRA_DIR"
 		echo "TMP_DIR=$TMP_DIR"
 		echo ""
 		echo "---  Logging ---"
@@ -1123,9 +1198,36 @@ function parse_user_input {
 	X)	# clean
 		echo ""
         	echo "Cleaning Open Hospital installation..."
-		clean_files;
-		clean_database;
-        	echo "Done!"
+		echo "Warning: do you want to remove all existing log files?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then
+			clean_log_files;
+		fi
+		echo "Warning: do you want to remove all existing configuration files?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then
+			clean_conf_files;
+		fi
+		echo "Warning: do you want to remove all existing data and databases?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then		
+			echo "--->>> This operation cannot be undone"
+			echo "--->>> Are you sure?"
+			read -p "Press [y] to confirm: " choice
+			if [ "$choice" = "y" ]; then		
+				clean_database;
+        			echo "Done!"
+			fi
+		fi
+		# unset variables
+		#unset OH_MODE
+		#unset OH_LANGUAGE
+		#unset OH_SINGLE_USER
+		#unset LOG_LEVEL
+		#unset DEMO_DATA
+		# set defaults
+		#set_defaults;
+
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
@@ -1148,14 +1250,14 @@ function parse_user_input {
 		;;
 	###################################################
 	#"" )	# enter key
-	#	opt="Z"
+	#	option="Z"
 	#	echo "";
 	#	echo "Starting Open Hospital...";
 	#	fi
 	#	;;
 	###################################################
 	"Z" )	# Z key
-		opt="Z"
+		option="Z";
 		echo "";
 		echo "Starting Open Hospital...";
 		;;
@@ -1166,11 +1268,11 @@ function parse_user_input {
 			echo "Invalid option: -${OPTARG}. See $SCRIPT_NAME -h for help"
 			exit 0;
 		else
-			echo "Invalid option: ${opt}. See $SCRIPT_NAME -h for help"
+			echo "Invalid option: ${option}. See $SCRIPT_NAME -h for help"
 			echo "Press any key to continue";
 			read;
 		fi
-		opt="h";
+		option="h";
 		;;
 	esac
 }
@@ -1190,6 +1292,7 @@ fi
 set_path;
 read_settings;
 set_defaults;
+set_values;
 
 # set working dir to OH base dir
 cd "$OH_PATH"
@@ -1199,32 +1302,17 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CPSdDGhil:msrtvequQXZ?" 
+OPTSTRING=":ACPSdDGhil:msrtvequQXZ?" 
+COMMAND_LINE_ARGS=$@
 
-PASSED_ARGS=$@
 # Parse arguments passed via command line
-if [[ ${#PASSED_ARGS} -ne 0 ]]; then
+if [[ ${#COMMAND_LINE_ARGS} -ne 0 ]]; then
 	# function to parse input
-	while getopts ${OPTSTRING} opt; do
-		parse_user_input $opt 0; # non interactive
+	while getopts ${OPTSTRING} option; do
+		parse_user_input $option 0; # non interactive
 	done
 else # If no arguments are passed via command line, show the interactive menu
-	until [[ "$OPTSTRING" != *"$opt"* ]]
-	do 
-		clear;
-		script_menu;
-		echo ""
-		IFS=
-		read -n 1 -p "Please select an option or press enter to start OH: " opt
-		if [[ $opt != "" ]]; then 
-			parse_user_input $opt 1; # interactive
-		else
-			break # if enter pressed exit from loop and start OH
-		fi
-		if [[ "$opt" == "Z" ]]; then
-			break; # start OH
-		fi
-	done
+	interactive_menu;
 fi
 
 #shift "$((OPTIND-1))"
@@ -1293,8 +1381,14 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	        echo "OH database found!"
 		# start database
 		start_database;
+		# check for API server
+		if [ "$API_SERVER" = "on" ]; then
+			start_api_server;
+		fi
 	fi
 fi
+
+######## OH startup
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if [ "$OH_MODE" = "SERVER" ]; then
@@ -1309,16 +1403,7 @@ if [ "$OH_MODE" = "SERVER" ]; then
 	echo ""
 	echo "***************************************"
 	echo "Database server ready for connections..."
-	# Start API server
-	# check for database.properties - TBD
-	# needed for database.properties
-	# generate config files if not existent
-	write_config_files;
-	write_api_config_file;
-	echo "***************************************"
-	echo "Starting EXPERIMEMTAL API server ..."
-	start_api;
-	
+	echo "Press Ctrl + C to exit"
 	while true; do
 		trap ctrl_c INT
 		function ctrl_c() {
