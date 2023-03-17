@@ -353,7 +353,7 @@ function read_settings {
 		##############   saved settings   ##############
 		$script:DATABASE_SERVER=$db_settings.jdbc_url
 		$script:DATABASE_USER=$db_settings.jdbc_username
-		$script:DATABASE_PASSORD=$db_settings.jdbc_password
+		$script:DATABASE_PASSWORD=$db_settings.jdbc_password
 
 #		DATABASE_SERVER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f1)
 #		DATABASE_PORT=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f2)
@@ -364,6 +364,8 @@ function read_settings {
 		Write-Host "DATABASE_SERVER = $DATABASE_SERVER"
 		Write-Host "DATABASE_PORT = $DATABASE_PORT"
 		Write-Host "DATABASE_NAME = $DATABASE_NAME"
+		Write-Host "DATABASE_USER = $DATABASE_USER"
+		Write-Host "DATABASE_PASSWORD = $DATABASE_PASSWORD"
 		Read-Host;
 	}
 
