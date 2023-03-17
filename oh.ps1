@@ -171,6 +171,7 @@ $script:MYSQL_CONF_FILE="my.cnf"
 
 # settings file
 $script:SETTINGS_FILE="settings.properties"
+$script:DATABASE_SETTINGS="database.properties"
 
 # help file
 $script:HELP_FILE="OH-readme.txt"
@@ -326,7 +327,7 @@ function read_settings {
 		Read-Host; exit 1
 	}
 
-	# read values for script variables from existing settings file
+	# check for OH settings file and read values
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
 		$oh_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -Raw | ConvertFrom-StringData)
@@ -338,6 +339,33 @@ function read_settings {
 		$script:DEMO_DATA=$oh_settings.DEMODATA
 		################################################
 	}
+		
+	# check for database settings file and read values
+	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -PathType leaf ) {
+		Write-Host "Reading database settings file..."
+
+		Get-Content $OH_PATH\$OH_DIR\rsc\$DATABASE_SETTINGS | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
+			$var = $_.Split('=',2).Trim()
+			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
+		}
+
+		$db_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -Raw | ConvertFrom-StringData)
+		##############   saved settings   ##############
+		$script:DATABASE_SERVER=$db_settings.jdbc_url
+		$script:DATABASE_USER=$db_settings.jdbc_username
+		$script:DATABASE_PASSORD=$db_settings.jdbc_password
+
+#		DATABASE_SERVER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f1)
+#		DATABASE_PORT=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f2)
+#		DATABASE_NAME=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut  -d"/" -f4)
+#		DATABASE_USER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.username" | cut -d"=" -f2)
+#		DATABASE_PASSWORD=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.password" | cut -d"=" -f2)
+
+		Write-Host "DATABASE_SERVER = $DATABASE_SERVER"
+		Write-Host "DATABASE_PORT = $DATABASE_PORT"
+		Write-Host "DATABASE_NAME = $DATABASE_NAME"
+	}
+
 }
 
 ###################################################################
@@ -881,20 +909,20 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties").replace("LOG_DEST","../$LOG_DIR/$OH_LOG_FILE") | Set-Content "$OH_PATH/$OH_DIR/rsc/log4j.properties"
 	}
 
-	######## database.properties setup 
-	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties" -PathType leaf) ) {
-		if (Test-Path "$OH_PATH/$OH_DIR/rsc/database.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/database.properties $OH_PATH/$OH_DIR/rsc/database.properties.old }
-		Write-Host "Writing OH database configuration file -> database.properties..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties.dist").replace("DBSERVER","$DATABASE_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties").replace("DBPORT","$DATABASE_PORT") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties").replace("DBUSER","$DATABASE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/database.properties").replace("DBNAME","$DATABASE_NAME") | Set-Content "$OH_PATH/$OH_DIR/rsc/database.properties"
+	######## $DATABASE_SETTINGS setup 
+	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -PathType leaf) ) {
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS.old }
+		Write-Host "Writing OH database configuration file -> $DATABASE_SETTINGS..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS.dist").replace("DBSERVER","$DATABASE_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS").replace("DBPORT","$DATABASE_PORT") | Set-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS").replace("DBUSER","$DATABASE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS").replace("DBPASS","$DATABASE_PASSWORD") | Set-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS").replace("DBNAME","$DATABASE_NAME") | Set-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS"
 
-		# direct creation of database.properties - deprecated
-		#Set-Content -Path $OH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.url=jdbc:mysql://"$DATABASE_SERVER":$DATABASE_PORT/$DATABASE_NAME"
-		#Add-Content -Path $OH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.username=$DATABASE_USER"
-		#Add-Content -Path $OH_PATH/$OH_DIR/rsc/database.properties -Value "jdbc.password=$DATABASE_PASSWORD"
+		# direct creation of $DATABASE_SETTINGS - deprecated
+		#Set-Content -Path $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS -Value "jdbc.url=jdbc:mysql://"$DATABASE_SERVER":$DATABASE_PORT/$DATABASE_NAME"
+		#Add-Content -Path $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS -Value "jdbc.username=$DATABASE_USER"
+		#Add-Content -Path $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS -Value "jdbc.password=$DATABASE_PASSWORD"
 	}
 
 	######## $SETTINGS_FILE setup
@@ -936,8 +964,8 @@ function clean_conf_files {
 	$filetodel="$OH_PATH/$CONF_DIR/$MYSQL_CONF_FILE"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH/$OH_DIR/rsc/database.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
-	$filetodel="$OH_PATH/$OH_DIR/rsc/database.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/log4j.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/log4j.properties.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/dicom.properties"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
@@ -949,6 +977,22 @@ function clean_log_files {
 	# remove all log files
 	Write-Host "Removing log files..."
 	$filetodel="$OH_PATH/$LOG_DIR/*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+}
+
+###################################################################
+function start_gui {
+	# OH GUI launch
+	cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths
+
+	#$JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\$OH_DIR\rsc\log4j.properties`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
+
+	# log4j configuration is now read directly
+$JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=`"$NATIVE_LIB_PATH`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
+
+	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	
+	# go back to starting directory
+	cd "$CURRENT_DIR"
 }
 
 
@@ -1197,9 +1241,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host ""
 			Write-Host "--- Database ---"
 			Write-Host "DATABASE_SERVER=$DATABASE_SERVER"
-			Write-Host "DATABASE_PORT=$DATABASE_PORT (default)"
-			Write-Host "DATABASE_NAME=$DATABASE_NAME"
+			Write-Host "DATABASE_PORT=$DATABASE_PORT"
 			Write-Host "DATABASE_USER=$DATABASE_USER"
+			Write-Host "DATABASE_NAME=$DATABASE_NAME"
 			Write-Host ""
 			Write-Host "--- Imaging / Dicom ---"
 			Write-Host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
@@ -1439,20 +1483,10 @@ else {
 	#set_demo_data;
 
 	Write-Host "Starting Open Hospital GUI..."
-
-	# OH GUI launch
-	cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths
-
-	#$JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\$OH_DIR\rsc\log4j.properties`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
-
-	# log4j configuration is now read directly
-$JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=`"$NATIVE_LIB_PATH`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
-
-	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	start_gui;
 
 	# Close and exit
 	Write-Host "Exiting Open Hospital..."
-	
 	shutdown_database;
 
 	# go back to starting directory

@@ -112,6 +112,7 @@ MYSQL_CONF_FILE="my.cnf"
 
 # settings file
 SETTINGS_FILE="settings.properties"
+DATABASE_SETTINGS="database.properties"
 
 # help file
 HELP_FILE="OH-readme.txt"
@@ -283,8 +284,8 @@ function read_settings {
 		echo "Error: Open Hospital non found! Exiting."
 		exit 1;
 	fi
-
-	# read values for script variables from existing settings file
+	
+	# check for OH settings file and read values
 	if [ -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
 		echo "Reading OH settings file..."
 		. ./$OH_DIR/rsc/$SETTINGS_FILE
@@ -295,6 +296,42 @@ function read_settings {
 		OH_DOC_DIR=$OH_DOC_DIR
 		DEMO_DATA=$DEMODATA
 	fi
+
+	# check for database settings file and read values
+	if [ -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ]; then
+		#		source "./$OH_DIR/rsc/$DATABASE_SETTINGS"
+
+	## Usage: get_property FILE VALUE - for .properties file
+	#function get_property
+	#{
+	##    grep "^$2=" "$1" | cut -d'=' -f2
+	#    sed "/^$2=/!d; s///" "$1"
+	#}
+
+		#DATABASE_SERVER=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.url")
+		#DATABASE_PORT=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.url")
+		#DATABASE_NAME=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.url")
+		#USERNAME=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.username")
+		#USERPASS=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.password")
+
+
+		# read properties from database settings file
+		DATABASE_SERVER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f1)
+		DATABASE_PORT=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f2)
+		DATABASE_NAME=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut  -d"/" -f4)
+		DATABASE_USER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.username" | cut -d"=" -f2)
+		DATABASE_PASSWORD=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.password" | cut -d"=" -f2)
+
+		echo "DATABASE_SERVER = $DATABASE_SERVER"
+		echo "DATABASE_PORT = $DATABASE_PORT"
+		echo "DATABASE_NAME = $DATABASE_NAME"
+		echo "DATABASE_USER = $DATABASE_USER"
+		echo "DATABASE_PASSWORD = $DATABASE_PASSWORD"
+		read
+		else 
+			echo "Warning: configuration file $DATABASE_SETTINGS not found."
+		fi
+
 }
 
 ###################################################################
@@ -764,41 +801,6 @@ function test_database_connection {
 }
 
 ###################################################################
-function clean_database {
-	# kill mariadb/mysqld processes
-	echo "Killing mariadb/mysql processes..."
-	killall mariadbd
-	# remove socket and pid file
-	echo "Removing socket and pid file..."
-	rm -rf ./$TMP_DIR/*
-	# remove database files
-	echo "Removing databases..."
-	rm -rf ./"$DATA_DIR"
-}
-
-###################################################################
-function clean_conf_files {
-	# remove configuration files - leave only .dist files
-	echo "Removing configuration files..."
-	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
-	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE
-	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE.old
-	rm -f ./$OH_DIR/rsc/database.properties
-	rm -f ./$OH_DIR/rsc/database.properties.old
-	rm -f ./$OH_DIR/rsc/log4j.properties
-	rm -f ./$OH_DIR/rsc/log4j.properties.old
-	rm -f ./$OH_DIR/rsc/dicom.properties
-	rm -f ./$OH_DIR/rsc/dicom.properties.old
-}
-
-###################################################################
-function clean_log_files {
-	# remove all log files
-	echo "Removing log files..."
-	rm -f ./$LOG_DIR/*
-}
-
-###################################################################
 function write_config_files {
 	# set up configuration files
 	echo "Checking for OH configuration files..."
@@ -818,13 +820,13 @@ function write_config_files {
 		-e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
 		./$OH_DIR/rsc/log4j.properties.dist > ./$OH_DIR/rsc/log4j.properties
 	fi
-	######## database.properties setup 
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/database.properties ]; then
-		[ -f ./$OH_DIR/rsc/database.properties ] && mv -f ./$OH_DIR/rsc/database.properties ./$OH_DIR/rsc/database.properties.old
-		echo "Writing OH database configuration file -> database.properties..."
+	######## $DATABASE_SETTINGS setup 
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ] && mv -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ./$OH_DIR/rsc/$DATABASE_SETTINGS.old
+		echo "Writing OH database configuration file -> $DATABASE_SETTINGS..."
 		sed -e "s/DBSERVER/$DATABASE_SERVER/g" -e "s/DBPORT/$DATABASE_PORT/g" -e "s/DBNAME/$DATABASE_NAME/g" \
 		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
-		./$OH_DIR/rsc/database.properties.dist > ./$OH_DIR/rsc/database.properties
+		./$OH_DIR/rsc/$DATABASE_SETTINGS.dist > ./$OH_DIR/rsc/$DATABASE_SETTINGS
 	fi
 	######## $SETTINGS_FILE setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$SETTINGS_FILE ]; then
@@ -833,6 +835,57 @@ function write_config_files {
 		sed -e "s/OH_MODE/$OH_MODE/g" -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" \
 		-e "s/DEMODATA=off/"DEMODATA=$DEMO_DATA"/g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" -e "s&PHOTO_DIR&$PHOTO_DIR&g" \
 		./$OH_DIR/rsc/$SETTINGS_FILE.dist > ./$OH_DIR/rsc/$SETTINGS_FILE
+	fi
+}
+
+###################################################################
+function clean_database {
+	# kill mariadb/mysqld processes
+	echo "Killing mariadb/mysql processes..."
+	killall mariadbd
+	# remove socket and pid file
+	echo "Removing socket and pid file..."
+	rm -rf ./$TMP_DIR/*
+	# remove database files
+	echo "Removing databases..."
+	rm -rf ./"$DATA_DIR"
+}
+
+###################################################################
+function clean_conf_files {
+	# remove configuration files - leave only .dist files
+	echo "Removing configuration files..."
+	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
+	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE
+	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE.old
+	rm -f ./$OH_DIR/rsc/$DATABASE_SETTINGS
+	rm -f ./$OH_DIR/rsc/$DATABASE_SETTINGS.old
+	rm -f ./$OH_DIR/rsc/log4j.properties
+	rm -f ./$OH_DIR/rsc/log4j.properties.old
+	rm -f ./$OH_DIR/rsc/dicom.properties
+	rm -f ./$OH_DIR/rsc/dicom.properties.old
+}
+
+###################################################################
+function clean_log_files {
+	# remove all log files
+	echo "Removing log files..."
+	rm -f ./$LOG_DIR/*
+}
+
+###################################################################
+function start_gui {
+	echo "Starting Open Hospital GUI..."
+	# OH GUI launch
+	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+
+	$JAVA_BIN -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
+
+	if [ $? -ne 0 ]; then
+		echo "An error occurred while starting Open Hospital. Exiting."
+		shutdown_database;
+		cd "$CURRENT_DIR"
+		exit 4
 	fi
 }
 
@@ -1096,9 +1149,9 @@ function parse_user_input {
 		echo ""
 		echo "--- Database ---"
 		echo "DATABASE_SERVER=$DATABASE_SERVER"
-		echo "DATABASE_PORT=$DATABASE_PORT (default)"
-		echo "DATABASE_NAME=$DATABASE_NAME"
+		echo "DATABASE_PORT=$DATABASE_PORT"
 		echo "DATABASE_USER=$DATABASE_USER"
+		echo "DATABASE_NAME=$DATABASE_NAME"
 		echo ""
 		echo "--- Imaging / Dicom ---"
 		echo "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
@@ -1352,21 +1405,10 @@ else
 	# check / set demo data if enabled
 	#set_demo_data;
 
-	echo "Starting Open Hospital GUI..."
-	# OH GUI launch
-	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
-
-	$JAVA_BIN -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
-
-	if [ $? -ne 0 ]; then
-		echo "An error occurred while starting Open Hospital. Exiting."
-		shutdown_database;
-		cd "$CURRENT_DIR"
-		exit 4
-	fi
+	# start OH gui
+	start_gui;
 
 	# Close and exit
-
 	echo "Exiting Open Hospital..."
 	shutdown_database;
 
