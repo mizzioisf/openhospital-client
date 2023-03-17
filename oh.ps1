@@ -364,6 +364,7 @@ function read_settings {
 		Write-Host "DATABASE_SERVER = $DATABASE_SERVER"
 		Write-Host "DATABASE_PORT = $DATABASE_PORT"
 		Write-Host "DATABASE_NAME = $DATABASE_NAME"
+		Read-Host;
 	}
 
 }
