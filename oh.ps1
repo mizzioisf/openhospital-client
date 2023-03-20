@@ -1,6 +1,6 @@
 #%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe
+#!/usr/bin/pwsh
 #
-#!/snap/bin/pwsh
 # Open Hospital (www.open-hospital.org)
 # Copyright © 2006-2023 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
 #
@@ -169,9 +169,10 @@ $script:EXT="zip"
 # mysql configuration file
 $script:MYSQL_CONF_FILE="my.cnf"
 
-# settings file
+# OH files
 $script:SETTINGS_FILE="settings.properties"
 $script:DATABASE_SETTINGS="database.properties"
+$script:OH_GUI="OH-gui.jar"
 
 # help file
 $script:HELP_FILE="OH-readme.txt"
@@ -343,32 +344,20 @@ function read_settings {
 	# check for database settings file and read values
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -PathType leaf ) {
 		Write-Host "Reading database settings file..."
-
-		Get-Content $OH_PATH\$OH_DIR\rsc\$DATABASE_SETTINGS | Where-Object {$_.length -gt 0} | Where-Object {!$_.StartsWith("#")} | ForEach-Object {
-			$var = $_.Split('=',2).Trim()
-			New-Variable -Force -Scope Private -Name $var[0] -Value $var[1] 
-		}
-
 		$db_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -Raw | ConvertFrom-StringData)
-		##############   saved settings   ##############
-		$script:DATABASE_SERVER=$db_settings.jdbc_url
-		$script:DATABASE_USER=$db_settings.jdbc_username
-		$script:DATABASE_PASSWORD=$db_settings.jdbc_password
 
-#		DATABASE_SERVER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f1)
-#		DATABASE_PORT=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f2)
-#		DATABASE_NAME=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut  -d"/" -f4)
-#		DATABASE_USER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.username" | cut -d"=" -f2)
-#		DATABASE_PASSWORD=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.password" | cut -d"=" -f2)
+		$script:DATABASE_USER=$db_settings."jdbc.username"
+		$script:DATABASE_PASSWORD=$db_settings."jdbc.password"
 
-		Write-Host "DATABASE_SERVER = $DATABASE_SERVER"
-		Write-Host "DATABASE_PORT = $DATABASE_PORT"
-		Write-Host "DATABASE_NAME = $DATABASE_NAME"
-		Write-Host "DATABASE_USER = $DATABASE_USER"
-		Write-Host "DATABASE_PASSWORD = $DATABASE_PASSWORD"
+		$DATABASE_URL=$db_settings."jdbc.url"
+		$script:DATABASE_SERVER=$DATABASE_URL.TrimStart("jdbc:mysql://").Split(":",2)[0]
+		$script:DATABASE_PORT=$DATABASE_URL.TrimStart("jdbc:mysql://").Split(":",2)[1].Split("/",2)[0]
+		$script:DATABASE_NAME=$DATABASE_URL.TrimStart("jdbc:mysql://").Split(":",2)[1].Split("/",2)[1]
+	}
+	else {
+		Write-Host "Warning: configuration file $DATABASE_SETTINGS not found." -ForegroundColor Yellow
 		Read-Host;
 	}
-
 }
 
 ###################################################################
@@ -561,7 +550,7 @@ function java_lib_setup {
 
 	# CLASSPATH setup
 	# include OH jar file
-	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\bin\OH-gui.jar"
+	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\bin\$OH_GUI"
 
 	# include all jar files under lib\
 	$script:jarlist= Get-ChildItem "$OH_PATH\$OH_DIR\lib" -Filter *.jar |  % { $_.FullName }
