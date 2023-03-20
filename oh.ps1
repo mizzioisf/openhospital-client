@@ -356,7 +356,6 @@ function read_settings {
 	}
 	else {
 		Write-Host "Warning: configuration file $DATABASE_SETTINGS not found." -ForegroundColor Yellow
-		Read-Host;
 	}
 }
 
