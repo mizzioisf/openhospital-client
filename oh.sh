@@ -110,9 +110,10 @@ EXT="tar.gz"
 # mysql configuration file
 MYSQL_CONF_FILE="my.cnf"
 
-# settings file
+# OH files
 SETTINGS_FILE="settings.properties"
 DATABASE_SETTINGS="database.properties"
+OH_GUI="OH-gui.jar"
 
 # help file
 HELP_FILE="OH-readme.txt"
@@ -299,39 +300,18 @@ function read_settings {
 
 	# check for database settings file and read values
 	if [ -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ]; then
-		#		source "./$OH_DIR/rsc/$DATABASE_SETTINGS"
+		echo ""Reading database settings file..."
+		# source "./$OH_DIR/rsc/$DATABASE_SETTINGS"
 
-	## Usage: get_property FILE VALUE - for .properties file
-	#function get_property
-	#{
-	##    grep "^$2=" "$1" | cut -d'=' -f2
-	#    sed "/^$2=/!d; s///" "$1"
-	#}
-
-		#DATABASE_SERVER=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.url")
-		#DATABASE_PORT=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.url")
-		#DATABASE_NAME=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.url")
-		#USERNAME=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.username")
-		#USERPASS=$(get_property "$OH_DIR/rsc/$DATABASE_SETTINGS" "jdbc.password")
-
-
-		# read properties from database settings file
 		DATABASE_SERVER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f1)
 		DATABASE_PORT=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f2)
 		DATABASE_NAME=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut  -d"/" -f4)
 		DATABASE_USER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.username" | cut -d"=" -f2)
 		DATABASE_PASSWORD=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.password" | cut -d"=" -f2)
 
-		echo "DATABASE_SERVER = $DATABASE_SERVER"
-		echo "DATABASE_PORT = $DATABASE_PORT"
-		echo "DATABASE_NAME = $DATABASE_NAME"
-		echo "DATABASE_USER = $DATABASE_USER"
-		echo "DATABASE_PASSWORD = $DATABASE_PASSWORD"
-		read
-		else 
-			echo "Warning: configuration file $DATABASE_SETTINGS not found."
-		fi
-
+	else 
+		echo "Warning: configuration file $DATABASE_SETTINGS not found."
+	fi
 }
 
 ###################################################################
@@ -537,7 +517,7 @@ function java_lib_setup {
 
 	# CLASSPATH setup
 	# include OH jar file
-	OH_CLASSPATH="$OH_PATH"/$OH_DIR/bin/OH-gui.jar
+	OH_CLASSPATH="$OH_PATH"/$OH_DIR/bin/$OH_GUI
 	
 	# include all needed directories
 	OH_CLASSPATH=$OH_CLASSPATH:"$OH_PATH"/$OH_DIR/bundle
