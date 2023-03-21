@@ -834,41 +834,6 @@ function start_api_server {
 }
 
 ###################################################################
-function clean_database {
-	# kill mariadb/mysqld processes
-	echo "Killing mariadb/mysql processes..."
-	killall mariadbd
-	# remove socket and pid file
-	echo "Removing socket and pid file..."
-	rm -rf ./$TMP_DIR/*
-	# remove database files
-	echo "Removing databases..."
-	rm -rf ./"$DATA_DIR"
-}
-
-###################################################################
-function clean_conf_files {
-	# remove configuration files - leave only .dist files
-	echo "Removing configuration files..."
-	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
-	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE
-	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE.old
-	rm -f ./$OH_DIR/rsc/$DATABASE_SETTINGS
-	rm -f ./$OH_DIR/rsc/$DATABASE_SETTINGS.old
-	rm -f ./$OH_DIR/rsc/log4j.properties
-	rm -f ./$OH_DIR/rsc/log4j.properties.old
-	rm -f ./$OH_DIR/rsc/dicom.properties
-	rm -f ./$OH_DIR/rsc/dicom.properties.old
-}
-
-###################################################################
-function clean_log_files {
-	# remove all log files
-	echo "Removing log files..."
-	rm -f ./$LOG_DIR/*.log
-}
-
-###################################################################
 function write_config_files {
 	# set up configuration files
 	echo "Checking for OH configuration files..."
@@ -903,6 +868,57 @@ function write_config_files {
 		sed -e "s/OH_MODE/$OH_MODE/g" -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" \
 		-e "s/DEMODATA=off/"DEMODATA=$DEMO_DATA"/g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" -e "s&PHOTO_DIR&$PHOTO_DIR&g" \
 		./$OH_DIR/rsc/$SETTINGS_FILE.dist > ./$OH_DIR/rsc/$SETTINGS_FILE
+	fi
+}
+
+###################################################################
+function clean_database {
+	# kill mariadb/mysqld processes
+	echo "Killing mariadb/mysql processes..."
+	killall mariadbd
+	# remove socket and pid file
+	echo "Removing socket and pid file..."
+	rm -rf ./$TMP_DIR/*
+	# remove database files
+	echo "Removing databases..."
+	rm -rf ./"$DATA_DIR"
+}
+
+###################################################################
+function clean_conf_files {
+	# remove configuration files - leave only .dist files
+	echo "Removing configuration files..."
+	rm -f ./$CONF_DIR/$MYSQL_CONF_FILE
+	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE
+	rm -f ./$OH_DIR/rsc/$SETTINGS_FILE.old
+	rm -f ./$OH_DIR/rsc/$DATABASE_SETTINGS
+	rm -f ./$OH_DIR/rsc/$DATABASE_SETTINGS.old
+	rm -f ./$OH_DIR/rsc/log4j.properties
+	rm -f ./$OH_DIR/rsc/log4j.properties.old
+	rm -f ./$OH_DIR/rsc/dicom.properties
+	rm -f ./$OH_DIR/rsc/dicom.properties.old
+}
+
+###################################################################
+function clean_log_files {
+	# remove all log files
+	echo "Removing log files..."
+	rm -f ./$LOG_DIR/*
+}
+
+###################################################################
+function start_gui {
+	echo "Starting Open Hospital GUI..."
+	# OH GUI launch
+	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+
+	$JAVA_BIN -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
+
+	if [ $? -ne 0 ]; then
+		echo "An error occurred while starting Open Hospital. Exiting."
+		shutdown_database;
+		cd "$CURRENT_DIR"
+		exit 4
 	fi
 }
 
@@ -1442,21 +1458,10 @@ else
 	# check / set demo data if enabled
 	#set_demo_data;
 
-	echo "Starting Open Hospital GUI..."
-	# OH GUI launch
-	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
-
-	$JAVA_BIN -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
-
-	if [ $? -ne 0 ]; then
-		echo "An error occurred while starting Open Hospital. Exiting."
-		shutdown_database;
-		cd "$CURRENT_DIR"
-		exit 4
-	fi
+	# start OH gui
+	start_gui;
 
 	# Close and exit
-
 	echo "Exiting Open Hospital..."
 	shutdown_database;
 

@@ -1,5 +1,4 @@
 #%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe
-#
 #!/usr/bin/pwsh
 # Open Hospital (www.open-hospital.org)
 # Copyright © 2006-2023 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
@@ -332,7 +331,7 @@ function read_settings {
 		Read-Host; exit 1
 	}
 
-	# read values for script variables from existing settings file
+	# check for OH settings file and read values
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
 		$oh_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/$SETTINGS_FILE" -Raw | ConvertFrom-StringData)
@@ -1023,9 +1022,25 @@ function clean_conf_files {
 function clean_log_files {
 	# remove all log files
 	Write-Host "Removing log files..."
-	$filetodel="$OH_PATH/$LOG_DIR/*.log"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$LOG_DIR/*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
+###################################################################
+function start_gui {
+	Write-Host "Starting Open Hospital GUI..."
+	# OH GUI launch
+	cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths
+
+	#$JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\$OH_DIR\rsc\log4j.properties`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
+
+	# log4j configuration is now read directly
+$JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=`"$NATIVE_LIB_PATH`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
+
+	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	
+	# go back to starting directory
+	cd "$CURRENT_DIR"
+}
 
 ###################################################################
 function parse_user_input {
@@ -1529,21 +1544,11 @@ else {
 	# check / set demo data if enabled
 	#set_demo_data;
 
-	Write-Host "Starting Open Hospital GUI..."
-
-	# OH GUI launch
-	cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths
-
-	#$JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\$OH_DIR\rsc\log4j.properties`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
-
-	# log4j configuration is now read directly
-$JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=`"$NATIVE_LIB_PATH`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
-
-	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	# start OH gui
+	start_gui;
 
 	# Close and exit
 	Write-Host "Exiting Open Hospital..."
-	
 	shutdown_database;
 
 	# go back to starting directory
