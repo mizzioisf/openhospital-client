@@ -304,7 +304,7 @@ function read_settings {
 
 	# check for database settings file and read values
 	if [ -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ]; then
-		echo ""Reading database settings file..."
+		echo "Reading database settings file..."
 		# source "./$OH_DIR/rsc/$DATABASE_SETTINGS"
 
 		DATABASE_SERVER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f1)
@@ -1039,7 +1039,7 @@ function parse_user_input {
 		set_language;
 		mysql_check;
 		# ask user for database root password
-		read -p "Please insert the MariaDB / MySQL database root password (root@$DATABASE_SERVER) -> " DATABASE_ROOT_PW
+		read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " DATABASE_ROOT_PW
 		echo ""
 		echo "Installing the database....."
 		echo ""
