@@ -867,7 +867,7 @@ function test_database_connection {
 function write_api_config_file {
 	######## application.properties setup
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/application.properties" -PathType leaf) ) {
-		if (Test-Path "$OH_PATH/$OH_DIR/rsc/application.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/settings.properties $OH_PATH/$OH_DIR/rsc/application.properties.old }
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/application.properties" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/application.properties $OH_PATH/$OH_DIR/rsc/application.properties.old }
 		# set OH API token
 		$JWT_TOKEN_SECRET=(-join ((65..90) + (97..122) | Get-Random -Count 64 | % {[char]$_}))
 		Write-Host "Writing OH API configuration file -> application.properties..."
