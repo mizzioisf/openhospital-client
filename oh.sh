@@ -400,7 +400,6 @@ function set_oh_mode {
 	echo "OH mode set to $OH_MODE"
 }
 
-
 ###################################################################
 function set_demo_data {
 	# if $OH_SETTINGS is present set OH mode
@@ -631,7 +630,7 @@ function config_database {
 		echo "Writing $MYSQL_NAME config file..."
 		sed -e "s/DATABASE_SERVER/$DATABASE_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
 		-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
-		-e "s/DATABASE_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/my.cnf.dist > ./$CONF_DIR/$MYSQL_CONF_FILE
+		-e "s/DATABASE_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/$MYSQL_CONF_FILE.dist > ./$CONF_DIR/$MYSQL_CONF_FILE
 	fi
 }
 
@@ -1294,7 +1293,7 @@ if [ "$DEMO_DATA" = "on" ]; then
 		exit 1;
 	fi
 	
-	# set database name
+	# set database name to demo
 	DATABASE_NAME=$DEMO_DATABASE
 
 	if [ -f ./$SQL_DIR/$DB_DEMO ]; then
