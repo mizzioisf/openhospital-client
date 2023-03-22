@@ -117,6 +117,7 @@ OH_SETTINGS="settings.properties"
 DATABASE_SETTINGS="database.properties"
 IMAGING_SETTINGS="dicom.properties"
 LOG4J_SETTINGS="log4j.properties"
+API_SETTINGS="application.properties"
 
 # help file
 HELP_FILE="OH-readme.txt"
@@ -899,6 +900,8 @@ function clean_conf_files {
 	rm -f ./$OH_DIR/rsc/$LOG4J_SETTINGS.old
 	rm -f ./$OH_DIR/rsc/$IMAGING_SETTINGS
 	rm -f ./$OH_DIR/rsc/$IMAGING_SETTINGS.old
+	rm -f ./$OH_DIR/rsc/$API_SETTINGS
+	rm -f ./$OH_DIR/rsc/$API_SETTINGS.old
 }
 
 ###################################################################
