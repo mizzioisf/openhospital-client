@@ -890,7 +890,7 @@ function write_api_config_file {
 		# set OH API token
 #		$JWT_TOKEN_SECRET=(-join ((0x30..0x39) + (0x41..0x5A) + (0x61..0x7A) | Get-Random -Count 64 | % {[char]$_}))
 		#$JWT_TOKEN_SECRET=( -join ($(for($i=0; $i -lt 64; $i++) { ((0x30..0x39) + ( 0x41..0x5A) + ( 0x61..0x7A) | Get-Random | % {[char]$_}) })) )
-		$JWT_TOKEN_SECRET=( -join ($(for($i=0; $i -lt 64; $i++) { ((65..90)+(97..122)+(".") | Get-Random | % {[char]$_}) })) )
+		$JWT_TOKEN_SECRET=( -join ($(for($i=0; $i -lt 64; $i++) { ((65..90)+(97..122)+(".!?#|£$%&()") | Get-Random | % {[char]$_}) })) )
 		Write-Host "Writing OH API configuration file -> application.properties..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/application.properties.dist").replace("JWT_TOKEN_SECRET","$JWT_TOKEN_SECRET") | Set-Content "$OH_PATH/$OH_DIR/rsc/application.properties"
 	}
