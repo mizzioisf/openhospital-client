@@ -179,6 +179,11 @@ $script:LOG4J_SETTINGS="log4j.properties"
 # help file
 $script:HELP_FILE="OH-readme.txt"
 
+# set default database name
+$script:DEFAULT_DATABASE_NAME="$DATABASE_NAME"
+# set default data base_dir
+$script:DEFAULT_DATADIR="$DATA_DIR"
+
 ############## Architecture and external software ##############
 
 ######## MariaDB/MySQL Software
@@ -334,13 +339,12 @@ function read_settings {
 	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS" -PathType leaf ) {
 		Write-Host "Reading OH settings file..."
 		$oh_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS" -Raw | ConvertFrom-StringData)
-		##############   saved settings   ##############
+		
 		$script:OH_MODE=$oh_settings.MODE
 		$script:OH_LANGUAGE=$oh_settings.LANGUAGE
 		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
 		$script:OH_DOC_DIR=$oh_settings.OH_DOC_DIR
 		$script:DEMO_DATA=$oh_settings.DEMODATA
-		################################################
 	}
 		
 	# check for database settings file and read values
@@ -348,13 +352,12 @@ function read_settings {
 		Write-Host "Reading database settings file..."
 		$db_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -Raw | ConvertFrom-StringData)
 
-		$script:DATABASE_USER=$db_settings."jdbc.username"
-		$script:DATABASE_PASSWORD=$db_settings."jdbc.password"
-
 		$DATABASE_URL=$db_settings."jdbc.url"
 		$script:DATABASE_SERVER=$DATABASE_URL.TrimStart("jdbc:mysql://").Split(":",2)[0]
 		$script:DATABASE_PORT=$DATABASE_URL.TrimStart("jdbc:mysql://").Split(":",2)[1].Split("/",2)[0]
 		$script:DATABASE_NAME=$DATABASE_URL.TrimStart("jdbc:mysql://").Split(":",2)[1].Split("/",2)[1]
+		$script:DATABASE_USER=$db_settings."jdbc.username"
+		$script:DATABASE_PASSWORD=$db_settings."jdbc.password"
 	}
 	else {
 		Write-Host "Warning: configuration file $DATABASE_SETTINGS not found." -ForegroundColor Yellow
@@ -404,28 +407,14 @@ function set_defaults {
 		$script:DEMO_DATA="off"
 	}
 
-	# set original database name
-	$script:ORIG_DATABASE_NAME="$DATABASE_NAME"
-	# set original data base_dir
-	$script:ORIG_DATADIR="$DATA_DIR"
-	# set escaped values (/ in place of \)
+	# set escaped path (/ in place of \)
 	$script:OH_PATH_SUBSTITUTE=$OH_PATH -replace "\\", "/"
 }
 
 ###################################################################
-function set_values {
-	# set database name for demo data
-	switch -CaseSensitive( $script:DEMO_DATA ) {
-	"on"	{ # 
-		$script:DATABASE_NAME=$DEMO_DATABASE
-		}
-	"off"	{ # 
-		$script:DATABASE_NAME="$script:ORIG_DATABASE_NAME"
-		}
-	}
-	
+function set_db_name {
 	# set DATA_DIR with db name
-	$script:DATA_DIR="$ORIG_DATADIR/$DATABASE_NAME"
+	$script:DATA_DIR="$DEFAULT_DATADIR/$DATABASE_NAME"
 	#
 	# set escaped values (/ in place of \)
 	$script:DATA_DIR=$DATA_DIR -replace "\\", "/"
@@ -448,17 +437,15 @@ function set_oh_mode {
 
 ###################################################################
 function set_demo_data {
-	# if $OH_SETTINGS is present set DEMO mode
-	if ( Test-Path "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS" -PathType leaf ) {
-		Write-Host "Configuring DEMO data..."
-	        ######## $OH_SETTINGS DEMO data configuration
-		Write-Host "Setting DEMO data to $DEMO_DATA in OH configuration files-> $OH_SETTINGS..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS") -replace('^(DEMODATA.+)',"DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
+	# set database name for demo data
+	switch -CaseSensitive( $script:DEMO_DATA ) {
+	"on"	{ # 
+		$script:DATABASE_NAME=$DEMO_DATABASE
+		}
+	"off"	{ # 
+		$script:DATABASE_NAME="$script:DEFAULT_DATABASE_NAME"
+		}
 	}
-	else {
-		Write-Host "Warning: $OH_SETTINGS file not found." -ForegroundColor Yellow
-	}
-	Write-Host "DEMO data set to $DEMO_DATA." -ForeGroundcolor Green
 }
 
 ###################################################################
@@ -508,6 +495,7 @@ function set_log_level {
 			exit 2;
 			}
 		}
+		Write-Host "Log level set to $script:LOG_LEVEL" -ForeGroundcolor Green
 	}
 	else {
 		Write-Host "Warning: $LOG4J_SETTINGS file not found." -ForegroundColor Yellow
@@ -522,6 +510,23 @@ function initialize_dir_structure {
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DICOM_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$PHOTO_DIR") > $null
 	[System.IO.Directory]::CreateDirectory("$OH_PATH/$BACKUP_DIR") > $null
+}
+
+###################################################################
+function download_file ($download_url,$download_file){
+	Write-Host "Downloading $download_file from $download_url..."
+	try {
+        	$wc = new-object System.Net.WebClient
+	        $wc.DownloadFile("$download_url\$download_file","$OH_PATH\$download_file")
+	}
+	catch [System.Net.WebException],[System.IO.IOException] {
+		Write-Host "Unable to download $download_file from $download_url" -ForegroundColor Red
+		Read-Host; exit 1;
+	}
+	catch {
+		Write-Host "An error occurred. Exiting." -ForegroundColor Red
+		Read-Host; exit 1;
+	}
 }
 
 ###################################################################
@@ -553,12 +558,6 @@ function java_lib_setup {
 	# include OH jar file
 	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\bin\$OH_GUI"
 
-	# include all jar files under lib\
-	$script:jarlist= Get-ChildItem "$OH_PATH\$OH_DIR\lib" -Filter *.jar |  % { $_.FullName }
-	ForEach( $n in $jarlist ){
-		$script:OH_CLASSPATH="$n;$OH_CLASSPATH"
-	}
-	
 	# include all needed directories
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bundle\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rpt_base\"
@@ -568,23 +567,13 @@ function java_lib_setup {
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\icons\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\rsc\images\"
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\lib\"
-}
-
-###################################################################
-function download_file ($download_url,$download_file){
-	Write-Host "Downloading $download_file from $download_url..."
-	try {
-        	$wc = new-object System.Net.WebClient
-	        $wc.DownloadFile("$download_url\$download_file","$OH_PATH\$download_file")
+	
+	# include all jar files under lib\
+	$script:jarlist= Get-ChildItem "$OH_PATH\$OH_DIR\lib" -Filter *.jar |  % { $_.FullName }
+	ForEach( $n in $jarlist ){
+		$script:OH_CLASSPATH="$n;$OH_CLASSPATH"
 	}
-	catch [System.Net.WebException],[System.IO.IOException] {
-		Write-Host "Unable to download $download_file from $download_url" -ForegroundColor Red
-		Read-Host; exit 1;
-	}
-	catch {
-		Write-Host "An error occurred. Exiting." -ForegroundColor Red
-		Read-Host; exit 1;
-	}
+	
 }
 
 ###################################################################
@@ -1000,6 +989,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
+			$script:DEMO_DATA="off"
 			set_oh_mode;
 			Read-Host "Press any key to continue";
 		}
@@ -1029,7 +1019,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			#write_config_files;
 			# set configuration
 			set_log_level;
-			Write-Host "Log level set to $script:LOG_LEVEL" -ForeGroundcolor Green
 			Read-Host "Press any key to continue";
 		}
 		###################################################
@@ -1048,8 +1037,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$script:DEMO_DATA="on"
 				}
 			}
-			# update confuration settings
-			set_values;
+			# update configuration settings
+			set_demo_data;
+			set_db_name;
 
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			
@@ -1103,6 +1093,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"m"	{ # configure OH database connection manually
+			$script:DEMO_DATA="off"
 			#$script:OH_SINGLE_USER=Read-Host	"Please select Single user configuration (yes/no)" 
 	                #### script:OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
 			Write-Host 				""
@@ -1110,14 +1101,14 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host 				""
 			$script:DATABASE_SERVER=Read-Host	"Enter database server IP address [DATABASE_SERVER]"
 			$script:DATABASE_PORT=Read-Host		"Enter database server TCP port [DATABASE_PORT]"
-			# convert to integer
-			$script:DATABASE_PORT=[int]$DATABASE_PORT
 			$script:DATABASE_NAME=Read-Host		"Enter database database name [DATABASE_NAME]"
 			$script:DATABASE_USER=Read-Host		"Enter database user name [DATABASE_USER]"
 			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD]"
+			# convert to integer
+			$script:DATABASE_PORT=[int]$DATABASE_PORTa
 			Write-Host				"Do you want to save entered settings to OH configuration files?"
 			get_confirmation 1;
-			set_values;
+			set_db_name;
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
@@ -1166,7 +1157,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 					# check if mysql utilities exist
 					mysql_check;
 					if ( !($OH_MODE -eq "CLIENT" )) {
-						set_values;
+						set_db_name;
 						config_database;
 						initialize_dir_structure;
 						initialize_database;
@@ -1235,8 +1226,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "--- Database ---"
 			Write-Host "DATABASE_SERVER=$DATABASE_SERVER"
 			Write-Host "DATABASE_PORT=$DATABASE_PORT"
-			Write-Host "DATABASE_USER=$DATABASE_USER"
 			Write-Host "DATABASE_NAME=$DATABASE_NAME"
+			Write-Host "DATABASE_USER=$DATABASE_USER"
 			Write-Host ""
 			Write-Host "--- Imaging / Dicom ---"
 			Write-Host "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
@@ -1343,7 +1334,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 set_path;
 read_settings;
 set_defaults;
-set_values;
+set_db_name;
 
 # set working dir to OH base dir
 cd "$OH_PATH" # workaround for hard coded paths
@@ -1375,6 +1366,7 @@ if ( $DEMO_DATA -eq "on" ) {
 		Read-Host;
 		exit 1
 	}
+	set_db_name;
 }
 
 # display running configuration
@@ -1471,9 +1463,6 @@ else {
 
 	# generate config files if not existent
 	write_config_files;
-
-	# check / set demo data if enabled
-	#set_demo_data;
 
 	# start OH gui
 	start_gui;

@@ -120,6 +120,11 @@ LOG4J_SETTINGS="log4j.properties"
 # help file
 HELP_FILE="OH-readme.txt"
 
+# set default database name
+DEFAULT_DATABASE_NAME="$DATABASE_NAME"
+# set default data base_dir
+DEFAULT_DATADIR="$DATA_DIR"
+
 ################ Architecture and external software ################
 
 ######## MariaDB/MySQL Software
@@ -292,7 +297,7 @@ function read_settings {
 	if [ -f ./$OH_DIR/rsc/$OH_SETTINGS ]; then
 		echo "Reading OH settings file..."
 		. ./$OH_DIR/rsc/$OH_SETTINGS
-		###  read saved settings  ###
+		
 		OH_MODE=$MODE
 		OH_LANGUAGE=$LANGUAGE
 		OH_SINGLE_USER=$SINGLE_USER
@@ -304,7 +309,6 @@ function read_settings {
 	if [ -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ]; then
 		echo "Reading database settings file..."
 		# source "./$OH_DIR/rsc/$DATABASE_SETTINGS"
-
 		DATABASE_SERVER=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f1)
 		DATABASE_PORT=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut -d"/" -f3 | cut -d":" -f2)
 		DATABASE_NAME=$(cat $OH_DIR/rsc/$DATABASE_SETTINGS | grep "jdbc.url" | cut  -d"/" -f4)
@@ -353,35 +357,16 @@ function set_defaults {
 	if [ -z "$DEMO_DATA" ]; then
 		DEMO_DATA="off"
 	fi
-
-	# set original database name
-	ORIG_DATABASE_NAME="$DATABASE_NAME"
-	# set original data base_dir
-	ORIG_DATADIR="$DATA_DIR"
-	# set escaped values
-	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
-	TMP_DIR_ESCAPED=$(echo $TMP_DIR | sed -e 's/\//\\\//g')
-	LOG_DIR_ESCAPED=$(echo $LOG_DIR | sed -e 's/\//\\\//g')
-	DICOM_DIR_ESCAPED=$(echo $DICOM_DIR | sed -e 's/\//\\\//g')
+	# set escaped path (/ in place of \)
+	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\\/\//g')
 }
 
 ###################################################################
-function set_values {
-	# set database name for demo data
-	case "$DEMO_DATA" in
-			*on*)
-				DATABASE_NAME=$DEMO_DATABASE
-			;;
-			*off*)
-				DATABASE_NAME="$ORIG_DATABASE_NAME"
-			;;
-	esac
-	
+function set_db_name {
 	# set DATA_DIR with db name
-	DATA_DIR=$ORIG_DATADIR/$DATABASE_NAME
-	#
+	DATA_DIR=$DEFAULT_DATADIR/$DATABASE_NAME
 	# set escaped values
-	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\//\\\//g')
+	DATA_DIR_ESCAPED=$(echo $DATA_DIR | sed -e 's/\\/\//g')
 }
 
 ###################################################################
@@ -402,18 +387,15 @@ function set_oh_mode {
 
 ###################################################################
 function set_demo_data {
-	# if $OH_SETTINGS is present set OH mode
-	if [ -f ./$OH_DIR/rsc/$OH_SETTINGS ]; then
-		echo "Configuring DEMO data..."
-		######## $OH_SETTINGS DEMO data configuration
-		echo "Setting DEMO data to $DEMO_DATA in OH configuration file -> $OH_SETTINGS..."
-		sed -e "/^"DEMODATA="/c"DEMODATA=$DEMO_DATA"" -i ./$OH_DIR/rsc/$OH_SETTINGS
-	else 
-		echo ""
-		echo ""
-		echo "Warning: $OH_SETTINGS file not found."
-	fi
-	echo "DEMO data set to $DEMO_DATA"
+	# set database name for demo data
+	case "$DEMO_DATA" in
+			*on*)
+				DATABASE_NAME=$DEMO_DATABASE
+			;;
+			*off*)
+				DATABASE_NAME="$DEFAULT_DATABASE_NAME"
+			;;
+	esac
 }
 
 ###################################################################
@@ -480,6 +462,7 @@ function initialize_dir_structure {
 
 ###################################################################
 function create_desktop_shortcut {
+echo "Creating/updating OH shortcut on Desktop..."
 # Create Desktop application entry
 desktop_path=$(xdg-user-dir DESKTOP)
 echo "[Desktop Entry]
@@ -501,6 +484,7 @@ echo "[Desktop Entry]
 	# Describes the categories in which this entry should be shown
 	Categories=Utility;Application;
 	" > $desktop_path/OpenHospital.desktop
+echo "Done !"
 }
 
 ###################################################################
@@ -629,7 +613,7 @@ function config_database {
 
 		echo "Writing $MYSQL_NAME config file..."
 		sed -e "s/DATABASE_SERVER/$DATABASE_SERVER/g" -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-		-e "s/TMP_DIR/$TMP_DIR_ESCAPED/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR_ESCAPED/g" \
+		-e "s/TMP_DIR/$TMP_DIR/g" -e "s/DATA_DIR/$DATA_DIR_ESCAPED/g" -e "s/LOG_DIR/$LOG_DIR/g" \
 		-e "s/DATABASE_PORT/$DATABASE_PORT/g" -e "s/MYSQL_DISTRO/$MYSQL_DIR/g" ./$CONF_DIR/$MYSQL_CONF_FILE.dist > ./$CONF_DIR/$MYSQL_CONF_FILE
 	fi
 }
@@ -789,7 +773,7 @@ function write_config_files {
 		[ -f ./$OH_DIR/rsc/$IMAGING_SETTINGS ] && mv -f ./$OH_DIR/rsc/$IMAGING_SETTINGS ./$OH_DIR/rsc/$IMAGING_SETTINGS.old
 		echo "Writing OH configuration file -> $IMAGING_SETTINGS..."
 		sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
-		-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/$IMAGING_SETTINGS.dist > ./$OH_DIR/rsc/$IMAGING_SETTINGS
+		-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR/g" ./$OH_DIR/rsc/$IMAGING_SETTINGS.dist > ./$OH_DIR/rsc/$IMAGING_SETTINGS
 	fi
 	######## $LOG4J_SETTINGS setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$LOG4J_SETTINGS ]; then
@@ -929,8 +913,9 @@ function parse_user_input {
 				;;
 		esac
 
-		# update confuration settings
-		set_values;
+		# update configuration settings
+		set_demo_data;
+		set_db_name;
 
 		WRITE_CONFIG_FILES=on; write_config_files;
 
@@ -998,6 +983,7 @@ function parse_user_input {
 		;;
 	###################################################
 	m)	# configure OH database connection manually
+		DEMO_DATA="off"
 		echo ""
 		#read -p "Please select Single user configuration (yes/no): " OH_SINGLE_USER
 		###### OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
@@ -1012,7 +998,7 @@ function parse_user_input {
 
 		echo "Do you want to save entered settings to OH configuration files?"
 		get_confirmation 1;
-		set_values;
+		set_db_name;
 		WRITE_CONFIG_FILES="on"; write_config_files;
 		echo "Done!"
 		echo ""
@@ -1061,7 +1047,7 @@ function parse_user_input {
 				# check if mysql utilities exist
 				mysql_check;
 				if [ "$OH_MODE" != "CLIENT" ]; then
-					set_values;
+					set_db_name;
 					config_database;
 					initialize_dir_structure;
 					initialize_database;
@@ -1130,8 +1116,8 @@ function parse_user_input {
 		echo "--- Database ---"
 		echo "DATABASE_SERVER=$DATABASE_SERVER"
 		echo "DATABASE_PORT=$DATABASE_PORT"
-		echo "DATABASE_USER=$DATABASE_USER"
 		echo "DATABASE_NAME=$DATABASE_NAME"
+		echo "DATABASE_USER=$DATABASE_USER"
 		echo ""
 		echo "--- Imaging / Dicom ---"
 		echo "DICOM_MAX_SIZE=$DICOM_MAX_SIZE"
@@ -1256,7 +1242,7 @@ fi
 set_path;
 read_settings;
 set_defaults;
-set_values;
+set_db_name;
 
 # set working dir to OH base dir
 cd "$OH_PATH"
@@ -1292,7 +1278,7 @@ if [ "$DEMO_DATA" = "on" ]; then
 		echo "Error - OH_MODE set to $OH_MODE mode. Cannot run with Demo data. Exiting."
 		exit 1;
 	fi
-	
+
 	# set database name to demo
 	DATABASE_NAME=$DEMO_DATABASE
 
@@ -1303,6 +1289,7 @@ if [ "$DEMO_DATA" = "on" ]; then
 		echo "Error: no $DB_DEMO found! Exiting."
 		exit 1
 	fi
+	set_db_name;
 fi
 
 # display running configuration
@@ -1381,9 +1368,6 @@ else
 
 	# generate config files if not existent
 	write_config_files;
-
-	# check / set demo data if enabled
-	#set_demo_data;
 
 	# start OH gui
 	start_gui;
