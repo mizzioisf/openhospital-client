@@ -661,6 +661,8 @@ function config_database {
 		#}
 		### end windows 10 only ###
 
+		# convert port to integer
+		$script:DATABASE_PORT=[int]$DATABASE_PORT
 		### windows 7/10 ###
 		do {
 			$socktest = (New-Object System.Net.Sockets.TcpClient).ConnectAsync("$DATABASE_SERVER", $DATABASE_PORT).Wait(1000) 
@@ -1104,8 +1106,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:DATABASE_NAME=Read-Host		"Enter database database name [DATABASE_NAME]"
 			$script:DATABASE_USER=Read-Host		"Enter database user name [DATABASE_USER]"
 			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD]"
-			# convert to integer
-			$script:DATABASE_PORT=[int]$DATABASE_PORTa
 			Write-Host				"Do you want to save entered settings to OH configuration files?"
 			get_confirmation 1;
 			set_db_name;
