@@ -2317,7 +2317,7 @@ C:\Users\OH\OpenHospital.1.12.0\sql>
 
 [source,shell]
 ----
-C:\Users\OH\OpenHospital.1.12.0\sql> mysql –u root -p
+C:\Users\OH\OpenHospital.1.12.0\sql> mysql -h [DATABASE SERVER IP ADDRESS] –u root -p
 
 Enter password: ****
 ----
@@ -2356,28 +2356,27 @@ MariaDB> source step_xx_function_yy.sql
 . If any error message occurs you can report an issue here:+
  https://openhospital.atlassian.net/.
 
-=== 6.2 Update Open Hospital - software
+=== 6.2 Update Open Hospital - Client
 
-If the databae upgrade procedure is successful, it is possibile to update the OH software by replacing the OH working copy on each client with the new one and connect it to the same DB
+If the database upgrade procedure is successful, it is possibile to update the OH software by replacing the OH working copy on each client with the new one and connect it to the same DB
 (see <<database-properties,database.properties>> and <<log4j-properties,log4j.properties>>).
 Remember to maintain the configuration files that have been changed, to preserve the custom settings.
 (see <<configuration,Configuration>>). The most common way is to backup the working copy and re-apply those
 settings in the new one (see <<backup-restore,Backup & Restore>>).
 Start the program and check the log files (data/logs) to ensure that the new version is running and has no error messages.
 
+=== 6.3 Update Open Hospital - Portable
 
 NOTE: Open Hospital, used in PORTABLE mode, is not meant to be used in a production environment.
 To migrate a portable installation to a full client/server configuration, keeping the existing data, the following steps must be performed:
 
 [arabic]
-. Start Open Hospital in PORTABLE mode;
-. While OH is running:
-[loweralpha]
-.. <<backup-data,Backup of data (Database)>>
 . Close Open Hospital;
-. Install the database server as outlined here <<database-server,Database Server and Open Hospital DB>>;
-. <<restore-data,Restore of data (Database)>> onto the new database server;
-. Change settings to point to the new database (see <<database-properties,database.properties>> and <<log4j-properties,log4j.properties>>).
+. use oh.sh / oh.ps1 **e** option to export database
+. overwrite local working copy with the new version files
+. use oh.sh / oh.ps1 **r** option to restore exported database
+
+If needed, start the PORTABLE instance in SERVER mode, connect to the local running database and apply the required SQL scripts.
 
 == 7 Support
 
