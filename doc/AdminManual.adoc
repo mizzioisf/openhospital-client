@@ -132,12 +132,13 @@ NOTE: The information needed to use the OH software is not included in this manu
 
 == 2 Installation
 
-Open Hospital is a client application that can be used in two different ways: 
+Open Hospital is a client application that can be used in three different ways: 
 
-* <<client,2.1 OH - CLIENT mode>>: multi computers setup, with a central database (requires a little IT knowledge)
-* <<portable,2.2 OH - PORTABLE mode>>: single computer setup, with inbuilt databases (click and run)
+* <<client,2.1 OH - CLIENT mode>>: multi computer setup, with a central database (requires a little IT knowledge)
+* <<portable,2.2 OH - PORTABLE mode>>: single computer setup, with the database on the same computer (click and run)
+* <<server,2.3 OH - SERVER mode (portable)>>: multi computer setup, with the central database created by the Open Hospital script (click and run)
 
-TIP: Portable mode can be also used to test the application.
+TIP: PORTABLE mode can be also used to test the application.
 
 [#client]
 === 2.1 OH - CLIENT mode
@@ -166,7 +167,7 @@ The Administrator/Installer tasks are hereby listed:
 [#prereq]
 ==== 2.1.1 Prerequisites - Software compatibility matrix
 
-Before starting, check the following software compatibility matrix, to verify the external software versions needed to run Open Hospital and the current available extended features for every version, architecture, and operating system.
+Before starting, check the following software compatibility matrix to verify the external software versions needed to run Open Hospital and the current available extended features for every version, architecture, and operating system.
 include::./OH_software_compatibility_matrix.adoc[]
 
 
@@ -191,7 +192,7 @@ NOTE: MariaDB is the preferred alternative for the DBMS.
 
 ===== 2.1.3.1 MariaDB/MySQL - Server installation
 
-Please referer to the latest MariaDB/MySQL Server online documentation for downloadfootnote:[https://mariadb.org/download/] and installationfootnote:[https://mariadb.org/documentation/] information while using this document.
+Please refer to the latest MariaDB/MySQL Server online documentation for downloadfootnote:[https://mariadb.org/download/] and installationfootnote:[https://mariadb.org/documentation/] information while using this document.
 
 *on a Linux machine*: during the installation, a “root” password must be defined; it is very important to choose it carefully and to keep it safe.
 
@@ -413,7 +414,7 @@ To set up the database connection for Open Hospital, edit and configure the data
 
 Database settings are:
 
-* the *IP address* of the the MariaDB/MySQL database server hosting the the Open Hospital database. Replace “localhost” with the server IP address (e.g., 192.168.1.100)
+* the *IP address* of the MariaDB/MySQL database server hosting the Open Hospital database. Replace “localhost” with the server IP address (e.g., 192.168.1.100)
 * the *TCP Port Number* of the database server - default is “3306"
 * the *Database name* of the OH installation - default is "oh"
 * the *Database user* of the OH database - default is "isf"
@@ -515,6 +516,7 @@ where only a single computer is available. If the facility is large and more cli
 
 include::https://raw.githubusercontent.com/informatici/openhospital/master/oh-bundle/OH-README.md[lines=28..429,leveloffset=+2]
 
+[#server]
 === 2.3 OH - SERVER mode (portable)
 
 Open Hospital can be launched in SERVER (portable) mode. SERVER mode launches a local instance of the database server and listens for connections from other clients.
@@ -528,7 +530,7 @@ Backup of the Open Hospital database can be performed in several ways.
 
 NOTE: The easiest way is to use the provided scripts: on Linux execute *oh.sh -s*, on Windows launch *oh.bat* and choose the option *s*.
 
-Restore of the Open Hospital database can be performed also in several ways.
+Restoring the Open Hospital database can also be performed in several ways.
 
 NOTE: The easiest way is to use the provided scripts: on Linux execute *oh.sh -r*, on Windows launch *oh.bat* and choose the option *r*.
 
@@ -664,7 +666,8 @@ Default configuration is available in the _settings.properties.dist_ file:
 ###########################################
 # external settings
 MODE=OH_MODE
-###########################################
+DEMODATA=off
+
 # internal settings, modules, directories
 LANGUAGE=OH_LANGUAGE
 SINGLEUSER=YES_OR_NO
@@ -675,7 +678,7 @@ INTERNALVIEWER=yes
 SMSENABLED=no
 VIDEOMODULEENABLED=yes
 XMPPMODULEENABLED=no
-###########################################
+
 # application settings
 ENHANCEDSEARCH=no
 INTERNALPHARMACIES=yes
@@ -686,10 +689,10 @@ MERGEFUNCTION=yes
 OPDEXTENDED=yes
 PATIENTEXTENDED=yes
 PATIENTVACCINEEXTENDED=yes
-###########################################
+
 # GUI settings
 MAINMENUALWAYSONTOP=no
-###########################################
+
 # accounting
 ALLOWMULTIPLEOPENEDBILL=yes
 ALLOWPRINTOPENEDBILL=yes
@@ -700,7 +703,7 @@ PATIENTBILL=PatientBill
 PATIENTBILLGROUPED=PatientBillGrouped
 PATIENTBILLSTATEMENT=PatientBillStatement
 RECEIPTPRINTER=yes
-###########################################
+
 # pharmacy
 AUTOMATICLOT_IN=no
 AUTOMATICLOT_OUT=no
@@ -710,11 +713,11 @@ PHARMACEUTICALORDER=PharmaceuticalOrder
 PHARMACEUTICALSTOCK=PharmaceuticalStock_ver4
 PHARMACEUTICALSTOCKLOT=PharmaceuticalStock_ver5
 PHARMACEUTICALAMC=PharmaceuticalAMC
-###########################################
+
 # dicom / imaging settings
 DICOMMODULEENABLED=yes
 DICOMTHUMBNAILS=yes
-###########################################
+
 # reports
 ADMCHART=patient_adm_chart
 DISCHART=patient_dis_chart
@@ -722,12 +725,14 @@ EXAMINATIONCHART=patient_examination
 OPDCHART=patient_opd_chart
 PATIENTSHEET=patient_clinical_sheet_ver3
 VISITSHEET=WardVisits
-###########################################
+
 # security
 SESSIONTIMEOUT=5
 STRONGPASSWORD=yes
 STRONGLENGTH=10
 USERSLISTLOGIN=no
+PASSWORDTRIES=5
+PASSWORDLOCKTIME=60
 ----
 
 Every line is composed of a KEY and a value:
@@ -781,7 +786,7 @@ The following table shows the default value and the allowed ones:
 |SINGLEUSER |yes |yes, no
 |===
 
-Open Hospital is designed to support multi-user usage. This means that is possible to define different users, arrange them by group and set different rights in application usage; for instance, a user “receptionist” may be able to register a new patient but not to prescribe a therapy.
+Open Hospital is designed to support multi-user usage. This means that it is possible to define different users, arrange them by group and set different rights in application usage; for instance, a user “receptionist” may be able to register a new patient but not to prescribe a therapy.
 
 Open Hospital has a predefined user called “admin” that has access rights to all the features of the application.
 When SINGLEUSER is set to YES (default) the program starts with this user and all the features are available.
@@ -817,7 +822,7 @@ The following table shows the default value and the alternatives for lot managem
 |===
 
 Open Hospital allows for automatic management of lots in the main pharmacy.
-This means that is possible to work in the pharmacy without taking care of lot definitions in loading the store and
+This means that it is possible to work in the pharmacy without taking care of lot definitions in loading the store and
 just specify preparation and expiring date for each charging movement
 (see link:https://github.com/informatici/openhospital-doc/blob/develop/doc_user/UserManual.adoc#4-2-2-2-insert-stock-charging-movement-charge[4.2.2.2 Insert stock charging movement] in the User's Guide).
 
@@ -1263,7 +1268,7 @@ see <<log4j-properties,log4j.properties>>) and try to use the SetupGSM utility a
 To setup GSM communication it is possible to use the included SetupGSM utility and follow these instructions:
 
 . Plug the device into the system and make sure the system recognizes it, loads a proper driver for it and assigns a serial port (COM)
-. Launch the OH startup script and select the the G option:
+. Launch the OH startup script and select the G option:
 
  ** On Windows launch **oh.bat** -> select *G* option
  ** On linux launch **oh.sh -G**
@@ -1408,7 +1413,7 @@ The following table shows the default value and the allowed ones:
 |===
 
 Open Hospital includes a feature that allows attaching image files to a patient’s clinical sheet.
-When this option is enabled, a *Imaging* button is shown in the patient Clinical sheet module.
+When this option is enabled, an *Imaging* button is shown in the patient Clinical sheet module.
 
 By default, DICOMMODULEENABLED is set to no.
 
@@ -1449,7 +1454,7 @@ the program opens the new special window shown below:
 
 image:image26.png[New Patient Extended_photo_debug.png,width=645,height=535]
 
-From this window is possible to have more information about webcams connected to the system.
+From this window it is possible to have more information about webcams connected to the system.
 It is possible to apply different resolutions in order to find the best setting or get information about a problem.
 
 Once a photo is produced, Open Hospital remembers the settings and uses them in the future.
@@ -1572,8 +1577,38 @@ The value of STRONGLENGTH is the minimum length of a user's password.
 
 NOTE: An application restart is required to apply the modified setting.
 
+[#passwordtries]
+==== 3.1.39 PASSWORDTRIES
 
-==== 3.1.39 PATIENTPHOTOSTORAGE
+The following table shows the default value and the allowed ones:
+
+[cols=",,",options="header",]
+|===
+|Key |Default Value | Allowed Values
+|PASSWORDTRIES |5 | a positive integer value greater than or equal to 5
+|===
+
+The value of PASSWORDTRIES is the maximum number of consecutive failed passwords when attempting to log in before the account is locked.
+
+NOTE: An application restart is required to apply the modified setting.
+
+[#passwordlocktime]
+==== 3.1.40 PASSWORDLOCKTIME
+
+The following table shows the default value and the allowed ones:
+
+[cols=",,",options="header",]
+|===
+|Key |Default Value | Allowed Values
+|PASSWORDLOCKTIME | 60 | a positive integer value greater than or equal to 60; the unit of time is minutes
+|===
+
+The value of PASSWORDLOCKTIME is the number of minutes that an account is locked after failing to specify the correct password the number of times specified by
+the PASSWORDTRIES variable described above.
+
+NOTE: An application restart is required to apply the modified setting.
+
+==== 3.1.41 PATIENTPHOTOSTORAGE
 
 The following table shows the default value and the allowed ones:
 
@@ -1598,7 +1633,7 @@ NOTE: An application restart is required to apply the modified setting.
 
 [#database-properties]
 
-==== 3.1.40 SESSIONTIMEOUT
+==== 3.1.42 SESSIONTIMEOUT
 The following table shows the default value and the allowed ones:
 
 [cols=",,",options="header",]
@@ -1611,7 +1646,7 @@ The value SESSIONTIMEOUT represents the time in minutes of user inactivity beyon
 
 NOTE: An application restart is required to apply the modified setting.
 
-==== 3.1.41 EXAMINATIONCHART
+==== 3.1.43 EXAMINATIONCHART
 The following table shows the default value and the allowed ones:
 
 [cols=",,",options="header",]
@@ -1628,7 +1663,7 @@ It is possible to use a different report by installing it in the report folder (
 
 NOTE: An application restart is required to apply the modified setting.
 
-==== 3.1.42 VISITSHEET
+==== 3.1.44 VISITSHEET
 The following table shows the default value and the allowed ones:
 
 [cols=",,",options="header",]
@@ -2005,7 +2040,7 @@ NOTE: An application restart is required to apply the modified setting.
 [#xmpp-properties]
 === 3.8 xmpp.properties
 
-XMPP module configuration is set in the the _xmpp.properties_ file:
+XMPP module configuration is set in the _xmpp.properties_ file:
 
 [source,properties]
 ----
@@ -2093,7 +2128,7 @@ Each report consists of two files:
 
 * a .*jrxml* file: JasperReport XML file, that can be modified with a proper editor
 * a .*jasper* file: Jasper file, that is the compiled version that can be run in Open Hospital; this file is produced on the jrxml base
-* some reports could have also more than one *.properties* file that works for the localization, it means that the report has been translated to appear in more languages (default is English). At least the default *.properties* file should contain the *jTitle* property that defines the name visualized in the Open Hospital application, otherwise the application will not show the report (this can be useful for subreports).
+* some reports could also have more than one *.properties* file that works for the localization, it means that the report has been translated to appear in more languages (default is English). At least the default *.properties* file should contain the *jTitle* property that defines the name visualized in the Open Hospital application, otherwise the application will not show the report (this can be useful for subreports).
 
 The editor to create and modify JasperReports® is https://sourceforge.net/projects/jasperstudio/[TIBCO Jaspersoft® Studio] version 6.14.0 or later, a free and open-source software.
 
@@ -2168,7 +2203,7 @@ image:image67.png[image,width=604,height=377] +
 
 If the password is not correct, an error message is shown, asking the user to try again.
 
-To better understand the processes built in the software also enable the “Standard Output” in
+To better understand the processes built in the software, also enable the “Standard Output” in
 _log4j.properties_ as explained in the chapter <<log4j-properties,log4j.properties>>.
 
 <<<
@@ -2189,8 +2224,7 @@ The easiest way is to backup the working copy and re-apply those settings in the
 (see the <<backup-restore,Backup & Restore>> chapter).
 
 *Major Releases*:
-
-Changes are found in the CHANGELOG file.
+Changes are documented in the RELEASE_NOTES file.
 
 Major releases always have changes to the DB, and these changes are implemented via different scripts included in the
 _sql_ (mysql for older versions) folder (e.g.):
@@ -2341,11 +2375,13 @@ To migrate a portable installation to a full client/server configuration, keepin
 .. <<backup-data,Backup of data (Database)>>
 . Close Open Hospital;
 . Install the database server as outlined here <<database-server,Database Server and Open Hospital DB>>;
-. <<restore-data,Restore of data (Database)>> onto the the new database server;
+. <<restore-data,Restore of data (Database)>> onto the new database server;
 . Change settings to point to the new database (see <<database-properties,database.properties>> and <<log4j-properties,log4j.properties>>).
 
-For questions about updating, migrating, or maintaining an Open Hospital installation, please contact us at:
-https://www.open-hospital.org/contact and specify:
+== 7 Support
+
+For support, questions about updating, migrating, or maintaining an Open Hospital installation, please check our website at https://www.open-hospital.org.
+You can contact us at: https://www.open-hospital.org/contact and specify:
 
 * A brief history of the organization;
 * The country where the installation is and the language used;
@@ -2355,7 +2391,7 @@ https://www.open-hospital.org/contact and specify:
 
 <<<
 
-== 7 License
+== 8 License
 
 image:by-sa.png[bysa,width=88,height=31,link="http://creativecommons.org/licenses/by-sa/4.0"] [.small]#Informatici Senza Frontiere Onlus, 2022#
 pass:[<br>][.small]#Administrator’s Guide, &#169; 2023 by https://www.informaticisenzafrontiere.org/[Informatici Senza Frontiere Onlus]#
