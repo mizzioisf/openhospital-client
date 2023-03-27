@@ -2329,9 +2329,16 @@ Enter password: ****
 ----
 MariaDB>
 ----
-
 [start=6]
-. Then execute all the SQL scripts that have been added from the previous version; for example:
+. Select the oh database;
+
+[source,shell]
+----
+MariaDB>USE OH;
+----
+
+[start=7]
+. Execute all the SQL scripts that have been added from the previous version; for example:
 
 [source,shell]
 ----
@@ -2352,7 +2359,7 @@ MariaDB> source step_xx_function_yy.sql
 ...
 ----
 
-[start=7]
+[start=8]
 . If any error message occurs you can report an issue here:+
  https://openhospital.atlassian.net/.
 
