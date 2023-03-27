@@ -2211,8 +2211,6 @@ _log4j.properties_ as explained in the chapter <<log4j-properties,log4j.properti
 [#update-open-hospital]
 == 6 Update Open Hospital
 
-=== 6.1 Update Open Hospital - CLIENT mode
-
 New releases, as well as this Admin Manual and the User Manual, are regularly released on Github/SourceForge. See the <<download,Download>> section for more details.
 NOTE: Following instructions only apply between “official releases”.
 
@@ -2226,7 +2224,9 @@ The easiest way is to backup the working copy and re-apply those settings in the
 *Major Releases*:
 Changes are documented in the RELEASE_NOTES file.
 
-Major releases always have changes to the DB, and these changes are implemented via different scripts included in the
+=== 6.1 Update Open Hospital - Database
+
+Major OH releases usually require changes to the database structure, and these changes are implemented via different SQL scripts included in the
 _sql_ (mysql for older versions) folder (e.g.):
 
 [cols=",",options="header",]
@@ -2355,15 +2355,16 @@ MariaDB> source step_xx_function_yy.sql
 [start=7]
 . If any error message occurs you can report an issue here:+
  https://openhospital.atlassian.net/.
-. If the procedure is successful, replace the OH working copy on each client with the new one and connect it to the same DB
+
+=== 6.2 Update Open Hospital - software
+
+If the databae upgrade procedure is successful, it is possibile to update the OH software by replacing the OH working copy on each client with the new one and connect it to the same DB
 (see <<database-properties,database.properties>> and <<log4j-properties,log4j.properties>>).
 Remember to maintain the configuration files that have been changed, to preserve the custom settings.
 (see <<configuration,Configuration>>). The most common way is to backup the working copy and re-apply those
 settings in the new one (see <<backup-restore,Backup & Restore>>).
-. Start the program and check the log files (data/logs) to ensure that the new version is running and has no error messages.
+Start the program and check the log files (data/logs) to ensure that the new version is running and has no error messages.
 
-
-=== 6.2 Update Open Hospital - PORTABLE mode
 
 NOTE: Open Hospital, used in PORTABLE mode, is not meant to be used in a production environment.
 To migrate a portable installation to a full client/server configuration, keeping the existing data, the following steps must be performed:
