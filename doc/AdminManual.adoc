@@ -2228,7 +2228,7 @@ Changes are documented in the RELEASE_NOTES file.
 Major OH releases usually require changes to the database structure, and these changes are implemented via different SQL scripts included in the
 _sql/update__ folder (e.g.):
 
-[cols=",",options="header",]
+[cols=",,",options="header",]
 |===
 |*Previous version* |*New version*|* *Update script*|
 |OpenHospital 1.8.4 |OpenHospital_1.9|update_1_8_4-1_9.sql|
@@ -2239,7 +2239,7 @@ _sql/update__ folder (e.g.):
 
 |===
 
-Thus the update process is as follows:
+To perform the update process follow these steps:
 
 . Close the program if it is still running
 . Backup the current DB for safety (see <<backup-restore,Backup & Restore>>)
