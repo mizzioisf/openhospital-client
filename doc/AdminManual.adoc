@@ -2238,7 +2238,7 @@ _sql/update_ folder (e.g.):
 | 1.12.1 | 1.12.1 | _update_1_12_0-1_12_1.sql_
 |===
 
-To perform the update process follow these steps:
+To perform the database update process follow these steps:
 
 . Close the program if it is still running
 . Backup the current DB for safety (see <<backup-restore,Backup & Restore>>)
