@@ -2226,75 +2226,21 @@ Changes are documented in the RELEASE_NOTES file.
 === 6.1 Update Database
 
 Major OH releases usually require changes to the database structure, and these changes are implemented via different SQL scripts included in the
-_sql_ (mysql for older versions) folder (e.g.):
+_sql/update__ folder (e.g.):
 
 [cols=",",options="header",]
 |===
-|*OpenHospital_1_7_3.zip* |*OpenHospital_1_8_0.zip*
+|*Previous version* |*New version*
+|*OpenHospital_1_8_4* |*OpenHospital_1_9_1*
 |*OpenHospital_1_7_3/mysql/* |*OpenHospital_1_8_0/mysql/*
 a|
 …
 
-step_30_help_manual.sql
-
-step_31_alter_tables_innodb.sql
-
-step_32_convert_birthdate_to_date.sql
-
-step_33_grants_on_patientfolder.sql
+update_1_8_4-1_9.sql
 
 a|
 …
 
-step_30_help_manual.sql
-
-step_31_alter_tables_innodb.sql
-
-step_32_convert_birthdate_to_date.sql
-
-step_33_grants_on_patientfolder.sql
-
-*step_34_slim_opd_table.sql*
-
-*step_35_doctors_log.sql*
-
-*step_36_patientexamination_and_rollback_step23.sql*
-
-*step_37_suppliers_table.sql*
-
-*step_38_dicom.sql*
-
-*step_39_patientfolder_submenu.sql*
-
-*step_40_sms_module.sql*
-
-*step_41_common_bundles.sql*
-
-*step_42_procedure_accounting.sql*
-
-*step_43_no_payments_fix.sql*
-
-*step_44_lot_cost.sql*
-
-*step_45_new_pharmacy_alter_table.sql*
-
-*step_46_patients_birthdate.sql*
-
-*step_47_ipd_out_disease.sql*
-
-*step_48_male_female_wards.sql*
-
-*step_49_encrypt_passwords.sql*
-
-*step_50_medical_ward_permissions.sql*
-
-*step_51_rectify_medical_ward.sql*
-
-*step_52_therapy_model_changes.sql*
-
-*step_53_sms_module_extension.sql*
-
-*step_54_enable_sms_on_visits.sql*
 
 |===
 
