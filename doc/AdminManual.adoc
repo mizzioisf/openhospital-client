@@ -2277,7 +2277,7 @@ MariaDB>USE oh;
 ----
 
 [start=7]
-. Execute all the SQL scripts that have been added from the previous version; for example:
+. Execute all the SQL scripts from the current OH version until the new one:
 
 [source,shell]
 ----
