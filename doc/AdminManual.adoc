@@ -2230,9 +2230,9 @@ _sql/update__ folder (e.g.):
 
 [cols=",",options="header",]
 |===
-|*Previous version* |*New version*
-|*OpenHospital_1_8_4* |*OpenHospital_1_9_1*
-|*OpenHospital_1_7_3/mysql/* |*OpenHospital_1_8_0/mysql/*
+|*Previous version* |*New version*|* *Update script*
+|OpenHospital_1_8_4 |OpenHospital_1_9_1|update_1_8_4-1_9.sql
+|OpenHospital_1_9_1 |OpenHospital_1_10|update_1_8_4-1_9.sql
 a|
 …
 
