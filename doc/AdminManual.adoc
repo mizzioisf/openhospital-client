@@ -2226,16 +2226,16 @@ Changes are documented in the RELEASE_NOTES file.
 === 6.1 Update Database
 
 Major OH releases usually require changes to the database structure, and these changes are implemented via different SQL scripts included in the
-_sql/update__ folder (e.g.):
+_sql/update_ folder (e.g.):
 
 [cols=",,",options="header",]
 |===
-|*Previous version* |*New version*|*Update script*
-| 1.8.4 | 1.9 | update_1_8_4-1_9.sql
-| 1.9 | 1.10 | update_1_9-1_10.sql
-| 1.10 | 1.10 | update_1_10-1_11.sql
-| 1.11 | 1.12.0 | update_1_12_0-1_12_1.sql
-| 1.12.1 | 1.12.1 | update_1_12_0-1_12_1.sql
+|*Previous OH version* |*New OH version*|*Database update script*
+| 1.8.4 | 1.9 | _update_1_8_4-1_9.sql_
+| 1.9 | 1.10 | _update_1_9-1_10.sql_
+| 1.10 | 1.10 | _update_1_10-1_11.sql_
+| 1.11 | 1.12.0 | _update_1_11-1_12_0.sql_
+| 1.12.1 | 1.12.1 | _update_1_12_0-1_12_1.sql_
 |===
 
 To perform the update process follow these steps:
