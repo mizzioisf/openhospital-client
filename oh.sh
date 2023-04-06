@@ -127,6 +127,9 @@ DEFAULT_DATABASE_NAME="$DATABASE_NAME"
 # set default data base_dir
 DEFAULT_DATADIR="$DATA_DIR"
 
+# activate experimental features - set to "on" to test - use at your own risk!
+EXPERIMENTAL="off"
+
 ################ Architecture and external software ################
 
 ######## MariaDB/MySQL Software
@@ -189,12 +192,17 @@ function script_menu {
 	echo " -----------------------------------------------------------------"
 	echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	echo " -----------------------------------------------------------------"
-	echo " API server set to $API_SERVER"
-	echo " -----------------------------------------------------------------"
+	if [ "$EXPERIMENTAL" == "on" ]; then
+		echo " EXPERIMENTAL features activated"
+		echo " API server set to $API_SERVER"
+		echo " -----------------------------------------------------------------"
+	fi
 	echo ""
 	echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
 	echo ""
-	echo "   -A    toggle API server - EXPERIMENTAL"
+	if [ "$EXPERIMENTAL" == "on" ]; then
+		echo "   -A    toggle API server - EXPERIMENTAL"
+	fi
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
@@ -216,6 +224,7 @@ function script_menu {
 	echo "   -m    configure database connection manually"
 	echo "   -t    test database connection (CLIENT mode only)"
 	echo "   -u    create Desktop shortcut"
+	echo "   -E    toggle EXPERIMENTAL features - use at your own risk!"
 	echo ""
 	echo "   -h    show help"
 	echo ""
@@ -940,6 +949,21 @@ function parse_user_input {
 		set_oh_mode;
 		echo ""
 		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
+		;;
+	###################################################
+	E)	# toggle EXPERIMENTAL features
+		case "$EXPERIMENTAL" in
+			*on*)
+				EXPERIMENTAL="off";
+			;;
+			*off*)
+				EXPERIMENTAL="on";
+			;;
+		esac
+		#
+		#if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
+		option="Z";
+		#interactive_menu;
 		;;
 	###################################################
 	P)	# start in PORTABLE mode

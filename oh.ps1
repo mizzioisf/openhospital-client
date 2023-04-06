@@ -187,6 +187,9 @@ $script:DEFAULT_DATABASE_NAME="$DATABASE_NAME"
 # set default data base_dir
 $script:DEFAULT_DATADIR="$DATA_DIR"
 
+# activate experimental features - set to "on" to test - use at your own risk!
+$script:EXPERIMENTAL="off"
+
 ############## Architecture and external software ##############
 
 ######## MariaDB/MySQL Software
@@ -256,10 +259,15 @@ function script_menu {
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	Write-Host " -----------------------------------------------------------------"
-	Write-Host " API server set to $API_SERVER"
+	if ( $EXPERIMENTAL -eq "on" ) {
+		Write-Host " EXPERIMENTAL features activated"
+		Write-Host " API server set to $API_SERVER"
 	Write-Host " -----------------------------------------------------------------"
+	}
 	Write-Host ""
-	Write-Host "   A    toggle API server - EXPERIMENTAL"
+	if ( $EXPERIMENTAL -eq "on" ) {
+		Write-Host "   A    toggle API server - EXPERIMENTAL"
+	}
 	Write-Host "   C    set OH in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"
 	Write-Host "   S    set OH in SERVER mode (portable)"
@@ -281,6 +289,7 @@ function script_menu {
 	Write-Host "   m    configure database connection manually"
 	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host "   u    create Desktop shortcut with current params"
+	Write-Host "   E    toggle EXPERIMENTAL features - use at your own risk!"
 	Write-Host ""
 	Write-Host "   h    show help"
 	Write-Host ""
@@ -1064,6 +1073,18 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:DEMO_DATA="off"
 			set_oh_mode;
 			Read-Host "Press any key to continue";
+		}
+		###################################################
+		"E"	{ # toggle EXPERIMENTAL features
+			switch -CaseSensitive( $script:EXPERIMENTAL ) {
+			"on"	{ # 
+				$script:EXPERIMENTAL="off"
+				}
+			"off"	{ # 
+				$script:EXPERIMENTAL="on"
+				}
+			}
+			#Read-Host "Press any key to continue";
 		}
 		###################################################
 		"P"	{ # start in PORTABLE mode
