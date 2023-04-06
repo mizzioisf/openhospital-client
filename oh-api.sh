@@ -918,7 +918,7 @@ function start_gui {
 function parse_user_input {
 	case $1 in
 	###################################################
-	A)	# activate API server
+	A)	# toggle API server
 		case "$API_SERVER" in
 			*on*)
 				API_SERVER="off";

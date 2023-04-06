@@ -151,6 +151,8 @@ $script:TMP_DIR="tmp"
 $script:LOG_FILE="startup.log"
 $script:LOG_FILE_ERR="startup_error.log"
 $script:OH_LOG_FILE="openhospital.log"
+$script:API_LOG_FILE="api.log"
+$script:API_ERR_LOG_FILE="api_error.log"
 
 # SQL creation files
 #$script:DB_CREATE_SQL="create_all_en.sql" # default to en
@@ -175,6 +177,7 @@ $script:OH_SETTINGS="settings.properties"
 $script:DATABASE_SETTINGS="database.properties"
 $script:IMAGING_SETTINGS="dicom.properties"
 $script:LOG4J_SETTINGS="log4j.properties"
+$script:API_SETTINGS="application.properties"
 
 # help file
 $script:HELP_FILE="OH-readme.txt"
@@ -253,7 +256,10 @@ function script_menu {
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	Write-Host " -----------------------------------------------------------------"
+	Write-Host " API server set to $API_SERVER"
+	Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
+	Write-Host "   A    toggle API server - EXPERIMENTAL"
 	Write-Host "   C    set OH in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"
 	Write-Host "   S    set OH in SERVER mode (portable)"
@@ -405,6 +411,11 @@ function set_defaults {
 	# demo data - set default to off
 	if ( [string]::IsNullOrEmpty($DEMO_DATA) ) {
 		$script:DEMO_DATA="off"
+	}
+
+	# api server - set default to off
+	if ( [string]::IsNullOrEmpty($API_SERVER) ) {
+		$script:API_SERVER="off"
 	}
 
 	# set escaped path (/ in place of \)
@@ -866,6 +877,50 @@ function test_database_connection {
 }
 
 ###################################################################
+function write_api_config_file {
+	######## application.properties setup - OH API server
+	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf) ) {
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$API_SETTINGS $OH_PATH/$OH_DIR/rsc/$API_SETTINGS.old }
+		# generate OH API token and save to settings file
+		$JWT_TOKEN_SECRET=( -join ($(for($i=0; $i -lt 64; $i++) { ((65..90)+(97..122)+(".")+("!")+("?")+("&") | Get-Random | % {[char]$_}) })) )
+		Write-Host "Writing OH API configuration file -> $API_SETTINGS..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS.dist").replace("JWT_TOKEN_SECRET","$JWT_TOKEN_SECRET") | Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
+	}
+}
+
+###################################################################
+function start_api_server {
+	# check for configuration files
+	if ( !( Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf )) {
+		Write-Host "Error: missing $API_SETTINGS settings file. Exiting" -ForeGround Red
+		exit 1;
+	}
+	Write-Host "------------------------"
+	Write-Host "---- EXPERIMENTAL ------"
+	Write-Host "------------------------"
+	Write-Host "Starting API server..."
+	Write-Host ""
+	Write-Host "Connect to http://localhost:8080 for dashboard"
+	Write-Host ""
+
+        cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+
+	$JAVA_API_ARGS="-server -Xms64m -Xmx1024m -cp ./bin/openhospital-api-0.0.2.jar;./rsc;./static org.springframework.boot.loader.JarLauncher"
+
+	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_API_ARGS -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+
+        # $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher
+
+#        if [ $? -ne 0 ]; then
+#                echo "An error occurred while starting Open Hospital API. Exiting."
+#                shutdown_database;
+#                cd "$CURRENT_DIR"
+#                exit 4
+#        fi
+        cd "$OH_PATH"
+}
+
+###################################################################
 function write_config_files {
 	# set up configuration files
 	Write-Host "Checking for OH configuration files..."
@@ -954,6 +1009,8 @@ function clean_conf_files {
 	$filetodel="$OH_PATH/$OH_DIR/rsc/$LOG4J_SETTINGS.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/$IMAGING_SETTINGS"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	$filetodel="$OH_PATH/$OH_DIR/rsc/$IMAGING_SETTINGS.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$OH_DIR/rsc/$API_SETTINGS.old"; if (Test-Path $filetodel -PathType leaf) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 }
 
 ###################################################################
@@ -988,6 +1045,19 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		script_menu;
 		$option = Read-Host "Please select an option or press enter to start OH"
 		switch -CaseSensitive ( "$option" ) {
+		###################################################
+		"A"	{ # toggle API server
+			switch -CaseSensitive( $script:API_SERVER ) {
+			"on"	{ # 
+				$script:API_SERVER="off"
+				}
+			"off"	{ # 
+				$script:API_SERVER="on"
+				}
+			}
+			write_api_config_file;
+			#Read-Host "Press any key to continue";
+		}
 		###################################################
 		"C"	{ # start in CLIENT mode
 			$script:OH_MODE="CLIENT"
@@ -1410,6 +1480,10 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 		Write-Host "OH database found!"
 		# start database
 		start_database;
+	}
+	# check for API server
+	if ( $API_SERVER -eq "on" ) {
+		start_api_server;
 	}
 }
 

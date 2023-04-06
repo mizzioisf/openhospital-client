@@ -258,6 +258,7 @@ function script_menu {
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host " API server set to $API_SERVER"
 	Write-Host " -----------------------------------------------------------------"
+	Write-Host ""
 	Write-Host "   A    toggle API server - EXPERIMENTAL"
 	Write-Host "   C    set OH in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"

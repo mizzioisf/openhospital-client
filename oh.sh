@@ -95,6 +95,7 @@ TMP_DIR="tmp"
 # logging
 LOG_FILE="startup.log"
 OH_LOG_FILE="openhospital.log"
+API_LOG_FILE="api.log"
 
 # SQL creation files
 #DB_CREATE_SQL="create_all_en.sql" # default to en
@@ -116,6 +117,7 @@ OH_SETTINGS="settings.properties"
 DATABASE_SETTINGS="database.properties"
 IMAGING_SETTINGS="dicom.properties"
 LOG4J_SETTINGS="log4j.properties"
+API_SETTINGS="application.properties"
 
 # help file
 HELP_FILE="OH-readme.txt"
@@ -187,9 +189,12 @@ function script_menu {
 	echo " -----------------------------------------------------------------"
 	echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	echo " -----------------------------------------------------------------"
+	echo " API server set to $API_SERVER"
+	echo " -----------------------------------------------------------------"
 	echo ""
 	echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
 	echo ""
+	echo "   -A    toggle API server - EXPERIMENTAL"
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
@@ -357,6 +362,12 @@ function set_defaults {
 	if [ -z "$DEMO_DATA" ]; then
 		DEMO_DATA="off"
 	fi
+
+	# api server - set default to off
+	if [ -z "$API_SERVER" ]; then
+		API_SERVER="off"
+	fi
+
 	# set escaped path (/ in place of \)
 	OH_PATH_ESCAPED=$(echo $OH_PATH | sed -e 's/\//\\\//g')
 	DICOM_DIR_ESCAPED=$(echo $DICOM_DIR | sed -e 's/\//\\\//g')
@@ -769,6 +780,50 @@ function test_database_connection {
 }
 
 ###################################################################
+function write_api_config_file {
+	######## application.properties setup - OH API server
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$API_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$API_SETTINGS ] && mv -f ./$OH_DIR/rsc/$API_SETTINGS ./$OH_DIR/rsc/$API_SETTINGS.old
+		# generate OH API token and save to settings file
+		# JWT_TOKEN_SECRET=`openssl rand -base64 64 | xargs`
+		JWT_TOKEN_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 66`
+		echo "Writing OH API configuration file -> $API_SETTINGS..."
+		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
+	fi
+}
+
+###################################################################
+function start_api_server {
+	# check for configuration files
+	if [ ! -f ./$OH_DIR/rsc/$API_SETTINGS ]; then
+		echo "Error: missing $API_SETTINGS settings file. Exiting"
+		exit 1;
+	fi
+
+	echo "------------------------"
+	echo "---- EXPERIMENTAL ------"
+	echo "------------------------"
+	echo "Starting API server..."
+	echo ""
+	echo "Connect to http://localhost:8080 for dashboard"
+	echo ""
+	
+	#$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
+	#$JAVA_BIN -client -Xms64m -Xmx1024m -cp "bin/openhospital-api-0.0.2.jar:rsc:static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$LOG_FILE 2>&1
+	
+	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1 &
+	
+	if [ $? -ne 0 ]; then
+		echo "An error occurred while starting Open Hospital API. Exiting."
+		shutdown_database;
+		cd "$CURRENT_DIR"
+		exit 4
+	fi
+	cd "$OH_PATH"
+}
+
+###################################################################
 function write_config_files {
 	# set up configuration files
 	echo "Checking for OH configuration files..."
@@ -832,6 +887,8 @@ function clean_conf_files {
 	rm -f ./$OH_DIR/rsc/$LOG4J_SETTINGS.old
 	rm -f ./$OH_DIR/rsc/$IMAGING_SETTINGS
 	rm -f ./$OH_DIR/rsc/$IMAGING_SETTINGS.old
+	rm -f ./$OH_DIR/rsc/$API_SETTINGS
+	rm -f ./$OH_DIR/rsc/$API_SETTINGS.old
 }
 
 ###################################################################
@@ -860,6 +917,22 @@ function start_gui {
 ###################################################################
 function parse_user_input {
 	case $1 in
+	###################################################
+	A)	# toggle API server
+		case "$API_SERVER" in
+			*on*)
+				API_SERVER="off";
+			;;
+			*off*)
+				API_SERVER="on";
+			;;
+		esac
+		#
+		write_api_config_file;
+		#if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
+		option="Z";
+		#interactive_menu;
+		;;
 	###################################################
 	C)	# start in CLIENT mode
 		OH_MODE="CLIENT"
@@ -1256,7 +1329,7 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":CPSdDGhil:msrtvequQXZ?" 
+OPTSTRING=":ACPSdDGhil:msrtvequQXZ?" 
 COMMAND_LINE_ARGS=$@
 
 # Parse arguments passed via command line
@@ -1336,6 +1409,10 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	        echo "OH database found!"
 		# start database
 		start_database;
+	fi
+	# check for API server
+	if [ "$API_SERVER" = "on" ]; then
+		start_api_server;
 	fi
 fi
 
