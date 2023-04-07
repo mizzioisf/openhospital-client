@@ -360,6 +360,8 @@ function read_settings {
 		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
 		$script:OH_DOC_DIR=$oh_settings.OH_DOC_DIR
 		$script:DEMO_DATA=$oh_settings.DEMODATA
+		$script:EXPERIMENTAL=$oh_settings.EXPERIMENTAL
+		$script:API_SERVER=$oh_settings.APISERVER
 	}
 		
 	# check for database settings file and read values
@@ -425,6 +427,11 @@ function set_defaults {
 	# api server - set default to off
 	if ( [string]::IsNullOrEmpty($API_SERVER) ) {
 		$script:API_SERVER="off"
+	}
+
+	# EXPERIMENTAL features - set default to off
+	if ( [string]::IsNullOrEmpty($EXPERIMENTAL) ) {
+		$script:EXPERIMENTAL="off"
 	}
 
 	# set escaped path (/ in place of \)
@@ -899,7 +906,7 @@ function write_api_config_file {
 
 ###################################################################
 function start_api_server {
-	# check for configuration files
+	# check for application configuration files
 	if ( !( Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf )) {
 		Write-Host "Error: missing $API_SETTINGS settings file. Exiting" -ForeGround Red
 		exit 1;
@@ -908,6 +915,7 @@ function start_api_server {
 	Write-Host "---- EXPERIMENTAL ------"
 	Write-Host "------------------------"
 	Write-Host "Starting API server..."
+	Write-Host "Please wait, it might take some time..."
 	Write-Host ""
 	Write-Host "Connect to http://localhost:8080 for dashboard"
 	Write-Host ""

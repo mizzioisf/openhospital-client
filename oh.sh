@@ -317,6 +317,8 @@ function read_settings {
 		OH_SINGLE_USER=$SINGLE_USER
 		OH_DOC_DIR=$OH_DOC_DIR
 		DEMO_DATA=$DEMODATA
+		EXPERIMENTAL=$EXPERIMENTAL
+		API_SERVER=$APISERVER
 	fi
 
 	# check for database settings file and read values
@@ -375,6 +377,11 @@ function set_defaults {
 	# api server - set default to off
 	if [ -z "$API_SERVER" ]; then
 		API_SERVER="off"
+	fi
+
+	# EXPERIMENTAL features - set default to off
+	if [ -z "$EXPERIMENTAL" ]; then
+		EXPERIMENTAL="off"
 	fi
 
 	# set escaped path (/ in place of \)
@@ -803,7 +810,7 @@ function write_api_config_file {
 
 ###################################################################
 function start_api_server {
-	# check for configuration files
+	# check for application configuration files
 	if [ ! -f ./$OH_DIR/rsc/$API_SETTINGS ]; then
 		echo "Error: missing $API_SETTINGS settings file. Exiting"
 		exit 1;
@@ -813,6 +820,7 @@ function start_api_server {
 	echo "---- EXPERIMENTAL ------"
 	echo "------------------------"
 	echo "Starting API server..."
+	echo "Please wait, it might take some time..."
 	echo ""
 	echo "Connect to http://localhost:8080 for dashboard"
 	echo ""
