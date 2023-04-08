@@ -1275,18 +1275,23 @@ function parse_user_input {
 			read -p "Press [y] to confirm: " choice
 			if [ "$choice" = "y" ]; then		
 				clean_database;
-        			echo "Done!"
 			fi
 		fi
-		# unset variables
-		#unset OH_MODE
-		#unset OH_LANGUAGE
-		#unset OH_SINGLE_USER
-		#unset LOG_LEVEL
-		#unset DEMO_DATA
-		# set defaults
-		#set_defaults;
-
+		echo "Warning: do you want to reset all existing configuration variables?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then
+			# unset variables
+			unset OH_MODE
+			unset OH_LANGUAGE
+			unset OH_SINGLE_USER
+			unset LOG_LEVEL
+			unset DEMO_DATA
+			unset EXPERIMENTAL
+			unset API_SERVER
+			# set variables to defaults
+			set_defaults;
+		fi
+		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################

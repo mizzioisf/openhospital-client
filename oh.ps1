@@ -1376,15 +1376,23 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$choice = Read-Host -Prompt "Press [y] to confirm: "
 				if (( "$choice" -eq "y" )) {
 					clean_database;
-					Write-Host "Done!"
 				}
 			}
-			# unset variables
-			#Clear-Variable -name OH_MODE
-			#Clear-Variable -name OH_LANGUAGE
-			#Clear-Variable -name OH_SINGLE_USER
-			#Clear-Variable -name LOG_LEVEL
-			#Clear-Variable -name DEMO_DATA
+			Write-Host "Warning: do you want to reset all existing configuration variables?" -ForegroundColor Red
+			$choice = Read-Host -Prompt "Press [y] to confirm: "
+			if (( "$choice" -eq "y" )) {
+				# unset variables
+				Clear-Variable -name OH_MODE
+				Clear-Variable -name OH_LANGUAGE
+				Clear-Variable -name OH_SINGLE_USER
+				Clear-Variable -name LOG_LEVEL
+				Clear-Variable -name DEMO_DATA
+				Clear-Variable -name EXPERIMENTAL
+				Clear-Variable -name API_SERVER
+				# set variables to defaults
+				set_defaults;
+			}
+			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
 		###################################################
