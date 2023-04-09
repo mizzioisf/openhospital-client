@@ -129,6 +129,7 @@ DEFAULT_DATADIR="$DATA_DIR"
 
 # activate experimental features - set to "on" to test - use at your own risk!
 EXPERIMENTAL="off"
+UI_ADDRESS="http://localhost:8080"
 
 ################ Architecture and external software ################
 
@@ -932,6 +933,26 @@ function start_gui {
 }
 
 ###################################################################
+function start_ui {
+	echo "Starting Open Hospital UI at $UI_ADDRESS..."
+	# OH UI launch
+
+	if which gnome-open > /dev/null; then
+		gnome-open $UI_ADDRESS
+	elif which xdg-open > /dev/null; then
+		xdg-open $UI_ADDRESS
+	elif [ ! -n $BROWSER ]; then
+		$BROWSER $UI_ADDRESS
+	else
+		echo "Could not detect the web browser to use."
+	fi
+	if [ $? -ne 0 ]; then
+		echo "An error occurred while starting Open Hospital. Exiting."
+		exit 4
+	fi
+}
+
+###################################################################
 function parse_user_input {
 	case $1 in
 	###################################################
@@ -1200,7 +1221,8 @@ function parse_user_input {
 	u)	# create Desktop shortcut
 		echo ""
 		echo "Creating/updating OH shortcut on Desktop..."
-		create_desktop_shortcut;
+#		create_desktop_shortcut;
+		start_ui;
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;

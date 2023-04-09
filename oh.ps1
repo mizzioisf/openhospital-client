@@ -189,6 +189,7 @@ $script:DEFAULT_DATADIR="$DATA_DIR"
 
 # activate experimental features - set to "on" to test - use at your own risk!
 $script:EXPERIMENTAL="off"
+$script:UI_ADDRESS="http://localhost:8080"
 
 ############## Architecture and external software ##############
 
@@ -1055,6 +1056,13 @@ $JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library
 }
 
 ###################################################################
+function start_ui {
+	Write-Host "Starting Open Hospital UI at $UI_ADDRESS..."
+	# OH UI launch
+	Start-Process $UI_ADDRESS
+}
+
+###################################################################
 function parse_user_input {
 # If INTERACTIVE_MODE is set to "off" don't show menu
 if ( $INTERACTIVE_MODE -eq "on" ) {
@@ -1301,7 +1309,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"u"	{ # create Desktop shortcut
-			create_desktop_shortcut;
+			#create_desktop_shortcut;
+			start_ui;
 			Read-Host "Press any key to continue";
 		}
 		###################################################
