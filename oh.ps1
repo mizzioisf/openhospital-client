@@ -272,7 +272,7 @@ function script_menu {
 	Write-Host "   C    set OH in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"
 	Write-Host "   S    set OH in SERVER mode (portable)"
-	Write-Host "   l    set language: $OH_LANGUAGE_LIST"
+	Write-Host "   l    $OH_LANGUAGE_LIST - set language"
 	Write-Host "   s    save OH configuration"
 	Write-Host "   X    clean/reset OH installation"
 	Write-Host "   v    show configuration"

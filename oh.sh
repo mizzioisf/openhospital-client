@@ -199,7 +199,7 @@ function script_menu {
 		echo " -----------------------------------------------------------------"
 	fi
 	echo ""
-	echo " Usage: $SCRIPT_NAME [ -l $OH_LANGUAGE_LIST ] "
+	echo " Usage: $SCRIPT_NAME -[OPTION] "
 	echo ""
 	if [ "$EXPERIMENTAL" == "on" ]; then
 		echo "   -A    toggle API server - EXPERIMENTAL"
@@ -207,7 +207,7 @@ function script_menu {
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
-	echo "   -l    set language: $OH_LANGUAGE_LIST"
+	echo "   -l    [ $OH_LANGUAGE_LIST ] - set language"
 	echo "   -s    save OH configuration"
 	echo "   -X    clean/reset OH installation"
 	echo "   -v    show configuration"
