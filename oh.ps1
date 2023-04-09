@@ -1309,8 +1309,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"u"	{ # create Desktop shortcut
-			#create_desktop_shortcut;
-			start_ui;
+			create_desktop_shortcut;
 			Read-Host "Press any key to continue";
 		}
 		###################################################
