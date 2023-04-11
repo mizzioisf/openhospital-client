@@ -111,13 +111,16 @@ EXT="tar.gz"
 # mysql configuration file
 MYSQL_CONF_FILE="my.cnf"
 
-# OH files
-OH_GUI="OH-gui.jar"
+# OH configuration files
 OH_SETTINGS="settings.properties"
 DATABASE_SETTINGS="database.properties"
 IMAGING_SETTINGS="dicom.properties"
 LOG4J_SETTINGS="log4j.properties"
 API_SETTINGS="application.properties"
+
+# OH jar bin files
+OH_GUI_JAR="OH-gui.jar"
+OH_API_JAR="openhospital-api-0.0.2.jar"
 
 # help file
 HELP_FILE="OH-readme.txt"
@@ -797,19 +800,6 @@ function test_database_connection {
 }
 
 ###################################################################
-function write_api_config_file {
-	######## application.properties setup - OH API server
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$API_SETTINGS ]; then
-		[ -f ./$OH_DIR/rsc/$API_SETTINGS ] && mv -f ./$OH_DIR/rsc/$API_SETTINGS ./$OH_DIR/rsc/$API_SETTINGS.old
-		# generate OH API token and save to settings file
-		# JWT_TOKEN_SECRET=`openssl rand -base64 64 | xargs`
-		JWT_TOKEN_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 66`
-		echo "Writing OH API configuration file -> $API_SETTINGS..."
-		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
-	fi
-}
-
-###################################################################
 function start_api_server {
 	# check for application configuration files
 	if [ ! -f ./$OH_DIR/rsc/$API_SETTINGS ]; then
@@ -839,6 +829,19 @@ function start_api_server {
 		exit 4
 	fi
 	cd "$OH_PATH"
+}
+
+###################################################################
+function write_api_config_file {
+	######## application.properties setup - OH API server
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$API_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$API_SETTINGS ] && mv -f ./$OH_DIR/rsc/$API_SETTINGS ./$OH_DIR/rsc/$API_SETTINGS.old
+		# generate OH API token and save to settings file
+		# JWT_TOKEN_SECRET=`openssl rand -base64 64 | xargs`
+		JWT_TOKEN_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 66`
+		echo "Writing OH API configuration file -> $API_SETTINGS..."
+		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
+	fi
 }
 
 ###################################################################
@@ -874,7 +877,8 @@ function write_config_files {
 		[ -f ./$OH_DIR/rsc/$OH_SETTINGS ] && mv -f ./$OH_DIR/rsc/$OH_SETTINGS ./$OH_DIR/rsc/$OH_SETTINGS.old
 		echo "Writing OH configuration file -> $OH_SETTINGS..."
 		sed -e "s/OH_MODE/$OH_MODE/g" -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" \
-		-e "s/DEMODATA=off/"DEMODATA=$DEMO_DATA"/g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" -e "s/PHOTO_DIR/$PHOTO_DIR_ESCAPED/g" \
+		-e "s/DEMODATA=off/"DEMODATA=$DEMO_DATA"/g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
+		-e "s/PHOTO_DIR/$PHOTO_DIR_ESCAPED/g" -e "s/APISERVER=off/"APISERVER=$API_SERVER"/g" \
 		./$OH_DIR/rsc/$OH_SETTINGS.dist > ./$OH_DIR/rsc/$OH_SETTINGS
 	fi
 }

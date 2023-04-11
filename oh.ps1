@@ -171,13 +171,16 @@ $script:EXT="zip"
 # mysql configuration file
 $script:MYSQL_CONF_FILE="my.cnf"
 
-# OH files
-$script:OH_GUI="OH-gui.jar"
+# OH configuration files
 $script:OH_SETTINGS="settings.properties"
 $script:DATABASE_SETTINGS="database.properties"
 $script:IMAGING_SETTINGS="dicom.properties"
 $script:LOG4J_SETTINGS="log4j.properties"
 $script:API_SETTINGS="application.properties"
+
+# OH jar bin files
+$script:OH_GUI_JAR="OH-gui.jar"
+$script:OH_API_JAR="openhospital-api-0.0.2.jar"
 
 # help file
 $script:HELP_FILE="OH-readme.txt"
@@ -481,7 +484,7 @@ function set_language {
 	# check for valid language selection
 	if ($script:languagearray -contains "$OH_LANGUAGE") {
 		# set localized database creation script
-		$Script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
+		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 	}
 	else {
 		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
@@ -584,7 +587,7 @@ function java_lib_setup {
 
 	# CLASSPATH setup
 	# include OH jar file
-	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\bin\$OH_GUI"
+	$script:OH_CLASSPATH="$OH_PATH\$OH_DIR\bin\$OH_GUI_JAR"
 
 	# include all needed directories
 	$script:OH_CLASSPATH="$OH_CLASSPATH;$OH_PATH\$OH_DIR\bundle\"
@@ -894,18 +897,6 @@ function test_database_connection {
 }
 
 ###################################################################
-function write_api_config_file {
-	######## application.properties setup - OH API server
-	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf) ) {
-		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$API_SETTINGS $OH_PATH/$OH_DIR/rsc/$API_SETTINGS.old }
-		# generate OH API token and save to settings file
-		$JWT_TOKEN_SECRET=( -join ($(for($i=0; $i -lt 64; $i++) { ((65..90)+(97..122)+(".")+("!")+("?")+("&") | Get-Random | % {[char]$_}) })) )
-		Write-Host "Writing OH API configuration file -> $API_SETTINGS..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS.dist").replace("JWT_TOKEN_SECRET","$JWT_TOKEN_SECRET") | Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
-	}
-}
-
-###################################################################
 function start_api_server {
 	# check for application configuration files
 	if ( !( Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf )) {
@@ -923,11 +914,11 @@ function start_api_server {
 
         cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
 
-	$JAVA_API_ARGS="-server -Xms64m -Xmx1024m -cp ./bin/openhospital-api-0.0.2.jar;./rsc;./static org.springframework.boot.loader.JarLauncher"
+	$JAVA_API_ARGS="-server -Xms64m -Xmx1024m -cp ./bin/$OH_API_JAR;./rsc;./static org.springframework.boot.loader.JarLauncher"
 
 	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_API_ARGS -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 
-        # $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher
+        # $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/$OH_API_JAR:./rsc::./static" org.springframework.boot.loader.JarLauncher
 
 #        if [ $? -ne 0 ]; then
 #                echo "An error occurred while starting Open Hospital API. Exiting."
@@ -936,6 +927,18 @@ function start_api_server {
 #                exit 4
 #        fi
         cd "$OH_PATH"
+}
+
+###################################################################
+function write_api_config_file {
+	######## application.properties setup - OH API server
+	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf) ) {
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$API_SETTINGS $OH_PATH/$OH_DIR/rsc/$API_SETTINGS.old }
+		# generate OH API token and save to settings file
+		$JWT_TOKEN_SECRET=( -join ($(for($i=0; $i -lt 64; $i++) { ((65..90)+(97..122)+(".")+("!")+("?")+("&") | Get-Random | % {[char]$_}) })) )
+		Write-Host "Writing OH API configuration file -> $API_SETTINGS..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS.dist").replace("JWT_TOKEN_SECRET","$JWT_TOKEN_SECRET") | Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
+	}
 }
 
 ###################################################################
@@ -998,6 +1001,8 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("YES_OR_NO","$OH_SINGLE_USER") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
 		# set DEMO DATA
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("DEMODATA=off","DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
+		# set API_SERVER
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("APISERVER=off","APISERVER=$API_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
 	}
 }
 
@@ -1390,13 +1395,13 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
 			if (( "$choice" -eq "y" )) {
 				# unset variables
-				$Script:OH_MODE=""
-				$Script:OH_LANGUAGE=""
-				$Script:OH_SINGLE_USER=""
-				$Script:LOG_LEVEL=""
-				$Script:DEMO_DATA=""
-				$Script:EXPERIMENTAL=""
-				$Script:API_SERVER=""
+				$script:OH_MODE=""
+				$script:OH_LANGUAGE=""
+				$script:OH_SINGLE_USER=""
+				$script:LOG_LEVEL=""
+				$script:DEMO_DATA=""
+				$script:EXPERIMENTAL=""
+				$script:API_SERVER=""
 				# set variables to defaults
 				set_defaults;
 			}

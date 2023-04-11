@@ -4,7 +4,7 @@
 # external settings
 MODE=OH_MODE
 DEMODATA=off
-EXPERIMENTAL=off
+# experimental settings
 APISERVER=off
 
 # internal settings, modules, directories

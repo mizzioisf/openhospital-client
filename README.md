@@ -64,12 +64,12 @@ cd openhospital-client
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                       Open Hospital | OH                        |
+|                       Open Hospital - 1.12.1                    |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
  -----------------------------------------------------------------
- Usage: oh.sh [ -l en|fr|es|it|pt|ar ] 
+ Usage: oh.sh -[OPTION] 
 
    -C    set OH in CLIENT mode
    -P    set OH in PORTABLE mode
@@ -92,6 +92,7 @@ cd openhospital-client
    -m    configure database connection manually
    -t    test database connection (CLIENT mode only)
    -u    create Desktop shortcut
+   -E    toggle EXPERIMENTAL features - use at your own risk!
 
    -h    show help
 ```
@@ -103,7 +104,7 @@ cd openhospital-client
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                       Open Hospital | OH                        |
+|                       Open Hospital - 1.12.1                    |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
@@ -136,6 +137,7 @@ cd openhospital-client
     m    configure database connection manually
     t    test database connection (CLIENT mode only)
     u    create Desktop shortcut with current params
+    E    toggle EXPERIMENTAL features - use at your own risk!
 
     h    show help
 ```
@@ -188,6 +190,7 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 - **m**    configure OH database connection settings manually
 - **t**    test database connection to the configured database server (Client mode only)
 - **u**    create Desktop shortcut with current params (Windows / Linux)
+- **E**    toggle EXPERIMENTAL features: used to show beta / experimental feature of the software. Use at your own risk!
 - **h**    show help 
 
 # Script configuration
