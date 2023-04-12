@@ -1091,7 +1091,8 @@ $releases_url = "https://api.github.com/repos/informatici/openhospital/releases"
 $releases = Invoke-RestMethod -uri "$($releases_url)"
 
 # Get most recent release from the list where name starts with 'master'.
-#$latestMasterBuild = $releases | Where { $_.name.StartsWith("master") } | Select -First 
+$latestMasterBuild = $releases
+	Write-Host "Latest OH version is" $latestMasterBuild
 $latestMasterBuild = $releases | Where { $_.name.StartsWith("master") } 
 
 
