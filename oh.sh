@@ -1239,6 +1239,7 @@ function parse_user_input {
 		echo "Config file generation is set to $WRITE_CONFIG_FILES"
 		echo ""
 		echo "--------- OH default configuration ---------"
+		echo "OH mode is set to $OH_MODE"
 		echo "Language is set to $OH_LANGUAGE"
 		echo "Demo data is set to $DEMO_DATA"
 		echo ""

@@ -1332,6 +1332,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 	 		Write-Host "Config file generation is set to $WRITE_CONFIG_FILES"
 			Write-Host ""
 	 		Write-Host "--------- OH default configuration ---------"
+			Write-Host "OH mode is set to $OH_MODE"
 			Write-Host "Language is set to $OH_LANGUAGE"
 			Write-Host "Demo data is set to $DEMO_DATA"
 			Write-Host ""
