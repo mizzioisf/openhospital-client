@@ -190,9 +190,9 @@ $script:DEFAULT_DATABASE_NAME="$DATABASE_NAME"
 # set default data base_dir
 $script:DEFAULT_DATADIR="$DATA_DIR"
 
-# activate experimental features - set to "on" to test - use at your own risk!
-$script:EXPERIMENTAL="off"
-$script:UI_ADDRESS="http://localhost:8080"
+# activate expert mode - set to "on" to enable advanced functions - use at your own risk!
+$script:EXPERT_MODE="off"
+$script:OH_UI_ADDRESS="http://localhost:8080"
 
 ############## Architecture and external software ##############
 
@@ -249,10 +249,9 @@ $script:JAVA_DIR=$JAVA_DISTRO
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
-######################## Functions ########################
+###########################  Functions  ###########################
 
-######## User input / option parsing
-
+###################################################################
 function script_menu {
 	# show menu
 	# Clear-Host # clear console
@@ -263,27 +262,33 @@ function script_menu {
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	Write-Host " -----------------------------------------------------------------"
-	if ( $EXPERIMENTAL -eq "on" ) {
-		Write-Host " EXPERIMENTAL features activated"
+	if ( $EXPERT_MODE -eq "on" ) {
+		Write-Host " EXPERT_MODE features activated"
 		Write-Host " API server set to $API_SERVER"
 	Write-Host " -----------------------------------------------------------------"
 	}
 	Write-Host ""
-	if ( $EXPERIMENTAL -eq "on" ) {
-		Write-Host "   A    toggle API server - EXPERIMENTAL"
-	}
 	Write-Host "   C    set OH in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"
 	Write-Host "   S    set OH in SERVER mode (portable)"
 	Write-Host "   l    $OH_LANGUAGE_LIST - set language"
-	Write-Host "   s    save OH configuration"
-	Write-Host "   X    clean/reset OH installation"
+	Write-Host "   E    toggle EXPERT_MODE - use at your own risk!"
 	Write-Host "   v    show configuration"
 	Write-Host "   q    quit"
 	Write-Host ""
+	if ( $EXPERT_MODE -eq "on" ) {
+		script_menu_advanced;
+	}
+}
+
+###################################################################
+function script_menu_advanced {
+	# show menu
+	# Clear-Host # clear console
 	Write-Host "   --------------------- "
 	Write-Host "    advanced options"
 	Write-Host ""
+	Write-Host "   A    toggle API server - EXPERT_MODE"
 	Write-Host "   e    export/save OH database"
 	Write-Host "   r    restore OH database"
 	Write-Host "   d    toggle log level INFO/DEBUG"
@@ -291,9 +296,10 @@ function script_menu {
 	Write-Host "   G    setup GSM"
 	Write-Host "   i    initialize/install OH database"
 	Write-Host "   m    configure database connection manually"
+	Write-Host "   s    save OH configuration"
 	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host "   u    create Desktop shortcut with current params"
-	Write-Host "   E    toggle EXPERIMENTAL features - use at your own risk!"
+	Write-Host "   X    clean/reset OH installation"
 	Write-Host ""
 	Write-Host "   h    show help"
 	Write-Host ""
@@ -364,7 +370,6 @@ function read_settings {
 		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
 		$script:OH_DOC_DIR=$oh_settings.OH_DOC_DIR
 		$script:DEMO_DATA=$oh_settings.DEMODATA
-		$script:EXPERIMENTAL=$oh_settings.EXPERIMENTAL
 		$script:API_SERVER=$oh_settings.APISERVER
 	}
 		
@@ -433,9 +438,9 @@ function set_defaults {
 		$script:API_SERVER="off"
 	}
 
-	# EXPERIMENTAL features - set default to off
-	if ( [string]::IsNullOrEmpty($EXPERIMENTAL) ) {
-		$script:EXPERIMENTAL="off"
+	# EXPERT_MODE features - set default to off
+	if ( [string]::IsNullOrEmpty($EXPERT_MODE) ) {
+		$script:EXPERT_MODE="off"
 	}
 
 	# set escaped path (/ in place of \)
@@ -1062,9 +1067,9 @@ $JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library
 
 ###################################################################
 function start_ui {
-	Write-Host "Starting Open Hospital UI at $UI_ADDRESS..."
+	Write-Host "Starting Open Hospital UI at $OH_UI_ADDRESS..."
 	# OH UI launch
-	Start-Process $UI_ADDRESS
+	Start-Process $OH_UI_ADDRESS
 }
 
 ###################################################################
@@ -1096,13 +1101,13 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"E"	{ # toggle EXPERIMENTAL features
-			switch -CaseSensitive( $script:EXPERIMENTAL ) {
+		"E"	{ # toggle EXPERT_MODE features
+			switch -CaseSensitive( $script:EXPERT_MODE ) {
 			"on"	{ # 
-				$script:EXPERIMENTAL="off"
+				$script:EXPERT_MODE="off"
 				}
 			"off"	{ # 
-				$script:EXPERIMENTAL="on"
+				$script:EXPERT_MODE="on"
 				}
 			}
 			#Read-Host "Press any key to continue";
@@ -1401,7 +1406,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$script:OH_SINGLE_USER=""
 				$script:LOG_LEVEL=""
 				$script:DEMO_DATA=""
-				$script:EXPERIMENTAL=""
+				$script:EXPERT_MODE=""
 				$script:API_SERVER=""
 				# set variables to defaults
 				set_defaults;

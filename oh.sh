@@ -130,9 +130,9 @@ DEFAULT_DATABASE_NAME="$DATABASE_NAME"
 # set default data base_dir
 DEFAULT_DATADIR="$DATA_DIR"
 
-# activate experimental features - set to "on" to test - use at your own risk!
-EXPERIMENTAL="off"
-UI_ADDRESS="http://localhost:8080"
+# activate expert mode - set to "on" to enable advanced functions - use at your own risk!
+EXPERT_MODE="off"
+OH_UI_ADDRESS="http://localhost:8080"
 
 ################ Architecture and external software ################
 
@@ -185,8 +185,9 @@ JAVA_DIR=$JAVA_DISTRO
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
-######################## Functions ########################
+###########################  Functions  ###########################
 
+###################################################################
 function script_menu {
 	# show help / user options
 	echo " -----------------------------------------------------------------"
@@ -196,29 +197,34 @@ function script_menu {
 	echo " -----------------------------------------------------------------"
 	echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	echo " -----------------------------------------------------------------"
-	if [ "$EXPERIMENTAL" == "on" ]; then
-		echo " EXPERIMENTAL features activated"
+	if [ "$EXPERT_MODE" == "on" ]; then
+		echo " EXPERT_MODE features activated"
 		echo " API server set to $API_SERVER"
 		echo " -----------------------------------------------------------------"
 	fi
 	echo ""
 	echo " Usage: $SCRIPT_NAME -[OPTION] "
 	echo ""
-	if [ "$EXPERIMENTAL" == "on" ]; then
-		echo "   -A    toggle API server - EXPERIMENTAL"
-	fi
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
 	echo "   -l    [ $OH_LANGUAGE_LIST ] - set language"
-	echo "   -s    save OH configuration"
-	echo "   -X    clean/reset OH installation"
 	echo "   -v    show configuration"
+	echo "   -E    toggle EXPERT MODE - use at your own risk!"
 	echo "   -q    quit"
 	echo ""
+	if [ "$EXPERT_MODE" == "on" ]; then
+		script_menu_advanced;
+	fi
+}
+
+###################################################################
+function script_menu_advanced {
+	# show help / user options
 	echo "   --------------------- "
 	echo "    advanced options"
 	echo ""
+	echo "   -A    toggle API server - EXPERIMENTAL"
 	echo "   -e    export/save OH database"
 	echo "   -r    restore OH database"
  	echo "   -d    toggle log level INFO/DEBUG"
@@ -226,9 +232,10 @@ function script_menu {
 	echo "   -D    initialize OH with Demo data"
 	echo "   -i    initialize/install OH database"
 	echo "   -m    configure database connection manually"
+	echo "   -s    save OH configuration"
 	echo "   -t    test database connection (CLIENT mode only)"
 	echo "   -u    create Desktop shortcut"
-	echo "   -E    toggle EXPERIMENTAL features - use at your own risk!"
+	echo "   -X    clean/reset OH installation"
 	echo ""
 	echo "   -h    show help"
 	echo ""
@@ -321,7 +328,6 @@ function read_settings {
 		OH_SINGLE_USER=$SINGLE_USER
 		OH_DOC_DIR=$OH_DOC_DIR
 		DEMO_DATA=$DEMODATA
-		EXPERIMENTAL=$EXPERIMENTAL
 		API_SERVER=$APISERVER
 	fi
 
@@ -383,9 +389,9 @@ function set_defaults {
 		API_SERVER="off"
 	fi
 
-	# EXPERIMENTAL features - set default to off
-	if [ -z "$EXPERIMENTAL" ]; then
-		EXPERIMENTAL="off"
+	# EXPERT_MODE features - set default to off
+	if [ -z "$EXPERT_MODE" ]; then
+		EXPERT_MODE="off"
 	fi
 
 	# set escaped path (/ in place of \)
@@ -938,14 +944,14 @@ function start_gui {
 
 ###################################################################
 function start_ui {
-	echo "Starting Open Hospital UI at $UI_ADDRESS..."
+	echo "Starting Open Hospital UI at $OH_UI_ADDRESS..."
 	# OH UI launch
 	if which gnome-open > /dev/null; then
-		gnome-open $UI_ADDRESS
+		gnome-open $OH_UI_ADDRESS
 	elif which xdg-open > /dev/null; then
-		xdg-open $UI_ADDRESS
+		xdg-open $OH_UI_ADDRESS
 	elif [ ! -n $BROWSER ]; then
-		$BROWSER $UI_ADDRESS
+		$BROWSER $OH_UI_ADDRESS
 	else
 		echo "Could not detect the web browser to use."
 	fi
@@ -979,13 +985,13 @@ function parse_user_input {
 		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
-	E)	# toggle EXPERIMENTAL features
-		case "$EXPERIMENTAL" in
+	E)	# toggle EXPERT_MODE features
+		case "$EXPERT_MODE" in
 			*on*)
-				EXPERIMENTAL="off";
+				EXPERT_MODE="off";
 			;;
 			*off*)
-				EXPERIMENTAL="on";
+				EXPERT_MODE="on";
 			;;
 		esac
 		#
@@ -1307,7 +1313,7 @@ function parse_user_input {
 			unset OH_SINGLE_USER
 			unset LOG_LEVEL
 			unset DEMO_DATA
-			unset EXPERIMENTAL
+			unset EXPERT_MODE
 			unset API_SERVER
 			# set variables to defaults
 			set_defaults;
