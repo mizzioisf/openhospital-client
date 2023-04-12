@@ -1094,7 +1094,7 @@ $releases = Invoke-RestMethod -uri "$($releases_url)"
 $latestMasterBuild = $releases | Where { $_.name.StartsWith("master") } | Select -First 
 
 
-	Write-Host "Latest OH version is" $LATEST_OH_VERSION
+#	Write-Host "Latest OH version is" $LATEST_OH_VERSION
 	Write-Host "Latest OH version is" latestMasterBuild
 	Write-Host ""
 }
