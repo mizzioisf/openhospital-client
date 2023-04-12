@@ -1077,7 +1077,9 @@ function start_ui {
 function check_latest_oh_version {
 	Write-Host ""
 	Write-Host "Checking online for Open Hospital latest version..."
-	$LATEST_OH_VERSION=((curl -s -L https://api.github.com/repos/informatici/openhospital/releases/latest | Select-String "tag_name" -Split ":")[1]) 
+#	$LATEST_OH_VERSION=((curl -s -L https://api.github.com/repos/informatici/openhospital/releases/latest | Select-String "tag_name" -Split ":")[1]) 
+	$LATEST_OH_VERSION=(curl -s -L https://api.github.com/repos/informatici/openhospital/releases/latest | Select-String "tag_name") 
+	LATEST_OH_VERSION=$LATEST_OH_VERSION.TrimStart("://").Split(":",2)[0]
 	Write-Host "Latest OH version is" $LATEST_OH_VERSION
 	Write-Host ""
 }
