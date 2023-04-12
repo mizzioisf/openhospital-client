@@ -1095,7 +1095,7 @@ $latestMasterBuild = $releases | Where { $_.name.StartsWith("master") } | Select
 
 
 #	Write-Host "Latest OH version is" $LATEST_OH_VERSION
-	Write-Host "Latest OH version is" latestMasterBuild
+	Write-Host "Latest OH version is" $latestMasterBuild
 	Write-Host ""
 }
 
