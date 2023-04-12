@@ -198,7 +198,7 @@ function script_menu {
 	echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	echo " -----------------------------------------------------------------"
 	if [ "$EXPERT_MODE" == "on" ]; then
-		echo " EXPERT_MODE features activated"
+		echo " EXPERT MODE activated"
 		echo " API server set to $API_SERVER"
 		echo " -----------------------------------------------------------------"
 	fi
@@ -235,6 +235,7 @@ function script_menu_advanced {
 	echo "   -s    save OH configuration"
 	echo "   -t    test database connection (CLIENT mode only)"
 	echo "   -u    create Desktop shortcut"
+	echo "   -V    check for latest OH version"
 	echo "   -X    clean/reset OH installation"
 	echo ""
 	echo "   -h    show help"
@@ -958,6 +959,14 @@ function start_ui {
 }
 
 ###################################################################
+function check_latest_oh_version {
+	echo "Checking online for Open Hospital latest version..."
+	LATEST_OH_VERSION=$(curl -s -L https://api.github.com/repos/informatici/openhospital/releases/latest | grep tag_name  | cut -b16-22)
+	echo "Latest OH version is" $LATEST_OH_VERSION
+	echo ""
+}
+
+###################################################################
 function parse_user_input {
 	case $1 in
 	###################################################
@@ -977,14 +986,6 @@ function parse_user_input {
 		#interactive_menu;
 		;;
 	###################################################
-	C)	# start in CLIENT mode
-		OH_MODE="CLIENT"
-		DEMO_DATA="off"
-		set_oh_mode;
-		echo ""
-		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
-		;;
-	###################################################
 	E)	# toggle EXPERT_MODE features
 		case "$EXPERT_MODE" in
 			*on*)
@@ -995,9 +996,17 @@ function parse_user_input {
 			;;
 		esac
 		#
-		#if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
-		option="Z";
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
+		#option="Z";
 		#interactive_menu;
+		;;
+	###################################################
+	C)	# start in CLIENT mode
+		OH_MODE="CLIENT"
+		DEMO_DATA="off"
+		set_oh_mode;
+		echo ""
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	P)	# start in PORTABLE mode
@@ -1347,6 +1356,12 @@ function parse_user_input {
 	#	fi
 	#	;;
 	###################################################
+	"V" )	# Check for latest OH version
+		echo "";
+		check_latest_oh_version;
+		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
+		;;
+	###################################################
 	"Z" )	# Z key
 		option="Z";
 		echo "";
@@ -1393,7 +1408,8 @@ cd "$OH_PATH"
 # reset in case getopts has been used previously in the shell
 OPTIND=1 
 # list of arguments expected in user input (- option)
-OPTSTRING=":ACPSdDGhil:msrtvequQXZ?" 
+# E is excluded from command line option
+OPTSTRING=":ACPSdDGhil:msrtvequQXVZ?" 
 COMMAND_LINE_ARGS=$@
 
 # Parse arguments passed via command line

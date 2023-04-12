@@ -263,7 +263,7 @@ function script_menu {
 	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	Write-Host " -----------------------------------------------------------------"
 	if ( $EXPERT_MODE -eq "on" ) {
-		Write-Host " EXPERT_MODE features activated"
+		Write-Host " EXPERT MODE activated"
 		Write-Host " API server set to $API_SERVER"
 	Write-Host " -----------------------------------------------------------------"
 	}
@@ -299,6 +299,7 @@ function script_menu_advanced {
 	Write-Host "   s    save OH configuration"
 	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host "   u    create Desktop shortcut with current params"
+	Write-Host "   V    check for latest OH version"
 	Write-Host "   X    clean/reset OH installation"
 	Write-Host ""
 	Write-Host "   h    show help"
@@ -1073,6 +1074,15 @@ function start_ui {
 }
 
 ###################################################################
+function check_latest_oh_version {
+	Write-Host ""
+	Write-Host "Checking online for Open Hospital latest version..."
+	$LATEST_OH_VERSION=(curl -s -L https://api.github.com/repos/informatici/openhospital/releases/latest | grep tag_name  | cut -b16-22)
+	Write-Host "Latest OH version is" $LATEST_OH_VERSION
+	Write-Host ""
+}
+
+###################################################################
 function parse_user_input {
 # If INTERACTIVE_MODE is set to "off" don't show menu
 if ( $INTERACTIVE_MODE -eq "on" ) {
@@ -1094,13 +1104,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			#Read-Host "Press any key to continue";
 		}
 		###################################################
-		"C"	{ # start in CLIENT mode
-			$script:OH_MODE="CLIENT"
-			$script:DEMO_DATA="off"
-			set_oh_mode;
-			Read-Host "Press any key to continue";
-		}
-		###################################################
 		"E"	{ # toggle EXPERT_MODE features
 			switch -CaseSensitive( $script:EXPERT_MODE ) {
 			"on"	{ # 
@@ -1111,6 +1114,13 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				}
 			}
 			#Read-Host "Press any key to continue";
+		}
+		###################################################
+		"C"	{ # start in CLIENT mode
+			$script:OH_MODE="CLIENT"
+			$script:DEMO_DATA="off"
+			set_oh_mode;
+			Read-Host "Press any key to continue";
 		}
 		###################################################
 		"P"	{ # start in PORTABLE mode
@@ -1174,6 +1184,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
+		"h"	{ # show help
+			Get-content $HELP_FILE | more
+			Read-Host "Press any key to continue";
+		}
+		###################################################
 		"i"	{ # initialize/install OH database
 			# set mode to CLIENT
 			$OH_MODE="CLIENT"
@@ -1197,11 +1212,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			import_database;
 			test_database_connection;
 			Write-Host "Done!"
-			Read-Host "Press any key to continue";
-		}
-		###################################################
-		"h"	{ # show help
-			Get-content $HELP_FILE | more
 			Read-Host "Press any key to continue";
 		}
 		###################################################
@@ -1412,6 +1422,11 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				set_defaults;
 			}
 			Write-Host "Done!"
+			Read-Host "Press any key to continue";
+		}
+		###################################################
+		"V" 	{ # Check for latest OH version
+			check_latest_oh_version;
 			Read-Host "Press any key to continue";
 		}
 		###################################################
