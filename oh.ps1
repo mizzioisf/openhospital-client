@@ -1078,12 +1078,24 @@ function check_latest_oh_version {
 	Write-Host ""
 	Write-Host "Checking online for Open Hospital latest version..."
 #	$LATEST_OH_VERSION=((curl -s -L https://api.github.com/repos/informatici/openhospital/releases/latest | Select-String "tag_name" -Split ":")[1]) 
-	$LATEST_OH_VERSION=(curl -s -L https://api.github.com/repos/informatici/openhospital/releases/latest | Select-String "tag_name") 
-	LATEST_OH_VERSION=$LATEST_OH_VERSION.TrimStart("://").Split(":",2)[0]
-	 $version = $realTagUrl.split('/')[-1].Trim('v')
-	 curl -s "https://api.github.com/repos/facebook/create-react-app/releases?per_page=100" | jq -r '[.[] | select(.target_commitish == "master")][0]'
-     $latestMasterBuild = $releases | Where { $_.name.StartsWith("master") } | Select -First 1
+#	$LATEST_OH_VERSION=(curl -s -L https://api.github.com/repos/informatici/openhospital/releases/latest | Select-String "tag_name") 
+#	LATEST_OH_VERSION=$LATEST_OH_VERSION.TrimStart("://").Split(":",2)[0]
+#	 $version = $realTagUrl.split('/')[-1].Trim('v')
+#	 curl -s "https://api.github.com/repos/facebook/create-react-app/releases?per_page=100" | jq -r '[.[] | select(.target_commitish == "master")][0]'
+#     $latestMasterBuild = $releases | Where { $_.name.StartsWith("master") } | Select -First 1
+#
+
+$releases_url = "https://api.github.com/repos/informatici/openhospital/releases"
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$releases = Invoke-RestMethod -uri "$($releases_url)"
+
+# Get most recent release from the list where name starts with 'master'.
+$latestMasterBuild = $releases | Where { $_.name.StartsWith("master") } | Select -First 
+
+
 	Write-Host "Latest OH version is" $LATEST_OH_VERSION
+	Write-Host "Latest OH version is" latestMasterBuild
 	Write-Host ""
 }
 
