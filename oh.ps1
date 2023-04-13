@@ -1090,12 +1090,11 @@ $releases_url = "https://api.github.com/repos/informatici/openhospital/releases/
 $ohreleases = Invoke-RestMethod -uri "$($releases_url)"
 #TrimStart("jdbc:mysql://").Split(":",2)[0]
 
-$ohreleases2 = $ohreleases | Select-String tag_name
-$ohreleases3 = $ohreleases2.TrimStart("@{tag_name")
+$ohreleases2 = $ohreleases | Select-Object tag_name
+#$ohreleases2 = $ohreleases | Select-String tag_name
+#$ohreleases3 = $ohreleases2.TrimStart("@{tag_name")
 
-	Write-Host "Latest OH version is" $ohreleases
 	Write-Host "Latest OH version is" $ohreleases2
-	Write-Host "Latest OH version is" $ohreleases3
 	Write-Host ""
 }
 
