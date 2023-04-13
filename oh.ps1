@@ -1089,6 +1089,7 @@ $releases_url = "https://api.github.com/repos/informatici/openhospital/releases/
 #[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $ohreleases = Invoke-RestMethod -uri "$($releases_url)"
 $ohreleases = $ohreleases | Select-Object tag_name
+$ohreleases = $ohrelease.TrimStart("@{tag_name=")
 
 	Write-Host "Latest OH version is" $ohreleases
 	Write-Host ""
