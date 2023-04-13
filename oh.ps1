@@ -1086,18 +1086,10 @@ function check_latest_oh_version {
 #
 
 $releases_url = "https://api.github.com/repos/informatici/openhospital/releases"
+#[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$ohreleases = Invoke-RestMethod -uri "$($releases_url)"
 
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$releases = Invoke-RestMethod -uri "$($releases_url)"
-
-# Get most recent release from the list where name starts with 'master'.
-$latestMasterBuild = $releases
-	Write-Host "Latest OH version is" $latestMasterBuild
-$latestMasterBuild = $releases | Where { $_.name.StartsWith("master") } 
-
-
-#	Write-Host "Latest OH version is" $LATEST_OH_VERSION
-	Write-Host "Latest OH version is" $latestMasterBuild
+	Write-Host "Latest OH version is" $ohreleases | Select-Object tag_name
 	Write-Host ""
 }
 
