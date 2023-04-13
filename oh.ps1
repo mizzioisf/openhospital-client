@@ -1088,9 +1088,14 @@ function check_latest_oh_version {
 $releases_url = "https://api.github.com/repos/informatici/openhospital/releases/latest"
 #[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $ohreleases = Invoke-RestMethod -uri "$($releases_url)"
-$ohreleases = $ohreleases | Select-Object tag_name
+#TrimStart("jdbc:mysql://").Split(":",2)[0]
+
+$ohreleases2 = $ohreleases | Select-String tag_name
+$ohreleases3 = $ohreleases2.TrimStart("@{tag_name")
 
 	Write-Host "Latest OH version is" $ohreleases
+	Write-Host "Latest OH version is" $ohreleases2
+	Write-Host "Latest OH version is" $ohreleases3
 	Write-Host ""
 }
 
