@@ -850,24 +850,25 @@ function import_database {
 
 	# EXPERIMENTAL ONLY
 	# workaround for hard coded password limit
-	Write-Host "Setting admin password..."
-	cd "./$SQL_EXTRA_DIR/"
+	if ( ($API_SERVER -eq "On") ){
+		Write-Host "Setting admin password..."
+		cd "$OH_PATH/$SQL_EXTRA_DIR/"
 
     $SQLCOMMAND=@"
    --local-infile=1 -u root -p$DATABASE_ROOT_PW -h $DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME -e "source ./reset_admin_password_strong.sql"
 "@
-	try {
-		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
- 	}
-	catch {
-		Write-Host "Error! Exiting." -ForeGroundColor Red
-		shutdown_database;
-		cd "$CURRENT_DIR"
-		Read-Host; exit 2
+		try {
+			Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+	 	}
+		catch {
+			Write-Host "Error! Exiting." -ForeGroundColor Red
+			shutdown_database;
+			cd "$CURRENT_DIR"
+			Read-Host; exit 2
+		}
 	}
-	cd "$OH_PATH"
 
-
+	# end
 	Write-Host "Database imported!"
 	cd "$OH_PATH"
 }
