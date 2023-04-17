@@ -271,7 +271,7 @@ function script_menu {
 	Write-Host "   C    set OH in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"
 	Write-Host "   S    set OH in SERVER mode (portable)"
-	Write-Host "   l    $OH_LANGUAGE_LIST - set language"
+	Write-Host "   l    $OH_LANGUAGE_LIST -> set language"
 	Write-Host "   E    toggle EXPERT_MODE - use at your own risk!"
 	Write-Host "   v    show configuration"
 	Write-Host "   q    quit"

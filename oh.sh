@@ -208,7 +208,7 @@ function script_menu {
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
-	echo "   -l    [ $OH_LANGUAGE_LIST ] - set language"
+	echo "   -l    [ $OH_LANGUAGE_LIST ] -> set language"
 	echo "   -v    show configuration"
 	echo "   -E    toggle EXPERT MODE - use at your own risk!"
 	echo "   -q    quit"
@@ -996,9 +996,10 @@ function parse_user_input {
 			;;
 		esac
 		#
-		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
+		script_menu;
+		if (( $2==0 )); then EXPERT_MODE="on"; else option=""; fi 
+		interactive_menu
 		#option="Z";
-		#interactive_menu;
 		;;
 	###################################################
 	C)	# start in CLIENT mode
@@ -1409,7 +1410,7 @@ cd "$OH_PATH"
 OPTIND=1 
 # list of arguments expected in user input (- option)
 # E is excluded from command line option
-OPTSTRING=":ACPSdDGhil:msrtvequQXVZ?" 
+OPTSTRING=":AECPSdDGhil:msrtvequQXVZ?" 
 COMMAND_LINE_ARGS=$@
 
 # Parse arguments passed via command line
@@ -1490,11 +1491,15 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 		# start database
 		start_database;
 	fi
-	# check for API server
-	if [ "$API_SERVER" = "on" ]; then
-		start_api_server;
-	fi
 fi
+
+# check for API server
+if [ "$API_SERVER" = "on" ]; then
+	start_api_server;
+fi
+
+# test if database connection is working
+test_database_connection;
 
 ######## OH startup
 
@@ -1523,9 +1528,6 @@ if [ "$OH_MODE" = "SERVER" ]; then
 	done
 else
 	######## Open Hospital GUI startup - only for CLIENT or PORTABLE mode
-
-	# test if database connection is working
-	test_database_connection;
 
 	# generate config files if not existent
 	write_config_files;
