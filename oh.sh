@@ -543,7 +543,7 @@ function java_lib_setup {
 
 	# CLASSPATH setup
 	# include OH jar file
-	OH_CLASSPATH="$OH_PATH"/$OH_DIR/bin/$OH_GUI
+	OH_CLASSPATH="$OH_PATH"/$OH_DIR/bin/$OH_GUI_JAR
 	
 	# include all needed directories
 	OH_CLASSPATH=$OH_CLASSPATH:"$OH_PATH"/$OH_DIR/bundle
@@ -827,7 +827,7 @@ function start_api_server {
 	#$JAVA_BIN -client -Xms64m -Xmx1024m -cp "bin/openhospital-api-0.0.2.jar:rsc:static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$LOG_FILE 2>&1
 	
 	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
-	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/openhospital-api-0.0.2.jar:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1 &
+	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/$OH_API_JAR:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1 &
 	
 	if [ $? -ne 0 ]; then
 		echo "An error occurred while starting Open Hospital API. Exiting."
@@ -996,9 +996,8 @@ function parse_user_input {
 			;;
 		esac
 		#
-		script_menu;
-		if (( $2==0 )); then EXPERT_MODE="on"; else option=""; fi 
-		interactive_menu
+		if (( $2==0 )); then EXPERT_MODE="on"; fi 
+		interactive_menu;
 		#option="Z";
 		;;
 	###################################################
@@ -1083,7 +1082,6 @@ function parse_user_input {
 			exit 0;
 		fi
 		cat $HELP_FILE | less;
-		echo "Press any key to continue"; read;
 		;;
 	###################################################
 	i)	# initialize/install OH database
