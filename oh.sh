@@ -759,7 +759,7 @@ function import_database {
 	if [ "$API_SERVER" = "on" ]; then
 		echo "Setting admin password..."
 		cd "$OH_PATH/$SQL_EXTRA_DIR/"
-		../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./reset_admin_password_strong.sql >> ../../$LOG_DIR/$LOG_FILE 2>&1
+		$OH_PATH/$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./reset_admin_password_strong.sql >> ../../$LOG_DIR/$LOG_FILE 2>&1
 		if [ $? -ne 0 ]; then
 		echo "Error! Exiting."
 			shutdown_database;
