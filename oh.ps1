@@ -439,6 +439,11 @@ function set_defaults {
 		$script:API_SERVER="off"
 	}
 
+	# UI interface - set default to off
+	if ( [string]::IsNullOrEmpty($UI_INTERFACE) ) {
+		$script:UI_INTERFACE="off"
+	}
+
 	# EXPERT_MODE features - set default to off
 	if ( [string]::IsNullOrEmpty($EXPERT_MODE) ) {
 		$script:EXPERT_MODE="off"
@@ -1568,13 +1573,22 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 		# start database
 		start_database;
 	}
-	# check for API server
-	if ( $API_SERVER -eq "on" ) {
-		start_api_server;
-	}
 }
 
 ######## OH startup
+
+# test if database connection is working
+test_database_connection;
+
+# check for API server
+if ( $API_SERVER -eq "on" ) {
+	start_api_server;
+}
+
+# check for UI interface
+if ( $UI_INTERFACE -eq "on" ) {
+	start_ui;
+}
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if ( $OH_MODE -eq "SERVER" ) {
@@ -1618,9 +1632,6 @@ if ( $OH_MODE -eq "SERVER" ) {
 }
 else {
 	######## Open Hospital GUI startup - only for CLIENT or PORTABLE mode
-
-	# test if database connection is working
-	test_database_connection;
 
 	# generate config files if not existent
 	write_config_files;

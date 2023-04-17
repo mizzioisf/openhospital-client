@@ -389,6 +389,11 @@ function set_defaults {
 	if [ -z "$API_SERVER" ]; then
 		API_SERVER="off"
 	fi
+	
+	# UI interface - set default to off
+	if [ -z "$UI_INTERFACE" ]; then
+		UI_INTERFACE="off"
+	fi
 
 	# EXPERT_MODE features - set default to off
 	if [ -z "$EXPERT_MODE" ]; then
@@ -1491,15 +1496,20 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	fi
 fi
 
+######## OH startup
+
+# test if database connection is working
+test_database_connection;
+
 # check for API server
 if [ "$API_SERVER" = "on" ]; then
 	start_api_server;
 fi
 
-# test if database connection is working
-test_database_connection;
-
-######## OH startup
+# check for UI interface
+if [ "$UI_INTERFACE" = "on" ]; then
+	start_ui;
+fi
 
 # if SERVER mode is selected, wait for CTRL-C input to exit
 if [ "$OH_MODE" = "SERVER" ]; then
