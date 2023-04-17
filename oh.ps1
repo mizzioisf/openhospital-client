@@ -847,6 +847,27 @@ function import_database {
 		cd "$CURRENT_DIR"
 		Read-Host; exit 2
 	}
+
+	# EXPERIMENTAL ONLY
+	# workaround for hard coded password limit
+	Write-Host "Setting admin password..."
+	cd "./$SQL_EXTRA_DIR/"
+
+    $SQLCOMMAND=@"
+   --local-infile=1 -u root -p$DATABASE_ROOT_PW -h $DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME -e "source ./reset_admin_password_strong.sql"
+"@
+	try {
+		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
+ 	}
+	catch {
+		Write-Host "Error! Exiting." -ForeGroundColor Red
+		shutdown_database;
+		cd "$CURRENT_DIR"
+		Read-Host; exit 2
+	}
+	cd "$OH_PATH"
+
+
 	Write-Host "Database imported!"
 	cd "$OH_PATH"
 }
@@ -914,24 +935,6 @@ function start_api_server {
 		Write-Host "Error: missing $API_SETTINGS settings file. Exiting" -ForeGround Red
 		exit 1;
 	}
-
-	# workaround for hard coded password limit
-	Write-Host "Setting admin password..."
-	cd "./$SQL_EXTRA_DIR/"
-
-    $SQLCOMMAND=@"
-   --local-infile=1 -u root -p$DATABASE_ROOT_PW -h $DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME -e "source ./reset_admin_password_strong.sql"
-"@
-	try {
-		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
- 	}
-	catch {
-		Write-Host "Error! Exiting." -ForeGroundColor Red
-		shutdown_database;
-		cd "$CURRENT_DIR"
-		Read-Host; exit 2
-	}
-	cd "$OH_PATH"
 
 	Write-Host "------------------------"
 	Write-Host "---- EXPERIMENTAL ------"
