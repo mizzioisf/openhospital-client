@@ -1244,7 +1244,7 @@ function parse_user_input {
 			mysql_check;
 			test_database_connection;
 		fi
-		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	u)	# create Desktop shortcut
@@ -1425,9 +1425,8 @@ OPTIND=1
 OPTSTRING=":AECPSdDGhil:msrtvequQXVZ?" 
 COMMAND_LINE_ARGS=$@
 
-# Parse arguments passed via command line
+# Parse arguments passed via command line / interactive input
 if [[ ${#COMMAND_LINE_ARGS} -ne 0 ]]; then
-	# function to parse input
 	while getopts ${OPTSTRING} option; do
 		parse_user_input $option 0; # non interactive
 	done
