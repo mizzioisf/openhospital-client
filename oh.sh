@@ -249,16 +249,13 @@ function interactive_menu {
 		clear;
 		script_menu;
 		echo ""
-		IFS=
+		#IFS=
 		read -n 1 -p "Please select an option or press enter to start OH: " option
 		if [[ $option != "" ]]; then 
 			parse_user_input $option 1; # interactive
 		else
 			break # if enter pressed exit from loop and start OH
 		fi
-#		if [[ "$option" == "Z" ]]; then
-#			break; # start OH
-#		fi
 	done
 #	OPTIND=1 
 }
@@ -1002,9 +999,8 @@ function parse_user_input {
 		esac
 		#
 		write_api_config_file;
-		#if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
+		if (( $2==0 )); then API_SERVER="on"; fi
 		option="Z";
-		#interactive_menu;
 		;;
 	###################################################
 	E)	# toggle EXPERT_MODE features
@@ -1017,9 +1013,8 @@ function parse_user_input {
 			;;
 		esac
 		#
-		if (( $2==0 )); then EXPERT_MODE="on"; fi 
-		interactive_menu;
-		#option="Z";
+		if (( $2==0 )); then EXPERT_MODE="on"; interactive_menu; fi
+		option="Z";
 		;;
 	###################################################
 	C)	# start in CLIENT mode
@@ -1034,7 +1029,7 @@ function parse_user_input {
 		OH_MODE="PORTABLE"
 		set_oh_mode;
 		echo ""
-		if (( $2==0 )); then option="Z"; else read; fi
+		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
 	S)	# start in SERVER mode
@@ -1119,7 +1114,7 @@ function parse_user_input {
 		set_language;
 		mysql_check;
 		# ask user for database root password
-		read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " DATABASE_ROOT_PW
+		read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " -s DATABASE_ROOT_PW
 		echo ""
 		echo "Installing the database....."
 		echo ""
@@ -1158,7 +1153,7 @@ function parse_user_input {
 		read -p "Enter database server TCP port [DATABASE_PORT]: " DATABASE_PORT
 		read -p "Enter database database name [DATABASE_NAME]: " DATABASE_NAME
 		read -p "Enter database user name [DATABASE_USER]: " DATABASE_USER
-		read -p "Enter database password [DATABASE_PASSWORD]: " DATABASE_PASSWORD
+		read -p "Enter database password [DATABASE_PASSWORD]: " -s DATABASE_PASSWORD
 
 		echo "Do you want to save entered settings to OH configuration files?"
 		get_confirmation 1;
