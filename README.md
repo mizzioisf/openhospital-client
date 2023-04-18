@@ -474,7 +474,7 @@ In order to download and unzip MariaDB:
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
-# oh.sh / oh.ps1 - features and development
+## oh.sh / oh.ps1 - features and development
 
 See CHANGELOG file.
 
