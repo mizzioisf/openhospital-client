@@ -257,7 +257,7 @@ function script_menu {
 	# Clear-Host # clear console
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host "|                                                                 |"
-	Write-Host "|                    Open Hospital - $OH_VERSION                       |"
+	Write-Host "|                  Open Hospital - $OH_VERSION                         |"
 	Write-Host "|                                                                 |"
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
@@ -273,7 +273,7 @@ function script_menu {
 	Write-Host "   S    set OH in SERVER mode (portable)"
 	Write-Host "   l    $OH_LANGUAGE_LIST -> set language"
 	Write-Host "   E    toggle EXPERT_MODE - use at your own risk!"
-	Write-Host "   v    show configuration"
+	Write-Host "   h    show help"
 	Write-Host "   q    quit"
 	Write-Host ""
 	if ( $EXPERT_MODE -eq "on" ) {
@@ -285,8 +285,8 @@ function script_menu {
 function script_menu_advanced {
 	# show menu
 	# Clear-Host # clear console
-	Write-Host "   --------------------- "
-	Write-Host "    advanced options"
+	Write-Host "   -------------------------------- "
+	Write-Host "    EXPERT MODE - advanced options"
 	Write-Host ""
 	Write-Host "   A    toggle API server - EXPERT_MODE"
 	Write-Host "   e    export/save OH database"
@@ -299,10 +299,9 @@ function script_menu_advanced {
 	Write-Host "   s    save OH configuration"
 	Write-Host "   t    test database connection (CLIENT mode only)"
 	Write-Host "   u    create Desktop shortcut with current params"
+	Write-Host "   v    show configuration"
 	Write-Host "   V    check for latest OH version"
 	Write-Host "   X    clean/reset OH installation"
-	Write-Host ""
-	Write-Host "   h    show help"
 	Write-Host ""
 }
 
@@ -849,7 +848,7 @@ function import_database {
 	}
 
 	# EXPERIMENTAL ONLY
-	# workaround for hard coded password limit
+	# workaround for hard coded password limit - execute extra sql script 
 	if ( ($API_SERVER -eq "On") ){
 		Write-Host "Setting admin password..."
 		cd "$OH_PATH/$SQL_EXTRA_DIR/"

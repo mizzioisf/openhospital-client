@@ -192,7 +192,7 @@ function script_menu {
 	# show help / user options
 	echo " -----------------------------------------------------------------"
 	echo "|                                                                 |"
-	echo "|                    Open Hospital - $OH_VERSION                       |"
+	echo "|                  Open Hospital - $OH_VERSION                         |"
 	echo "|                                                                 |"
 	echo " -----------------------------------------------------------------"
 	echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
@@ -209,8 +209,8 @@ function script_menu {
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
 	echo "   -l    [ $OH_LANGUAGE_LIST ] -> set language"
-	echo "   -v    show configuration"
 	echo "   -E    toggle EXPERT MODE - use at your own risk!"
+	echo "   -h    show help"
 	echo "   -q    quit"
 	echo ""
 	if [ "$EXPERT_MODE" == "on" ]; then
@@ -221,8 +221,8 @@ function script_menu {
 ###################################################################
 function script_menu_advanced {
 	# show help / user options
-	echo "   --------------------- "
-	echo "    advanced options"
+	echo "   -------------------------------- "
+	echo "    EXPERT MODE - advanced options"
 	echo ""
 	echo "   -A    toggle API server - EXPERIMENTAL"
 	echo "   -e    export/save OH database"
@@ -235,10 +235,9 @@ function script_menu_advanced {
 	echo "   -s    save OH configuration"
 	echo "   -t    test database connection (CLIENT mode only)"
 	echo "   -u    create Desktop shortcut"
+	echo "   -v    show configuration"
 	echo "   -V    check for latest OH version"
 	echo "   -X    clean/reset OH installation"
-	echo ""
-	echo "   -h    show help"
 	echo ""
 }
 
@@ -752,7 +751,7 @@ function import_database {
 	fi
 	
 	# EXPERIMENTAL ONLY
-	# workaround for hard coded password limit
+	# workaround for hard coded password limit - execute extra sql script 
 	if [ "$API_SERVER" = "on" ]; then
 		echo "Setting admin password..."
 		cd "$OH_PATH/$SQL_EXTRA_DIR/"

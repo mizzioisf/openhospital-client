@@ -68,21 +68,25 @@ cd openhospital-client
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
+ ------------------------------------------------------------------
+ EXPERT MODE activated
+ API server set to off
  -----------------------------------------------------------------
+
  Usage: oh.sh -[OPTION] 
 
    -C    set OH in CLIENT mode
    -P    set OH in PORTABLE mode
    -S    set OH in SERVER mode (portable)
-   -l    set language: en|fr|es|it|pt|ar
-   -s    save OH configuration
-   -X    clean/reset OH installation
-   -v    show configuration
+   -l    [ en|fr|es|it|pt|ar ] -> set language
+   -E    toggle EXPERT MODE - use at your own risk!
+   -h    show help
    -q    quit
 
-   --------------------- 
-    advanced options
+   -------------------------------- 
+    EXPERT MODE - advanced options
 
+   -A    toggle API server - EXPERIMENTAL
    -e    export/save OH database
    -r    restore OH database
    -d    toggle log level INFO/DEBUG
@@ -90,11 +94,12 @@ cd openhospital-client
    -D    initialize OH with Demo data
    -i    initialize/install OH database
    -m    configure database connection manually
+   -s    save OH configuration
    -t    test database connection (CLIENT mode only)
    -u    create Desktop shortcut
-   -E    toggle EXPERIMENTAL features - use at your own risk!
-
-   -h    show help
+   -v    show configuration
+   -V    check for latest OH version
+   -X    clean/reset OH installation
 ```
 
 ## Windows
@@ -104,12 +109,14 @@ cd openhospital-client
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                       Open Hospital - 1.12.1                    |
+|                     Open Hospital - 1.12.1                      |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
  -----------------------------------------------------------------
-
+ EXPERT MODE activated
+ API server set to off
+ -----------------------------------------------------------------
  Usage: oh.ps1 [ -lang en|fr|it|es|pt|ar ] 
                [ -mode PORTABLE|CLIENT ]
                [ -loglevel INFO|DEBUG ] 
@@ -119,15 +126,15 @@ cd openhospital-client
     C    set OH in CLIENT mode
     P    set OH in PORTABLE mode
     S    set OH in SERVER mode (portable)
-    l    set language: en|fr|es|it|pt|ar
-    s    save OH configuration
-    X    clean/reset OH installation
-    v    show configuration
+    l    [ en|fr|es|it|pt|ar ] -> set language
+    E    toggle EXPERT MODE - use at your own risk!
+    h    show help
     q    quit
 
-   --------------------- 
-    advanced options
+   -------------------------------- 
+    EXPERT MODE - advanced options
 
+    A    toggle API server - EXPERIMENTAL
     e    export/save OH database
     r    restore OH database
     d    toggle log level INFO/DEBUG
@@ -135,11 +142,12 @@ cd openhospital-client
     D    initialize OH with Demo data
     i    initialize/install OH database
     m    configure database connection manually
+    s    save OH configuration
     t    test database connection (CLIENT mode only)
-    u    create Desktop shortcut with current params
-    E    toggle EXPERIMENTAL features - use at your own risk!
-
-    h    show help
+    u    create Desktop shortcut
+    v    show configuration
+    V    check for latest OH version
+    X    clean/reset OH installation
 ```
 
 Note: The **oh.bat** launches the **oh.ps1** startup file automatically.
@@ -174,13 +182,14 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 - **P**    set Open Hospital to start in PORTABLE mode, where data is saved locally
 - **S**    set Open Hospital to start in SERVER mode: the local portable instance of MariaDB is launched to act as a portable database server
 - **l**    set local language: en|fr|it|es|pt|ar
-- **s**    save / write / generate OH configuration files (oh/rsc/\*.properties) and exit
+- **E**    toggle EXPERT MODE: used to show advanced options and features. Use at your own risk!
+- **h**    show help
 - **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
-- **v**    show Open Hospital external software version and configuration
 - **q**    quit (windows only)
 
 ### Advanced options
 
+- **A**    toggle API server: activate and start openhospital api jetty server - EXPERIMENTAL
 - **e**    export / save / dump the Open Hospital database in sql format
 - **r**    restore Open Hospital database from backup or external sql file: user will be prompted for input sql file
 - **d**    toggle log level between INFo and DEBUG - useful to execute OH in debug mode in order to log errors or bugs with more extended informations to log file
@@ -188,10 +197,11 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 - **D**    initialize OH database with Demo data - loads a demo database in order to test the software 
 - **i**    initialize / install OH database
 - **m**    configure OH database connection settings manually
+- **s**    save / write / generate OH configuration files (oh/rsc/\*.properties) and exit
 - **t**    test database connection to the configured database server (Client mode only)
 - **u**    create Desktop shortcut with current params (Windows / Linux)
-- **E**    toggle EXPERIMENTAL features: used to show beta / experimental feature of the software. Use at your own risk!
-- **h**    show help 
+- **v**    show Open Hospital external software version and configuration
+- **V**    create online for latest OH version released
 
 # Script configuration
 
