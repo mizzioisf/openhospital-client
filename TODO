@@ -1,2 +1,0 @@
-To disable IPV6:
-java -Djava.net.preferIPv4Stack=true 
