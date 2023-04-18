@@ -528,7 +528,7 @@ echo "[Desktop Entry]
 	# Describes the categories in which this entry should be shown
 	Categories=Utility;Application;
 	" > $desktop_path/OpenHospital.desktop
-echo "Done !"
+echo "Done!"
 }
 
 ###################################################################
@@ -1249,9 +1249,7 @@ function parse_user_input {
 	###################################################
 	u)	# create Desktop shortcut
 		echo ""
-		echo "Creating/updating OH shortcut on Desktop..."
 		create_desktop_shortcut;
-		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
