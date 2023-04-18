@@ -209,7 +209,7 @@ function script_menu {
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
 	echo "   -l    [ $OH_LANGUAGE_LIST ] -> set language"
-	echo "   -E    toggle EXPERT MODE - use at your own risk!"
+	echo "   -E    toggle EXPERT MODE - show advanced options"
 	echo "   -h    show help"
 	echo "   -q    quit"
 	echo ""
