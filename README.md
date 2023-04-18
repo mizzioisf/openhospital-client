@@ -476,6 +476,6 @@ In order to download and unzip MariaDB:
 
 ## oh.sh / oh.ps1 - features and development
 
-See CHANGELOG file.
+Check online documentation.
 
 *last updated: 2023.04.18*
