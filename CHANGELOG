@@ -1,0 +1,50 @@
+# oh.sh / oh.ps1 - features and development
+
+In order to have a complete, easy to support and extensible solution to run Open Hospital on Linux, oh.sh has been rewritten, also adding a few possible useful user functions.
+For the same reason, a completely new powershell script has been writtend for Windows: oh.ps1 (run by oh.bat).
+
+A short description of changes for the Linux version (mostly the same behavior and options are applicable to the windows oh.ps1 version):
+
+- Complete overhaul of the code, reworked the entire scripts
+- Everything is now based on functions and parametric variables
+- Menu based, interactive options for many operations: see **./oh.sh -h** (or see below for short description)
+- **Unified script** for:
+    Portable 64bit (default) and 32bit (with automatic architecture detection)
+    Open Hospital client (no more separated startup.sh is needed ;-) (**it is now possible to package every linux distro, client/portable/32 or 64 bit with a single package**)
+
+- **New** **Interactive menu**: it is possible to navigate through menu options
+- **New**: Direct reading/writing of OH settings files for language and debug mode
+- **New**: Desktop shortcut creation with icon (Windows and Linux)
+- **New**: SERVER mode support (see oh.sh -S)
+- **New**: Added "-m" option to configure OH database settings manually
+- **New**: Arabic Language support: **oh.sh -l ar**
+- **New**: Full 64bit support on Windows, also for DICOM !
+- **New**: Set default to MULTIUSER environment, so login mask is presented at startup
+-----
+- Language support (both via variable in the script or user input option: **oh.sh -l fr**)
+- Demo database support (See oh.sh -D)
+- Client mode support (see oh.sh -C)
+- Save (see oh.sh -s) / Restore (oh.sh -r) database, available both for CLIENT and PORTABLE mode !
+- GSM setup integrated via -G command line option - setupGSM.sh (https://github.com/informatici/openhospital-gui/blob/develop/SetupGSM.sh) is obsolete now
+- debug mode -> set log4.properties to DEBUG mode (default is INFO)
+- configuration file generation (set WRITE_CONFIG_FILES=on in script) -> mysql and oh configuration files are not generated automatically or overwritten, useful for production environment
+- test database connection option (see oh.sh -t)
+- displays software versions and current configuration (see oh.sh -v)
+- save / write / generate config files (see oh.sh -s)
+- install / initialize database (see oh.sh -i)
+- Centralized variable managing (see related config file changes applied): now all (well, almost all, still some "isf" reference in SQL creation script...that will be removed ;-) references to database password, mysql host, etc. etc. are in the script and can be easily adapted / modified for any need
+- More flexible execution and configuration options
+- Automatic configuration files generation
+- Everything is commented in the code and a brief output all operations is shown in console
+- Startup, database and OH operations are logged to configurable output file
+- Backward compatible with old versions and installations, no default behaviour change
+- Unified and simplified subdirectories structure
+- Added sql subdirectory to organize sql creation scripts
+- Added various checks about correct settings of parameters and startup of services
+- Added security controls (no more _rm -rf_ here and there :-)
+- Added support for **MariaDB** for better security and performance
+- Windows -> addedd support for path with spaces / special characters 
+- Updated MySQL db and user creation syntax (now compatible with MySQL 8 - unsupported)
+- Fixed _a_few_ bugs ;-)
+
+*last updated: 2023.04.18*
