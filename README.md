@@ -1,6 +1,6 @@
 # ![](./doc/media/OH-icon.png) OH - Open Hospital Portable | Client 
 
-[![GitHub release](https://img.shields.io/github/release/openhospital/openhospital.svg)](https://github.com/informatici/openhospital/releases/latest)
+[![GitHub release](https://img.shields.io/badge/openhospital-latest-blue)](https://github.com/informatici/openhospital/releases/latest)
 [![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/informatici/openhospital/blob/master/LICENSE)
 
 OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Health Information Management System (HIMS) software application.
