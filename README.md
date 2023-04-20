@@ -1,8 +1,5 @@
 # ![](./doc/media/OH-icon.png) OH - Open Hospital Portable | Client 
 
-se non ci
-https://img.shields.io/github/v/release/informatici/openhospital?color=orange&label=latest%20release
-
 [![GitHub release](https://img.shields.io/github/v/release/informatici/openhospital?color=orange&label=latest%20release)](https://github.com/informatici/openhospital/releases/latest)
 [![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/informatici/openhospital/blob/master/LICENSE)
 
