@@ -78,7 +78,7 @@ DATABASE_PASSWORD="isf123"
 #######################  OH configuration  #########################
 # path and directories
 OH_DIR="oh"
-OH_DOC_DIR="../doc"
+OH_DOC_DIR="doc"
 CONF_DIR="data/conf"
 DATA_DIR="data/db"
 PHOTO_DIR="data/photo"
@@ -360,6 +360,11 @@ function set_defaults {
 	# OH language - set default to en
 	if [ -z "$OH_LANGUAGE" ]; then
 		OH_LANGUAGE="en"
+	fi
+	
+	# OH DOC DIR - set default to "doc" (../doc for oh)
+	if [ -z "$OH_DOC_DIR" ]; then
+		OH_DOC_DIR="doc"
 	fi
 
 	# set database creation script in chosen language
@@ -901,7 +906,7 @@ function write_config_files {
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$OH_SETTINGS ]; then
 		[ -f ./$OH_DIR/rsc/$OH_SETTINGS ] && mv -f ./$OH_DIR/rsc/$OH_SETTINGS ./$OH_DIR/rsc/$OH_SETTINGS.old
 		echo "Writing OH configuration file -> $OH_SETTINGS..."
-		sed -e "s/OH_MODE/$OH_MODE/g" -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&$OH_DOC_DIR&g" \
+		sed -e "s/OH_MODE/$OH_MODE/g" -e "s/OH_LANGUAGE/$OH_LANGUAGE/g" -e "s&OH_DOC_DIR&../$OH_DOC_DIR&g" \
 		-e "s/DEMODATA=off/"DEMODATA=$DEMO_DATA"/g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
 		-e "s/PHOTO_DIR/$PHOTO_DIR_ESCAPED/g" -e "s/APISERVER=off/"APISERVER=$API_SERVER"/g" \
 		./$OH_DIR/rsc/$OH_SETTINGS.dist > ./$OH_DIR/rsc/$OH_SETTINGS

@@ -133,7 +133,7 @@ $script:DATABASE_PASSWORD="isf123"
 #######################  OH configuration  #########################
 # path and directories
 $script:OH_DIR="oh"
-$script:OH_DOC_DIR="../doc"
+$script:OH_DOC_DIR="doc"
 $script:CONF_DIR="data/conf"
 $script:DATA_DIR="data/db"
 $script:PHOTO_DIR="data/photo"
@@ -407,6 +407,11 @@ function set_defaults {
 	# OH mode - set default to PORTABLE
 	if ( [string]::IsNullOrEmpty($OH_MODE) ) {
 		$script:OH_MODE="PORTABLE"
+	}
+	
+	# OH DOC DIR - set default to "doc" (../doc for oh)
+	if ( [string]::IsNullOrEmpty($OH_DOC_DIR) ) {
+		$script:OH_DOC_DIR="doc"
 	}
 	
 	# OH language - set default to en
@@ -1028,7 +1033,7 @@ function write_config_files {
 		# set LANGUAGE
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("OH_LANGUAGE","$OH_LANGUAGE") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
 		# set DOC_DIR
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("OH_DOC_DIR","$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("OH_DOC_DIR","../$OH_DOC_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
 		# set PHOTO_DIR
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("PHOTO_DIR","$PHOTO_DIR") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
 		# set singleuser = yes / no
