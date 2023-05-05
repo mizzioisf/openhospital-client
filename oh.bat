@@ -125,7 +125,7 @@ set DATABASE_PASSWORD=isf123
 REM #######################  OH configuration  #########################
 REM # path and directories
 set OH_DIR="oh"
-set OH_DOC_DIR="doc"
+set OH_DOC_DIR="..\doc"
 set OH_SINGLE_USER="no"
 set CONF_DIR="data\conf"
 set DATA_DIR="data\db"
@@ -236,8 +236,7 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\database.properties.dist %OH_PATH%\%OH_DIR
 
 REM ### Setup settings.properties
 
-REM set OH_DOC_DIR=..\%OH_DOC_DIR%
-set OH_DOC_DIR=%OH_DOC_DIR%
+set OH_DOC_DIR=..^\%OH_DOC_DIR%
 
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\settings.properties.dist %OH_PATH%\%OH_DIR%\rsc\settings.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_MODE %OH_MODE% -- %OH_PATH%\%OH_DIR%\rsc\settings.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
