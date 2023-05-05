@@ -104,7 +104,7 @@ set OH_PATH=%~dps0
 
 REM ##########  set mode  #########
 REM set OH_MODE = PORTABLE SERVER CLIENT
-set OH_MODE=PORTABLE
+set OH_MODE="PORTABLE"
 
 REM ##########  set language  #########
 REM # Language setting - default set to en
