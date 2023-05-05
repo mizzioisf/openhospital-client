@@ -235,9 +235,6 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\database.properties.dist %OH_PATH%\%OH_DIR
 %REPLACE_PATH%\replace.exe DBNAME %DATABASE_NAME% -- %OH_PATH%\%OH_DIR%\rsc\database.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
 REM ### Setup settings.properties
-
-set OH_DOC_DIR=..^\%OH_DOC_DIR%
-
 echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\settings.properties.dist %OH_PATH%\%OH_DIR%\rsc\settings.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_MODE %OH_MODE% -- %OH_PATH%\%OH_DIR%\rsc\settings.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe OH_LANGUAGE %OH_LANGUAGE% -- %OH_PATH%\%OH_DIR%\rsc\settings.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
