@@ -910,9 +910,6 @@ function write_config_files {
 
 ###################################################################
 function clean_database {
-	# kill mariadb/mysqld processes
-	echo "Killing mariadb/mysql processes..."
-	killall mariadbd
 	# remove socket and pid file
 	echo "Removing socket and pid file..."
 	rm -rf ./$TMP_DIR/*
@@ -1305,6 +1302,17 @@ function parse_user_input {
 	###################################################
 	X)	# clean
 		echo ""
+		# killing processes
+        	echo "Killing Open Hospital processes..."
+		echo "Warning: do you want to kill all java and mysql/mariadb processes ?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then
+			# kill mariadb/mysqld processes
+			echo "Killing mariadb/mysql processes..."
+			killall mariadbd
+			killall java
+		fi
+		# cleaning files
         	echo "Cleaning Open Hospital installation..."
 		echo "Warning: do you want to remove all existing log files?"
 		read -p "Press [y] to confirm: " choice
