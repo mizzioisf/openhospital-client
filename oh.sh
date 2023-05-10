@@ -922,7 +922,7 @@ function clean_database {
 	# remove database files
 	echo "Removing databases..."
 	# removing all databases under default data dir (prod / demo)
-	rm -rf "$OH_PATH/$DEFAULT_DATADIR/*"
+	rm -rf ./$DEFAULT_DATADIR/*
 }
 
 ###################################################################
