@@ -1324,8 +1324,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			else {
 				Write-Host "Restoring Open Hospital database...."
 				# ask user for database to restore
-				$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $BACKUP_DIR subdirectory) -> "
-				if ( !(Test-Path "$OH_PATH/$BACKUP_DIR/$DB_CREATE_SQL" -PathType leaf)) {
+				$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> "
+				if ( !(Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf)) {
 					Write-Host "Error: No SQL file found!" -ForegroundColor Red
 				}
 				else {
