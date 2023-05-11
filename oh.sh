@@ -782,7 +782,7 @@ function dump_database {
 	if [ -x ./$MYSQL_DIR/bin/mysqldump ]; then
 		mkdir -p "$OH_PATH/$BACKUP_DIR"
 		echo "Dumping $MYSQL_NAME database..."
-		./$MYSQL_DIR/bin/mysqldump --skip-extended-insert -u root --password=$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME > ./$BACKUP_DIR/mysqldump_$DATE.sql
+		./$MYSQL_DIR/bin/mysqldump --skip-extended-insert -u $DATABASE_USER --password=$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME > ./$BACKUP_DIR/mysqldump_$DATE.sql
 		if [ $? -ne 0 ]; then
 			echo "Error: Database not dumped! Exiting."
 			cd "$CURRENT_DIR"
