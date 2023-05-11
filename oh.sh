@@ -1202,11 +1202,11 @@ function parse_user_input {
 		else
 			echo "Restoring Open Hospital database...."
 			# ask user for database/sql script to restore
-			read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
-			if [ ! -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
+			read -p "Enter SQL dump/backup file that you want to restore - (in $OH_PATH/$BACKUP_DIR subdirectory) -> " DB_CREATE_SQL
+			if [ ! -f ./$OH_PATH/$BACKUP_DIR/$DB_CREATE_SQL ]; then
 				echo "Error: No SQL file found! Exiting."
 			else
-				echo "Found $SQL_DIR/$DB_CREATE_SQL, restoring it..."
+				echo "Found $DB_CREATE_SQL, restoring it..."
 				# check if mysql utilities exist
 				mysql_check;
 				if [ "$OH_MODE" != "CLIENT" ]; then
