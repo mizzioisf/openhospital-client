@@ -844,7 +844,7 @@ function start_api_server {
 	echo "Starting API server..."
 	echo "Please wait, it might take some time..."
 	echo ""
-	echo "Connect to http://$OH_UI_URL:8080 for dashboard"
+	echo "Connect to http://$OH_UI_URL for dashboard"
 	echo ""
 	
 	#$JAVA_BIN -Djava.library.path=${NATIVE_LIB_PATH} -classpath "$OH_CLASSPATH" org.isf.utils.sms.SetupGSM "$@"
