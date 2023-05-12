@@ -381,7 +381,7 @@ function read_settings {
 
 		$DATABASE_URL=$db_settings."jdbc.url"
 		$DATABASE_URL=$DATABASE_URL.TrimStart("jdbc:mysql://")
-		$script:DATABASE_SERVER=$DATABASE_URL.Split(":",2)[0]
+		$script:DATABASE_SERVER=$DATABASE_URL.Split('/')[2].Split(':')[0]
 		$script:DATABASE_PORT=$DATABASE_URL.Split(":",2)[1].Split("/",2)[0]
 		$script:DATABASE_NAME=$DATABASE_URL.Split(":",2)[1].Split("/",2)[1]
 		$script:DATABASE_USER=$db_settings."jdbc.username"
