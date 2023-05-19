@@ -26,6 +26,6 @@
 hs_err_pid*
 
 # other files
-.bak
-.old
+*.bak
+*.old
 tmp.sh
