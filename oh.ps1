@@ -812,7 +812,7 @@ function set_database_root_pw {
 
 ###################################################################
 function create_database {
-	Write-Host "Creating OH Database..."
+	Write-Host "Creating $DATABASE_NAME database..."
 	# create OH database and user
 	
     $SQLCOMMAND=@"
@@ -830,6 +830,7 @@ function create_database {
 
 ###################################################################
 function import_database {
+	Write-Host "Checking for SQL creation script..."
 	# check for database creation script
 	if (Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf) {
  		Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
@@ -846,7 +847,7 @@ function import_database {
 	cd "./$SQL_DIR"
 
     $SQLCOMMAND=@"
-   --local-infile=1 -u root -p$DATABASE_ROOT_PW -h $DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME -e "source ./$DB_CREATE_SQL"
+   --local-infile=1 -u $DATABASE_USER -p$DATABASE_PASSWORD -h $DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME -e "source ./$DB_CREATE_SQL"
 "@
 	try {
 		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"

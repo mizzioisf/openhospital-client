@@ -723,7 +723,7 @@ function set_database_root_pw {
 
 ###################################################################
 function create_database {
-	echo "Creating OH Database..."
+	echo "Creating $DATABASE_NAME database..."
 	# create OH database and user
 	./$MYSQL_DIR/bin/mysql -u root -p$DATABASE_ROOT_PW --protocol=tcp --host=$DATABASE_SERVER --port=$DATABASE_PORT \
 	-e "CREATE USER '$DATABASE_USER'@'$DATABASE_SERVER' IDENTIFIED BY '$DATABASE_PASSWORD'; \
@@ -739,7 +739,7 @@ function create_database {
 
 ###################################################################
 function import_database {
-	echo "Importing OH Database..."
+	echo "Checking for SQL creation script..."
 	# check for database creation script
 	if [ -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
 		echo "Using SQL file $SQL_DIR/$DB_CREATE_SQL..."
@@ -752,7 +752,8 @@ function import_database {
 	# create OH database structure
 	echo "Importing database schema..."
 	cd "./$SQL_DIR"
-	../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
+#	../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
+	../$MYSQL_DIR/bin/mysql --local-infile=1 -u $DATABASE_USER -p$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
 	if [ $? -ne 0 ]; then
 		echo "Error: Database not imported! Exiting."
 		shutdown_database;
