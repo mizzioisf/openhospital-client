@@ -722,12 +722,12 @@ function set_database_root_pw {
 }
 
 ###################################################################
-function import_database {
+function create_database {
 	echo "Creating OH Database..."
 	# create OH database and user
 	./$MYSQL_DIR/bin/mysql -u root -p$DATABASE_ROOT_PW --protocol=tcp --host=$DATABASE_SERVER --port=$DATABASE_PORT \
-	-e "CREATE DATABASE $DATABASE_NAME CHARACTER SET utf8; CREATE USER '$DATABASE_USER'@'$DATABASE_SERVER' IDENTIFIED BY '$DATABASE_PASSWORD'; \
-	CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'$DATABASE_SERVER'; \
+	-e "CREATE USER '$DATABASE_USER'@'$DATABASE_SERVER' IDENTIFIED BY '$DATABASE_PASSWORD'; \
+	CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE DATABASE $DATABASE_NAME CHARACTER SET utf8; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'$DATABASE_SERVER'; \
 	GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%' ; " >> ./$LOG_DIR/$LOG_FILE 2>&1
 	
 	if [ $? -ne 0 ]; then
@@ -735,7 +735,11 @@ function import_database {
 		shutdown_database;
 		exit 2
 	fi
+}
 
+###################################################################
+function import_database {
+	echo "Importing OH Database..."
 	# check for database creation script
 	if [ -f ./$SQL_DIR/$DB_CREATE_SQL ]; then
 		echo "Using SQL file $SQL_DIR/$DB_CREATE_SQL..."
@@ -1126,6 +1130,7 @@ function parse_user_input {
 		echo " Database user -> $DATABASE_USER"
 		echo " Database password -> $DATABASE_PASSWORD"
 		echo ""
+		create_database;
 		import_database;
 		test_database_connection;
 		echo "Done!"
@@ -1196,34 +1201,38 @@ function parse_user_input {
 	###################################################
 	r)	# restore database
 		# check if database exists
-		echo ""
-		if [ -d ./"$DATA_DIR" ]; then
-			echo "Error: Database already present. Remove existing database before restoring. Exiting."
-		else
-			echo "Restoring Open Hospital database...."
-			# ask user for database/sql script to restore
-			read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
-			if [ ! -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
-				echo "Error: No SQL file found! Exiting."
+#		if [ "$OH_MODE" != "CLIENT" ]; then
+#			"Check if OH database is present on $DATABASE_SERVER"
+			echo ""
+			if [ -d ./"$DATA_DIR" ]; then
+				echo "Error: Database already present. Remove existing database before restoring. Exiting."
 			else
-				echo "Found $DB_CREATE_SQL, restoring it..."
-				# check if mysql utilities exist
-				mysql_check;
-				if [ "$OH_MODE" != "CLIENT" ]; then
-					set_db_name;
-					config_database;
-					initialize_dir_structure;
-					initialize_database;
-					start_database;
-					set_database_root_pw;
+				echo "Restoring Open Hospital database...."
+				# ask user for database/sql script to restore
+				read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
+				if [ ! -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
+					echo "Error: No SQL file found! Exiting."
+				else
+					echo "Found $DB_CREATE_SQL, restoring it..."
+					# check if mysql utilities exist
+					mysql_check;
+					if [ "$OH_MODE" != "CLIENT" ]; then
+						set_db_name;
+						config_database;
+						initialize_dir_structure;
+						initialize_database;
+						start_database;
+						set_database_root_pw;
+					fi
+					create_database;
+					import_database;
+					if [ $OH_MODE != "CLIENT" ]; then
+						shutdown_database;
+					fi
+			        	echo "Done!"
 				fi
-				import_database;
-				if [ $OH_MODE != "CLIENT" ]; then
-					shutdown_database;
-				fi
-		        	echo "Done!"
 			fi
-		fi
+#		fi
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################
@@ -1512,7 +1521,9 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 		start_database;	
 		# set database root password
 		set_database_root_pw;
-		# create database and load data
+		# create database and user
+		create_database;
+		# load data
 		import_database;
 	else
 	        echo "OH database found!"

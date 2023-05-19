@@ -811,12 +811,12 @@ function set_database_root_pw {
 }
 
 ###################################################################
-function import_database {
+function create_database {
 	Write-Host "Creating OH Database..."
 	# create OH database and user
 	
     $SQLCOMMAND=@"
-    -u root -p$DATABASE_ROOT_PW -h $DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e "CREATE DATABASE $DATABASE_NAME CHARACTER SET utf8; CREATE USER '$DATABASE_USER'@'$DATABASE_SERVER' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'$DATABASE_SERVER'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
+    -u root -p$DATABASE_ROOT_PW -h $DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e "CREATE USER '$DATABASE_USER'@'$DATABASE_SERVER' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE DATABASE $DATABASE_NAME CHARACTER SET utf8; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'$DATABASE_SERVER'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
 "@
 	try {
 		Start-Process -FilePath "$OH_PATH\$MYSQL_DIR\bin\mysql.exe" -ArgumentList ("$SQLCOMMAND") -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
@@ -826,6 +826,10 @@ function import_database {
 		shutdown_database;
 		Read-Host; exit 2
 	}
+}
+
+###################################################################
+function import_database {
 	# check for database creation script
 	if (Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf) {
  		Write-Host "Using SQL file $SQL_DIR\$DB_CREATE_SQL..."
@@ -1259,6 +1263,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host " Database user -> $DATABASE_USER"
 			Write-Host " Database password -> $DATABASE_PASSWORD"
 			Write-Host ""
+			create_database;
 			import_database;
 			test_database_connection;
 			Write-Host "Done!"
@@ -1341,6 +1346,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 						start_database;	
 						set_database_root_pw;
 					}
+					create_database;
 					import_database;
 					if ( !($OH_MODE -eq "CLIENT" )) {
 						shutdown_database;
@@ -1605,7 +1611,9 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 		start_database;	
 		# set database root password
 		set_database_root_pw;
-		# create database and load data
+		# create database and user
+		create_database;
+		# load data
 		import_database;
 	}
 	else {
