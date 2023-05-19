@@ -1256,15 +1256,16 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			initialize_dir_structure;
 			set_language;
 			mysql_check;
-			# ask user for database root password
-			$script:DATABASE_ROOT_PW = Read-Host "Please insert the MariaDB / MySQL database root password (root@$DATABASE_SERVER) -> "
+			# ask user for database password
+			#$script:DATABASE_ROOT_PW = Read-Host "Please insert the MariaDB / MySQL database root password (root@$DATABASE_SERVER) -> "
+			$script:DATABASE_PASSWORD = Read-Host "Please insert the MariaDB / MySQL database password for user $DATABASE_USER ($DATABASE_USER@$DATABASE_SERVER) -> "
 			Write-Host "Installing the database....."
 			Write-Host ""
 			Write-Host " Database name -> $DATABASE_NAME"
 			Write-Host " Database user -> $DATABASE_USER"
 			Write-Host " Database password -> $DATABASE_PASSWORD"
 			Write-Host ""
-			create_database;
+			#create_database;
 			import_database;
 			test_database_connection;
 			Write-Host "Done!"
@@ -1346,8 +1347,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 						initialize_database;
 						start_database;	
 						set_database_root_pw;
+						create_database;
 					}
-					create_database;
 					import_database;
 					if ( !($OH_MODE -eq "CLIENT" )) {
 						shutdown_database;

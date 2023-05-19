@@ -1122,8 +1122,9 @@ function parse_user_input {
 		initialize_dir_structure;
 		set_language;
 		mysql_check;
-		# ask user for database root password
-		read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " -s DATABASE_ROOT_PW
+		# ask user for database password
+		#read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " -s DATABASE_ROOT_PW
+		read -p "Please insert the MariaDB / MySQL database password for user $DATABASE_USER ($DATABASE@"$DATABASE_SERVER") -> " -s DATABASE_USER
 		echo ""
 		echo "Installing the database....."
 		echo ""
@@ -1131,7 +1132,7 @@ function parse_user_input {
 		echo " Database user -> $DATABASE_USER"
 		echo " Database password -> $DATABASE_PASSWORD"
 		echo ""
-		create_database;
+	#	create_database;
 		import_database;
 		test_database_connection;
 		echo "Done!"
@@ -1224,8 +1225,8 @@ function parse_user_input {
 						initialize_database;
 						start_database;
 						set_database_root_pw;
+						create_database;
 					fi
-					create_database;
 					import_database;
 					if [ $OH_MODE != "CLIENT" ]; then
 						shutdown_database;
