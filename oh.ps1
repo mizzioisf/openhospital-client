@@ -1337,7 +1337,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 					Write-Host "Error: No SQL file found!" -ForegroundColor Red
 				}
 				else {
-					Write-Host "Found $DB_CREATE_SQL, restoring it..."
+					Write-Host "Found $DB_CREATE_SQL: are you sure you want to restore it on [$DATABASE_NAME@$DATABASE_SERVER] ?"
+					get_confirmation 1;
 					# check if mysql utilities exist
 					mysql_check;
 					if ( !($OH_MODE -eq "CLIENT" )) {

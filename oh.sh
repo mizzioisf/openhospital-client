@@ -750,7 +750,7 @@ function import_database {
 	fi
 
 	# create OH database structure
-	echo "Importing database $DATABASE_NAME with user $DATABASE_USER@$DATABASE_SERVER..."
+	echo "Importing database [$DATABASE_NAME] with user [$DATABASE_USER@$DATABASE_SERVER]..."
 	cd "./$SQL_DIR"
 #	../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
 	../$MYSQL_DIR/bin/mysql --local-infile=1 -u $DATABASE_USER -p$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
@@ -1213,7 +1213,8 @@ function parse_user_input {
 			if [ ! -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
 				echo "Error: No SQL file found! Exiting."
 			else
-				echo "Found $DB_CREATE_SQL: are you sure you want to restore on $DATABASE_NAME@$DATABASE_SERVER ?"
+				echo "Found $DB_CREATE_SQL: are you sure you want to restore it on [$DATABASE_NAME@$DATABASE_SERVER] ?"
+				get_confirmation 1;
 				# check if mysql utilities exist
 				mysql_check;
 				if [ "$OH_MODE" != "CLIENT" ]; then
