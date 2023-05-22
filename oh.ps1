@@ -1470,14 +1470,17 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			if (( "$choice" -eq "y" )) {
 				clean_conf_files;
 			}
-			Write-Host "Warning: do you want to remove all existing data and databases?" -ForegroundColor Red
-			$choice = Read-Host -Prompt "Press [y] to confirm: "
-			if (( "$choice" -eq "y" )) {
-				Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
-				Write-Host "--->>> Are you sure?" -ForegroundColor Red
+			# remove local portable database
+			if ( ($OH_MODE -ne "CLIENT") ){
+				Write-Host "Warning: do you want to remove all existing data and databases?" -ForegroundColor Red
 				$choice = Read-Host -Prompt "Press [y] to confirm: "
 				if (( "$choice" -eq "y" )) {
-					clean_database;
+					Write-Host "--->>> This operation cannot be undone" -ForegroundColor Red
+					Write-Host "--->>> Are you sure?" -ForegroundColor Red
+					$choice = Read-Host -Prompt "Press [y] to confirm: "
+					if (( "$choice" -eq "y" )) {
+						clean_database;
+					}
 				}
 			}
 			Write-Host "Warning: do you want to reset all existing configuration variables?" -ForegroundColor Red

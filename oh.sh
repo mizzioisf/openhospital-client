@@ -1344,14 +1344,17 @@ function parse_user_input {
 		if [ "$choice" = "y" ]; then
 			clean_conf_files;
 		fi
-		echo "Warning: do you want to remove all existing data and databases?"
-		read -p "Press [y] to confirm: " choice
-		if [ "$choice" = "y" ]; then		
-			echo "--->>> This operation cannot be undone"
-			echo "--->>> Are you sure?"
+		# remove local portable database
+		if [ "$OH_MODE" != "CLIENT" ]; then
+			echo "Warning: do you want to remove all existing data and databases?"
 			read -p "Press [y] to confirm: " choice
 			if [ "$choice" = "y" ]; then		
-				clean_database;
+				echo "--->>> This operation cannot be undone"
+				echo "--->>> Are you sure?"
+				read -p "Press [y] to confirm: " choice
+				if [ "$choice" = "y" ]; then		
+					clean_database;
+				fi
 			fi
 		fi
 		echo "Warning: do you want to reset all existing configuration variables?"
