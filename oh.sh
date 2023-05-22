@@ -750,7 +750,7 @@ function import_database {
 	fi
 
 	# create OH database structure
-	echo "Importing database schema with user $DATABASE_NAME@$DATABASE_SERVER..."
+	echo "Importing database $DATABASE_NAME with user $DATABASE_NAME@$DATABASE_SERVER..."
 	cd "./$SQL_DIR"
 #	../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
 	../$MYSQL_DIR/bin/mysql --local-infile=1 -u $DATABASE_USER -p$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
