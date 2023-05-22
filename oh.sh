@@ -1213,7 +1213,7 @@ function parse_user_input {
 			if [ ! -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
 				echo "Error: No SQL file found! Exiting."
 			else
-				echo "Found $DB_CREATE_SQL: are you sure you want to restore it on [$DATABASE_NAME@$DATABASE_SERVER] ?"
+				echo "Found $DB_CREATE_SQL - are you sure you want to restore it on [$DATABASE_NAME@$DATABASE_SERVER] ?"
 				get_confirmation 1;
 				# check if mysql utilities exist
 				mysql_check;
