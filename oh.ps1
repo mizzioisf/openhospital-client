@@ -882,7 +882,6 @@ function import_database {
 #	}
 
 	# end
-	Write-Host "Database imported!"
 	cd "$OH_PATH"
 }
 

@@ -777,7 +777,6 @@ function import_database {
 #	fi
 
 	# end
-	echo "Database imported!"
 	cd "$OH_PATH"
 }
 
