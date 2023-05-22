@@ -1113,7 +1113,7 @@ function parse_user_input {
 		# set mode to CLIENT
 		OH_MODE="CLIENT"
 		echo ""
-		echo "Do you want to initialize/install the OH database on:"
+		echo "Do you want to initialize/install the [$DATABASE_NAME] database on:"
 		echo ""
 		echo " Database Server -> $DATABASE_SERVER"
 		echo " TCP port -> $DATABASE_PORT" 
@@ -1124,7 +1124,7 @@ function parse_user_input {
 		mysql_check;
 		# ask user for database password
 		#read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " -s DATABASE_ROOT_PW
-		read -p "Please insert the MariaDB / MySQL database password for user $DATABASE_USER ($DATABASE@"$DATABASE_SERVER") -> " -s DATABASE_USER
+		read -p "Please insert the MariaDB / MySQL database password for user [$DATABASE_USER@$DATABASE_SERVER] -> " -s DATABASE_PASSWORD
 		echo ""
 		echo "Installing the database....."
 		echo ""

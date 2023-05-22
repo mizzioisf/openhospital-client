@@ -1247,7 +1247,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"i"	{ # initialize/install OH database
 			# set mode to CLIENT
 			$OH_MODE="CLIENT"
-			Write-Host "Do you want to initialize/install the OH database on:"
+			Write-Host "Do you want to initialize/install the [$DATABASE_NAME] database on:"
 			Write-Host ""
 			Write-Host " Database Server -> $DATABASE_SERVER"
 			Write-Host " TCP port -> $DATABASE_PORT"
@@ -1258,7 +1258,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			mysql_check;
 			# ask user for database password
 			#$script:DATABASE_ROOT_PW = Read-Host "Please insert the MariaDB / MySQL database root password (root@$DATABASE_SERVER) -> "
-			$script:DATABASE_PASSWORD = Read-Host "Please insert the MariaDB / MySQL database password for user $DATABASE_USER ($DATABASE_USER@$DATABASE_SERVER) -> "
+			$script:DATABASE_PASSWORD = Read-Host "Please insert the MariaDB / MySQL database password for user [$DATABASE_USER@$DATABASE_SERVER] -> "
 			Write-Host "Installing the database....."
 			Write-Host ""
 			Write-Host " Database name -> $DATABASE_NAME"
