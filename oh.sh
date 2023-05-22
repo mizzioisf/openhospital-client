@@ -1125,8 +1125,11 @@ function parse_user_input {
 		#read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " -s DATABASE_ROOT_PW
 		read -p "Please insert the MariaDB / MySQL database password for user [$DATABASE_USER@$DATABASE_SERVER] -> " -s DATABASE_PASSWORD
 		echo ""
-		echo "Installing the database....."
+		echo "Do you want to install the [$DATABASE_NAME] database on [$DATABASE_SERVER] ?"
+		get_confirmation 1;
+		echo "Installing the Open Hospital database with following settings:"
 		echo ""
+		echo " Database server -> $DATABASE_SERVER"
 		echo " Database name -> $DATABASE_NAME"
 		echo " Database user -> $DATABASE_USER"
 		echo " Database password -> $DATABASE_PASSWORD"

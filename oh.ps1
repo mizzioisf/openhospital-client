@@ -1258,8 +1258,12 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# ask user for database password
 			#$script:DATABASE_ROOT_PW = Read-Host "Please insert the MariaDB / MySQL database root password (root@$DATABASE_SERVER) -> "
 			$script:DATABASE_PASSWORD = Read-Host "Please insert the MariaDB / MySQL database password for user [$DATABASE_USER@$DATABASE_SERVER] -> "
-			Write-Host "Installing the database....."
 			Write-Host ""
+			Write-Host "Do you want to install the [$DATABASE_NAME] database on [$DATABASE_SERVER] ?"
+			get_confirmation 1;
+			Write-Host "Installing the Open Hospital database with the following settings:"
+			Write-Host ""
+			Write-Host " Database server -> $DATABASE_SERVER"
 			Write-Host " Database name -> $DATABASE_NAME"
 			Write-Host " Database user -> $DATABASE_USER"
 			Write-Host " Database password -> $DATABASE_PASSWORD"
