@@ -1325,11 +1325,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"r"	{ # restore database
-			if ( $OH_MODE -ne "CLIENT" ) {
-				# check if database exists
-				if ( (Test-Path "$OH_PATH/$DATA_DIR" )) {
-					Write-Host "Error: Portable database already present. Remove existing data before restoring." -ForegroundColor Red
-				}
+			# check if local portable database exists
+			if ( $OH_MODE -ne "CLIENT" ) -And (Test-Path "$OH_PATH/$DATA_DIR" ) {
+				Write-Host "Error: Portable database already present. Remove existing data before restoring." -ForegroundColor Red
 			}
 			else {
 				Write-Host ""

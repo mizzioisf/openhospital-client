@@ -1202,20 +1202,18 @@ function parse_user_input {
 		;;
 	###################################################
 	r)	# restore database
-		# check if database exists
-		if [ "$OH_MODE" != "CLIENT" ]; then
+		# check if local portable database exists
+		if [ "$OH_MODE" != "CLIENT" ] && [ -d ./"$DATA_DIR" ]; then
 			echo ""
-			if [ -d ./"$DATA_DIR" ]; then
-				echo "Error: Portable database already present. Remove existing data before restoring.."
-			fi
+			echo "Error: Portable database already present. Remove existing data before restoring.."
 		else
-		echo ""
+			echo ""
 			# ask user for database/sql script to restore
 			read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
 			if [ ! -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
 				echo "Error: No SQL file found! Exiting."
 			else
-				echo "Found $DB_CREATE_SQL, restoring it..."
+				echo "Found $DB_CREATE_SQL: are you sure you want to restore on $DATABASE_NAME@$DATABASE_SERVER ?"
 				# check if mysql utilities exist
 				mysql_check;
 				if [ "$OH_MODE" != "CLIENT" ]; then
