@@ -1206,7 +1206,7 @@ function parse_user_input {
 		if [ "$OH_MODE" != "CLIENT" ]; then
 			echo ""
 			if [ -d ./"$DATA_DIR" ]; then
-				echo "Error: Portable database already present. Remove existing data before restoring. Exiting."
+				echo "Error: Portable database already present. Remove existing data before restoring.."
 			fi
 		else
 		echo ""
