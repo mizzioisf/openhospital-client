@@ -1133,8 +1133,8 @@ function parse_user_input {
 		echo " Database password -> $DATABASE_PASSWORD"
 		echo ""
 	#	create_database;
-		import_database;
 		test_database_connection;
+		import_database;
 		echo "Done!"
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;

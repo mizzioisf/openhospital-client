@@ -1266,8 +1266,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host " Database password -> $DATABASE_PASSWORD"
 			Write-Host ""
 			#create_database;
-			import_database;
 			test_database_connection;
+			import_database;
 			Write-Host "Done!"
 			Read-Host "Press any key to continue";
 		}
