@@ -842,7 +842,7 @@ function import_database {
 	}
 
 	# create OH database structure
-	Write-Host "Importing database $DATABASE_NAME with user $DATABASE_USER@$DATABASE_SERVER..."
+	Write-Host "Importing database [$DATABASE_NAME] with user [$DATABASE_USER@$DATABASE_SERVER]..."
 
 	cd "./$SQL_DIR"
 
