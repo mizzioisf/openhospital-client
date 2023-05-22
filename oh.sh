@@ -724,7 +724,7 @@ function set_database_root_pw {
 ###################################################################
 function create_database {
 	echo "Creating $DATABASE_NAME database..."
-	# create OH database and user
+	# create database user and OH database
 	./$MYSQL_DIR/bin/mysql -u root -p$DATABASE_ROOT_PW --protocol=tcp --host=$DATABASE_SERVER --port=$DATABASE_PORT \
 	-e "CREATE USER '$DATABASE_USER'@'$DATABASE_SERVER' IDENTIFIED BY '$DATABASE_PASSWORD'; \
 	CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE DATABASE $DATABASE_NAME CHARACTER SET utf8; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'$DATABASE_SERVER'; \
@@ -750,7 +750,7 @@ function import_database {
 	fi
 
 	# create OH database structure
-	echo "Importing database schema..."
+	echo "Importing database schema with user $DATABASE_NAME@$DATABASE_SERVER..."
 	cd "./$SQL_DIR"
 #	../$MYSQL_DIR/bin/mysql --local-infile=1 -u root -p$DATABASE_ROOT_PW --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
 	../$MYSQL_DIR/bin/mysql --local-infile=1 -u $DATABASE_USER -p$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME < ./$DB_CREATE_SQL >> ../$LOG_DIR/$LOG_FILE 2>&1
@@ -1203,38 +1203,37 @@ function parse_user_input {
 	###################################################
 	r)	# restore database
 		# check if database exists
-#		if [ "$OH_MODE" != "CLIENT" ]; then
-#			"Check if OH database is present on $DATABASE_SERVER"
+		if [ "$OH_MODE" != "CLIENT" ]; then
 			echo ""
 			if [ -d ./"$DATA_DIR" ]; then
-				echo "Error: Database already present. Remove existing database before restoring. Exiting."
-			else
-				echo "Restoring Open Hospital database...."
-				# ask user for database/sql script to restore
-				read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
-				if [ ! -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
-					echo "Error: No SQL file found! Exiting."
-				else
-					echo "Found $DB_CREATE_SQL, restoring it..."
-					# check if mysql utilities exist
-					mysql_check;
-					if [ "$OH_MODE" != "CLIENT" ]; then
-						set_db_name;
-						config_database;
-						initialize_dir_structure;
-						initialize_database;
-						start_database;
-						set_database_root_pw;
-						create_database;
-					fi
-					import_database;
-					if [ $OH_MODE != "CLIENT" ]; then
-						shutdown_database;
-					fi
-			        	echo "Done!"
-				fi
+				echo "Error: Portable database already present. Remove existing data before restoring. Exiting."
 			fi
-#		fi
+		else
+		echo ""
+			# ask user for database/sql script to restore
+			read -p "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> " DB_CREATE_SQL
+			if [ ! -f $OH_PATH/$SQL_DIR/$DB_CREATE_SQL ]; then
+				echo "Error: No SQL file found! Exiting."
+			else
+				echo "Found $DB_CREATE_SQL, restoring it..."
+				# check if mysql utilities exist
+				mysql_check;
+				if [ "$OH_MODE" != "CLIENT" ]; then
+					set_db_name;
+					config_database;
+					initialize_dir_structure;
+					initialize_database;
+					start_database;
+					set_database_root_pw;
+					create_database;
+				fi
+				import_database;
+				if [ $OH_MODE != "CLIENT" ]; then
+					shutdown_database;
+				fi
+		        	echo "Done!"
+			fi
+		fi
 		if (( $2==0 )); then exit 0; else echo "Press any key to continue"; read; fi
 		;;
 	###################################################

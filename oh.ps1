@@ -813,7 +813,7 @@ function set_database_root_pw {
 ###################################################################
 function create_database {
 	Write-Host "Creating $DATABASE_NAME database..."
-	# create OH database and user
+	# create database user and OH database
 	
     $SQLCOMMAND=@"
     -u root -p$DATABASE_ROOT_PW -h $DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e "CREATE USER '$DATABASE_USER'@'$DATABASE_SERVER' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE USER '$DATABASE_USER'@'%' IDENTIFIED BY '$DATABASE_PASSWORD'; CREATE DATABASE $DATABASE_NAME CHARACTER SET utf8; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'$DATABASE_SERVER'; GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USER'@'%';"
@@ -842,7 +842,7 @@ function import_database {
 	}
 
 	# create OH database structure
-	Write-Host "Importing database schema..."
+	Write-Host "Importing database schema with user $DATABASE_NAME@$DATABASE_SERVER..."
 
 	cd "./$SQL_DIR"
 
@@ -1327,10 +1327,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"r"	{ # restore database
 			# check if database exists
 			if ( (Test-Path "$OH_PATH/$DATA_DIR" )) {
-				Write-Host "Error: Database already present. Remove existing database before restoring. Exiting." -ForegroundColor Red
+				Write-Host "Error: Portable database already present. Remove existing data before restoring. Exiting." -ForegroundColor Red
 			}
 			else {
-				Write-Host "Restoring Open Hospital database...."
+				Write-Host ""
 				# ask user for database to restore
 				$DB_CREATE_SQL = Read-Host -Prompt "Enter SQL dump/backup file that you want to restore - (in $SQL_DIR subdirectory) -> "
 				if ( !(Test-Path "$OH_PATH/$SQL_DIR/$DB_CREATE_SQL" -PathType leaf)) {
