@@ -1350,6 +1350,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 						set_database_root_pw;
 						create_database;
 					}
+					test_database_connection;
 					import_database;
 					if ( !($OH_MODE -eq "CLIENT" )) {
 						shutdown_database;

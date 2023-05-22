@@ -1226,6 +1226,7 @@ function parse_user_input {
 					set_database_root_pw;
 					create_database;
 				fi
+				test_database_connection;
 				import_database;
 				if [ $OH_MODE != "CLIENT" ]; then
 					shutdown_database;
