@@ -1121,8 +1121,14 @@ function parse_user_input {
 		initialize_dir_structure;
 		set_language;
 		mysql_check;
+		echo "Do you want to create the [$DATABASE_USER] user and [$DATABASE_NAME] database on [$DATABASE_SERVER] server ?"
+		read -p "Press [y] to confirm: " choice
+		if [ "$choice" = "y" ]; then
+			# ask user for root database password
+			read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " -s DATABASE_ROOT_PW
+			create_database;
+		fi
 		# ask user for database password
-		#read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " -s DATABASE_ROOT_PW
 		read -p "Please insert the MariaDB / MySQL database password for user [$DATABASE_USER@$DATABASE_SERVER] -> " -s DATABASE_PASSWORD
 		echo ""
 		echo "Do you want to install the [$DATABASE_NAME] database on [$DATABASE_SERVER] ?"
@@ -1134,7 +1140,6 @@ function parse_user_input {
 		echo " Database user -> $DATABASE_USER"
 		echo " Database password -> $DATABASE_PASSWORD"
 		echo ""
-	#	create_database;
 		test_database_connection;
 		import_database;
 		echo "Done!"
