@@ -1126,6 +1126,7 @@ function parse_user_input {
 		if [ "$choice" = "y" ]; then
 			# ask user for root database password
 			read -p "Please insert the MariaDB / MySQL database root password (root@"$DATABASE_SERVER") -> " -s DATABASE_ROOT_PW
+			echo ""
 			create_database;
 		fi
 		# ask user for database password
