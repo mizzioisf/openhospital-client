@@ -1258,6 +1258,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Do you want to create the [$DATABASE_USER] user and [$DATABASE_NAME] database on [$DATABASE_SERVER] server ?"
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
 			if (( "$choice" -eq "y" )) {
+				# ask user for root database password
 				$script:DATABASE_ROOT_PW = Read-Host "Please insert the MariaDB / MySQL database root password (root@$DATABASE_SERVER) -> "
 				create_database;
 			}
