@@ -1180,8 +1180,15 @@ function parse_user_input {
 		read -p "Enter database user name [DATABASE_USER]: " DATABASE_USER
 		read -p "Enter database password [DATABASE_PASSWORD]: " -s DATABASE_PASSWORD
 
-		echo "Do you want to save entered settings to OH configuration files?"
-		get_confirmation 1;
+		echo ""
+		echo ""
+		echo "-> Database settings <-"
+		echo ""
+		echo "-> DATABASE_SERVER=$DATABASE_SERVER"
+		echo "-> DATABASE_PORT=$DATABASE_PORT"
+		echo "-> DATABASE_NAME=$DATABASE_NAME"
+		echo "-> DATABASE_USER=$DATABASE_USER"
+		echo ""
 		set_db_name;
 		WRITE_CONFIG_FILES="on"; write_config_files;
 		echo "Done!"

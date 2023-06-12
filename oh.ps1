@@ -1306,8 +1306,14 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:DATABASE_NAME=Read-Host		"Enter database database name [DATABASE_NAME]"
 			$script:DATABASE_USER=Read-Host		"Enter database user name [DATABASE_USER]"
 			$script:DATABASE_PASSWORD=Read-Host	"Enter database password [DATABASE_PASSWORD]"
-			Write-Host				"Do you want to save entered settings to OH configuration files?"
-			get_confirmation 1;
+			Write-Host ""
+			Write-Host "-> Database settings <-"
+			Write-Host ""
+			Write-Host "-> DATABASE_SERVER=$DATABASE_SERVER"
+			Write-Host "-> DATABASE_PORT=$DATABASE_PORT"
+			Write-Host "-> DATABASE_NAME=$DATABASE_NAME"
+			Write-Host "-> DATABASE_USER=$DATABASE_USER"
+			Write-Host ""
 			set_db_name;
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			Write-Host "Done!"
