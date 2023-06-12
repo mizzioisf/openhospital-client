@@ -1259,7 +1259,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			initialize_dir_structure;
 			set_language;
 			mysql_check;
-			Write-Host "Do you want to create the [$DATABASE_USER] user and [$DATABASE_NAME] database on [$DATABASE_SERVER] server ?"
+			Write-Host "Do you want to create the [$DATABASE_USER] user and [$DATABASE_NAME] database on [$DATABASE_SERVER] server?"
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
 			if (( "$choice" -eq "y" )) {
 				# ask user for root database password
@@ -1269,7 +1269,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# ask user for database password
 			$script:DATABASE_PASSWORD = Read-Host "Please insert the MariaDB / MySQL database password for user [$DATABASE_USER@$DATABASE_SERVER] -> "
 			Write-Host ""
-			Write-Host "Do you want to install the [$DATABASE_NAME] database on [$DATABASE_SERVER] ?"
+			Write-Host "Do you want to install the [$DATABASE_NAME] database on [$DATABASE_SERVER]?"
 			get_confirmation 1;
 			test_database_connection;
 			import_database;
@@ -1342,7 +1342,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 					Write-Host "Error: No SQL file found!" -ForegroundColor Red
 				}
 				else {
-					Write-Host "Found $DB_CREATE_SQL - are you sure you want to restore it on [$DATABASE_NAME@$DATABASE_SERVER] ?"
+					Write-Host "Found $DB_CREATE_SQL - are you sure you want to restore it on [$DATABASE_NAME@$DATABASE_SERVER]?"
 					get_confirmation 1;
 					# check if mysql utilities exist
 					mysql_check;
@@ -1452,7 +1452,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		"X"	{ # kill processes / clean installation
 			# kill mariadb/mysqld processes
 			Write-Host "Stopping Open Hospital..."	
-			Write-Host "Warning: do you want to kill all java and mysql/mariadb processes ?"
+			Write-Host "Warning: do you want to kill all java and mysql/mariadb processes?"
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
 			if (( "$choice" -eq "y" )) {
 				Write-Host "Killing mariadb/mysql..."	

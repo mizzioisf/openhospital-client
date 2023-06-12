@@ -1126,7 +1126,7 @@ function parse_user_input {
 		initialize_dir_structure;
 		set_language;
 		mysql_check;
-		echo "Do you want to create the [$DATABASE_USER] user and [$DATABASE_NAME] database on [$DATABASE_SERVER] server ?"
+		echo "Do you want to create the [$DATABASE_USER] user and [$DATABASE_NAME] database on [$DATABASE_SERVER] server?"
 		read -p "Press [y] to confirm: " choice
 		if [ "$choice" = "y" ]; then
 			# ask user for root database password
@@ -1137,7 +1137,7 @@ function parse_user_input {
 		# ask user for database password
 		read -p "Please insert the MariaDB / MySQL database password for user [$DATABASE_USER@$DATABASE_SERVER] -> " -s DATABASE_PASSWORD
 		echo ""
-		echo "Do you want to install the [$DATABASE_NAME] database on [$DATABASE_SERVER] ?"
+		echo "Do you want to install the [$DATABASE_NAME] database on [$DATABASE_SERVER]?"
 		get_confirmation 1;
 		test_database_connection;
 		import_database;
@@ -1327,7 +1327,7 @@ function parse_user_input {
 		echo ""
 		# kill mariadb/mysqld processes
         	echo "Stopping Open Hospital..."
-		echo "Warning: do you want to kill all java and mysql/mariadb processes ?"
+		echo "Warning: do you want to kill all java and mysql/mariadb processes?"
 		read -p "Press [y] to confirm: " choice
 		if [ "$choice" = "y" ]; then
 			# kill mariadb/mysqld processes
