@@ -1245,16 +1245,24 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"i"	{ # initialize/install OH database
 			# set mode to CLIENT
-			$OH_MODE="CLIENT"
-			Write-Host "Do you want to initialize/install the [$DATABASE_NAME] database on:"
+			#$OH_MODE="CLIENT"
+			Write-Host ""
+			Write-Host "*************************************************************"
+			Write-Host "***             Database installation wizard              ***"
+			Write-Host "*************************************************************"
+			Write-Host ""
+			Write-Host "Current database settings are:"
 			Write-Host ""
 			Write-Host " Database Server -> $DATABASE_SERVER"
-			Write-Host " TCP port -> $DATABASE_PORT"
+			Write-Host " TCP port -> $DATABASE_PORT" 
 			Write-Host " Database name -> $DATABASE_NAME"
 			Write-Host " Database user -> $DATABASE_USER"
 			Write-Host " Database password -> $DATABASE_PASSWORD"
 			Write-Host ""
 			Write-Host "-> To change this values select [m] option from main menu <-"
+			Write-Host ""
+			Write-Host "Do you want to initialize/install the [$DATABASE_NAME] database?"
+			Write-Host ""
 			get_confirmation 1;
 			initialize_dir_structure;
 			set_language;
@@ -1287,9 +1295,12 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			$script:DEMO_DATA="off"
 			#$script:OH_SINGLE_USER=Read-Host	"Please select Single user configuration (yes/no)" 
 	                #### script:OH_SINGLE_USER=${OH_SINGLE_USER:-Off} # set default # TBD
-			Write-Host 				""
-			Write-Host 				"***** Database configuration *****"
-			Write-Host 				""
+			Write-Host ""
+			Write-Host "**************************************************************"
+			Write-Host "***             Database configuration wizard              ***"
+			Write-Host "***   Enter settings and generate OH configuration files   ***"
+			Write-Host "**************************************************************"
+			Write-Host ""
 			$script:DATABASE_SERVER=Read-Host	"Enter database server IP address [DATABASE_SERVER]"
 			$script:DATABASE_PORT=Read-Host		"Enter database server TCP port [DATABASE_PORT]"
 			$script:DATABASE_NAME=Read-Host		"Enter database database name [DATABASE_NAME]"
@@ -1330,6 +1341,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		}
 		###################################################
 		"r"	{ # restore database
+			Write-Host ""
+			Write-Host "*************************************************************"
+			Write-Host "***               Database restore wizard                 ***"
+			Write-Host "*************************************************************"
 			# check if local portable database exists
 			if ( ($OH_MODE -ne "CLIENT") -And (Test-Path "$OH_PATH/$DATA_DIR") ){
 				Write-Host "Error: Portable database already present. Remove existing data before restoring." -ForegroundColor Red
@@ -1497,6 +1512,10 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$script:DB_CREATE_SQL=""
 				$script:EXPERT_MODE=""
 				$script:API_SERVER=""
+				Write-Host ""
+				Write-Host "Warning: in order to reload database settings, exit script and relaunch."
+				Write-Host "Select [v] option from script menu to check current settings."
+				Write-Host ""
 				# set variables to defaults
 				set_defaults;
 			}
