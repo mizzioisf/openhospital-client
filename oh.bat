@@ -154,13 +154,13 @@ set ARCH=x64
 
 REM ######## MySQL Software
 REM # MariaDB 64bit download URL
-REM https://archive.mariadb.org/mariadb-10.6.12/winx64-packages/mariadb-10.6.12-winx64.zip
+REM https://archive.mariadb.org/mariadb-10.6.14/winx64-packages/mariadb-10.6.14-winx64.zip
 
 REM # MariaDB 32bit download  URL
 REM https://archive.mariadb.org/mariadb-10.6.5/win32-packages/mariadb-10.6.5-win32.zip
 
 REM set MYSQL_DIR=mariadb-10.6.5-win%ARCH%
-set MYSQL_DIR=mariadb-10.6.12-win%ARCH%
+set MYSQL_DIR=mariadb-10.6.14-win%ARCH%
 
 REM ####### JAVA Software
 REM # JRE 11 64bit - x86_64 - openjdk
