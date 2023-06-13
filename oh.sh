@@ -139,8 +139,8 @@ OH_UI_URL="http://localhost:8080"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-MYSQL_VERSION="10.6.12"
-MYSQL32_VERSION="10.5.19"
+MYSQL_VERSION="10.6.14"
+MYSQL32_VERSION="10.5.21"
 PACKAGE_TYPE="systemd" 
 
 ######## define system and software architecture

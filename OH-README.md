@@ -439,7 +439,7 @@ In order to download and unzip MariaDB:
 
 **x86 - 32bit:** https://archive.mariadb.org/mariadb-10.6.5/win32-packages/mariadb-10.6.5-win32.zip
 
-**x64 - 64bit:** https://archive.mariadb.org/mariadb-10.6.12/winx64-packages/mariadb-10.6.12-winx64.zip
+**x64 - 64bit:** https://archive.mariadb.org/mariadb-10.6.14/winx64-packages/mariadb-10.6.14-winx64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
