@@ -1102,7 +1102,7 @@ function start_api_server {
 	########## TO BE REMOVED IN NEXT RELEASES
 	##########
 	# check for stale PID files
-	if ( !( Test-Path "$OH_PATH/$TMP_DIR/$OH_API_PID" -PathType leaf )) {
+	if (( Test-Path "$OH_PATH/$TMP_DIR/$OH_API_PID" -PathType leaf )) {
 		$file_tmp_data = Get-Content "$OH_PATH/$TMP_DIR/$OH_API_PID"
 		$API_PID_NUMBER=$file_tmp_data.toint32($null)
 		Write-Host "Killing process $API_PID_NUMBER..."
