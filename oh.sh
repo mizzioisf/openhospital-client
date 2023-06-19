@@ -859,7 +859,7 @@ function write_api_config_file {
 		# JWT_TOKEN_SECRET=`openssl rand -base64 64 | xargs`
 		JWT_TOKEN_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 66`
 		echo "Writing OH API configuration file -> $API_SETTINGS..."
-		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" -e "s/OH_API_PID/"$OH_API_PID"/g" ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
+		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" -e "s&OH_API_PID&"$OH_API_PID"&g" ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
 	fi
 }
 
@@ -960,6 +960,16 @@ function start_api_server {
 		echo "Error: missing $API_SETTINGS settings file. Exiting"
 		exit 1;
 	fi
+	
+	########## WORKAROUND to kill existing api servers ##################
+	########## TO BE REMOVED IN NEXT RELEASES
+	##########
+	# check for stale PID files
+	if [ -f $OH_PATH/$TMP_DIR/$OH_API_PID ]; then
+		echo "Killing process $OH_API_PID..."
+		kill $(cat $OH_PATH/$TMP_DIR/$OH_API_PID);
+	fi
+	##########
 
 	echo "------------------------"
 	echo "---- EXPERIMENTAL ------"
