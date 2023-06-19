@@ -1103,9 +1103,10 @@ function start_api_server {
 	##########
 	# check for stale PID files
 	if ( !( Test-Path "$OH_PATH/$TMP_DIR/$OH_API_PID" -PathType leaf )) {
-		Write-Host "Killing process $OH_API_PID..."
 		$file_tmp_data = Get-Content "$OH_PATH/$TMP_DIR/$OH_API_PID"
-		Stop-Process -Id [int]$file_tmp_data -ErrorAction SilentlyContinue
+		$API_PID_NUMBER=$file_tmp_data.toint32($null)
+		Write-Host "Killing process $API_PID_NUMBER..."
+		Stop-Process -Id $API_PID_NUMBER -ErrorAction SilentlyContinue
 	}
 	##########
 
