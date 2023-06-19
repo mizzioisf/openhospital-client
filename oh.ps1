@@ -961,40 +961,6 @@ function test_database_connection {
 }
 
 ###################################################################
-function start_api_server {
-	# check for application configuration files
-	if ( !( Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf )) {
-		Write-Host "Error: missing $API_SETTINGS settings file. Exiting" -ForeGround Red
-		exit 1;
-	}
-
-	Write-Host "------------------------"
-	Write-Host "---- EXPERIMENTAL ------"
-	Write-Host "------------------------"
-	Write-Host "Starting API server..."
-	Write-Host "Please wait, it might take some time..."
-	Write-Host ""
-	Write-Host "Connect to http://localhost:8080 for dashboard"
-	Write-Host ""
-
-        cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
-
-	$JAVA_API_ARGS="-server -Xms64m -Xmx1024m -cp ./bin/$OH_API_JAR;./rsc;./static org.springframework.boot.loader.JarLauncher"
-
-	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_API_ARGS -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
-
-        # $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/$OH_API_JAR:./rsc::./static" org.springframework.boot.loader.JarLauncher
-
-#        if [ $? -ne 0 ]; then
-#                echo "An error occurred while starting Open Hospital API. Exiting."
-#                shutdown_database;
-#                cd "$CURRENT_DIR"
-#                exit 4
-#        fi
-        cd "$OH_PATH"
-}
-
-###################################################################
 function write_api_config_file {
 	######## application.properties setup - OH API server
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf) ) {
@@ -1122,6 +1088,40 @@ $JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library
 	
 	# go back to starting directory
 	cd "$CURRENT_DIR"
+}
+
+###################################################################
+function start_api_server {
+	# check for application configuration files
+	if ( !( Test-Path "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS" -PathType leaf )) {
+		Write-Host "Error: missing $API_SETTINGS settings file. Exiting" -ForeGround Red
+		exit 1;
+	}
+
+	Write-Host "------------------------"
+	Write-Host "---- EXPERIMENTAL ------"
+	Write-Host "------------------------"
+	Write-Host "Starting API server..."
+	Write-Host "Please wait, it might take some time..."
+	Write-Host ""
+	Write-Host "Connect to http://localhost:8080 for dashboard"
+	Write-Host ""
+
+        cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+
+	$JAVA_API_ARGS="-server -Xms64m -Xmx1024m -cp ./bin/$OH_API_JAR;./rsc;./static org.springframework.boot.loader.JarLauncher"
+
+	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_API_ARGS -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+
+        # $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/$OH_API_JAR:./rsc::./static" org.springframework.boot.loader.JarLauncher
+
+#        if [ $? -ne 0 ]; then
+#                echo "An error occurred while starting Open Hospital API. Exiting."
+#                shutdown_database;
+#                cd "$CURRENT_DIR"
+#                exit 4
+#        fi
+        cd "$OH_PATH"
 }
 
 ###################################################################
