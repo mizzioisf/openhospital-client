@@ -966,8 +966,9 @@ function start_api_server {
 	##########
 	# check for stale PID files
 	if [ -f $OH_PATH/$TMP_DIR/$OH_API_PID ]; then
-		echo "Killing process $OH_API_PID..."
-		kill $(cat $OH_PATH/$TMP_DIR/$OH_API_PID);
+		API_PID_NUMBER=$(cat $OH_PATH/$TMP_DIR/$OH_API_PID)
+		echo "Killing process $API_PID_NUMBER..."
+		kill $API_PID_NUMBER
 	fi
 	##########
 
