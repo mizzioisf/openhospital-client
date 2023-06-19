@@ -137,7 +137,7 @@ DATABASE_ROOT_USER="root"
 # activate expert mode - set to "on" to enable advanced functions - use at your own risk!
 EXPERT_MODE="off"
 OH_UI_URL="http://localhost:8080"
-OH_API_PID="oh-api.pid"
+OH_API_PID="../tmp/oh-api.pid"
 
 ################ Architecture and external software ################
 
