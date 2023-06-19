@@ -1097,7 +1097,6 @@ function start_api_server {
 		Write-Host "Error: missing $API_SETTINGS settings file. Exiting" -ForeGround Red
 		exit 1;
 	}
-
 	
 	########## WORKAROUND to kill existing api servers ##################
 	########## TO BE REMOVED IN NEXT RELEASES
@@ -1107,7 +1106,7 @@ function start_api_server {
 		$file__tmp_data = Get-Content "$OH_PATH/$TMP_DIR/$OH_API_PID"
 		Write-Host "Killing process $OH_API_PID..."
 		Stop-Process -Id $OH_API_PID -ErrorAction SilentlyContinue
-	fi
+	}
 	##########
 
 	Write-Host "------------------------"
