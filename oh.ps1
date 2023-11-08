@@ -203,7 +203,7 @@ $script:OH_API_PID="../tmp/oh-api.pid"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-$script:MYSQL_VERSION="10.6.14"
+$script:MYSQL_VERSION="10.6.15"
 $script:MYSQL32_VERSION="10.6.5"
 
 ######## define system and software architecture
@@ -243,7 +243,8 @@ $script:MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 
 ### JRE 11 - zulu distribution
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin"
-$script:JAVA_DISTRO="zulu11.64.19-ca-jre11.0.19-win_$JAVA_PACKAGE_ARCH"
+$script:JAVA_VERSION="68.17-ca-jre11.0.21-win"
+$script:JAVA_DISTRO="zulu11.$JAVA_VERSION_$JAVA_PACKAGE_ARCH"
 
 # workaround for JRE 11 - 32bit
 #	if ( $JAVA_ARCH -eq "32" ) {
