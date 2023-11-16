@@ -463,7 +463,7 @@ function check_language {
 		fi
 	done
 	echo ""
-	echo "Invalid language option [$OH_LANGUAGE]: setting to en"
+	echo "Invalid language option [$OH_LANGUAGE]: setting to [en]"
 	OH_LANGUAGE=en
 }
 

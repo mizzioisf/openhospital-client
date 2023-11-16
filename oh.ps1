@@ -502,13 +502,36 @@ function set_demo_data {
 function check_language {
 	# check for valid language selection
 
+
+        foreach ($lang in "$OH_LANGUAGE_LIST"; do
+#                if [[ $lang == $OH_LANGUAGE ]]; then
+#                        echo ""
+                        Write-Host "Language $OH_LANGUAGE is supported"
+#                        return 0;
+#                fi
+#        done
+#        echo ""
+#        echo "Invalid language option [$OH_LANGUAGE]: setting to en"
+#        OH_LANGUAGE=en
+
+
+#	if ($script:OH_LANGUAGE_LIST -contains "$OH_LANGUAGE") {
+#		# set localized database creation script
+#		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
+#	}
+#	else {
+#		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
+#		Read-Host; exit 1
+#	}
+
 	if ($script:OH_LANGUAGE_LIST -contains "$OH_LANGUAGE") {
 		# set localized database creation script
 		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 	}
-	else {
-		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
-		Read-Host; exit 1
+	Write-Host ""
+	Write-Host "Invalid language option: $OH_LANGUAGE: setting to [en]" -ForegroundColor Yellow
+	$script:OH_LANGUAGE
+	Read-Host;
 	}
 }
 
