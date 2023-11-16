@@ -503,7 +503,7 @@ function check_language {
 	# check for valid language selection
 
 
-        foreach ($lang in "$OH_LANGUAGE_LIST"; do
+        foreach ($lang in $OH_LANGUAGE_LIST); do
 #                if [[ $lang == $OH_LANGUAGE ]]; then
 #                        echo ""
                         Write-Host "Language $OH_LANGUAGE is supported"
