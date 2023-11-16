@@ -513,6 +513,7 @@ function check_language {
 	Write-Host "Invalid language option [$OH_LANGUAGE]: setting to [en]" -ForegroundColor Yellow
 	$script:OH_LANGUAGE="en"
 	Read-Host;
+	}
 }
 
 #        done
