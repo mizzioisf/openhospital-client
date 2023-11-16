@@ -105,7 +105,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 
 # language setting - default set to en
 $script:OH_LANGUAGE_LIST= @("al", "ar", "de", "en","es","fr","it","pt")
-$script:OH_LANGUAGE_LIST_INFO=("albanian" "arabic" "german" "english" "spanish" "french" "italian" "portuguese")
+$script:OH_LANGUAGE_LIST_INFO=("albanian","arabic","german","english","spanish","french","italian","portuguese")
 #$script:OH_LANGUAGE="en" # default
 
 # single / multiuser - set "yes" for single user configuration
@@ -502,7 +502,7 @@ function set_demo_data {
 function check_language {
 	# check for valid language selection
 
-	if ($script:languagearray -contains "$OH_LANGUAGE") {
+	if ($script:OH_LANGUAGE_LIST -contains "$OH_LANGUAGE") {
 		# set localized database creation script
 		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 	}
