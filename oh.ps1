@@ -506,7 +506,7 @@ function check_language {
 	if ($script:OH_LANGUAGE_LIST -contains "$OH_LANGUAGE") {
 		Write-Host ""
 		Write-Host "Language $OH_LANGUAGE is supported"
-		return 0;
+		return;
 	}
 	
 	Write-Host ""
