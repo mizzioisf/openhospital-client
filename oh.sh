@@ -43,14 +43,14 @@ WRITE_CONFIG_FILES="off"
 ############## OH general configuration - change at your own risk :-) ##############
 
 # OH_PATH is the directory where Open Hospital files are located
-# OH_PATH=/usr/local/OpenHospital/oh-1.13
+# OH_PATH=/usr/local/OpenHospital/oh-1.14
 
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
 #OH_MODE="PORTABLE" 
 
 # language setting - default set to en
-OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
-#OH_LANGUAGE="en" # default
+OH_LANGUAGE_LIST=("al" "ar" "de" "en" "es" "fr" "it" "pt")
+OH_LANGUAGE_LIST_INFO=("albanian" "arabic" "german" "english" "spanish" "french" "italian" "portuguese")
 
 # single / multiuser - set "yes" for single user configuration
 #OH_SINGLE_USER="no"
@@ -143,8 +143,8 @@ OH_API_PID="../tmp/oh-api.pid"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-MYSQL_VERSION="10.6.15"
-MYSQL32_VERSION="10.5.22"
+MYSQL_VERSION="10.6.16"
+MYSQL32_VERSION="10.5.23"
 PACKAGE_TYPE="systemd" 
 
 ######## define system and software architecture
@@ -213,7 +213,7 @@ function script_menu {
 	echo "   -C    set OH in CLIENT mode"
 	echo "   -P    set OH in PORTABLE mode"
 	echo "   -S    set OH in SERVER mode (portable)"
-	echo "   -l    [ $OH_LANGUAGE_LIST ] -> set language"
+	echo "   -l    [ ${OH_LANGUAGE_LIST[*]} ] -> set language"
 	echo "   -E    toggle EXPERT MODE - show advanced options"
 	echo "   -h    show help"
 	echo "   -q    quit"
@@ -452,18 +452,25 @@ function set_demo_data {
 }
 
 ###################################################################
-function set_language {
+function check_language {
 	# check for valid language selection
-	case "$OH_LANGUAGE" in 
-		en|fr|it|es|pt|ar) # TBD: language array direct check
-			# set localized database creation script
-			DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
-			;;
-		*)
-			echo "Invalid language option: $OH_LANGUAGE. Exiting."
-			exit 1
-		;;
-	esac
+
+	for lang in "${OH_LANGUAGE_LIST[@]}"; do
+		if [[ $lang == $OH_LANGUAGE ]]; then
+			echo ""
+			echo "Language $OH_LANGUAGE is supported"
+			return 0;
+		fi
+	done
+	echo ""
+	echo "Invalid language option [$OH_LANGUAGE]: setting to en"
+	OH_LANGUAGE=en
+}
+
+###################################################################
+function set_language {
+	# set localized database creation script
+	DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 
 	# if $OH_SETTINGS is present set language
 	if [ -f ./$OH_DIR/rsc/$OH_SETTINGS ]; then
@@ -521,11 +528,11 @@ desktop_path=$(xdg-user-dir DESKTOP)
 echo "[Desktop Entry]
 	Type=Application
 	# The version of the Desktop Entry Specification
-	Version=1.13.0
+	Version=1.14.0
 	# The name of the application
 	Name=OpenHospital
 	# A comment which will be used as a tooltip
-	Comment=Open Hospital 1.13 shortcut
+	Comment=Open Hospital 1.14 shortcut
 	# The path to the folder in which the executable is run
 	Path=$OH_PATH
 	# The executable of the application, possibly with arguments
@@ -1154,6 +1161,7 @@ function parse_user_input {
 		echo ""
 		get_confirmation 1;
 		initialize_dir_structure;
+		check_language;
 		set_language;
 		mysql_check;
 		echo "Do you want to create the [$DATABASE_USER] user and [$DATABASE_NAME] database on [$DATABASE_SERVER] server?"
@@ -1183,8 +1191,9 @@ function parse_user_input {
 			OH_LANGUAGE="$OPTARG"
 			option="Z";
 		else
-			read -n 2 -p "Please select language [$OH_LANGUAGE_LIST]: " OH_LANGUAGE
+			read -n 2 -p "Please select language [${OH_LANGUAGE_LIST[*]}]: " OH_LANGUAGE
 		fi
+		check_language;
 		set_language;
 		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;
@@ -1295,6 +1304,7 @@ function parse_user_input {
 		# overwrite configuration files if existing
 		WRITE_CONFIG_FILES=on; write_config_files;
 		set_oh_mode;
+		check_language;
 		set_language;
 		set_log_level;
 		echo "Done!"

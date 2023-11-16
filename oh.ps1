@@ -98,14 +98,15 @@ $global:ProgressPreference= 'SilentlyContinue'
 ##################### OH general configuration ####################
 
 # -> OH_PATH is the directory where Open Hospital files are located
-# OH_PATH="c:\Users\OH\OpenHospital\oh-1.13"
+# OH_PATH="c:\Users\OH\OpenHospital\oh-1.14"
 
 # set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
 #$script:OH_MODE="PORTABLE"
 
 # language setting - default set to en
-$script:OH_LANGUAGE_LIST="en|fr|es|it|pt|ar"
-$script:OH_LANGUAGE="en" # default
+$script:OH_LANGUAGE_LIST= @("al", "ar", "de", "en","es","fr","it","pt")
+$script:OH_LANGUAGE_LIST_INFO=("albanian" "arabic" "german" "english" "spanish" "french" "italian" "portuguese")
+#$script:OH_LANGUAGE="en" # default
 
 # single / multiuser - set "yes" for single user configuration
 $script:OH_SINGLE_USER="no"
@@ -160,9 +161,6 @@ $script:API_ERR_LOG_FILE="api_error.log"
 $script:DB_DEMO="create_all_demo.sql"
 
 ######################## Other settings ########################
-# available languages - do not modify
-$script:languagearray= @("en","fr","es","it","pt","ar")
-
 # date format
 $script:DATE= Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
@@ -203,7 +201,7 @@ $script:OH_API_PID="../tmp/oh-api.pid"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-$script:MYSQL_VERSION="10.6.15"
+$script:MYSQL_VERSION="10.6.16"
 $script:MYSQL32_VERSION="10.6.5"
 
 ######## define system and software architecture
@@ -501,8 +499,9 @@ function set_demo_data {
 }
 
 ###################################################################
-function set_language {
+function check_language {
 	# check for valid language selection
+
 	if ($script:languagearray -contains "$OH_LANGUAGE") {
 		# set localized database creation script
 		$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
@@ -511,6 +510,10 @@ function set_language {
 		Write-Host "Invalid language option: $OH_LANGUAGE. Exiting." -ForegroundColor Red
 		Read-Host; exit 1
 	}
+}
+
+###################################################################
+function set_language {
 	# set database creation script in chosen language
 	$script:DB_CREATE_SQL="create_all_$OH_LANGUAGE.sql"
 
@@ -526,7 +529,6 @@ function set_language {
 		Write-Host "Warning: $OH_SETTINGS file not found." -ForegroundColor Yellow
 	}
 }
-
 
 ###################################################################
 function set_log_level {
@@ -1297,6 +1299,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host ""
 			get_confirmation 1;
 			initialize_dir_structure;
+			check_language;
 			set_language;
 			mysql_check;
 			Write-Host "Do you want to create the [$DATABASE_USER] user and [$DATABASE_NAME] database on [$DATABASE_SERVER] server?"
@@ -1320,6 +1323,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"l"	{ # set language 
 			$script:OH_LANGUAGE = Read-Host "Select language: $OH_LANGUAGE_LIST (default is en)"
+			check_language;
 			set_language;
 			Read-Host "Press any key to continue";
 		}
@@ -1428,6 +1432,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# overwrite configuration files if existing
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			set_oh_mode;
+			check_language;
 			set_language;
 			set_log_level;
 			# if Desktop link is present update it
