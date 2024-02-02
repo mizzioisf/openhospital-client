@@ -216,7 +216,7 @@ This might also be useful to set different combinations of options (language, de
 ############## OH general configuration - change at your own risk :-) ##############
 #
 # -> OH_PATH is the directory where Open Hospital files are located
-# OH_PATH="c:\Users\OH\OpenHospital\oh-1.11"
+# OH_PATH="c:\Users\OH\OpenHospital\oh-1.14"
 ```
 ### (Windows only) Enable interactive mode
 ```
@@ -456,9 +456,9 @@ In order to download and unzip Java:
 - Visit  https://cdn.azul.com/zulu/bin/
 - download the latest **JRE** for your architecture:
 
-**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu11.64.19-ca-jre11.0.19-win_x64.zip
+**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_x64.zip
 
-**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu11.64.19-ca-jre11.0.19-win_i686.zip
+**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_i686.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -481,4 +481,4 @@ In order to download and unzip MariaDB:
 
 Check online documentation.
 
-*last updated: 2023.04.21*
+*last updated: 2024.02.01*

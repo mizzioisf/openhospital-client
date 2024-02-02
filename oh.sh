@@ -184,7 +184,8 @@ MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 #JAVA_DIR="jdk-11.0.11+9-jre"
 
 ### JRE 11 - zulu distribution
-JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-linux_$JAVA_PACKAGE_ARCH"
+#JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-linux_$JAVA_PACKAGE_ARCH"
+JAVA_DISTRO="zulu17.48.15-ca-jre17.0.10-linux_$JAVA_PACKAGE_ARCH"
 JAVA_URL="https://cdn.azul.com/zulu/bin"
 JAVA_DIR=$JAVA_DISTRO
 

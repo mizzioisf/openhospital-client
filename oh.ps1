@@ -241,7 +241,8 @@ $script:MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 
 ### JRE 11 - zulu distribution
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin"
-$script:JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-win_$JAVA_PACKAGE_ARCH"
+#$script:JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-win_$JAVA_PACKAGE_ARCH"
+$script:JAVA_DISTRO="zulu17.48.15-ca-jre17.0.10-win_$JAVA_PACKAGE_ARCH"
 
 # workaround for JRE 11 - 32bit
 #	if ( $JAVA_ARCH -eq "32" ) {
