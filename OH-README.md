@@ -33,7 +33,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                       Open Hospital - 1.12.1                    |
+|                       Open Hospital - 1.14.0                    |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
@@ -78,7 +78,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                     Open Hospital - 1.12.1                      |
+|                     Open Hospital - 1.14.0                      |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
@@ -424,7 +424,7 @@ In order to download and unzip Java:
 
 **x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_x64.zip
 
-**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_i686.zipp
+**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_i686.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -447,4 +447,4 @@ In order to download and unzip MariaDB:
 
 Check online documentation.
 
-*last updated: 2024.03.01*
+*last updated: 2024.02.01*
