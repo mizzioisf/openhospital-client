@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Open Hospital (www.open-hospital.org)
-# Copyright © 2006-2023 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
+# Copyright © 2006-2024 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
 #
 # Open Hospital is a free and open source software for healthcare data management.
 #
@@ -50,7 +50,7 @@ WRITE_CONFIG_FILES="off"
 
 # language setting - default set to en
 OH_LANGUAGE_LIST=("ar" "de" "en" "es" "fr" "it" "pt" "sq")
-OH_LANGUAGE_LIST_INFO=("arabic" "german" "english" "spanish" "french" "italian" "portuguese" "albanian")
+OH_LANGUAGE_LIST_INFO=("Arabic" "German" "English" "Spanish" "French" "Italian" "Portuguese" "Albanian")
 
 # single / multiuser - set "yes" for single user configuration
 #OH_SINGLE_USER="no"
@@ -183,7 +183,7 @@ MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 #JAVA_DISTRO="OpenJDK11U-jre_x64_linux_hotspot_11.0.11_9"
 #JAVA_DIR="jdk-11.0.11+9-jre"
 
-### JRE 11 - zulu distribution
+### JRE 17 - zulu distribution
 #JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-linux_$JAVA_PACKAGE_ARCH"
 JAVA_DISTRO="zulu17.48.15-ca-jre17.0.10-linux_$JAVA_PACKAGE_ARCH"
 JAVA_URL="https://cdn.azul.com/zulu/bin"

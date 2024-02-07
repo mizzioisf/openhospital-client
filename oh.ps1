@@ -2,7 +2,7 @@
 #!/usr/bin/pwsh
 #
 # Open Hospital (www.open-hospital.org)
-# Copyright © 2006-2023 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
+# Copyright © 2006-2024 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
 #
 # Open Hospital is a free and open source software for healthcare data management.
 #
@@ -105,7 +105,7 @@ $global:ProgressPreference= 'SilentlyContinue'
 
 # language setting - default set to en
 $script:OH_LANGUAGE_LIST= @("ar","de","en","es","fr","it","pt","sq")
-$script:OH_LANGUAGE_LIST_INFO=("arabic","german","english","spanish","french","italian","portuguese","albanian")
+$script:OH_LANGUAGE_LIST_INFO=("Arabic","German","English","Spanish","French","Italian","Portuguese","Albanian")
 #$script:OH_LANGUAGE="en" # default
 
 # single / multiuser - set "yes" for single user configuration
@@ -239,10 +239,10 @@ $script:MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 #$script:JAVA_DISTRO="OpenJDK11U-jre_x64_windows_hotspot_11.0.11_9"
 #$script:JAVA_DIR="jdk-11.0.11+9-jre"
 
-### JRE 11 - zulu distribution
-$script:JAVA_URL="https://cdn.azul.com/zulu/bin"
+### JRE 17 - zulu distribution
 #$script:JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_DISTRO="zulu17.48.15-ca-jre17.0.10-win_$JAVA_PACKAGE_ARCH"
+$script:JAVA_URL="https://cdn.azul.com/zulu/bin"
 
 # workaround for JRE 11 - 32bit
 #	if ( $JAVA_ARCH -eq "32" ) {
