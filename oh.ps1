@@ -1334,8 +1334,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			for ( $i = 0; $i -lt $OH_LANGUAGE_LIST.count; $i++)
 			{
 #				Write-Host "${OH_LANGUAGE_LIST[$index]} - ${OH_LANGUAGE_LIST_INFO[$index]} ";
-				Write-Host "$OH_LANGUAGE_LIST[$i] - $OH_LANGUAGE_LIST_INFO[$i] ";
-		#	"Item: [{0}]" -f $data[$index]
+#				Write-Host "$OH_LANGUAGE_LIST[$i] - $OH_LANGUAGE_LIST_INFO[$i] ";
+				Write-Host $OH_LANGUAGE_LIST[$i] $OH_LANGUAGE_LIST_INFO[$i] ;
 			}
 	
 		
