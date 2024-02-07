@@ -1338,7 +1338,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			}
 	
 			Write-Host ""
-			$script:OH_LANGUAGE = Read-Host "Please select language: [ $OH_LANGUAGE_LIST ] (default is en)"
+			$script:OH_LANGUAGE = Read-Host "Please select language: [$OH_LANGUAGE_LIST] (default is en)"
 			check_language;
 			set_language;
 			Read-Host "Press any key to continue";
