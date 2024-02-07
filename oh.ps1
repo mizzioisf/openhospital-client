@@ -1332,7 +1332,8 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Available languages:"
 			# show all available languages
 			foreach ($i in $OH_LANGUAGE_LIST_INFO) {
-				 Write-Host " $OH_LANGUAGE_LIST_INFO[$i]"
+#				 Write-Host " $OH_LANGUAGE_LIST_INFO[$i]"
+				 Write-Host " [$i]"
 			}
 
 			#for ((i=0; i < ${#OH_LANGUAGE_LIST[@]}; i++ )); do echo "-> ${OH_LANGUAGE_LIST[$i]} - ${OH_LANGUAGE_LIST_INFO[$i]} "; done
