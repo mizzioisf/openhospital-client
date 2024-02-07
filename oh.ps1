@@ -1328,7 +1328,15 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 		###################################################
 		"l"	{ # set language 
 			Write-Host ""
-			Write-Host "Available languages: [$OH_LANGUAGE_LIST_INFO]"
+#			Write-Host "Available languages: [$OH_LANGUAGE_LIST_INFO]"
+			Write-Host "Available languages:"
+			# show all available languages
+			foreach ($i in $OH_LANGUAGE_LIST_INFO) {
+				 Write-Host " $OH_LANGUAGE_LIST_INFO"
+			}
+
+			#for ((i=0; i < ${#OH_LANGUAGE_LIST[@]}; i++ )); do echo "-> ${OH_LANGUAGE_LIST[$i]} - ${OH_LANGUAGE_LIST_INFO[$i]} "; done
+
 			$script:OH_LANGUAGE = Read-Host "Select language: $OH_LANGUAGE_LIST (default is en)"
 			check_language;
 			set_language;
