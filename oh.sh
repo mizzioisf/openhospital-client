@@ -115,9 +115,16 @@ MYSQL_CONF_FILE="my.cnf"
 # OH configuration files
 OH_SETTINGS="settings.properties"
 DATABASE_SETTINGS="database.properties"
+EXAMINATION_SETTINGS="examination.properties"
 IMAGING_SETTINGS="dicom.properties"
+SMS_SETTINGS="sms.properties"
+PRINTER_SETTINGS="txtPrinter.properties"
 LOG4J_SETTINGS="log4j.properties"
+TELEMETRY_SETTINGS="telemetry.properties"
+XMPP_SETTINGS="xmpp.properties"
 API_SETTINGS="application.properties"
+CRED_SETTINGS="default_credentials.properties"
+DEMO_CRED_SETTINGS="default_demo_credentials.properties"
 
 # OH jar bin files
 OH_GUI_JAR="OH-gui.jar"
@@ -317,7 +324,7 @@ function read_settings {
 		source "./$OH_DIR/rsc/version.properties"
 		OH_VERSION=$VER_MAJOR.$VER_MINOR.$VER_RELEASE
 	else 
-		echo "Error: Open Hospital non found! Exiting."
+		echo "Error: Open Hospital not found! Exiting."
 		exit 1;
 	fi
 	
@@ -882,7 +889,7 @@ function write_config_files {
 		sed -e "s/DICOM_SIZE/$DICOM_MAX_SIZE/g" -e "s/OH_PATH_SUBSTITUTE/$OH_PATH_ESCAPED/g" \
 		-e "s/DICOM_STORAGE/$DICOM_STORAGE/g" -e "s/DICOM_DIR/$DICOM_DIR_ESCAPED/g" ./$OH_DIR/rsc/$IMAGING_SETTINGS.dist > ./$OH_DIR/rsc/$IMAGING_SETTINGS
 	fi
-	######## $LOG4J_SETTINGS setup
+	######## LOG4J_SETTINGS setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$LOG4J_SETTINGS ]; then
 		OH_LOG_DEST="$OH_PATH_ESCAPED/$LOG_DIR/$OH_LOG_FILE"
 		[ -f ./$OH_DIR/rsc/$LOG4J_SETTINGS ] && mv -f ./$OH_DIR/rsc/$LOG4J_SETTINGS ./$OH_DIR/rsc/$LOG4J_SETTINGS.old
@@ -891,7 +898,7 @@ function write_config_files {
 		-e "s/DBNAME/$DATABASE_NAME/g" -e "s/LOG_LEVEL/$LOG_LEVEL/g" -e "s+LOG_DEST+$OH_LOG_DEST+g" \
 		./$OH_DIR/rsc/$LOG4J_SETTINGS.dist > ./$OH_DIR/rsc/$LOG4J_SETTINGS
 	fi
-	######## $DATABASE_SETTINGS setup 
+	######## DATABASE_SETTINGS setup 
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ]; then
 		[ -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ] && mv -f ./$OH_DIR/rsc/$DATABASE_SETTINGS ./$OH_DIR/rsc/$DATABASE_SETTINGS.old
 		echo "Writing OH database configuration file -> $DATABASE_SETTINGS..."
@@ -899,7 +906,7 @@ function write_config_files {
 		-e "s/DBUSER/$DATABASE_USER/g" -e "s/DBPASS/$DATABASE_PASSWORD/g" \
 		./$OH_DIR/rsc/$DATABASE_SETTINGS.dist > ./$OH_DIR/rsc/$DATABASE_SETTINGS
 	fi
-	######## $OH_SETTINGS setup
+	######## OH_SETTINGS setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$OH_SETTINGS ]; then
 		[ -f ./$OH_DIR/rsc/$OH_SETTINGS ] && mv -f ./$OH_DIR/rsc/$OH_SETTINGS ./$OH_DIR/rsc/$OH_SETTINGS.old
 		echo "Writing OH configuration file -> $OH_SETTINGS..."
@@ -907,6 +914,49 @@ function write_config_files {
 		-e "s/DEMODATA=off/"DEMODATA=$DEMO_DATA"/g" -e "s/YES_OR_NO/$OH_SINGLE_USER/g" \
 		-e "s/PHOTO_DIR/$PHOTO_DIR_ESCAPED/g" -e "s/APISERVER=off/"APISERVER=$API_SERVER"/g" \
 		./$OH_DIR/rsc/$OH_SETTINGS.dist > ./$OH_DIR/rsc/$OH_SETTINGS
+	fi
+	######## EXAMINATION_SETTINGS setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ] && mv -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ./$OH_DIR/rsc/$EXAMINATION_SETTINGS.old
+		echo "Writing OH Examination configuration file -> $EXAMINATION_SETTINGS..."
+		cp ./$OH_DIR/rsc/$EXAMINATION_SETTINGS.dist > ./$OH_DIR/rsc/$EXAMINATION_SETTINGS
+	fi
+	######## PRINTER_SETTINGS setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ] && mv -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ./$OH_DIR/rsc/$PRINTER_SETTINGS.old
+		echo "Writing OH Printer configuration file -> $PRINTER_SETTINGS..."
+		cp ./$OH_DIR/rsc/$PRINTER_SETTINGS.dist > ./$OH_DIR/rsc/$PRINTER_SETTINGS
+	fi
+	######## SMS_SETTINGS setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$SMS_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$SMS_SETTINGS ] && mv -f ./$OH_DIR/rsc/$SMS_SETTINGS ./$OH_DIR/rsc/$SMS_SETTINGS.old
+		echo "Writing OH SMS configuration file -> $SMS_SETTINGS..."
+		cp ./$OH_DIR/rsc/$SMS_SETTINGS.dist > ./$OH_DIR/rsc/$SMS_SETTINGS
+	fi
+	######## TELEMETRY_SETTINGS setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ] && mv -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ./$OH_DIR/rsc/$TELEMETRY_SETTINGS.old
+		echo "Writing OH Telemetry configuration file -> $TELEMETRY_SETTINGS..."
+		cp ./$OH_DIR/rsc/$TELEMETRY_SETTINGS.dist > ./$OH_DIR/rsc/$TELEMETRY_SETTINGS
+	fi
+	######## XMMP_SETTINGS setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$XMMP_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$XMMP_SETTINGS ] && mv -f ./$OH_DIR/rsc/$XMMP_SETTINGS ./$OH_DIR/rsc/$XMMP_SETTINGS.old
+		echo "Writing OH XMMP configuration file -> $XMMP_SETTINGS..."
+		cp ./$OH_DIR/rsc/$XMMP_SETTINGS.dist > ./$OH_DIR/rsc/$XMMP_SETTINGS
+	fi
+	######## DEFAULT_CREDENTIALS_SETTINGS setup
+
+	if [ "$OH_MODE" != "CLIENT" ]; then
+		if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$CRED_SETTINGS ]; then
+			[ -f ./$OH_DIR/rsc/$CRED_SETTINGS ] && mv -f ./$OH_DIR/rsc/$CRED_SETTINGS ./$OH_DIR/rsc/$CRED_SETTINGS.old
+			echo "Writing OH default credentials configuration file -> $CRED_SETTINGS..."
+			cp ./$OH_DIR/rsc/$CRED_SETTINGS.dist > ./$OH_DIR/rsc/$CRED_SETTINGS
+			
+			[ -f ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS ] && mv -f ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS.old
+			echo "Writing OH DEMO default credentials configuration file -> $DEMO_CRED_SETTINGS..."
+			cp ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS.dist > ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS
+		fi
 	fi
 }
 

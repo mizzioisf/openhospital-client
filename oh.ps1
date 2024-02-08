@@ -173,9 +173,16 @@ $script:MYSQL_CONF_FILE="my.cnf"
 # OH configuration files
 $script:OH_SETTINGS="settings.properties"
 $script:DATABASE_SETTINGS="database.properties"
+$script:EXAMINATION_SETTINGS="examination.properties"
 $script:IMAGING_SETTINGS="dicom.properties"
+$script:PRINTER_SETTINGS="txtPrinter.properties"
+$script:SMS_SETTINGS="sms.properties"
 $script:LOG4J_SETTINGS="log4j.properties"
+$script:TELEMETRY_SETTINGS="telemetry.properties"
+$script:XMPP_SETTINGS="xmpp.properties"
 $script:API_SETTINGS="application.properties"
+$script:CRED_SETTINGS="default_credentials.properties"
+$script:DEMO_CRED_SETTINGS="default_demo_credentials.properties"
 
 # OH jar bin files
 $script:OH_GUI_JAR="OH-gui.jar"
@@ -995,7 +1002,7 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$IMAGING_SETTINGS").replace("DICOM_SIZE","$DICOM_MAX_SIZE") | Set-Content "$OH_PATH/$OH_DIR/rsc/$IMAGING_SETTINGS"
 	}
 
-	######## $LOG4J_SETTINGS setup
+	######## LOG4J_SETTINGS setup
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$LOG4J_SETTINGS" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$LOG4J_SETTINGS" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$LOG4J_SETTINGS $OH_PATH/$OH_DIR/rsc/$LOG4J_SETTINGS.old }
 		Write-Host "Writing OH configuration file -> $LOG4J_SETTINGS..."
@@ -1008,7 +1015,7 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$LOG4J_SETTINGS").replace("LOG_DEST","../$LOG_DIR/$OH_LOG_FILE") | Set-Content "$OH_PATH/$OH_DIR/rsc/$LOG4J_SETTINGS"
 	}
 
-	######## $DATABASE_SETTINGS setup 
+	######## DATABASE_SETTINGS setup 
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS.old }
 		Write-Host "Writing OH database configuration file -> $DATABASE_SETTINGS..."
@@ -1024,7 +1031,7 @@ function write_config_files {
 		#Add-Content -Path $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS -Value "jdbc.password=$DATABASE_PASSWORD"
 	}
 
-	######## $OH_SETTINGS setup
+	######## OH_SETTINGS setup
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$OH_SETTINGS $OH_PATH/$OH_DIR/rsc/$OH_SETTINGS.old }
 		Write-Host "Writing OH configuration file -> $OH_SETTINGS..."
