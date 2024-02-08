@@ -991,6 +991,10 @@ function write_api_config_file {
 function copy_config_file ($arg) {
 	# function to copy a single configuration file with backup
 	# usage: copy_config_file [file_name]
+	Write-Host "->>>>>>>>>> $arg"
+	Write-Host "->>>>>>>>>> $arg"
+	Write-Host "->>>>>>>>>> $arg"
+	Write-Host "->>>>>>>>>> $arg"
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$arg" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$arg" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$arg $OH_PATH/$OH_DIR/rsc/$arg.old }
 		Write-Host "Writing OH configuration file -> $arg..."
