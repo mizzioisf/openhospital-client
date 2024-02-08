@@ -998,6 +998,7 @@ function copy_config_file ($arg) {
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$arg" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$arg" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$arg $OH_PATH/$OH_DIR/rsc/$arg.old }
 		Write-Host "Writing OH configuration file -> $arg..."
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$arg.dist") | Set-Content "$OH_PATH/$OH_DIR/rsc/$arg"
 	}
 }
 
