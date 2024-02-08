@@ -254,6 +254,15 @@ echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\log4j.properties.dist %OH_PATH%\%OH_DIR%\r
 %REPLACE_PATH%\replace.exe LOG_LEVEL %LOG_LEVEL% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 %REPLACE_PATH%\replace.exe LOG_DEST %OH_LOG_DEST% -- %OH_PATH%\%OH_DIR%\rsc\log4j.properties >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 
+REM ### Setup other OH property files
+echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\examination.properties.dist %OH_PATH%\%OH_DIR%\rsc\examination.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\sms.properties.dist %OH_PATH%\%OH_DIR%\rsc\sms.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\txtPrinter.properties.dist %OH_PATH%\%OH_DIR%\rsc\txtPrinter.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\telemetry.properties.dist %OH_PATH%\%OH_DIR%\rsc\telemetry.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\xmpp.properties.dist %OH_PATH%\%OH_DIR%\rsc\xmpp.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\default_credentials.properties.dist %OH_PATH%\%OH_DIR%\rsc\default_credentials.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+echo f | xcopy %OH_PATH%\%OH_DIR%\rsc\default_demo_credentials.properties.dist %OH_PATH%\%OH_DIR%\rsc\default_demo_credentials.properties /y >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+
 REM ### Setup database if not already existing
 if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
  	REM # Remove database files
