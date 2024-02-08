@@ -936,8 +936,10 @@ function write_config_files {
 	copy_config_file $XMPP_SETTINGS;
 
 	######## DEFAULT_CREDENTIALS_SETTINGS setup
-	if [ "$OH_MODE" != "CLIENT" ]; then
+	if [ "$OH_MODE" == "PORTABLE" ]; then
 		copy_config_file $CRED_SETTINGS;
+	fi
+	if [ "$DEMO_DATA" = "on" ]; then
 		copy_config_file $DEMO_CRED_SETTINGS;
 	fi
 }
@@ -1120,8 +1122,6 @@ function parse_user_input {
 				LOG_LEVEL="INFO";
 			;;
 		esac
-		# create config files if not present
-		#write_config_files;
 		set_log_level;
 		if (( $2==0 )); then option="Z"; else echo "Press any key to continue"; read; fi
 		;;

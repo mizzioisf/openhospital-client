@@ -1069,8 +1069,10 @@ function write_config_files {
 	copy_config_file $XMPP_SETTINGS;
 
 	######## DEFAULT_CREDENTIALS_SETTINGS setup
-	if !( $OH_MODE -eq "CLIENT" ) {
+	if ($OH_MODE -eq "PORTABLE") {
 		copy_config_file $CRED_SETTINGS;
+	}
+	if ( $DEMO_DATA -eq "on" ) {
 		copy_config_file $DEMO_CRED_SETTINGS;
 	}
 }
@@ -1267,8 +1269,6 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$script:LOG_LEVEL="INFO"
 				}
 			}
-			# create config files if not present
-			#write_config_files;
 			# set configuration
 			set_log_level;
 			Read-Host "Press any key to continue";
