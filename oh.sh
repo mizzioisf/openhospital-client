@@ -919,31 +919,31 @@ function write_config_files {
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ]; then
 		[ -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ] && mv -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ./$OH_DIR/rsc/$EXAMINATION_SETTINGS.old
 		echo "Writing OH Examination configuration file -> $EXAMINATION_SETTINGS..."
-		cp ./$OH_DIR/rsc/$EXAMINATION_SETTINGS.dist > ./$OH_DIR/rsc/$EXAMINATION_SETTINGS
+		cp ./$OH_DIR/rsc/$EXAMINATION_SETTINGS.dist ./$OH_DIR/rsc/$EXAMINATION_SETTINGS
 	fi
 	######## PRINTER_SETTINGS setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ]; then
 		[ -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ] && mv -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ./$OH_DIR/rsc/$PRINTER_SETTINGS.old
 		echo "Writing OH Printer configuration file -> $PRINTER_SETTINGS..."
-		cp ./$OH_DIR/rsc/$PRINTER_SETTINGS.dist > ./$OH_DIR/rsc/$PRINTER_SETTINGS
+		cp ./$OH_DIR/rsc/$PRINTER_SETTINGS.dist ./$OH_DIR/rsc/$PRINTER_SETTINGS
 	fi
 	######## SMS_SETTINGS setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$SMS_SETTINGS ]; then
 		[ -f ./$OH_DIR/rsc/$SMS_SETTINGS ] && mv -f ./$OH_DIR/rsc/$SMS_SETTINGS ./$OH_DIR/rsc/$SMS_SETTINGS.old
 		echo "Writing OH SMS configuration file -> $SMS_SETTINGS..."
-		cp ./$OH_DIR/rsc/$SMS_SETTINGS.dist > ./$OH_DIR/rsc/$SMS_SETTINGS
+		cp ./$OH_DIR/rsc/$SMS_SETTINGS.dist ./$OH_DIR/rsc/$SMS_SETTINGS
 	fi
 	######## TELEMETRY_SETTINGS setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ]; then
 		[ -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ] && mv -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ./$OH_DIR/rsc/$TELEMETRY_SETTINGS.old
 		echo "Writing OH Telemetry configuration file -> $TELEMETRY_SETTINGS..."
-		cp ./$OH_DIR/rsc/$TELEMETRY_SETTINGS.dist > ./$OH_DIR/rsc/$TELEMETRY_SETTINGS
+		cp ./$OH_DIR/rsc/$TELEMETRY_SETTINGS.dist ./$OH_DIR/rsc/$TELEMETRY_SETTINGS
 	fi
-	######## XMMP_SETTINGS setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$XMMP_SETTINGS ]; then
-		[ -f ./$OH_DIR/rsc/$XMMP_SETTINGS ] && mv -f ./$OH_DIR/rsc/$XMMP_SETTINGS ./$OH_DIR/rsc/$XMMP_SETTINGS.old
-		echo "Writing OH XMMP configuration file -> $XMMP_SETTINGS..."
-		cp ./$OH_DIR/rsc/$XMMP_SETTINGS.dist > ./$OH_DIR/rsc/$XMMP_SETTINGS
+	######## XMPP_SETTINGS setup
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$XMPP_SETTINGS ]; then
+		[ -f ./$OH_DIR/rsc/$XMPP_SETTINGS ] && mv -f ./$OH_DIR/rsc/$XMPP_SETTINGS ./$OH_DIR/rsc/$XMPP_SETTINGS.old
+		echo "Writing OH XMPP configuration file -> $XMPP_SETTINGS..."
+		cp ./$OH_DIR/rsc/$XMPP_SETTINGS.dist ./$OH_DIR/rsc/$XMPP_SETTINGS
 	fi
 	######## DEFAULT_CREDENTIALS_SETTINGS setup
 
@@ -951,11 +951,11 @@ function write_config_files {
 		if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$CRED_SETTINGS ]; then
 			[ -f ./$OH_DIR/rsc/$CRED_SETTINGS ] && mv -f ./$OH_DIR/rsc/$CRED_SETTINGS ./$OH_DIR/rsc/$CRED_SETTINGS.old
 			echo "Writing OH default credentials configuration file -> $CRED_SETTINGS..."
-			cp ./$OH_DIR/rsc/$CRED_SETTINGS.dist > ./$OH_DIR/rsc/$CRED_SETTINGS
+			cp ./$OH_DIR/rsc/$CRED_SETTINGS.dist ./$OH_DIR/rsc/$CRED_SETTINGS
 			
 			[ -f ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS ] && mv -f ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS.old
 			echo "Writing OH DEMO default credentials configuration file -> $DEMO_CRED_SETTINGS..."
-			cp ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS.dist > ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS
+			cp ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS.dist ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS
 		fi
 	fi
 }
