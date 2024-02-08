@@ -988,11 +988,21 @@ function write_api_config_file {
 }
 
 ###################################################################
+function copy_config_file ($arg) {
+	# function to copy a single configuration file with backup
+	# usage: copy_config_file [file_name]
+	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$1" -PathType leaf) ) {
+		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$1" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$1 $OH_PATH/$OH_DIR/rsc/$1.old }
+		Write-Host "Writing OH configuration file -> $1..."
+	}
+}
+
+###################################################################
 function write_config_files {
 	# set up configuration files
 	Write-Host "Checking for OH configuration files..."
 
-	######## DICOM setup
+	######## IMAGING / DICOM setup
 	if ( ($script:WRITE_CONFIG_FILES -eq "on") -or !(Test-Path "$OH_PATH/$OH_DIR/rsc/$IMAGING_SETTINGS" -PathType leaf) ) {
 		if (Test-Path "$OH_PATH/$OH_DIR/rsc/$IMAGING_SETTINGS" -PathType leaf) { mv -Force $OH_PATH/$OH_DIR/rsc/$IMAGING_SETTINGS $OH_PATH/$OH_DIR/rsc/$IMAGING_SETTINGS.old }
 		Write-Host "Writing OH configuration file -> $IMAGING_SETTINGS..."
@@ -1049,6 +1059,20 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("DEMODATA=off","DEMODATA=$DEMO_DATA") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
 		# set API_SERVER
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS").replace("APISERVER=off","APISERVER=$API_SERVER") | Set-Content "$OH_PATH/$OH_DIR/rsc/$OH_SETTINGS"
+	}
+
+	######## OH - Other settings setup
+	copy_config_file $EXAMINATION_SETTINGS;
+	copy_config_file $PRINTER_SETTINGS;
+	copy_config_file $SMS_SETTINGS;
+	copy_config_file $TELEMETRY_SETTINGS;
+	copy_config_file $XMPP_SETTINGS;
+
+	######## DEFAULT_CREDENTIALS_SETTINGS setup
+	if [ "$OH_MODE" != "CLIENT" ]; then
+		copy_config_file $CRED_SETTINGS;
+		copy_config_file $DEMO_CRED_SETTINGS;
+	fi
 	}
 }
 

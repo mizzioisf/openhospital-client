@@ -117,8 +117,8 @@ OH_SETTINGS="settings.properties"
 DATABASE_SETTINGS="database.properties"
 EXAMINATION_SETTINGS="examination.properties"
 IMAGING_SETTINGS="dicom.properties"
-SMS_SETTINGS="sms.properties"
 PRINTER_SETTINGS="txtPrinter.properties"
+SMS_SETTINGS="sms.properties"
 LOG4J_SETTINGS="log4j.properties"
 TELEMETRY_SETTINGS="telemetry.properties"
 XMPP_SETTINGS="xmpp.properties"
@@ -420,6 +420,7 @@ function set_defaults {
 	PHOTO_DIR_ESCAPED=$(echo $PHOTO_DIR | sed -e 's/\//\\\//g')
 	LOG_DIR_ESCAPED=$(echo $LOG_DIR | sed -e 's/\//\\\//g')
 	TMP_DIR_ESCAPED=$(echo $TMP_DIR | sed -e 's/\//\\\//g')
+
 }
 
 ###################################################################
@@ -879,10 +880,21 @@ function write_api_config_file {
 }
 
 ###################################################################
+function copy_config_file {
+	# function to copy a single configuration file with backup
+	# usage: copy_config_file [file_name]
+	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$1 ]; then
+		[ -f ./$OH_DIR/rsc/$1 ] && mv -f ./$OH_DIR/rsc/$1 ./$OH_DIR/rsc/$1.old
+		echo "Writing OH configuration file -> $1..."
+		cp ./$OH_DIR/rsc/$1.dist ./$OH_DIR/rsc/$1
+	fi
+}
+
+###################################################################
 function write_config_files {
 	# set up configuration files
 	echo "Checking for OH configuration files..."
-	######## DICOM setup
+	######## IMAGING / DICOM setup
 	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$IMAGING_SETTINGS ]; then
 		[ -f ./$OH_DIR/rsc/$IMAGING_SETTINGS ] && mv -f ./$OH_DIR/rsc/$IMAGING_SETTINGS ./$OH_DIR/rsc/$IMAGING_SETTINGS.old
 		echo "Writing OH configuration file -> $IMAGING_SETTINGS..."
@@ -915,48 +927,18 @@ function write_config_files {
 		-e "s/PHOTO_DIR/$PHOTO_DIR_ESCAPED/g" -e "s/APISERVER=off/"APISERVER=$API_SERVER"/g" \
 		./$OH_DIR/rsc/$OH_SETTINGS.dist > ./$OH_DIR/rsc/$OH_SETTINGS
 	fi
-	######## EXAMINATION_SETTINGS setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ]; then
-		[ -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ] && mv -f ./$OH_DIR/rsc/$EXAMINATION_SETTINGS ./$OH_DIR/rsc/$EXAMINATION_SETTINGS.old
-		echo "Writing OH Examination configuration file -> $EXAMINATION_SETTINGS..."
-		cp ./$OH_DIR/rsc/$EXAMINATION_SETTINGS.dist ./$OH_DIR/rsc/$EXAMINATION_SETTINGS
-	fi
-	######## PRINTER_SETTINGS setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ]; then
-		[ -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ] && mv -f ./$OH_DIR/rsc/$PRINTER_SETTINGS ./$OH_DIR/rsc/$PRINTER_SETTINGS.old
-		echo "Writing OH Printer configuration file -> $PRINTER_SETTINGS..."
-		cp ./$OH_DIR/rsc/$PRINTER_SETTINGS.dist ./$OH_DIR/rsc/$PRINTER_SETTINGS
-	fi
-	######## SMS_SETTINGS setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$SMS_SETTINGS ]; then
-		[ -f ./$OH_DIR/rsc/$SMS_SETTINGS ] && mv -f ./$OH_DIR/rsc/$SMS_SETTINGS ./$OH_DIR/rsc/$SMS_SETTINGS.old
-		echo "Writing OH SMS configuration file -> $SMS_SETTINGS..."
-		cp ./$OH_DIR/rsc/$SMS_SETTINGS.dist ./$OH_DIR/rsc/$SMS_SETTINGS
-	fi
-	######## TELEMETRY_SETTINGS setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ]; then
-		[ -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ] && mv -f ./$OH_DIR/rsc/$TELEMETRY_SETTINGS ./$OH_DIR/rsc/$TELEMETRY_SETTINGS.old
-		echo "Writing OH Telemetry configuration file -> $TELEMETRY_SETTINGS..."
-		cp ./$OH_DIR/rsc/$TELEMETRY_SETTINGS.dist ./$OH_DIR/rsc/$TELEMETRY_SETTINGS
-	fi
-	######## XMPP_SETTINGS setup
-	if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$XMPP_SETTINGS ]; then
-		[ -f ./$OH_DIR/rsc/$XMPP_SETTINGS ] && mv -f ./$OH_DIR/rsc/$XMPP_SETTINGS ./$OH_DIR/rsc/$XMPP_SETTINGS.old
-		echo "Writing OH XMPP configuration file -> $XMPP_SETTINGS..."
-		cp ./$OH_DIR/rsc/$XMPP_SETTINGS.dist ./$OH_DIR/rsc/$XMPP_SETTINGS
-	fi
-	######## DEFAULT_CREDENTIALS_SETTINGS setup
 
+	######## OH - Other settings setup
+	copy_config_file $EXAMINATION_SETTINGS;
+	copy_config_file $PRINTER_SETTINGS;
+	copy_config_file $SMS_SETTINGS;
+	copy_config_file $TELEMETRY_SETTINGS;
+	copy_config_file $XMPP_SETTINGS;
+
+	######## DEFAULT_CREDENTIALS_SETTINGS setup
 	if [ "$OH_MODE" != "CLIENT" ]; then
-		if [ "$WRITE_CONFIG_FILES" = "on" ] || [ ! -f ./$OH_DIR/rsc/$CRED_SETTINGS ]; then
-			[ -f ./$OH_DIR/rsc/$CRED_SETTINGS ] && mv -f ./$OH_DIR/rsc/$CRED_SETTINGS ./$OH_DIR/rsc/$CRED_SETTINGS.old
-			echo "Writing OH default credentials configuration file -> $CRED_SETTINGS..."
-			cp ./$OH_DIR/rsc/$CRED_SETTINGS.dist ./$OH_DIR/rsc/$CRED_SETTINGS
-			
-			[ -f ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS ] && mv -f ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS.old
-			echo "Writing OH DEMO default credentials configuration file -> $DEMO_CRED_SETTINGS..."
-			cp ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS.dist ./$OH_DIR/rsc/$DEMO_CRED_SETTINGS
-		fi
+		copy_config_file $CRED_SETTINGS;
+		copy_config_file $DEMO_CRED_SETTINGS;
 	fi
 }
 
