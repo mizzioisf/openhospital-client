@@ -1069,7 +1069,7 @@ function write_config_files {
 	copy_config_file $XMPP_SETTINGS;
 
 	######## DEFAULT_CREDENTIALS_SETTINGS setup
-	if ( $OH_MODE -eq "CLIENT" ) {
+	if !( $OH_MODE -eq "CLIENT" ) {
 		copy_config_file $CRED_SETTINGS;
 		copy_config_file $DEMO_CRED_SETTINGS;
 	}
