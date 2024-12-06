@@ -1495,7 +1495,7 @@ function parse_user_input {
 			echo "Killing mariadb/mysql..."
 			killall mariadbd
 			# remove socket and pid file
-			echo "Removing socket and pid file..."
+			echo "Removing mariadb/mysql socket and pid file..."
 			rm -rf $OH_PATH/$TMP_DIR/mysql.sock
 			rm -rf $OH_PATH/$TMP_DIR/mysql.pid
 		fi

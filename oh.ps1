@@ -1617,7 +1617,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				Get-Process java -ErrorAction SilentlyContinue | Stop-Process -PassThru
 				Write-Host "Killing mariadb/mysql..."	
 				Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
-				Write-Host "Removing socket and pid file..."
+				Write-Host "Removing mariadb/mysql socket and pid file..."
 				$filetodel="$OH_PATH/$TMP_DIR/mysql.sock"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 				$filetodel="$OH_PATH/$TMP_DIR/mysql.pid"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 			}
