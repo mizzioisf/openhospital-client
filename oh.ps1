@@ -1120,7 +1120,7 @@ function write_config_files {
 ###################################################################
 function clean_database {
 	# remove socket and pid file
-	Write-Host "Removing socket and pid file..."
+	Write-Host "Cleaning tmp directory..."
 	$filetodel="$OH_PATH/$TMP_DIR/*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	# remove database files
 	Write-Host "Removing databases..."
@@ -1613,10 +1613,13 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Write-Host "Warning: do you want to kill all java and mysql/mariadb processes?"
 			$choice = Read-Host -Prompt "Press [y] to confirm: "
 			if (( "$choice" -eq "y" )) {
-				Write-Host "Killing mariadb/mysql..."	
-				Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
 				Write-Host "Killing java..."	
 				Get-Process java -ErrorAction SilentlyContinue | Stop-Process -PassThru
+				Write-Host "Killing mariadb/mysql..."	
+				Get-Process mysqld -ErrorAction SilentlyContinue | Stop-Process -PassThru
+				Write-Host "Removing socket and pid file..."
+				$filetodel="$OH_PATH/$TMP_DIR/mysql.sock"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+				$filetodel="$OH_PATH/$TMP_DIR/mysql.pid"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 			}
 			########## WORKAROUND to kill existing API server process ##################
 			########## TO BE REMOVED IN NEXT RELEASES

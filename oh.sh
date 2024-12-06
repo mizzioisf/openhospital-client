@@ -192,7 +192,7 @@ MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 
 ### JRE 17 - zulu distribution
 #JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-linux_$JAVA_PACKAGE_ARCH"
-JAVA_DISTRO="zulu17.48.15-ca-jre17.0.10-linux_$JAVA_PACKAGE_ARCH"
+JAVA_DISTRO="zulu17.54.21-ca-jre17.0.13-linux_$JAVA_PACKAGE_ARCH"
 JAVA_URL="https://cdn.azul.com/zulu/bin"
 JAVA_DIR=$JAVA_DISTRO
 
@@ -994,7 +994,7 @@ function write_config_files {
 ###################################################################
 function clean_database {
 	# remove socket and pid file
-	echo "Removing socket and pid file..."
+	echo "Cleaning tmp directory..."
 	rm -rf ./$TMP_DIR/*
 	# remove database files
 	echo "Removing databases..."
@@ -1489,11 +1489,15 @@ function parse_user_input {
 		echo "Warning: do you want to kill all java and mysql/mariadb processes?"
 		read -p "Press [y] to confirm: " choice
 		if [ "$choice" = "y" ]; then
+			echo "Killing java..."
+			killall java
 			# kill mariadb/mysqld processes
 			echo "Killing mariadb/mysql..."
 			killall mariadbd
-			echo "Killing java..."
-			killall java
+			# remove socket and pid file
+			echo "Removing socket and pid file..."
+			rm -rf $OH_PATH/$TMP_DIR/mysql.sock
+			rm -rf $OH_PATH/$TMP_DIR/mysql.pid
 		fi
 		########## WORKAROUND to kill existing API server process ##################
 		########## TO BE REMOVED IN NEXT RELEASES
