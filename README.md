@@ -22,7 +22,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.12.1 Open Hospital official release!**
+**New ! Updated to 1.14.2 Open Hospital official release!**
 
 # Running OH - Ultra-quickstart
 
@@ -67,7 +67,7 @@ cd openhospital-client
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                       Open Hospital - 1.12.1                    |
+|                       Open Hospital - 1.14.2                    |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
@@ -112,7 +112,7 @@ cd openhospital-client
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                     Open Hospital - 1.12.1                      |
+|                     Open Hospital - 1.14.2                      |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
@@ -456,9 +456,9 @@ In order to download and unzip Java:
 - Visit  https://cdn.azul.com/zulu/bin/
 - download the latest **JRE** for your architecture:
 
-**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_x64.zip
+**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu17.54.21-ca-jre17.0.13-win_x64.zip
 
-**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_i686.zip
+**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu17.54.21-ca-jre17.0.13-win_i686.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -473,7 +473,7 @@ In order to download and unzip MariaDB:
 
 **x86 - 32bit:** https://archive.mariadb.org/mariadb-10.6.5/win32-packages/mariadb-10.6.5-win32.zip
 
-**x64 - 64bit:** https://archive.mariadb.org/mariadb-10.6.14/winx64-packages/mariadb-10.6.14-winx64.zip
+**x64 - 64bit:** https://archive.mariadb.org/mariadb-10.6.20/winx64-packages/mariadb-10.6.20-winx64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -481,4 +481,4 @@ In order to download and unzip MariaDB:
 
 Check online documentation.
 
-*last updated: 2024.02.01*
+*last updated: 2024.12.06*
