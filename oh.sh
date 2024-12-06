@@ -20,7 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
-#
 
 #################### Script info and configuration - Do not edit #####################
 # set script DEBUG mode
@@ -117,7 +116,7 @@ OH_SETTINGS="settings.properties"
 DATABASE_SETTINGS="database.properties"
 EXAMINATION_SETTINGS="examination.properties"
 IMAGING_SETTINGS="dicom.properties"
-LOG4J_SETTINGS="log4j.properties"
+LOG4J_SETTINGS="log4j2-spring.properties"
 PRINTER_SETTINGS="txtPrinter.properties"
 SMS_SETTINGS="sms.properties"
 TELEMETRY_SETTINGS="telemetry.properties"
@@ -150,8 +149,9 @@ OH_API_PID="../tmp/oh-api.pid"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-MYSQL_VERSION="10.6.16"
-MYSQL32_VERSION="10.5.23"
+MYSQL_VERSION="10.6.20"
+#MYSQL_VERSION="11.6.2"
+MYSQL32_VERSION="10.5.27"
 PACKAGE_TYPE="systemd" 
 
 ######## define system and software architecture
@@ -195,6 +195,13 @@ MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 JAVA_DISTRO="zulu17.48.15-ca-jre17.0.10-linux_$JAVA_PACKAGE_ARCH"
 JAVA_URL="https://cdn.azul.com/zulu/bin"
 JAVA_DIR=$JAVA_DISTRO
+
+# Tomcat 11
+TOMCAT_VERSION="11.0.1"
+TOMCAT_URL="https://dlcdn.apache.org/tomcat/tomcat-11/v$TOMCAT_VERSION/bin/"
+TOMCAT_DISTRO="apache-tomcat-$TOMCAT_VERSION"
+TOMCAT_DIR=$TOMCAT_DISTRO
+# windows -> https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.1/bin/apache-tomcat-11.0.1-windows-x64.zip
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
@@ -595,14 +602,14 @@ function java_check {
 # check if JAVA_BIN is already set and it exists
 if ( [ -z ${JAVA_BIN+x} ] || [ ! -x "$JAVA_BIN" ] ); then
 	# set default
-	echo "Setting default JAVA..."
+	echo "Setting default Java..."
 	JAVA_BIN="$OH_PATH/$JAVA_DIR/bin/java"
 fi
 
 # if JAVA_BIN is not found download JRE
 if [ ! -x "$JAVA_BIN" ]; then
 	if [ ! -f "./$JAVA_DISTRO.$EXT" ]; then
-		echo "Warning - JAVA not found. Do you want to download it?"
+		echo "Warning - Java not found. Do you want to download it?"
 		get_confirmation;
 		# download java binaries
 		echo "Download $JAVA_DISTRO..."
@@ -614,13 +621,13 @@ if [ ! -x "$JAVA_BIN" ]; then
 		echo "Error unpacking Java. Exiting."
 		exit 1
 	fi
-	echo "JAVA unpacked successfully!"
+	echo "Java unpacked successfully!"
 	echo "Removing downloaded file..."
 	rm ./$JAVA_DISTRO.$EXT
 	echo "Done!"
 fi
 
-echo "JAVA found!"
+echo "Java found!"
 echo "Using $JAVA_BIN"
 }
 
@@ -660,11 +667,46 @@ if [ $? -eq 1 ]; then
 	exit 1
 fi
 # check for libncurses - version 5
-ldconfig -p | grep libncurses.so.5 > /dev/null;
-if [ $? -eq 1 ]; then
-	echo "Error: libncurses version 5 not found! Please install the library. Exiting."
-	exit 1
+#ldconfig -p | grep libncurses.so.5 > /dev/null;
+#if [ $? -eq 1 ]; then
+#	echo "Error: libncurses version 5 not found! Please install the library. Exiting."
+#	exit 1
+#fi
+}
+
+###################################################################
+function tomcat_check {
+# check if TOMCAT_BIN is already set and it exists
+if ( [ -z ${TOMCAT_BIN+x} ] || [ ! -x "$TOMCAT_BIN" ] ); then
+	# set default
+	echo "Setting default Tomcat..."
+	TOMCAT_BIN="$OH_PATH/$TOMCAT_DIR/bin/catalina.sh"
 fi
+
+# if TOMCAT_BIN is not found download Tomcat
+if [ ! -x "$TOMCAT_BIN" ]; then
+#	if [ ! -f "./$TOMCAT_DISTRO.$EXT" ]; then
+	if [ ! -f "./$TOMCAT_DISTRO.$EXT" ]; then
+		echo "Warning - Tomcat not found. Do you want to download it?"
+		get_confirmation;
+		# download tomcat binaries
+		echo "Download $TOMCAT_DISTRO..."
+		wget -P ./ $TOMCAT_URL/$TOMCAT_DISTRO.$EXT
+	fi
+	echo "Unpacking $TOMCAT_DISTRO..."
+	tar xf ./$TOMCAT_DISTRO.$EXT -C ./
+	if [ $? -ne 0 ]; then
+		echo "Error unpacking Tomcat. Exiting."
+		exit 1
+	fi
+	echo "Tomcat unpacked successfully!"
+	echo "Removing downloaded file..."
+	rm ./$TOMCAT_DISTRO.$EXT
+	echo "Done!"
+fi
+
+echo "Tomcat found!"
+echo "Using $TOMCAT_BIN"
 }
 
 ###################################################################
@@ -877,7 +919,10 @@ function write_api_config_file {
 		# JWT_TOKEN_SECRET=`openssl rand -base64 64 | xargs`
 		JWT_TOKEN_SECRET=`LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 66`
 		echo "Writing OH API configuration file -> $API_SETTINGS..."
-		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" -e "s&OH_API_PID&"$OH_API_PID"&g" ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
+		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" \
+		    -e "s&OH_API_PID&"$OH_API_PID"&g" \
+		    -e "s/API_HOST:API_PORT/localhost:8080/g" \
+		    ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
 	fi
 }
 
@@ -999,7 +1044,7 @@ function start_gui {
 	# OH GUI launch
 	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
 
-	$JAVA_BIN -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.menu.gui.Menu >> ../$LOG_DIR/$LOG_FILE 2>&1
+	$JAVA_BIN -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=${NATIVE_LIB_PATH} -classpath $OH_CLASSPATH org.isf.Application >> ../$LOG_DIR/$LOG_FILE 2>&1
 
 	if [ $? -ne 0 ]; then
 		echo "An error occurred while starting Open Hospital. Exiting."
@@ -1017,16 +1062,18 @@ function start_api_server {
 		exit 1;
 	fi
 	
-	########## WORKAROUND to kill existing API server process ##################
-	########## TO BE REMOVED IN NEXT RELEASES
+#	########## WORKAROUND to kill existing API server process ##################
+#	########## TO BE REMOVED IN NEXT RELEASES
+#	##########
+#	# check for stale PID files
+#	if [ -f $OH_PATH/$TMP_DIR/$OH_API_PID ]; then
+#		API_PID_NUMBER=$(cat $OH_PATH/$TMP_DIR/$OH_API_PID)
+#		echo "Killing API server - process $API_PID_NUMBER..."
+#		kill $API_PID_NUMBER
+#	fi
 	##########
-	# check for stale PID files
-	if [ -f $OH_PATH/$TMP_DIR/$OH_API_PID ]; then
-		API_PID_NUMBER=$(cat $OH_PATH/$TMP_DIR/$OH_API_PID)
-		echo "Killing API server - process $API_PID_NUMBER..."
-		kill $API_PID_NUMBER
-	fi
-	##########
+
+
 
 	echo "------------------------"
 	echo "---- EXPERIMENTAL ------"
@@ -1037,9 +1084,13 @@ function start_api_server {
 	echo "Connect to http://$OH_UI_URL for dashboard"
 	echo ""
 	
-	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
-	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/$OH_API_JAR:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1 &
-	
+#	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+#	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/$OH_API_JAR:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1 &
+#
+
+	# tomcat startup
+	$OH_PATH/$TOMCAT_DIR/bin/startup.sh
+
 	if [ $? -ne 0 ]; then
 		echo "An error occurred while starting Open Hospital API. Exiting."
 		shutdown_database;
@@ -1640,6 +1691,18 @@ java_lib_setup;
 # create directories
 initialize_dir_structure;
 
+
+######## temporaneamente qui
+# check for API server
+if [ "$API_SERVER" = "on" ]; then
+
+# check for tomcat
+	tomcat_check;
+	start_api_server;
+fi
+######## temporaneamente qui
+
+
 ######## Database setup
 
 # start MariaDB/MySQL database server and create database
@@ -1674,11 +1737,6 @@ fi
 
 # test if database connection is working
 test_database_connection;
-
-# check for API server
-if [ "$API_SERVER" = "on" ]; then
-	start_api_server;
-fi
 
 # check for UI interface
 if [ "$UI_INTERFACE" = "on" ]; then
@@ -1717,8 +1775,19 @@ else
 	# start OH gui
 	start_gui;
 
+
+
 	# Close and exit
 	echo "Exiting Open Hospital..."
+	
+	######## temporaneamente qui
+	# check for API server
+	if [ "$API_SERVER" = "on" ]; then
+		# shutdown tomcat
+		$OH_PATH/$TOMCAT_DIR/bin/shutdown.sh
+	fi
+
+	# shutdown_database
 	shutdown_database;
 
 	# go back to starting directory

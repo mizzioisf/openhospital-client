@@ -175,7 +175,7 @@ $script:OH_SETTINGS="settings.properties"
 $script:DATABASE_SETTINGS="database.properties"
 $script:EXAMINATION_SETTINGS="examination.properties"
 $script:IMAGING_SETTINGS="dicom.properties"
-$script:LOG4J_SETTINGS="log4j.properties"
+$script:LOG4J_SETTINGS="log4j2-spring.properties"
 $script:PRINTER_SETTINGS="txtPrinter.properties"
 $script:SMS_SETTINGS="sms.properties"
 $script:TELEMETRY_SETTINGS="telemetry.properties"
@@ -208,7 +208,7 @@ $script:OH_API_PID="../tmp/oh-api.pid"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-$script:MYSQL_VERSION="10.6.16"
+$script:MYSQL_VERSION="10.6.20"
 $script:MYSQL32_VERSION="10.6.5"
 
 ######## define system and software architecture
@@ -248,7 +248,7 @@ $script:MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 
 ### JRE 17 - zulu distribution
 #$script:JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-win_$JAVA_PACKAGE_ARCH"
-$script:JAVA_DISTRO="zulu17.48.15-ca-jre17.0.10-win_$JAVA_PACKAGE_ARCH"
+$script:JAVA_DISTRO="zulu17.54.21-ca-jre17.0.13-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin"
 
 # workaround for JRE 11 - 32bit
@@ -654,7 +654,7 @@ function java_check {
 	# if JAVA_BIN is not found download JRE
 	if ( !(Test-Path $JAVA_BIN  -PathType leaf ) ) {
         	if ( !(Test-Path "$OH_PATH/$JAVA_DISTRO.$EXT" -PathType leaf ) ) {
-			Write-Host "Warning - JAVA not found. Do you want to download it?" -ForegroundColor Yellow
+			Write-Host "Warning - Java not found. Do you want to download it?" -ForegroundColor Yellow
 			get_confirmation;
 			# Download java binaries
 			download_file "$JAVA_URL" "$JAVA_DISTRO.$EXT"
@@ -672,7 +672,7 @@ function java_check {
 		Remove-Item "$OH_PATH\$JAVA_DISTRO.$EXT"
         	Write-Host "Done!"
 	}
-	Write-Host "JAVA found!"
+	Write-Host "Java found!"
 	Write-Host "Using $JAVA_BIN"
 }
 
@@ -707,6 +707,40 @@ function mysql_check {
 		Write-Host "Error: $MYSQL_NAME not found. Exiting." -ForegroundColor Red
 		Read-Host; exit 1
 	}
+}
+
+###################################################################
+function tomcat_check {
+	# check if TOMCAT_BIN is already set and it exists
+	if ( !( $TOMCAT_BIN ) -or !(Test-Path $TOMCAT_BIN -PathType leaf ) ) {
+        	# set default
+        	Write-Host "Setting default Tomcat..."
+		$script:TOMCAT_BIN="$OH_PATH\$TOMCAT_DIR\bin\tomcat.exe"
+	}
+
+	# if TOMCAT_BIN is not found download Tomcat
+	if ( !(Test-Path $TOMCAT_BIN  -PathType leaf ) ) {
+        	if ( !(Test-Path "$OH_PATH/$TOMCAT_DISTRO.$EXT" -PathType leaf ) ) {
+			Write-Host "Warning - Tomcat not found. Do you want to download it?" -ForegroundColor Yellow
+			get_confirmation;
+			# Download tomcat binaries
+			download_file "$TOMCAT_URL" "$TOMCAT_DISTRO.$EXT"
+		}
+		Write-Host "Unpacking $TOMCAT_DISTRO..."
+		try {
+			Expand-Archive "$OH_PATH\$TOMCAT_DISTRO.$EXT" -DestinationPath "$OH_PATH\" -Force
+		}
+		catch {
+			Write-Host "Error unpacking Tomcat. Exiting." -ForegroundColor Red
+			Read-Host; exit 1
+		}
+		Write-Host "Tomcat unpacked successfully!"
+		Write-Host "Removing downloaded file..."
+		Remove-Item "$OH_PATH\$TOMCAT_DISTRO.$EXT"
+        	Write-Host "Done!"
+	}
+	Write-Host "Tomcat found!"
+	Write-Host "Using $TOMCAT_BIN"
 }
 
 ###################################################################
@@ -984,8 +1018,11 @@ function write_api_config_file {
 		# generate OH API token and save to settings file
 		$JWT_TOKEN_SECRET=( -join ($(for($i=0; $i -lt 64; $i++) { ((65..90)+(97..122)+(".")+("!")+("?")+("&") | Get-Random | % {[char]$_}) })) )
 		Write-Host "Writing OH API configuration file -> $API_SETTINGS..."
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS.dist").replace("JWT_TOKEN_SECRET","$JWT_TOKEN_SECRET") | Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
-		(Get-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS").replace("OH_API_PID","$OH_API_PID") | Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
+		(Get-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS.dist") `
+            -replace "JWT_TOKEN_SECRET", "$JWT_TOKEN_SECRET" `
+            -replace "OH_API_PID", "$OH_API_PID" `
+            -replace "API_HOST:API_PORT", "localhost:8080" `
+            | Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
 	}
 }
 
@@ -1039,7 +1076,7 @@ function write_config_files {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS").replace("DBNAME","$DATABASE_NAME") | Set-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS"
 
 		# direct creation of $DATABASE_SETTINGS - deprecated
-		#Set-Content -Path $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS -Value "jdbc.url=jdbc:mysql://"$DATABASE_SERVER":$DATABASE_PORT/$DATABASE_NAME"
+		#Set-Content -Path $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS -Value "jdbc.url=jdbc:mariadb://"$DATABASE_SERVER":$DATABASE_PORT/$DATABASE_NAME"
 		#Add-Content -Path $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS -Value "jdbc.username=$DATABASE_USER"
 		#Add-Content -Path $OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS -Value "jdbc.password=$DATABASE_PASSWORD"
 	}
@@ -1133,10 +1170,10 @@ function start_gui {
 	# OH GUI launch
 	cd "$OH_PATH\$OH_DIR" # workaround for hard coded paths
 
-	#$JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\$OH_DIR\rsc\$LOG4J_SETTINGS`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
+	#$JAVA_ARGS="-client -Dlog4j.configuration=`"`'$OH_PATH\$OH_DIR\rsc\$LOG4J_SETTINGS`'`" -Dsun.java2d.dpiaware=false -Djava.library.path=`"`'$NATIVE_LIB_PATH`'`" -cp `"`'$OH_CLASSPATH`'`" org.isf.Application"
 
 	# log4j configuration is now read directly
-$JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=`"$NATIVE_LIB_PATH`" -cp `"`'$OH_CLASSPATH`'`" org.isf.menu.gui.Menu"
+$JAVA_ARGS="-client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=`"$NATIVE_LIB_PATH`" -cp `"`'$OH_CLASSPATH`'`" org.isf.Application"
 
 	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_ARGS -Wait -NoNewWindow -RedirectStandardOutput "$LOG_DIR/$LOG_FILE" -RedirectStandardError "$LOG_DIR/$LOG_FILE_ERR"
 	
