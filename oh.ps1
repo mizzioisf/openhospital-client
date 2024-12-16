@@ -819,8 +819,13 @@ function initialize_database {
 function start_database {
 	Write-Host "Checking if $MYSQL_NAME is running..."
 	if ( ( Test-Path "$OH_PATH/$TMP_DIR/mysql.sock" ) -or ( Test-Path "$OH_PATH/$TMP_DIR/mysql.pid" ) ) {
-		Write-Host "$MYSQL_NAME already running ! Exiting."
-		exit 1
+		Write-Host "$MYSQL_NAME already running!"
+		Write-Host "Do you want to remove pid/socket file and try to restart database?"
+		get_confirmation 1;
+		# remove socket and pid file
+		Write-Host "Removing mariadb/mysql socket and pid file..."
+		$filetodel="$OH_PATH/$TMP_DIR/mysql.sock"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+		$filetodel="$OH_PATH/$TMP_DIR/mysql.pid"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	}
 
 	Write-Host "Starting $MYSQL_NAME server... "
@@ -838,7 +843,7 @@ function start_database {
 	# # Wait till the MariaDB/MySQL tcp port is open
 	# until nc -z $DATABASE_SERVER $DATABASE_PORT; do sleep 1; done
 
-	Write-Host "$MYSQL_NAME server started! "
+	Write-Host "$MYSQL_NAME server started!"
 }
 
 ###################################################################
@@ -1122,7 +1127,7 @@ function write_config_files {
 function clean_database {
 	# remove socket and pid file
 	Write-Host "Cleaning tmp directory..."
-	$filetodel="$OH_PATH/$TMP_DIR/*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
+	$filetodel="$OH_PATH/$TMP_DIR/mysql*"; if (Test-Path $filetodel) { Remove-Item $filetodel -Recurse -Confirm:$false -ErrorAction Ignore }
 	# remove database files
 	Write-Host "Removing databases..."
 	# removing all databases under default data dir (prod / demo)
@@ -1531,7 +1536,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# overwrite configuration files if existing
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			if ( $API_SERVER -eq "on" ) {
-				start_api_server;
+				write_api_config_files;
 			}
 			set_oh_mode;
 			check_language;

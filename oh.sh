@@ -755,8 +755,13 @@ function initialize_database {
 function start_database {
 	echo "Checking if $MYSQL_NAME is running..."
 	if [ -f "$OH_PATH/$TMP_DIR/mysql.sock" ] || [ -f "$OH_PATH/$TMP_DIR/mysql.pid" ] ; then
-		echo "$MYSQL_NAME already running ! Exiting."
-		exit 1
+		echo "$MYSQL_NAME already running!"
+		echo "Do you want to remove pid/socket file and try to restart database?"
+		get_confirmation 1;
+		# remove socket and pid file
+		echo "Removing mariadb/mysql socket and pid file..."
+		rm -rf $OH_PATH/$TMP_DIR/mysql.sock
+		rm -rf $OH_PATH/$TMP_DIR/mysql.pid
 	fi
 
 	echo "Starting $MYSQL_NAME server... "
@@ -767,7 +772,7 @@ function start_database {
 	fi
 	# wait till the MariaDB/MySQL tcp port is open
 	until nc -z $DATABASE_SERVER $DATABASE_PORT; do sleep 1; done
-	echo "$MYSQL_NAME server started! "
+	echo "$MYSQL_NAME server started!"
 }
 
 ###################################################################
@@ -996,7 +1001,7 @@ function write_config_files {
 function clean_database {
 	# remove socket and pid file
 	echo "Cleaning tmp directory..."
-	rm -rf ./$TMP_DIR/*
+	rm -rf ./$TMP_DIR/mysql*
 	# remove database files
 	echo "Removing databases..."
 	# removing all databases under default data dir (prod / demo)
