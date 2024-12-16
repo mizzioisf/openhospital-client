@@ -922,6 +922,7 @@ function write_api_config_file {
 		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" \
 		    -e "s&OH_API_PID&"$OH_API_PID"&g" \
 		    -e "s/API_HOST:API_PORT/localhost:8080/g" \
+		    -e "s/UI_HOST:UI_PORT/localhost:8080/g" \
 		    ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
 	fi
 }
@@ -1407,6 +1408,9 @@ function parse_user_input {
 		get_confirmation 1;
 		# overwrite configuration files if existing
 		WRITE_CONFIG_FILES=on; write_config_files;
+		if [ "$API_SERVER" = "on" ]; then
+			write_api_config_file;
+		fi
 		set_oh_mode;
 		check_language;
 		set_language;
@@ -1778,8 +1782,6 @@ else
 
 	# start OH gui
 	start_gui;
-
-
 
 	# Close and exit
 	echo "Exiting Open Hospital..."

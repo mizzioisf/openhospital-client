@@ -1022,6 +1022,7 @@ function write_api_config_file {
             -replace "JWT_TOKEN_SECRET", "$JWT_TOKEN_SECRET" `
             -replace "OH_API_PID", "$OH_API_PID" `
             -replace "API_HOST:API_PORT", "localhost:8080" `
+            -replace "UI_HOST:UI_PORT", "localhost:8080" `
             | Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
 	}
 }
@@ -1529,6 +1530,9 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			get_confirmation 1;
 			# overwrite configuration files if existing
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
+			if ( $API_SERVER -eq "on" ) {
+				start_api_server;
+			}
 			set_oh_mode;
 			check_language;
 			set_language;
