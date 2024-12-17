@@ -1841,6 +1841,7 @@ test_database_connection;
 
 # check for API server
 if ( $API_SERVER -eq "on" ) {
+	tomcat_check;
 	start_api_server;
 }
 

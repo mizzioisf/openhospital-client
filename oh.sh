@@ -1709,8 +1709,6 @@ initialize_dir_structure;
 ######## temporaneamente qui
 # check for API server
 if [ "$API_SERVER" = "on" ]; then
-
-# check for tomcat
 	tomcat_check;
 	start_api_server;
 fi
