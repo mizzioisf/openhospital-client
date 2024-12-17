@@ -1546,7 +1546,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			# overwrite configuration files if existing
 			$script:WRITE_CONFIG_FILES="on"; write_config_files;
 			if ( $API_SERVER -eq "on" ) {
-				write_api_config_files;
+				write_api_config_file;
 			}
 			set_oh_mode;
 			check_language;
