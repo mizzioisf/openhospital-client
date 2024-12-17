@@ -722,7 +722,7 @@ function tomcat_check {
 	if ( !( $TOMCAT_BIN ) -or !(Test-Path $TOMCAT_BIN -PathType leaf ) ) {
         	# set default
         	Write-Host "Setting default Tomcat..."
-		$script:TOMCAT_BIN="$OH_PATH\$TOMCAT_DIR\bin\tomcat.exe"
+		$script:TOMCAT_BIN="$OH_PATH\$TOMCAT_DIR\bin\tomcat11.exe"
 	}
 
 	# if TOMCAT_BIN is not found download Tomcat
