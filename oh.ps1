@@ -751,7 +751,7 @@ function tomcat_setup {
 
 	# setup JAVA_HOME in catalina.bat
 	# echo JAVA_HOME=../../$JAVA_DISTRO
-	(Get-Content "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat").replace("rem   JAVA_HOME ","set JAVA_HOME=../../$JAVA_DISTRO") | Set-Content "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat"
+	(Get-Content "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat").replace("rem ","set JAVA_HOME=../../$JAVA_DISTRO") | Set-Content "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat"
 
 }
 
