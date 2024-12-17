@@ -708,7 +708,7 @@ echo "Tomcat found!"
 echo "Using $TOMCAT_BIN"
 
 # set up OpenHospital API war
-cp $OH_PATH/$OH_DIR/bin/$OH_API_WAR $TOMCAT_DIR/webapps
+cp $OH_PATH/$OH_DIR/bin/$OH_API_WAR $OH_PATH/$TOMCAT_DIR/webapps
 
 }
 

@@ -755,7 +755,7 @@ function tomcat_setup {
 #	(Get-Content "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat").replace("^(rem ","set JAVA_HOME=../../$JAVA_DISTRO") | Set-Content "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat"
 
 	# set up OpenHospital API war
-	copy $OH_PATH/$OH_DIR/bin/$OH_API_WAR $TOMCAT_DIR/webapps
+	copy $OH_PATH/$OH_DIR/bin/$OH_API_WAR $OH_PATH/$TOMCAT_DIR/webapps
 
 }
 
