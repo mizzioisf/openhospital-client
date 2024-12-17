@@ -1778,6 +1778,10 @@ if [ "$OH_MODE" = "SERVER" ]; then
 		function ctrl_c() {
 			echo "Exiting Open Hospital..."
 			shutdown_database;		
+			if [ "$API_SERVER" = "on" ]; then
+			# shutdown tomcat
+				$OH_PATH/$TOMCAT_DIR/bin/shutdown.sh
+			fi
 			cd "$CURRENT_DIR"
 			exit 0
 		}

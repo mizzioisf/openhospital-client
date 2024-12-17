@@ -1880,6 +1880,11 @@ if ( $OH_MODE -eq "SERVER" ) {
 		switch ("$choice") {
 			"Q" {
 				Write-Host "Exiting Open Hospital..."
+        			# check for API server
+				if ( $API_SERVER -eq "on" ) {
+					# shutdown tomcat
+					Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/shutdown.bat" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+				}
 				shutdown_database;		
 				exit 0
 			}
