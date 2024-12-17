@@ -684,7 +684,6 @@ fi
 
 # if TOMCAT_BIN is not found download Tomcat
 if [ ! -x "$TOMCAT_BIN" ]; then
-#	if [ ! -f "./$TOMCAT_DISTRO.$EXT" ]; then
 	if [ ! -f "./$TOMCAT_DISTRO.$EXT" ]; then
 		echo "Warning - Tomcat not found. Do you want to download it?"
 		get_confirmation;

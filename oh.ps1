@@ -255,7 +255,7 @@ $script:JAVA_URL="https://cdn.azul.com/zulu/bin"
 $script:TOMCAT_VERSION="11.0.2"
 $script:TOMCAT_URL="https://dlcdn.apache.org/tomcat/tomcat-11/v$TOMCAT_VERSION/bin/"
 $script:TOMCAT_DISTRO="apache-tomcat-$TOMCAT_VERSION-windows-x64"
-$script:TOMCAT_DIR=$TOMCAT_DISTRO
+$script:TOMCAT_DIR="apache-tomcat-$TOMCAT_VERSION"
 # windows -> https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.1/bin/apache-tomcat-11.0.1-windows-x64.zip
 
 # workaround for JRE 11 - 32bit
@@ -1232,7 +1232,7 @@ function start_api_server {
 
 
 # tomcat startup
-Start-Process -FilePath "OH_PATH/$TOMCAT_DIR/bin/startup.sh" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+Start-Process -FilePath "OH_PATH/$TOMCAT_DIR/bin/startup.bat" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 
 #        if [ $? -ne 0 ]; then
 #                echo "An error occurred while starting Open Hospital API. Exiting."
@@ -1906,7 +1906,7 @@ else {
         # check for API server
 	if ( $API_SERVER -eq "on" ) {
 		# shutdown tomcat
-		Start-Process -FilePath "OH_PATH/$TOMCAT_DIR/bin/shutdown.sh" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+		Start-Process -FilePath "OH_PATH/$TOMCAT_DIR/bin/shutdown.bat" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 	}
 
 	# shutdown MySQL/MariaDB
