@@ -125,9 +125,10 @@ API_SETTINGS="application.properties"
 CRED_SETTINGS="default_credentials.properties"
 DEMO_CRED_SETTINGS="default_demo_credentials.properties"
 
-# OH jar bin files
+# OH jar/war bin files
 OH_GUI_JAR="OH-gui.jar"
 OH_API_JAR="openhospital-api-0.1.0.jar"
+OH_API_WAR="openhospital-api-0.1.0.War"
 
 # help file
 HELP_FILE="OH-readme.txt"
@@ -705,6 +706,10 @@ fi
 
 echo "Tomcat found!"
 echo "Using $TOMCAT_BIN"
+
+# set up OpenHospital API war
+cp $OH_PATH/$OH_DIR/bin/$OH_API_WAR $TOMCAT_DIR/webapps
+
 }
 
 ###################################################################
