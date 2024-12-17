@@ -717,12 +717,12 @@ function mysql_check {
 }
 
 ###################################################################
-function tomcat_check {
+function tomcat_setup {
 	# check if TOMCAT_BIN is already set and it exists
 	if ( !( $TOMCAT_BIN ) -or !(Test-Path $TOMCAT_BIN -PathType leaf ) ) {
         	# set default
         	Write-Host "Setting default Tomcat..."
-		$script:TOMCAT_BIN="$OH_PATH\$TOMCAT_DIR\bin\tomcat11.exe"
+		$script:TOMCAT_BIN="$OH_PATH\$TOMCAT_DIR\bin\catalina.bat"
 	}
 
 	# if TOMCAT_BIN is not found download Tomcat
@@ -748,6 +748,11 @@ function tomcat_check {
 	}
 	Write-Host "Tomcat found!"
 	Write-Host "Using $TOMCAT_BIN"
+
+	# setup JAVA_HOME in catalina.bat
+	# echo JAVA_HOME=../../$JAVA_DISTRO
+	(Get-Content "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat").replace("rem   JAVA_HOME ","../../$JAVA_DISTRO") | Set-Content "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat"
+
 }
 
 ###################################################################
@@ -1841,7 +1846,7 @@ test_database_connection;
 
 # check for API server
 if ( $API_SERVER -eq "on" ) {
-	tomcat_check;
+	tomcat_setup;
 	start_api_server;
 }
 

@@ -674,7 +674,7 @@ fi
 }
 
 ###################################################################
-function tomcat_check {
+function tomcat_setup {
 # check if TOMCAT_BIN is already set and it exists
 if ( [ -z ${TOMCAT_BIN+x} ] || [ ! -x "$TOMCAT_BIN" ] ); then
 	# set default
@@ -1708,7 +1708,7 @@ initialize_dir_structure;
 ######## temporaneamente qui
 # check for API server
 if [ "$API_SERVER" = "on" ]; then
-	tomcat_check;
+	tomcat_setup;
 	start_api_server;
 fi
 ######## temporaneamente qui
