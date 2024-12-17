@@ -1232,7 +1232,7 @@ function start_api_server {
 
 
 # tomcat startup
-Start-Process -FilePath "OH_PATH/$TOMCAT_DIR/bin/startup.bat" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/startup.bat" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 
 #        if [ $? -ne 0 ]; then
 #                echo "An error occurred while starting Open Hospital API. Exiting."
@@ -1906,7 +1906,7 @@ else {
         # check for API server
 	if ( $API_SERVER -eq "on" ) {
 		# shutdown tomcat
-		Start-Process -FilePath "OH_PATH/$TOMCAT_DIR/bin/shutdown.bat" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+		Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/shutdown.bat" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 	}
 
 	# shutdown MySQL/MariaDB
