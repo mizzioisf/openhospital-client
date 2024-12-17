@@ -251,6 +251,13 @@ $script:MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 $script:JAVA_DISTRO="zulu17.54.21-ca-jre17.0.13-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin"
 
+# Tomcat 11
+$script:TOMCAT_VERSION="11.0.2"
+$script:TOMCAT_URL="https://dlcdn.apache.org/tomcat/tomcat-11/v$TOMCAT_VERSION/bin/"
+$script:TOMCAT_DISTRO="apache-tomcat-$TOMCAT_VERSION-windows-x64"
+$script:TOMCAT_DIR=$TOMCAT_DISTRO
+# windows -> https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.1/bin/apache-tomcat-11.0.1-windows-x64.zip
+
 # workaround for JRE 11 - 32bit
 #	if ( $JAVA_ARCH -eq "32" ) {
 #	$script:JAVA_DISTRO="zulu11.58.25-ca-jre11.0.16.1-win_$JAVA_PACKAGE_ARCH"
@@ -1216,13 +1223,16 @@ function start_api_server {
 	Write-Host "Connect to http://localhost:8080 for dashboard"
 	Write-Host ""
 
-        cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+# old jetty api server
+#
+#        cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
+#	$JAVA_API_ARGS="-server -Xms64m -Xmx1024m -cp ./bin/$OH_API_JAR;./rsc;./static org.springframework.boot.loader.JarLauncher"
 
-	$JAVA_API_ARGS="-server -Xms64m -Xmx1024m -cp ./bin/$OH_API_JAR;./rsc;./static org.springframework.boot.loader.JarLauncher"
+#	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_API_ARGS -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 
-	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_API_ARGS -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 
-        # $JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/$OH_API_JAR:./rsc::./static" org.springframework.boot.loader.JarLauncher
+# tomcat startup
+Start-Process -FilePath "OH_PATH/$TOMCAT_DIR/bin/startup.sh" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 
 #        if [ $? -ne 0 ]; then
 #                echo "An error occurred while starting Open Hospital API. Exiting."
@@ -1890,6 +1900,15 @@ else {
 
 	# Close and exit
 	Write-Host "Exiting Open Hospital..."
+
+        ######## temporaneamente qui
+        # check for API server
+	if ( $API_SERVER -eq "on" ) {
+		# shutdown tomcat
+		Start-Process -FilePath "OH_PATH/$TOMCAT_DIR/bin/shutdown.sh" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+	}
+
+	# shutdown MySQL/MariaDB
 	shutdown_database;
 
 	# go back to starting directory

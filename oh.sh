@@ -201,7 +201,6 @@ TOMCAT_VERSION="11.0.2"
 TOMCAT_URL="https://dlcdn.apache.org/tomcat/tomcat-11/v$TOMCAT_VERSION/bin/"
 TOMCAT_DISTRO="apache-tomcat-$TOMCAT_VERSION"
 TOMCAT_DIR=$TOMCAT_DISTRO
-# windows -> https://dlcdn.apache.org/tomcat/tomcat-11/v11.0.1/bin/apache-tomcat-11.0.1-windows-x64.zip
 
 ######################## DO NOT EDIT BELOW THIS LINE ########################
 
@@ -1089,7 +1088,9 @@ function start_api_server {
 	echo ""
 	echo "Connect to http://$OH_UI_URL for dashboard"
 	echo ""
-	
+
+# old jetty api server
+#	
 #	cd "$OH_PATH/$OH_DIR" # workaround for hard coded paths
 #	$JAVA_BIN -client -Xms64m -Xmx1024m -cp "./bin/$OH_API_JAR:./rsc::./static" org.springframework.boot.loader.JarLauncher >> ../$LOG_DIR/$API_LOG_FILE 2>&1 &
 #
@@ -1798,7 +1799,7 @@ else
 		$OH_PATH/$TOMCAT_DIR/bin/shutdown.sh
 	fi
 
-	# shutdown_database
+	# shutdown MySQL/MariaDB
 	shutdown_database;
 
 	# go back to starting directory
