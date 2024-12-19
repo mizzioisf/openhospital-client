@@ -1118,6 +1118,18 @@ function start_api_server {
 }
 
 ###################################################################
+function stop_api_server {
+	if [ "$OH_MODE" != "CLIENT" ] && [ "$API_SERVER" = "on" ]; then
+		echo "Shutting down Tomcat - Open Hospital API server..."
+		# shutdown tomcat
+		$OH_PATH/$TOMCAT_DIR/bin/shutdown.sh
+		echo "Tomcat stopped!"
+#	else
+#		exit 1
+	fi
+}
+
+###################################################################
 function start_ui {
 	echo "Starting Open Hospital UI at $OH_UI_URL..."
 	# OH UI launch
@@ -1783,11 +1795,8 @@ if [ "$OH_MODE" = "SERVER" ]; then
 		trap ctrl_c INT
 		function ctrl_c() {
 			echo "Exiting Open Hospital..."
-			shutdown_database;		
-			if [ "$API_SERVER" = "on" ]; then
-			# shutdown tomcat
-				$OH_PATH/$TOMCAT_DIR/bin/shutdown.sh
-			fi
+			stop_api_server;
+			shutdown_database;
 			cd "$CURRENT_DIR"
 			exit 0
 		}
@@ -1804,12 +1813,8 @@ else
 	# Close and exit
 	echo "Exiting Open Hospital..."
 	
-	######## temporaneamente qui
-	# check for API server
-	if [ "$API_SERVER" = "on" ]; then
-		# shutdown tomcat
-		$OH_PATH/$TOMCAT_DIR/bin/shutdown.sh
-	fi
+	# shutdown Tomcat
+	stop_api_server;
 
 	# shutdown MySQL/MariaDB
 	shutdown_database;
