@@ -127,10 +127,11 @@ DEMO_CRED_SETTINGS="default_demo_credentials.properties"
 
 # OH jar/war bin files
 OH_GUI_JAR="OH-gui.jar"
-OH_API="openhospital-api"
+OH_API_BIN="openhospital-api"
 OH_API_VER="0.1.0"
-OH_API_JAR="$OH_API-$OH_API_VER.jar"
-OH_API_WAR="$OH_API-$OH_API_VER.war"
+OH_API_JAR="$OH_API_BIN-$OH_API_VER.jar"
+OH_API_WAR="$OH_API_BIN-$OH_API_VER.war"
+OH_API_PROD="oh-api"
 
 # help file
 HELP_FILE="OH-readme.txt"
@@ -713,8 +714,8 @@ echo "Using $TOMCAT_BIN"
 #
 #
 # check if OH API webapps directory already exists
-if [ -d "$OH_PATH/$TOMCAT_DIR/$OH_API-$OH_API_VER" ] ; then
-	cp $OH_PATH/$OH_DIR/bin/$OH_API_WAR $OH_PATH/$TOMCAT_DIR/webapps
+if [ -d "$OH_PATH/$TOMCAT_DIR/$OH_API_PROD" ] ; then
+	cp $OH_PATH/$OH_DIR/bin/$OH_API_WAR $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD.war
 fi
 }
 
