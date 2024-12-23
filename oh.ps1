@@ -814,7 +814,8 @@ function config_database {
 ###################################################################
 function initialize_database {
 	# create data directory
-	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR") > $null
+#	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR") > $null
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR")
 	# inizialize MariaDB/MySQL
 	Write-Host "Initializing $MYSQL_NAME database on port $DATABASE_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
