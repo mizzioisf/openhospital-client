@@ -188,8 +188,8 @@ $script:DEMO_CRED_SETTINGS="default_demo_credentials.properties"
 $script:OH_GUI_JAR="OH-gui.jar"
 $script:OH_API_BIN="openhospital-api"
 $script:OH_API_VER="0.1.0"
-$script:OH_API_JAR="$OH_API-$OH_API_VER.jar"
-$script:OH_API_WAR="$OH_API-$OH_API_VER.war"
+$script:OH_API_JAR="$OH_API_BIN-$OH_API_VER.jar"
+$script:OH_API_WAR="$OH_API_BIN-$OH_API_VER.war"
 $script:OH_API_PROD="oh-api"
 
 # help file
@@ -762,6 +762,7 @@ function tomcat_setup {
 	#
 	# check if OH API webapps directory already exists
 	if (Test-Path "$OH_PATH/$TOMCAT_DIR/$OH_API_PROD") {
+		Write-Host "Copying OH API war file..."
 		copy $OH_PATH/$OH_DIR/bin/$OH_API_WAR $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD.war
 	}
 
