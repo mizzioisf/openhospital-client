@@ -765,6 +765,9 @@ function tomcat_setup {
 		Write-Host "Copying OH API war file..."
 		copy $OH_PATH/$OH_DIR/bin/$OH_API_WAR $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD.war
 	}
+	else {
+		Write-Host "Using $OH_API_PROD.war file..."
+	}
 
 }
 
