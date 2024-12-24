@@ -184,6 +184,10 @@ $script:API_SETTINGS="application.properties"
 $script:CRED_SETTINGS="default_credentials.properties"
 $script:DEMO_CRED_SETTINGS="default_demo_credentials.properties"
 
+# OH API server configuration
+$script:OH_API_HOST="localhost"
+$script:OH_API_PORT="8080"
+
 # OH jar/war bin files
 $script:OH_GUI_JAR="OH-gui.jar"
 $script:OH_API_BIN="openhospital-api"
@@ -191,6 +195,14 @@ $script:OH_API_VER="0.1.0"
 $script:OH_API_JAR="$OH_API_BIN-$OH_API_VER.jar"
 $script:OH_API_WAR="$OH_API_BIN-$OH_API_VER.war"
 $script:OH_API_PROD="oh-api"
+
+# OH API server configuration
+$script:OH_API_HOST="localhost"
+$script:OH_API_PORT="8080"
+
+# OH UI configuration
+$script:OH_UI_HOST="localhost"
+$script:OH_UI_PORT="8080"
 
 # help file
 $script:HELP_FILE="OH-readme.txt"
@@ -1053,11 +1065,12 @@ function write_api_config_file {
 		$JWT_TOKEN_SECRET=( -join ($(for($i=0; $i -lt 64; $i++) { ((65..90)+(97..122)+(".")+("!")+("?")+("&") | Get-Random | % {[char]$_}) })) )
 		Write-Host "Writing OH API configuration file -> $API_SETTINGS..."
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS.dist") `
-            -replace "JWT_TOKEN_SECRET", "$JWT_TOKEN_SECRET" `
-            -replace "OH_API_PID", "$OH_API_PID" `
-            -replace "API_HOST:API_PORT", "localhost:8080" `
-            -replace "UI_HOST:UI_PORT", "localhost:8080" `
-            | Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
+		-replace "JWT_TOKEN_SECRET", "$JWT_TOKEN_SECRET" `
+		-replace "OH_API_PID", "$OH_API_PID" `
+		-replace "UI_HOST:UI_PORT", "$OH_UI_HOST:$OH_UI_PORT" `
+		-replace "API_HOST:API_PORT", "$OH_API_HOST:$OH_API_PORT" `
+		-replace "API_URL", "$OH_API_PROD" `
+		| Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
 	}
 }
 
