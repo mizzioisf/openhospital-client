@@ -1067,8 +1067,10 @@ function write_api_config_file {
 		(Get-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS.dist") `
 		-replace "JWT_TOKEN_SECRET", "$JWT_TOKEN_SECRET" `
 		-replace "OH_API_PID", "$OH_API_PID" `
-		-replace "UI_HOST:UI_PORT", "$OH_UI_HOST:$OH_UI_PORT" `
-		-replace "API_HOST:API_PORT", "$OH_API_HOST:$OH_API_PORT" `
+		-replace "UI_HOST", "$OH_UI_HOST" `
+		-replace "UI_PORT", "$OH_UI_PORT" `
+		-replace "API_HOST", "$OH_API_HOST" `
+		-replace "API_PORT", "$OH_API_PORT" `
 		-replace "API_URL", "$OH_API_PROD" `
 		| Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
 	}
