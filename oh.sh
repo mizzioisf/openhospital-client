@@ -947,8 +947,10 @@ function write_api_config_file {
 		echo "Writing OH API configuration file -> $API_SETTINGS..."
 		sed -e "s/JWT_TOKEN_SECRET/"$JWT_TOKEN_SECRET"/g" \
 		    -e "s&OH_API_PID&"$OH_API_PID"&g" \
-		    -e "s&UI_HOST:UI_PORT&$OH_UI_HOST:$OH_UI_PORT&g" \
-		    -e "s&API_HOST:API_PORT&$OH_API_HOST:$OH_API_PORT&g" \
+		    -e "s&UI_HOST&$OH_UI_HOST&g" \
+		    -e "s&UI_PORT&$OH_UI_PORT&g" \
+		    -e "s&API_HOST&$OH_API_HOST&g" \
+		    -e "s&API_PORT&$OH_API_PORT&g" \
 		    -e "s&API_URL&$OH_API_PROD&g" \
 		    ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
 	fi

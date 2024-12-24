@@ -1267,6 +1267,9 @@ function start_api_server {
 
 #	Start-Process -FilePath "$JAVA_BIN" -ArgumentList $JAVA_API_ARGS -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 
+	# set tomcat environment variable
+	$env:JRE_HOME="$OH_PATH/$JAVA_DIR"
+	$env:CATALINA_HOME="$OH_PATH/$TOMCAT_DIR"
 
 	# tomcat startup
 	Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/startup.bat" -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
