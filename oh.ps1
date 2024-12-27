@@ -783,7 +783,7 @@ function tomcat_setup {
 
 	Write-Host "Unpacking $OH_API_PROD.war..."
 	try {
-		Rename-Item -Path "$OH_PATH/$OH_DIR/$OH_API_PROD.war" -NewName "$OH_PATH/$OH_DIR/$OH_API_PROD.zip"
+		Rename-Item -Path "$OH_PATH/$OH_DIR/bin/$OH_API_WAR" -NewName "$OH_PATH/$OH_DIR/$OH_API_PROD.zip"
 		Expand-Archive "$OH_PATH/$OH_DIR/$OH_API_PROD.zip" -DestinationPath "$OH_PATH/$TOMCAT_DIR/webapps/" -Force
 	}
 	catch {
