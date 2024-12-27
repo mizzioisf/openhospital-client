@@ -424,6 +424,7 @@ function read_settings {
 	Write-Host " -------------------------------------- "
 	Write-Host " DATABASE_URL $DATABASE_URL "
 	Write-Host " DATABASE_SERVER $DATABASE_SERVER "
+	Write-Host " DATABASE_PORT $DATABASE_PORT "
 	Write-Host " DATABASE_NAME $DATABASE_NAME "
 	Write-Host " DATABASE_USER $DATABASE_USER "
 	Write-Host " -------------------------------------- "
