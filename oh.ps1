@@ -795,8 +795,8 @@ function tomcat_setup {
 		Write-Host "Using $OH_API_PROD deployed application..."
 	}
 
-# copying configuration / properties files:
-        Write-Host "Copying OH configuration files..."
+	# copying configuration / properties files:
+        Write-Host "Copying OH API configuration files..."
         copy "$OH_PATH/$OH_DIR/rsc/*.properties" "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/"
 	
 	Write-Host "Tomcat | OH API ready!"
@@ -1094,6 +1094,9 @@ function write_api_config_file {
 		-replace "API_URL", "$OH_API_PROD" `
 		| Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
 	}
+	# copying configuration / properties files to tomcat dir
+        Write-Host "Copying OH API configuration files..."
+        copy "$OH_PATH/$OH_DIR/rsc/*.properties" "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/"
 }
 
 ###################################################################

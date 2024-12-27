@@ -724,14 +724,13 @@ echo "Using $TOMCAT_BIN"
 if [ ! -d "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD" ] ; then
 	echo "Unpacking $OH_API_PROD.war..."
 	mkdir -p $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/
-#	unzip $OH_PATH/$OH_DIR/bin/$OH_API_WAR -d $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD > /dev/null 2&>1
 	unzip -qq $OH_PATH/$OH_DIR/bin/$OH_API_WAR -d $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD 
 else
 	echo "Using $OH_API_PROD deployed application..."
 fi
 
 # copying configuration / properties files:
-echo "Copying OH configuration files..."
+echo "Copying OH API configuration files..."
 cp -f $OH_PATH/$OH_DIR/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
 
 echo "Tomcat | OH API ready!"
@@ -961,6 +960,9 @@ function write_api_config_file {
 		    -e "s&API_URL&$OH_API_PROD&g" \
 		    ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
 	fi
+	# copying configuration / properties files to tomcat dir
+	echo "Copying OH API configuration files..."
+	cp -f $OH_PATH/$OH_DIR/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
 }
 
 ###################################################################
