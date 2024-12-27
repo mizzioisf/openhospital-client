@@ -1751,16 +1751,6 @@ java_lib_setup;
 # create directories
 initialize_dir_structure;
 
-
-######## temporaneamente qui
-# check for API server
-if [ "$API_SERVER" = "on" ]; then
-	tomcat_setup;
-	start_api_server;
-fi
-######## temporaneamente qui
-
-
 ######## Database setup
 
 # start MariaDB/MySQL database server and create database
@@ -1795,6 +1785,12 @@ fi
 
 # test if database connection is working
 test_database_connection;
+
+# check for API server
+if [ "$API_SERVER" = "on" ]; then
+	tomcat_setup;
+	start_api_server;
+fi
 
 # check for UI interface
 if [ "$UI_INTERFACE" = "on" ]; then
