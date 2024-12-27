@@ -719,8 +719,7 @@ echo "Tomcat found!"
 echo "Using $TOMCAT_BIN"
 
 # set up OpenHospital API war
-#
-#
+
 # check if OH API webapps directory already exists
 if [ ! -d "$OH_PATH/$TOMCAT_DIR/$OH_API_PROD" ] ; then
 	echo "Copying OH API war file..."
@@ -728,6 +727,10 @@ if [ ! -d "$OH_PATH/$TOMCAT_DIR/$OH_API_PROD" ] ; then
 else
 	echo "Using $OH_API_PROD.war file..."
 fi
+
+# copying configuration / properties files:
+	echo "Copying OH configuration files..."
+	cp -f $OH_PATH/$OH_DIR/oh/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
 }
 
 ###################################################################
