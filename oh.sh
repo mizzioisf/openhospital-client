@@ -724,7 +724,7 @@ echo "Using $TOMCAT_BIN"
 if [ ! -d "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD" ] ; then
 	echo "Unpacking $OH_API_PROD.war..."
 	mkdir -p $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/
-	unzip $OH_PATH/$OH_DIR/bin/$OH_API_WAR -d $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD >> /dev/null
+	unzip $OH_PATH/$OH_DIR/bin/$OH_API_WAR -d $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD > /dev/null 2&>1
 else
 	echo "Using $OH_API_PROD deployed application..."
 fi
