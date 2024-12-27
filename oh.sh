@@ -733,7 +733,7 @@ fi
 echo "Copying OH API configuration files..."
 cp -f $OH_PATH/$OH_DIR/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
 
-echo "Tomcat | OH API ready!"
+echo "Tomcat | OH API server ready!"
 }
 
 ###################################################################
@@ -960,9 +960,11 @@ function write_api_config_file {
 		    -e "s&API_URL&$OH_API_PROD&g" \
 		    ./$OH_DIR/rsc/$API_SETTINGS.dist > ./$OH_DIR/rsc/$API_SETTINGS
 	fi
-	# copying configuration / properties files to tomcat dir
-	echo "Copying OH API configuration files..."
-	cp -f $OH_PATH/$OH_DIR/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
+	if [ -d "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD" ] ; then
+		# copying configuration / properties files to tomcat dir
+		echo "Copying OH API configuration files..."
+		cp -f $OH_PATH/$OH_DIR/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
+	fi
 }
 
 ###################################################################
@@ -1133,7 +1135,7 @@ function start_api_server {
 	$OH_PATH/$TOMCAT_DIR/bin/catalina.sh run
 
 	if [ $? -ne 0 ]; then
-		echo "An error occurred while starting Open Hospital API. Exiting."
+		echo "An error occurred while starting Tomcat - Open Hospital API server. Exiting."
 		shutdown_database;
 		cd "$CURRENT_DIR"
 		exit 4
@@ -1789,6 +1791,8 @@ test_database_connection;
 # check for API server
 if [ "$API_SERVER" = "on" ]; then
 	tomcat_setup;
+	# generate config files if not existent
+	write_config_files;
 	start_api_server;
 fi
 

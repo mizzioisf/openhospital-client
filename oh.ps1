@@ -796,10 +796,10 @@ function tomcat_setup {
 	}
 
 	# copying configuration / properties files:
-        Write-Host "Copying OH API configuration files..."
-        copy "$OH_PATH/$OH_DIR/rsc/*.properties" "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/"
+	Write-Host "Copying OH API configuration files..."
+	copy "$OH_PATH/$OH_DIR/rsc/*.properties" "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/"
 	
-	Write-Host "Tomcat | OH API ready!"
+	Write-Host "Tomcat | OH API server ready!"
 }
 
 
@@ -1094,9 +1094,11 @@ function write_api_config_file {
 		-replace "API_URL", "$OH_API_PROD" `
 		| Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
 	}
-	# copying configuration / properties files to tomcat dir
-        Write-Host "Copying OH API configuration files..."
-        copy "$OH_PATH/$OH_DIR/rsc/*.properties" "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/"
+	if ( (Test-Path $TOMCAT_BIN  -PathType leaf ) ) {
+		# copying configuration / properties files to tomcat dir
+		Write-Host "Copying OH API configuration files..."
+		copy "$OH_PATH/$OH_DIR/rsc/*.properties" "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/"
+	}
 }
 
 ###################################################################
@@ -1300,7 +1302,7 @@ function start_api_server {
 	Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("run") -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 
 #        if [ $? -ne 0 ]; then
-#                echo "An error occurred while starting Open Hospital API. Exiting."
+#                echo "An error occurred while starting Tomcat - Open Hospital API server. Exiting.
 #                shutdown_database;
 #                cd "$CURRENT_DIR"
 #                exit 4
@@ -1919,6 +1921,8 @@ test_database_connection;
 # check for API server
 if ( $API_SERVER -eq "on" ) {
 	tomcat_setup;
+	# generate config files if not existent
+	write_config_files;
 	start_api_server;
 }
 
