@@ -730,7 +730,7 @@ fi
 
 # copying configuration / properties files:
 	echo "Copying OH configuration files..."
-	cp -f $OH_PATH/$OH_DIR/oh/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
+	cp -f $OH_PATH/$OH_DIR/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
 }
 
 ###################################################################
