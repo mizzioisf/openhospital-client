@@ -784,10 +784,10 @@ function tomcat_setup {
 	# copying configuration / properties files:
         Write-Host "Copying OH configuration files..."
         copy $OH_PATH/$OH_DIR/rsc/*.properties $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/
+	
+	Write-Host "Tomcat | OH API ready!"
 }
 
-
-}
 
 ###################################################################
 function config_database {
