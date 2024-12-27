@@ -1864,6 +1864,9 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 	# config database
 	config_database;
 	# check if OH database already exists
+	Write-Host "--------------"
+	Write-Host "$OH_PATH/$DATA_DIR"
+	Write-Host "--------------"
 	if ( !(Test-Path "$OH_PATH/$DATA_DIR") ) {
 		Write-Host "OH database not found, starting from scratch..."
 		# prepare database
