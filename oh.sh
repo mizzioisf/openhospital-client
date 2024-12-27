@@ -1121,7 +1121,7 @@ function start_api_server {
 #
 
 	# tomcat startup
-	$OH_PATH/$TOMCAT_DIR/bin/startup.sh
+	$OH_PATH/$TOMCAT_DIR/bin/catalina.sh run
 
 	if [ $? -ne 0 ]; then
 		echo "An error occurred while starting Open Hospital API. Exiting."
@@ -1137,7 +1137,7 @@ function stop_api_server {
 	if [ "$OH_MODE" != "CLIENT" ] && [ "$API_SERVER" = "on" ]; then
 		echo "Shutting down Tomcat - Open Hospital API server..."
 		# shutdown tomcat
-		$OH_PATH/$TOMCAT_DIR/bin/shutdown.sh
+		$OH_PATH/$TOMCAT_DIR/bin/catalina.sh stop
 		echo "Tomcat stopped!"
 #	else
 #		exit 1
