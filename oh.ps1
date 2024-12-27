@@ -413,8 +413,9 @@ function read_settings {
 		$db_settings = [pscustomobject](Get-Content "$OH_PATH/$OH_DIR/rsc/$DATABASE_SETTINGS" -Raw | ConvertFrom-StringData)
 
 		$DATABASE_URL=$db_settings."jdbc.url"
-#		$DATABASE_URL=$DATABASE_URL.TrimStart("jdbc:mysql")
-		$DATABASE_URL=$DATABASE_URL.TrimStart("//")
+		$DATABASE_URL=$DATABASE_URL.TrimStart("jdbc:mysql")
+		$DATABASE_URL=$DATABASE_URL.TrimStart("jdbc:mariadb")
+		#$DATABASE_URL=$DATABASE_URL.TrimStart("//")
 		$script:DATABASE_SERVER=$DATABASE_URL.Split('/')[2].Split(':')[0]
 		$script:DATABASE_PORT=$DATABASE_URL.Split(":",2)[1].Split("/",2)[0]
 		$script:DATABASE_NAME=$DATABASE_URL.Split(":",2)[1].Split("/",2)[1]
