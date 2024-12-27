@@ -776,26 +776,26 @@ function tomcat_setup {
 	# check if OH API webapps directory already exists
 	if ( !(Test-Path "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD") ) {
 
-
-	#	Write-Host "Copying OH API war file..."
-	#	copy $OH_PATH/$OH_DIR/bin/$OH_API_WAR $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD.war
+		# Write-Host "Copying OH API war file..."
+		# copy $OH_PATH/$OH_DIR/bin/$OH_API_WAR $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD.war
 	
 
-	Write-Host "Unpacking $OH_API_PROD.war..."
-	try {
-		Rename-Item -Path "$OH_PATH/$OH_DIR/bin/$OH_API_WAR" -NewName "$OH_PATH/$OH_DIR/bin/$OH_API_PROD.zip"
-		Expand-Archive "$OH_PATH/$OH_DIR/bin/$OH_API_PROD.zip" -DestinationPath "$OH_PATH/$TOMCAT_DIR/webapps/" -Force
-	}
-	catch {
-		Write-Host "Error unpacking $OH_API_PROD. Exiting." -ForegroundColor Red
-		Read-Host; exit 1
-	}
+		Write-Host "Unpacking $OH_API_PROD.war..."
+		try {
+			Rename-Item -Path "$OH_PATH/$OH_DIR/bin/$OH_API_WAR" -NewName "$OH_PATH/$OH_DIR/bin/$OH_API_PROD.zip"
+			Expand-Archive "$OH_PATH/$OH_DIR/bin/$OH_API_PROD.zip" -DestinationPath $OH_PATH/$TOMCAT_DIR/webapps/ -Force
+		}
+		catch {
+			Write-Host "Error unpacking $OH_API_PROD. Exiting." -ForegroundColor Red
+			Read-Host; exit 1
+		}
 
 	}
 	else {
 		Write-Host "Using $OH_API_PROD deployed application..."
 	}
-	# copying configuration / properties files:
+
+# copying configuration / properties files:
         Write-Host "Copying OH configuration files..."
         copy "$OH_PATH/$OH_DIR/rsc/*.properties" "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/"
 	
