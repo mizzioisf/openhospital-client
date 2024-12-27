@@ -415,23 +415,11 @@ function read_settings {
 		$DATABASE_URL=$db_settings."jdbc.url"
 		$DATABASE_URL=$DATABASE_URL.TrimStart("jdbc:mysql")
 		$DATABASE_URL=$DATABASE_URL.TrimStart("jdbc:mariadb")
-		#$DATABASE_URL=$DATABASE_URL.TrimStart("//")
 		$script:DATABASE_SERVER=$DATABASE_URL.Split('/')[2].Split(':')[0]
 		$script:DATABASE_PORT=$DATABASE_URL.Split(":",2)[1].Split("/",2)[0]
 		$script:DATABASE_NAME=$DATABASE_URL.Split(":",2)[1].Split("/",2)[1]
 		$script:DATABASE_USER=$db_settings."jdbc.username"
 		$script:DATABASE_PASSWORD=$db_settings."jdbc.password"
-
-	Write-Host " -------------------------------------- "
-	Write-Host " -------------------------------------- "
-	Write-Host " DATABASE_URL $DATABASE_URL "
-	Write-Host " DATABASE_SERVER $DATABASE_SERVER "
-	Write-Host " DATABASE_PORT $DATABASE_PORT "
-	Write-Host " DATABASE_NAME $DATABASE_NAME "
-	Write-Host " DATABASE_USER $DATABASE_USER "
-	Write-Host " -------------------------------------- "
-	Write-Host " -------------------------------------- "
-
 	}
 	else {
 		Write-Host "Warning: configuration file $DATABASE_SETTINGS not found." -ForegroundColor Yellow
@@ -1877,9 +1865,6 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 	# config database
 	config_database;
 	# check if OH database already exists
-	Write-Host "--------------"
-	Write-Host "$OH_PATH/$DATA_DIR"
-	Write-Host "--------------"
 	if ( !(Test-Path "$OH_PATH/$DATA_DIR") ) {
 		Write-Host "OH database not found, starting from scratch..."
 		# prepare database
