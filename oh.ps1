@@ -830,8 +830,7 @@ function config_database {
 ###################################################################
 function initialize_database {
 	# create data directory
-#	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR") > $null
-	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR")
+	[System.IO.Directory]::CreateDirectory("$OH_PATH/$DATA_DIR") > $null
 	# inizialize MariaDB/MySQL
 	Write-Host "Initializing $MYSQL_NAME database on port $DATABASE_PORT..."
 	switch -Regex ( $MYSQL_DIR ) {
@@ -1042,7 +1041,8 @@ function test_database_connection {
 		# test connection to the OH MariaDB/MySQL database
 		Write-Host "Testing database connection..."
 		try {
-		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e $([char]34)USE $DATABASE_NAME$([char]34) " ) -Wait -NoNewWindow
+#		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp -e $([char]34)USE $DATABASE_NAME$([char]34) " ) -Wait -NoNewWindow
+		Start-Process -FilePath ("$OH_PATH\$MYSQL_DIR\bin\mysql.exe") -ArgumentList ("--user=$DATABASE_USER --password=$DATABASE_PASSWORD --host=$DATABASE_SERVER --port=$DATABASE_PORT --protocol=tcp $DATABASE_NAME" ) -Wait -NoNewWindow
 		}
 		catch {
 			Write-Host "Error: can't connect to database! Exiting." -ForegroundColor Red
