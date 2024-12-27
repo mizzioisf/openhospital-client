@@ -420,14 +420,14 @@ function read_settings {
 		$script:DATABASE_USER=$db_settings."jdbc.username"
 		$script:DATABASE_PASSWORD=$db_settings."jdbc.password"
 
-	Write-Host" -------------------------------------- "
-	Write-Host" -------------------------------------- "
-	Write-Host" DATABASE_URL $DATABASE_URL "
-	Write-Host" DATABASE_SERVER $DATABASE_SERVER "
-	Write-Host" DATABASE_NAME $DATABASE_NAME "
-	Write-Host" DATABASE_USER $DATABASE_USER "
-	Write-Host" -------------------------------------- "
-	Write-Host" -------------------------------------- "
+	Write-Host " -------------------------------------- "
+	Write-Host " -------------------------------------- "
+	Write-Host " DATABASE_URL $DATABASE_URL "
+	Write-Host " DATABASE_SERVER $DATABASE_SERVER "
+	Write-Host " DATABASE_NAME $DATABASE_NAME "
+	Write-Host " DATABASE_USER $DATABASE_USER "
+	Write-Host " -------------------------------------- "
+	Write-Host " -------------------------------------- "
 
 	}
 	else {
