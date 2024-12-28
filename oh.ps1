@@ -1079,7 +1079,7 @@ function write_api_config_file {
 		-replace "API_URL", "$OH_API_PROD" `
 		| Set-Content "$OH_PATH/$OH_DIR/rsc/$API_SETTINGS"
 	}
-	if ( (Test-Path $TOMCAT_BIN  -PathType leaf ) ) {
+	if ( (Test-Path "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD" -PathType container ) ) {
 		# copying configuration / properties files to tomcat dir
 		Write-Host "Copying OH API configuration files..."
 		copy "$OH_PATH/$OH_DIR/rsc/*.properties" "$OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/WEB-INF/classes/"
