@@ -1125,7 +1125,7 @@ function start_api_server {
 #
 
 	# tomcat startup
-	$OH_PATH/$TOMCAT_DIR/bin/catalina.sh run >> $OH_PATH/$LOG_DIR/$API_LOG_FILE 2>&1
+	$OH_PATH/$TOMCAT_DIR/bin/catalina.sh run >> $OH_PATH/$LOG_DIR/$API_LOG_FILE 2>&1 &
 
 	if [ $? -ne 0 ]; then
 		echo "An error occurred while starting Tomcat - Open Hospital API server. Exiting."
