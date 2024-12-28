@@ -782,8 +782,10 @@ function tomcat_setup {
 
 		Write-Host "Unpacking $OH_API_PROD.war..."
 		try {
+			# workaround to extract war file
 			Rename-Item -Path "$OH_PATH/$OH_DIR/bin/$OH_API_WAR" -NewName "$OH_PATH/$OH_DIR/bin/$OH_API_PROD.zip"
 			Expand-Archive "$OH_PATH/$OH_DIR/bin/$OH_API_PROD.zip" -DestinationPath $OH_PATH/$TOMCAT_DIR/webapps/$OH_API_PROD/ -Force
+			Rename-Item -Path "$OH_PATH/$OH_DIR/bin/$OH_API_PROD.zip" -NewName "$OH_PATH/$OH_DIR/bin/$OH_API_WAR"
 		}
 		catch {
 			Write-Host "Error unpacking $OH_API_PROD. Exiting." -ForegroundColor Red
