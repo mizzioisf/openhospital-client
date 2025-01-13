@@ -1266,7 +1266,7 @@ function start_api_server {
 	Write-Host "Starting API server..."
 	Write-Host "Please wait, it might take some time..."
 	Write-Host ""
-	Write-Host "Connect to http://localhost:8080 for dashboard"
+	Write-Host "Connect to $OH_UI_URL for dashboard"
 	Write-Host ""
 
 # old jetty api server

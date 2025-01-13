@@ -1104,15 +1104,13 @@ function start_api_server {
 #	fi
 	##########
 
-
-
 	echo "------------------------"
 	echo "---- EXPERIMENTAL ------"
 	echo "------------------------"
 	echo "Starting API server..."
 	echo "Please wait, it might take some time..."
 	echo ""
-	echo "Connect to http://$OH_UI_URL for dashboard"
+	echo "Connect to $OH_UI_URL for dashboard"
 	echo ""
 
 # old jetty api server
