@@ -296,11 +296,10 @@ function script_menu {
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
 	Write-Host " -----------------------------------------------------------------"
-	if ( $EXPERT_MODE -eq "on" ) {
-		Write-Host " EXPERT MODE activated"
-		Write-Host " API server set to $API_SERVER"
+	Write-Host "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA |"
 	Write-Host " -----------------------------------------------------------------"
-	}
+	Write-Host "| log level: $LOG_LEVEL | Expert mode: $EXPERT_MODE | API server: $API_SERVER |"
+	Write-Host " -----------------------------------------------------------------"
 	Write-Host ""
 	Write-Host "   C    set OH in CLIENT mode"
 	Write-Host "   P    set OH in PORTABLE mode"

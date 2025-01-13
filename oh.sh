@@ -226,13 +226,10 @@ function script_menu {
 	echo "|                  Open Hospital - $OH_VERSION                         |"
 	echo "|                                                                 |"
 	echo " -----------------------------------------------------------------"
-	echo " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
+	echo "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA |"
 	echo " -----------------------------------------------------------------"
-	if [ "$EXPERT_MODE" == "on" ]; then
-		echo " EXPERT MODE activated"
-		echo " API server set to $API_SERVER"
-		echo " -----------------------------------------------------------------"
-	fi
+	echo "| log level: $LOG_LEVEL | Expert mode: $EXPERT_MODE | API server: $API_SERVER |"
+	echo " -----------------------------------------------------------------"
 	echo ""
 	echo " Usage: $SCRIPT_NAME -[OPTION] "
 	echo ""
