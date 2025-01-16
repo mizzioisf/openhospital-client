@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/oh/static/css/main.5015bf00.css",
+    "main.js": "/oh/static/js/main.ea2c9356.js",
+    "static/media/isf-logo.png": "/oh/static/media/isf-logo.681cec3e79a0912e0f69.png",
+    "static/media/logo-color.svg": "/oh/static/media/logo-color.c4cc2f2c74e928584042950d8adadbbc.svg",
+    "index.html": "/oh/index.html",
+    "static/media/arrow-w.svg": "/oh/static/media/arrow-w.f9d363ed2c72ede6095fd5ee9d1454c7.svg",
+    "main.5015bf00.css.map": "/oh/static/css/main.5015bf00.css.map",
+    "main.ea2c9356.js.map": "/oh/static/js/main.ea2c9356.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5015bf00.css",
+    "static/js/main.ea2c9356.js"
+  ]
+}
