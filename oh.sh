@@ -140,6 +140,8 @@ OH_API_PORT="8080"
 # OH UI configuration
 OH_UI_HOST="localhost"
 OH_UI_PORT="8080"
+OH_UI_PROD="oh-ui"
+OH_UI_URL="http://$OH_UI_HOST:$OH_UI_PORT/$OH_UI_PROD"
 
 # help file
 HELP_FILE="OH-readme.txt"
@@ -154,8 +156,8 @@ DATABASE_ROOT_USER="root"
 
 # activate expert mode - set to "on" to enable advanced functions - use at your own risk!
 EXPERT_MODE="off"
-OH_UI_URL="http://localhost:8080"
-OH_API_PID="../tmp/oh-api.pid"
+#OH_UI_URL="http://localhost:8080/oh"
+#OH_API_PID="../tmp/oh-api.pid"
 
 ################ Architecture and external software ################
 
@@ -1145,6 +1147,8 @@ function stop_api_server {
 
 ###################################################################
 function start_ui {
+	echo "Setup UI..."
+	cp -a $OH_PATH/$OH_DIR/ui/* $OH_PATH/$OH_DIR/$TOMCAT_DIR/$OH_UI_PROD/*
 	echo "Starting Open Hospital UI at $OH_UI_URL..."
 	# OH UI launch
 	if which gnome-open > /dev/null; then

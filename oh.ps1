@@ -203,6 +203,8 @@ $script:OH_API_PORT="8080"
 # OH UI configuration
 $script:OH_UI_HOST="localhost"
 $script:OH_UI_PORT="8080"
+$script:OH_UI_PROD="oh-ui"
+$script:OH_UI_URL="http://$OH_UI_HOST:$OH_UI_PORT/$OH_UI_PROD"
 
 # help file
 $script:HELP_FILE="OH-readme.txt"
@@ -217,8 +219,8 @@ $script:DATABASE_ROOT_USER="root"
 
 # activate expert mode - set to "on" to enable advanced functions - use at your own risk!
 $script:EXPERT_MODE="off"
-$script:OH_UI_URL="http://localhost:8080"
-$script:OH_API_PID="../tmp/oh-api.pid"
+#$script:OH_UI_URL="http://localhost:8080/oh"
+#$script:OH_API_PID="../tmp/oh-api.pid"
 
 ############## Architecture and external software ##############
 
@@ -1308,6 +1310,8 @@ function stop_api_server {
 
 ###################################################################
 function start_ui {
+	echo "Setup UI..."
+	Copy-Item  -Path "$OH_PATH/$OH_DIR/ui/*" -Destination "$OH_PATH/$OH_DIR/$TOMCAT_DIR/$OH_UI_PROD/" -Recurse
 	Write-Host "Starting Open Hospital UI at $OH_UI_URL..."
 	# OH UI launch
 	Start-Process $OH_UI_URL
