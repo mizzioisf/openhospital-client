@@ -1148,7 +1148,7 @@ function stop_api_server {
 ###################################################################
 function start_ui {
 	echo "Setup UI..."
-	cp -a $OH_PATH/$OH_DIR/ui/* $OH_PATH/$OH_DIR/$TOMCAT_DIR/$OH_UI_PROD/*
+	cp -a $OH_PATH/$OH_DIR/$OH_UI_PROD $OH_PATH/$OH_DIR/$TOMCAT_DIR/
 	echo "Starting Open Hospital UI at $OH_UI_URL..."
 	# OH UI launch
 	if which gnome-open > /dev/null; then

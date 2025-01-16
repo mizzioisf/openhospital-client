@@ -1311,7 +1311,7 @@ function stop_api_server {
 ###################################################################
 function start_ui {
 	echo "Setup UI..."
-	Copy-Item  -Path "$OH_PATH/$OH_DIR/ui/*" -Destination "$OH_PATH/$OH_DIR/$TOMCAT_DIR/$OH_UI_PROD/" -Recurse
+	Copy-Item  -Path "$OH_PATH/$OH_DIR/$OH_UI_PROD" -Destination "$OH_PATH/$OH_DIR/$TOMCAT_DIR/" -Recurse
 	Write-Host "Starting Open Hospital UI at $OH_UI_URL..."
 	# OH UI launch
 	Start-Process $OH_UI_URL
