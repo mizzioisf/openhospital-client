@@ -204,7 +204,7 @@ $script:OH_API_PORT="8080"
 $script:OH_UI_HOST="localhost"
 $script:OH_UI_PORT="8080"
 $script:OH_UI_PROD="oh-ui"
-$script:OH_UI_URL="http://$OH_UI_HOST:$OH_UI_PORT/$OH_UI_PROD"
+$script:OH_UI_URL="http://${OH_UI_HOST}:$OH_UI_PORT/$OH_UI_PROD"
 
 # help file
 $script:HELP_FILE="OH-readme.txt"
