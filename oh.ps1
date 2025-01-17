@@ -296,8 +296,6 @@ function script_menu {
 	Write-Host "|                  Open Hospital - $OH_VERSION                         |"
 	Write-Host "|                                                                 |"
 	Write-Host " -----------------------------------------------------------------"
-	Write-Host " arch $ARCH | lang $OH_LANGUAGE | mode $OH_MODE | log level $LOG_LEVEL | Demo $DEMO_DATA"
-	Write-Host " -----------------------------------------------------------------"
 	Write-Host "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA |"
 	Write-Host " -----------------------------------------------------------------"
 	Write-Host "| log level: $LOG_LEVEL | Expert mode: $EXPERT_MODE | API server: $API_SERVER |"
