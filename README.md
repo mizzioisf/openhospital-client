@@ -94,7 +94,7 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 ./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -interactive off -generate_config on
 ```
 
-# Options 
+# Menu and options 
 
 ```
  -----------------------------------------------------------------
@@ -131,6 +131,8 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 
 Please select an option or press enter to start OH: 
 ```
+
+### Standard options
 
 - **C**    set Open Hospital to start in CLIENT mode, usually when an external database server is used (Client / Server configuration)
 - **P**    set Open Hospital to start in PORTABLE mode, where data is saved locally
