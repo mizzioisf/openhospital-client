@@ -64,94 +64,9 @@ cd openhospital-client
 - start OH by running **./oh.sh**
 - to see available options, run **./oh.sh -h**
 
-```
- -----------------------------------------------------------------
-|                                                                 |
-|                       Open Hospital - 1.14.2                    |
-|                                                                 |
- -----------------------------------------------------------------
- arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
- ------------------------------------------------------------------
- EXPERT MODE activated
- API server set to off
- -----------------------------------------------------------------
-
- Usage: oh.sh -[OPTION] 
-
-   -C    set OH in CLIENT mode
-   -P    set OH in PORTABLE mode
-   -S    set OH in SERVER mode (portable)
-   -l    [ en|fr|es|it|pt|ar ] -> set language
-   -E    toggle EXPERT MODE - show advanced options
-   -h    show help
-   -q    quit
-
-   -------------------------------- 
-    EXPERT MODE - advanced options
-
-   -A    toggle API server - EXPERIMENTAL
-   -e    export/save OH database
-   -r    restore OH database
-   -d    toggle log level INFO/DEBUG
-   -G    setup GSM
-   -D    initialize OH with Demo data
-   -i    initialize/install OH database
-   -m    configure database connection manually
-   -s    save OH configuration
-   -t    test database connection (CLIENT mode only)
-   -u    create Desktop shortcut
-   -v    show configuration
-   -V    check for latest OH version
-   -X    clean/reset OH installation
-```
-
 ## Windows
 
-- double click on the **oh.bat** batch file and choose among available options:
-
-```
- -----------------------------------------------------------------
-|                                                                 |
-|                     Open Hospital - 1.14.2                      |
-|                                                                 |
- -----------------------------------------------------------------
- arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
- -----------------------------------------------------------------
- EXPERT MODE activated
- API server set to off
- -----------------------------------------------------------------
- Usage: oh.ps1 [ -lang en|fr|it|es|pt|ar ] 
-               [ -mode PORTABLE|CLIENT ]
-               [ -loglevel INFO|DEBUG ] 
-               [ -interactive on|off ]
-               [ -generate_config on|off ]
-
-    C    set OH in CLIENT mode
-    P    set OH in PORTABLE mode
-    S    set OH in SERVER mode (portable)
-    l    [ en|fr|es|it|pt|ar ] -> set language
-    E    toggle EXPERT MODE - show advanced options
-    h    show help
-    q    quit
-
-   -------------------------------- 
-    EXPERT MODE - advanced options
-
-    A    toggle API server - EXPERIMENTAL
-    e    export/save OH database
-    r    restore OH database
-    d    toggle log level INFO/DEBUG
-    G    setup GSM
-    D    initialize OH with Demo data
-    i    initialize/install OH database
-    m    configure database connection manually
-    s    save OH configuration
-    t    test database connection (CLIENT mode only)
-    u    create Desktop shortcut
-    v    show configuration
-    V    check for latest OH version
-    X    clean/reset OH installation
-```
+- double click on the **oh.bat** batch file and choose among available options.
 
 Note: The **oh.bat** launches the **oh.ps1** startup file automatically.
 The script presents the interactive menu that can be used to setup and choose how to run Open Hospital.
@@ -180,6 +95,42 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 ```
 
 # Options 
+
+```
+ -----------------------------------------------------------------
+|                                                                 |
+|                  Open Hospital - 1.14.2                         |
+|                                                                 |
+ -----------------------------------------------------------------
+| arch: x86_64 | lang: en | mode: PORTABLE | Demo: off |
+ -----------------------------------------------------------------
+| log level: INFO | Expert mode: on | API server: off |
+ -----------------------------------------------------------------
+
+ Usage: oh.sh -[OPTION] 
+
+   -C    set OH in CLIENT mode
+   -P    set OH in PORTABLE mode
+   -S    set OH in SERVER mode (portable)
+   -l    set language -> [ ar de en es fr it pt sq ]
+   -E    toggle EXPERT MODE - show advanced options
+   -h    show help
+   -q    quit
+
+   -------------------------------- 
+    EXPERT MODE - advanced options
+
+   -A  toggle API server - EXPERIMENTAL	| -m  configure database connection manually
+   -e  export/save OH database		| -r  restore OH database
+   -i  initialize/install OH database	| -t  test database connection (CLIENT mode only)
+   -D  initialize OH with Demo data	| -X  clean/reset OH installation
+   -G  setup GSM			| -u  create Desktop shortcut
+   -d  toggle log level INFO/DEBUG	| -s  save OH configuration
+   -v  show configuration		| -V  check for latest OH version
+
+
+Please select an option or press enter to start OH: 
+```
 
 - **C**    set Open Hospital to start in CLIENT mode, usually when an external database server is used (Client / Server configuration)
 - **P**    set Open Hospital to start in PORTABLE mode, where data is saved locally
@@ -481,4 +432,4 @@ In order to download and unzip MariaDB:
 
 Check online documentation.
 
-*last updated: 2024.12.06*
+*last updated: 2025.01.22*
