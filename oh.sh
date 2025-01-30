@@ -1155,9 +1155,9 @@ function stop_api_server {
 }
 
 ###################################################################
-function start_ui {
+function setup_ui {
 	echo "Setup UI interface..."
-	cp -a $OH_PATH/$OH_DIR/$OH_UI_PROD $OH_PATH/$OH_DIR/$TOMCAT_DIR/
+	cp -a $OH_PATH/$OH_DIR/$OH_UI_PROD $OH_PATH/$OH_DIR/$TOMCAT_DIR/webapps/
 }
 
 ###################################################################
