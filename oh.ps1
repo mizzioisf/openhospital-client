@@ -1794,7 +1794,7 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 				$script:UI_INTERFACE="off"
 				}
 			"off"	{ # 
-				$script:UI_INTERFACE"on"
+				$script:UI_INTERFACE="on"
 				}
 			}
 			#Read-Host "Press any key to continue";
