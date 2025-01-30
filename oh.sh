@@ -223,15 +223,15 @@ TOMCAT_DIR=$TOMCAT_DISTRO
 ###################################################################
 function script_menu {
 	# show help / user options
-	echo " -----------------------------------------------------------------"
-	echo "|                                                                 |"
-	echo "|                  Open Hospital - $OH_VERSION                         |"
-	echo "|                                                                 |"
-	echo " -----------------------------------------------------------------"
-	echo "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA |"
-	echo " -----------------------------------------------------------------"
-	echo "| log level: $LOG_LEVEL | Expert mode: $EXPERT_MODE | API server: $API_SERVER |"
-	echo " -----------------------------------------------------------------"
+	echo " ------------------------------------------------------------------------"
+	echo "|                                                                        |"
+	echo "|                Open Hospital - v$OH_VERSION                                 |"
+	echo "|                                                                        |"
+	echo " ------------------------------------------------------------------------"
+	echo "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA | log level: $LOG_LEVEL | "
+	echo " ------------------------------------------------------------------------"
+	echo "| Expert mode: $EXPERT_MODE | API server: $API_SERVER | GUI: $GUI_INTERFACE | UI: $UI_INTERFACE |"
+	echo " ------------------------------------------------------------------------"
 	echo ""
 	echo " Usage: $SCRIPT_NAME -[OPTION] "
 	echo ""
@@ -260,7 +260,7 @@ function script_menu_advanced {
 	echo "   -D  initialize OH with Demo data	| -X  clean/reset OH installation"
  	echo "   -d  toggle log level INFO/DEBUG	| -s  save OH configuration"
 	echo "   -G  setup GSM			"
-	echo "   -U  launch UI web interface		| -u  create Desktop shortcut"
+	echo "   -U  enable UI web interface		| -u  create Desktop shortcut"
 	echo "   -v  show configuration		| -V  check for latest OH version"
 	echo ""
 }
@@ -1650,9 +1650,18 @@ function parse_user_input {
 	#	fi
 	#	;;
 	###################################################
-	U)	# enable UI
-		echo ""
-		$UI_INTERFACE = "on"
+	U)	# toggle UI Interface
+		case "$UI_INTERFACE" in
+			*on*)
+				UI_INTERFACE="off";
+			;;
+			*off*)
+				UI_INTERFACE="on";
+			;;
+		esac
+		#
+		if (( $2==0 )); then UI_INTERFACE="on"; interactive_menu; fi
+		option="Z";
 		;;
 	###################################################
 	"V" )	# Check for latest OH version

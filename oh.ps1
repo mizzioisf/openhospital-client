@@ -291,24 +291,28 @@ $script:JAVA_DIR=$JAVA_DISTRO
 function script_menu {
 	# show menu
 	# Clear-Host # clear console
-	Write-Host " -----------------------------------------------------------------"
-	Write-Host "|                                                                 |"
-	Write-Host "|                  Open Hospital - $OH_VERSION                         |"
-	Write-Host "|                                                                 |"
-	Write-Host " -----------------------------------------------------------------"
-	Write-Host "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA |"
-	Write-Host " -----------------------------------------------------------------"
-	Write-Host "| log level: $LOG_LEVEL | Expert mode: $EXPERT_MODE | API server: $API_SERVER |"
-	Write-Host " -----------------------------------------------------------------"
+	#
+	Write-Host " ------------------------------------------------------------------------"
+	Write-Host "|                                                                        |"
+	Write-Host "|                Open Hospital - v$OH_VERSION                                 |"
+	Write-Host "|                                                                        |"
+	Write-Host " ------------------------------------------------------------------------"
+	Write-Host "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA | log level: $LOG_LEVEL | "
+	Write-Host " ------------------------------------------------------------------------"
+	Write-Host "| Expert mode: $EXPERT_MODE | API server: $API_SERVER | GUI: $GUI_INTERFACE | UI: $UI_INTERFACE |"
+	Write-Host " ------------------------------------------------------------------------"
 	Write-Host ""
-	Write-Host "   C    set OH in CLIENT mode"
-	Write-Host "   P    set OH in PORTABLE mode"
-	Write-Host "   S    set OH in SERVER mode (portable)"
-	Write-Host "   l    set language -> [ $OH_LANGUAGE_LIST ]"
-	Write-Host "   E    toggle EXPERT MODE - show advanced options"
-	Write-Host "   h    show help"
-	Write-Host "   q    quit"
+	Write-Host " Usage: $SCRIPT_NAME -[OPTION] "
 	Write-Host ""
+	Write-Host "   -C    set OH in CLIENT mode"
+	Write-Host "   -P    set OH in PORTABLE mode"
+	Write-Host "   -S    set OH in SERVER mode (portable)"
+	Write-Host "   -l    set language -> [ ${OH_LANGUAGE_LIST[*]} ]"
+	Write-Host "   -E    toggle EXPERT MODE - show advanced options"
+	Write-Host "   -h    show help"
+	Write-Host "   -q    quit"
+	Write-Host ""
+	#
 	if ( $EXPERT_MODE -eq "on" ) {
 		script_menu_advanced;
 	}
@@ -325,8 +329,9 @@ function script_menu_advanced {
 	Write-Host "   -e  export/save OH database		| -r  restore OH database"
 	Write-Host "   -i  initialize/install OH database	| -t  test database connection (CLIENT mode only)"
 	Write-Host "   -D  initialize OH with Demo data	| -X  clean/reset OH installation"
-	Write-Host "   -G  setup GSM			| -u  create Desktop shortcut"
  	Write-Host "   -d  toggle log level INFO/DEBUG	| -s  save OH configuration"
+	Write-Host "   -G  setup GSM			"
+	Write-Host "   -U  enable UI web interface		| -u  create Desktop shortcut"
 	Write-Host "   -v  show configuration		| -V  check for latest OH version"
 	Write-Host ""
 }
@@ -1783,8 +1788,16 @@ if ( $INTERACTIVE_MODE -eq "on" ) {
 			Read-Host "Press any key to continue";
 		}
 		###################################################
-		"U"	# enable UI
-			$UI_INTERFACE = "on"
+		"U"	{ # toggle UI interface
+			switch -CaseSensitive( $script:UI_INTERFACE ) {
+			"on"	{ # 
+				$script:UI_INTERFACE="off"
+				}
+			"off"	{ # 
+				$script:UI_INTERFACE"on"
+				}
+			}
+			#Read-Host "Press any key to continue";
 		}
 		###################################################
 		"V" 	{ # Check for latest OH version
