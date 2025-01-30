@@ -1325,7 +1325,7 @@ function stop_api_server {
 ###################################################################
 function setup_ui {
 	echo "Setup UI interface..."
-	Copy-Item -Force -Recurse "$OH_PATH/$OH_DIR/$OH_UI_PROD" -Destination "$OH_PATH/$OH_DIR/$TOMCAT_DIR/webapps/"
+	Copy-Item -Force -Recurse "$OH_PATH/$OH_DIR/$OH_UI_PROD" -Destination "$OH_PATH/$TOMCAT_DIR/webapps/"
 }
 
 ###################################################################
