@@ -5,8 +5,10 @@
 MODE=OH_MODE
 DEMODATA=off
 
-# experimental settings
-APISERVER=off
+# experimental/advanced settings
+APISERVER=on
+GUI_INTERFACE=on
+UI_INTERFACE=off
 
 # internal settings, modules, directories
 LANGUAGE=OH_LANGUAGE
