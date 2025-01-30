@@ -1323,7 +1323,7 @@ function stop_api_server {
 }
 
 ###################################################################
-function start_ui {
+function setup_ui {
 	echo "Setup UI interface..."
 	Copy-Item  -Path "$OH_PATH/$OH_DIR/$OH_UI_PROD" -Destination "$OH_PATH/$OH_DIR/$TOMCAT_DIR/" -Recurse
 }
@@ -1992,6 +1992,12 @@ else {
 
 	# generate config files if not existent
 	write_config_files;
+
+	# check for UI interface
+	if ( $UI_INTERFACE -eq "on" ) {
+		setup_ui;
+		start_ui;
+	}
 
 	# check for GUI interface
 	if ( $GUI_INTERFACE -eq "on" ) {
