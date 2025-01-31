@@ -6,7 +6,7 @@ MODE=OH_MODE
 DEMODATA=off
 
 # experimental/advanced settings
-APISERVER=on
+APISERVER=off
 GUI_INTERFACE=on
 UI_INTERFACE=off
 
