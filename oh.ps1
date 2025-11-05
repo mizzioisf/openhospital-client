@@ -226,7 +226,7 @@ $script:EXPERT_MODE="off"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-$script:MYSQL_VERSION="10.6.20"
+$script:MYSQL_VERSION="10.6.23"
 $script:MYSQL32_VERSION="10.6.5"
 
 ######## define system and software architecture
@@ -266,11 +266,11 @@ $script:MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 
 ### JRE 17 - zulu distribution
 #$script:JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-win_$JAVA_PACKAGE_ARCH"
-$script:JAVA_DISTRO="zulu17.54.21-ca-jre17.0.13-win_$JAVA_PACKAGE_ARCH"
+$script:JAVA_DISTRO="zulu17.60.17-ca-jre17.0.16-win_$JAVA_PACKAGE_ARCH"
 $script:JAVA_URL="https://cdn.azul.com/zulu/bin"
 
 # Tomcat 11
-$script:TOMCAT_VERSION="11.0.2"
+$script:TOMCAT_VERSION="11.0.13"
 $script:TOMCAT_URL="https://dlcdn.apache.org/tomcat/tomcat-11/v$TOMCAT_VERSION/bin/"
 $script:TOMCAT_DISTRO="apache-tomcat-$TOMCAT_VERSION-windows-x64"
 $script:TOMCAT_DIR="apache-tomcat-$TOMCAT_VERSION"
