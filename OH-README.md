@@ -33,7 +33,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                       Open Hospital - 1.14.0                    |
+|                       Open Hospital - 1.15.0                    |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
@@ -78,7 +78,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                     Open Hospital - 1.14.0                      |
+|                     Open Hospital - 1.15.0                      |
 |                                                                 |
  -----------------------------------------------------------------
  arch x86_64 | lang en | mode PORTABLE | log level INFO | Demo off
@@ -145,7 +145,7 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 ./oh.ps1 -lang it -mode PORTABLE -loglevel DEBUG -interactive off -generate_config on
 ```
 
-# Options 
+# Menu and options 
 
 - **C**    set Open Hospital to start in CLIENT mode, usually when an external database server is used (Client / Server configuration)
 - **P**    set Open Hospital to start in PORTABLE mode, where data is saved locally
@@ -391,7 +391,7 @@ C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypas
 
 ### Powershell configuration
 
-Powershell minimun version 5.1 is required to run oh.ps1.
+Powershell minimum version 5.1 is required to run oh.ps1.
 To install Powershell 5.1 go to https://www.microsoft.com/en-us/download/details.aspx?id=54616
 
 If you get this error:
@@ -422,9 +422,9 @@ In order to download and unzip Java:
 - Visit  https://cdn.azul.com/zulu/bin/
 - download the latest **JRE** for your architecture:
 
-**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_x64.zip
+**x64 - 64bit:** https://cdn.azul.com/zulu/bin/zulu17.60.17-ca-jre17.0.16-win_x64.zip
 
-**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu17.48.15-ca-jre17.0.10-win_i686.zip
+**x86 - 32bit:** https://cdn.azul.com/zulu/bin/zulu17.60.17-ca-jre17.0.16-win_i686.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -439,7 +439,7 @@ In order to download and unzip MariaDB:
 
 **x86 - 32bit:** https://archive.mariadb.org/mariadb-10.6.5/win32-packages/mariadb-10.6.5-win32.zip
 
-**x64 - 64bit:** https://archive.mariadb.org/mariadb-10.6.16/winx64-packages/mariadb-10.6.16-winx64.zip
+**x64 - 64bit:** https://archive.mariadb.org/mariadb-10.6.16/winx64-packages/mariadb-10.6.23-winx64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 
@@ -447,4 +447,4 @@ In order to download and unzip MariaDB:
 
 Check online documentation.
 
-*last updated: 2024.02.01*
+*last updated: 2025.11.05*
