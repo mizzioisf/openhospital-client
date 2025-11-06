@@ -73,7 +73,7 @@ The Windows version has been tested on Windows 7/10/11 (64bit)
 
 ## Windows
 
-- double click on the **oh.bat** batch file and choose among available options:
+- double click **oh.bat** and choose among available options:
 
 ```
  -----------------------------------------------------------------
