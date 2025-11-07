@@ -166,15 +166,16 @@ $script:WRITE_CONFIG_FILES="off" # windows
 ### Distribution type - CLIENT | PORTABLE | SERVER
 
 ```
-#######################  OH configuration  #########################
+############## OH general configuration - change at your own risk :-) ##############
 OH_MODE=PORTABLE # set functioning mode to CLIENT | PORTABLE | CLIENT # linux
 $script:OH_MODE="PORTABLE" # windows
 ```
 ### Interface and software language:
 ```
 # Language setting - default set to en
-OH_LANGUAGE=en # fr es it pt ar # linux
-$script:OH_LANGUAGE="en" # fr es it pt ar # windows
+OH_LANGUAGE_LIST=("ar" "de" "en" "es" "fr" "it" "pt" "sq")
+OH_LANGUAGE_LIST_INFO=("Arabic" "German" "English" "Spanish" "French" "Italian" "Portuguese" "Albanian")
+$script:OH_LANGUAGE="en" # ar de en es fr it pt sq # windows
 ```
 ### Log level / debug mode
 ```
