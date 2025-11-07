@@ -99,13 +99,18 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 ```
  -----------------------------------------------------------------
 |                                                                 |
-|                  Open Hospital - 1.14.2                         |
+|                  Open Hospital - 1.15.x                         |
 |                                                                 |
  -----------------------------------------------------------------
-| arch: x86_64 | lang: en | mode: PORTABLE | Demo: off |
- -----------------------------------------------------------------
-| log level: INFO | Expert mode: on | API server: off |
- -----------------------------------------------------------------
+ ------------------------------------------------------------------------
+|                                                                        |
+|                Open Hospital - v1.14.2                                 |
+|                                                                        |
+ ------------------------------------------------------------------------
+| arch: x86_64 | lang: en | mode: PORTABLE | Demo: off | log level: INFO | 
+ ------------------------------------------------------------------------
+| Expert mode: on | API server: off | GUI: on | UI: off |
+ ------------------------------------------------------------------------
 
  Usage: oh.sh -[OPTION] 
 
@@ -120,14 +125,14 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
    -------------------------------- 
     EXPERT MODE - advanced options
 
-   -A  toggle API server - EXPERIMENTAL	| -m  configure database connection manually
-   -e  export/save OH database		| -r  restore OH database
-   -i  initialize/install OH database	| -t  test database connection (CLIENT mode only)
-   -D  initialize OH with Demo data	| -X  clean/reset OH installation
-   -G  setup GSM			| -u  create Desktop shortcut
-   -d  toggle log level INFO/DEBUG	| -s  save OH configuration
-   -v  show configuration		| -V  check for latest OH version
-
+   -A  toggle API server - EXPERIMENTAL		| -d  toggle log level INFO/DEBUG
+   -D  initialize OH with Demo data		| -X  clean/reset OH installation
+   -e  export/save OH database			| -r  restore OH database
+   -m  configure database connection manually	| -i  initialize/install OH databas
+   -s  save OH configuration			| -t  test database connection (CLIENT mode only)
+   -G  setup GSM			
+   -U  enable UI web interface			| -u  create Desktop shortcut
+   -v  show configuration			| -V  check for latest OH version
 
 Please select an option or press enter to start OH: 
 ```
@@ -155,8 +160,9 @@ Please select an option or press enter to start OH:
 - **s**    save / write / generate OH configuration files (oh/rsc/\*.properties) and exit
 - **t**    test database connection to the configured database server (Client mode only)
 - **u**    create Desktop shortcut with current params (Windows / Linux)
+- **U**    enable and start OH UI - Web interface
 - **v**    show Open Hospital external software version and configuration
-- **V**    create online for latest OH version released
+- **V**    check online for latest OH version released
 - **X**    clean/reset OH installation by deleting all data and configuration files -> **use with caution** <-
 
 # Script configuration

@@ -261,7 +261,7 @@ function script_menu_advanced {
 	echo "   -s  save OH configuration			| -t  test database connection (CLIENT mode only)"
 	echo "   -G  setup GSM			"
 	echo "   -U  enable UI web interface			| -u  create Desktop shortcut"
-	echo "   -v  show configuration			| -V  check for latest OH version"
+	echo "   -v  show configuration			| -V  check for latest available OH version"
 	echo ""
 }
 

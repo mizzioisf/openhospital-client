@@ -332,7 +332,7 @@ function script_menu_advanced {
 	Write-Host "   -s  save OH configuration			| -t  test database connection (CLIENT mode only)"
 	Write-Host "   -G  setup GSM			"
 	Write-Host "   -U  enable UI web interface			| -u  create Desktop shortcut"
-	Write-Host "   -v  show configuration			| -V  check for latest OH version"
+	Write-Host "   -v  show configuration			| -V  check for latest available OH version"
 	Write-Host ""
 }
 
