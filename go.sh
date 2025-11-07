@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Open Hospital (www.open-hospital.org)
-# Copyright © 2006-2023 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
+# Copyright © 2006-2025 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
 #
 # Open Hospital is a free and open source software for healthcare data management.
 #
@@ -29,8 +29,10 @@
 ######## Open Hospital - Portable Open Hospital Configuration
 # OH_PATH is the directory where Portable OpenHospital files are located
 # OH_PATH=/usr/local/PortableOpenHospital
+# OH_SUBDIR is the directory where the OH repo will be downloaded and saved
+# OH_REPO is the remote github repository
 
-OH_SUBDIR="oh-1.14.dev"
+OH_SUBDIR="oh-1.15.dev"
 OH_REPO="https://github.com/mizzioisf/openhospital-client"
 
 ######## Software configuration - change at your own risk :-)
@@ -66,6 +68,15 @@ function script_usage {
 }
 
 ######## Functions
+
+function show_menu {
+	echo " ------------------------------------------------------------------------"
+	echo "|                                                                        |"
+	echo "|                Open Hospital - Web start - beta                        |"
+	echo "|                                                                        |"
+	echo " ------------------------------------------------------------------------"
+}
+
 
 function get_confirmation {
 read -p "(y/n)? " choice
@@ -147,7 +158,8 @@ fi
 
 set_path;
 
-# start script
+# Script execution
+show_menu;
 oh_check_and_go;
 
 # go back to starting directory
