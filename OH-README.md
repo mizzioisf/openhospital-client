@@ -86,14 +86,14 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
    -------------------------------- 
     EXPERT MODE - advanced options
 
-   -A  toggle API server - EXPERIMENTAL		| -d  toggle log level INFO/DEBUG
-   -D  initialize OH with Demo data		| -X  clean/reset OH installation
-   -e  export/save OH database			| -r  restore OH database
-   -m  configure database connection manually	| -i  initialize/install OH databas
-   -s  save OH configuration			| -t  test database connection (CLIENT mode only)
-   -G  setup GSM			
-   -U  enable UI web interface			| -u  create Desktop shortcut
-   -v  show configuration			| -V  check for latest OH version
+   -A  toggle API server - EXPERIMENTAL | -d  toggle log level INFO/DEBUG
+   -D  initialize OH with Demo data     | -X  clean/reset OH installation
+   -e  export/save OH database          | -r  restore OH database
+   -m  configure database connection manually   | -i  initialize/install OH databas
+   -s  save OH configuration            | -t  test database connection (CLIENT mode only)
+   -G  setup GSM
+   -U  enable UI web interface          | -u  create Desktop shortcut
+   -v  show configuration               | -V  check for latest OH version
 
 Please select an option or press enter to start OH: 
 
@@ -210,10 +210,10 @@ DATABASE_PASSWORD="xxxxx"
 ```
 ### OH configuration
 ```
+#######################  OH configuration  #########################
 # path and directories
 OH_DIR="oh"
-OH_DOC_DIR="../doc"
-OH_SINGLE_USER="yes" # set "no" for multiuser
+OH_DOC_DIR="doc"
 CONF_DIR="data/conf"
 DATA_DIR="data/db"
 PHOTO_DIR="data/photo"
@@ -229,12 +229,12 @@ DICOM_STORAGE="FileSystemDicomManager" # SqlDicomManager
 DICOM_DIR="data/dicom_storage"
 
 # logging
-LOG_FILE=startup.log
-OH_LOG_FILE=openhospital.log
+LOG_FILE="startup.log"
+OH_LOG_FILE="openhospital.log"
 API_LOG_FILE="api.log"
 
 # SQL creation files
-DB_CREATE_SQL="create_all_en.sql" # default to en
+#DB_CREATE_SQL="create_all_en.sql" # default to en
 DB_DEMO="create_all_demo.sql"
 
 ```
