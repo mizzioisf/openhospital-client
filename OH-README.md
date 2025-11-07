@@ -73,7 +73,7 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 | Expert mode: off | API server: off | GUI: on | UI: off |
  ------------------------------------------------------------------------
 
- Usage: oh.sh -[OPTION] 
+ Usage: oh.sh/oh.ps1 -[OPTION] 
 
    -C    set OH in CLIENT mode
    -P    set OH in PORTABLE mode
