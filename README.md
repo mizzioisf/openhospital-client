@@ -3,6 +3,11 @@
 [![GitHub release](https://img.shields.io/github/v/release/informatici/openhospital?color=orange&label=latest%20release)](https://github.com/informatici/openhospital/releases/latest)
 [![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/informatici/openhospital/blob/master/LICENSE)
 
+
+**This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
+
+**New ! Updated to 1.14.2 Open Hospital official release!**
+
 OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Health Information Management System (HIMS) software application.
 Open Hospital is deployed as a desktop application that can be used in a standalone, single user mode (PORTABLE mode)
 or in a client / server network configuration (CLIENT mode), where multiple clients and users connect to the same database server.
@@ -19,10 +24,6 @@ OH is released under the GNU GPL 3.0 License.
 
 The Linux version has been tested on different distributions and versions, including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 22.04 x64 (64bit).
 The Windows version has been tested on Windows 7/10/11 (64bit)
-
-**This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
-
-**New ! Updated to 1.14.2 Open Hospital official release!**
 
 # Running OH - Ultra-quickstart
 
@@ -97,14 +98,9 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
 # Menu and options 
 
 ```
- -----------------------------------------------------------------
-|                                                                 |
-|                  Open Hospital - 1.15.x                         |
-|                                                                 |
- -----------------------------------------------------------------
  ------------------------------------------------------------------------
 |                                                                        |
-|                Open Hospital - v1.14.2                                 |
+|                Open Hospital - v1.15.x                                 |
 |                                                                        |
  ------------------------------------------------------------------------
 | arch: x86_64 | lang: en | mode: PORTABLE | Demo: off | log level: INFO | 
