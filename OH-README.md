@@ -165,9 +165,9 @@ $script:WRITE_CONFIG_FILES="off" # windows
 
 ### Distribution type - CLIENT | PORTABLE | SERVER
 ```
-############## OH general configuration - change at your own risk :-) ##############
-OH_MODE=PORTABLE # set functioning mode to CLIENT | PORTABLE | CLIENT # linux
-$script:OH_MODE="PORTABLE" # windows
+# set OH mode to PORTABLE | CLIENT | SERVER - default set to PORTABLE
+#OH_MODE=PORTABLE 
+#$script:OH_MODE="PORTABLE" # windows
 ```
 
 ### Interface and software language:
@@ -178,9 +178,9 @@ OH_LANGUAGE_LIST_INFO=("Arabic" "German" "English" "Spanish" "French" "Italian" 
 $script:OH_LANGUAGE="en" # ar de en es fr it pt sq # windows
 ```
 
-### Single / multiple users
+### Single / multi user
 ```
-# single / multiuser - set "yes" for single user configuration
+# single / multi user - set "yes" for single user configuration
 #OH_SINGLE_USER="no"
 $script:OH_SINGLE_USER="no"
 ```
