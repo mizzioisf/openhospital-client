@@ -157,7 +157,7 @@ $script:API_LOG_FILE="api.log"
 $script:API_ERR_LOG_FILE="api_error.log"
 
 # SQL creation files
-#$script:DB_CREATE_SQL="create_all_en.sql" # default to en
+#$script:DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 $script:DB_DEMO="create_all_demo.sql"
 
 ######################## Advanced settings ########################
@@ -526,9 +526,11 @@ function set_demo_data {
 	# set database name for demo data
 	switch -CaseSensitive( $script:DEMO_DATA ) {
 	"on"	{ # 
+		Write-Host "Enabling DEMO data..."
 		$script:DATABASE_NAME=$DEMO_DATABASE
 		}
 	"off"	{ # 
+		Write-Host "Disabling DEMO data..."
 		$script:DATABASE_NAME="$script:DEFAULT_DATABASE_NAME"
 		}
 	}

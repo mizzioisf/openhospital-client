@@ -93,7 +93,7 @@ powershell.exe -ExecutionPolicy Bypass -File ./oh.ps1 [options]
    -s  save OH configuration            | -t  test database connection (CLIENT mode only)
    -G  setup GSM
    -U  enable UI web interface          | -u  create Desktop shortcut
-   -v  show configuration               | -V  check for latest OH version
+   -v  show configuration               | -V  check for latest available OH version
 
 Please select an option or press enter to start OH: 
 
@@ -164,12 +164,12 @@ $script:WRITE_CONFIG_FILES="off" # windows
 ```
 
 ### Distribution type - CLIENT | PORTABLE | SERVER
-
 ```
 ############## OH general configuration - change at your own risk :-) ##############
 OH_MODE=PORTABLE # set functioning mode to CLIENT | PORTABLE | CLIENT # linux
 $script:OH_MODE="PORTABLE" # windows
 ```
+
 ### Interface and software language:
 ```
 # Language setting - default set to en
@@ -177,12 +177,21 @@ OH_LANGUAGE_LIST=("ar" "de" "en" "es" "fr" "it" "pt" "sq")
 OH_LANGUAGE_LIST_INFO=("Arabic" "German" "English" "Spanish" "French" "Italian" "Portuguese" "Albanian")
 $script:OH_LANGUAGE="en" # ar de en es fr it pt sq # windows
 ```
+
+### Single / multiple users
+```
+# single / multiuser - set "yes" for single user configuration
+#OH_SINGLE_USER="no"
+$script:OH_SINGLE_USER="no"
+```
+
 ### Log level / debug mode
 ```
 # set log level to INFO | DEBUG - default set to INFO
 LOG_LEVEL=INFO # linux
 $script:LOG_LEVEL="INFO" # windows
 ```
+
 ### Demo mode
 ```
 # set DEMO_DATA to on to enable demo database loading - default set to off
@@ -190,6 +199,7 @@ $script:LOG_LEVEL="INFO" # windows
 DEMO_DATA=off # linux
 $script:DEMO_DATA="off" # windows
 ```
+
 ### Enable system wide JAVA
 ```
 # set JAVA_BIN 
@@ -197,6 +207,7 @@ $script:DEMO_DATA="off" # windows
 #JAVA_BIN=`which java` # linux
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe" # windows
 ```
+
 ### Database configuration
 
 If a database server hostname/address is specified (other then localhost), OH can be started in CLIENT mode and used in a client/server / LAN environment.
@@ -209,6 +220,7 @@ DATABASE_NAME=oh
 DATABASE_USER=isf
 DATABASE_PASSWORD="xxxxx"
 ```
+
 ### OH configuration
 ```
 #######################  OH configuration  #########################
@@ -235,7 +247,7 @@ OH_LOG_FILE="openhospital.log"
 API_LOG_FILE="api.log"
 
 # SQL creation files
-#DB_CREATE_SQL="create_all_en.sql" # default to en
+#DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
 
 ```
@@ -394,7 +406,7 @@ In order to download and unzip MariaDB:
 
 **x86 - 32bit:** https://archive.mariadb.org/mariadb-10.6.5/win32-packages/mariadb-10.6.5-win32.zip
 
-**x64 - 64bit:** https://archive.mariadb.org/mariadb-10.6.16/winx64-packages/mariadb-10.6.23-winx64.zip
+**x64 - 64bit:** https://archive.mariadb.org/mariadb-10.6.23/winx64-packages/mariadb-10.6.23-winx64.zip
 
 - unzip the downloaded file into the base directory where OpenHospital has been placed.
 

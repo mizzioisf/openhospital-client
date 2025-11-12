@@ -98,7 +98,7 @@ OH_LOG_FILE="openhospital.log"
 API_LOG_FILE="api.log"
 
 # SQL creation files
-#DB_CREATE_SQL="create_all_en.sql" # default to en
+#DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
 DB_DEMO="create_all_demo.sql"
 
 ######################## Advanced settings ########################
@@ -469,9 +469,11 @@ function set_demo_data {
 	# set database name for demo data
 	case "$DEMO_DATA" in
 			*on*)
+				echo "Enabling DEMO data..."
 				DATABASE_NAME=$DEMO_DATABASE
 			;;
 			*off*)
+				echo "Disabling DEMO data..."
 				DATABASE_NAME="$DEFAULT_DATABASE_NAME"
 			;;
 	esac
