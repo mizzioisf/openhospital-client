@@ -6,7 +6,19 @@
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New ! Updated to 1.14.2 Open Hospital official release!**
+**New ! Updated to 1.15dev Open Hospital official release!**
+
+# Running OH - Ultra-quickstart
+
+**on Linux:**
+
+To download and launch the Open Hospital package contained in this distribution open a shell and type (or copy and paste):
+
+```
+bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
+```
+
+# Introduction
 
 OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Health Information Management System (HIMS) software application.
 Open Hospital is deployed as a desktop application that can be used in a standalone, single user mode (PORTABLE mode)
@@ -24,16 +36,6 @@ OH is released under the GNU GPL 3.0 License.
 
 The Linux version has been tested on different distributions and versions, including Ubuntu 16.04 i386 (32bit) and up to Ubuntu 22.04 x64 (64bit).
 The Windows version has been tested on Windows 7/10/11 (64bit)
-
-# Running OH - Ultra-quickstart
-
-**on Linux:**
-
-To download and launch the Open Hospital package contained in this distribution open a shell and type (or copy and paste):
-
-```
-bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
-```
 
 # Dowloading OH - Releases
 

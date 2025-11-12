@@ -136,7 +136,7 @@ This might also be useful to set different combinations of options (language, de
 ############## OH general configuration - change at your own risk :-) ##############
 #
 # -> OH_PATH is the directory where Open Hospital files are located
-# OH_PATH="c:\Users\OH\OpenHospital\oh-1.14"
+# OH_PATH="c:\Users\OH\OpenHospital\oh-1.15"
 ```
 ### (Windows only) Enable interactive mode
 ```
