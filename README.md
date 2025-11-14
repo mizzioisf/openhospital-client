@@ -1,3 +1,34 @@
+# ![](./doc/media/OH-icon.png) OH - Open Hospital Portable | Client 
+
+[![GitHub release](https://img.shields.io/github/v/release/informatici/openhospital?color=orange&label=latest%20release)](https://github.com/informatici/openhospital/releases/latest)
+[![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/informatici/openhospital/blob/master/LICENSE)
+
+
+**This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
+
+**New ! Updated to 1.15dev Open Hospital official release!**
+
+# Running OH - Ultra-quickstart
+
+**on Linux:**
+
+To download and launch the Open Hospital package contained in this distribution open a shell and type (or copy and paste):
+
+```
+bash <(wget -qO- https://raw.githubusercontent.com/mizzioisf/openhospital-client/main/go.sh)
+```
+
+# Dowloading OH - this repo
+
+- clone the repository with git:
+```
+git clone https://github.com/mizzioisf/openhospital-client
+```
+- browse to the directory:
+```
+cd openhospital-client
+```
+
 # OH - Open Hospital Client | Portable 
 
 OH - Open Hospital (https://www.open-hospital.org/) is a free and open-source Health Information Management System (HIMS) software application.
