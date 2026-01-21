@@ -1297,7 +1297,7 @@ function stop_api_server {
 		# shutdown tomcat
                 Write-Host "Shutting down Tomcat - Open Hospital API server..."
 		#Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("stop") -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
-		Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("stop") -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$TMP_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+		Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("stop") -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$TMP_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE" -Wait
 		Add-Content -Path "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -Value (Get-Content "$OH_PATH/$LOG_DIR/$TMP_LOG_FILE")
 		Remove-Item "$OH_PATH/$LOG_DIR/$TMP_LOG_FILE"
                 Write-Host "Tomcat stopped!"
