@@ -155,6 +155,7 @@ $script:LOG_FILE_ERR="startup_error.log"
 $script:OH_LOG_FILE="openhospital.log"
 $script:API_LOG_FILE="api.log"
 $script:API_ERR_LOG_FILE="api_error.log"
+$script:TMP_LOG_FILE="tmp.log"
 
 # SQL creation files
 #$script:DB_CREATE_SQL="create_all_en.sql" # default to create_all_en.sql
@@ -1296,9 +1297,10 @@ function stop_api_server {
 		# shutdown tomcat
                 Write-Host "Shutting down Tomcat - Open Hospital API server..."
 		#Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("stop") -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
-		Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("stop") -WindowStyle Hidden >> "$OH_PATH/$LOG_DIR/$API_LOG_FILE"
+		Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("stop") -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$TMP_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
+		Add-Content -Path "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -Value (Get-Content "$OH_PATH/$LOG_DIR/$TMP_LOG_FILE")
+		Remove-Item "$OH_PATH/$LOG_DIR/$TMP_LOG_FILE"
                 Write-Host "Tomcat stopped!"
-
 	}
 }
 
