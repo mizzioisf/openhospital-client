@@ -1150,7 +1150,7 @@ function stop_api_server {
 	if [ "$OH_MODE" != "CLIENT" ] && [ "$API_SERVER" = "on" ]; then
 		echo "Shutting down Tomcat - Open Hospital API server..."
 		# shutdown tomcat
-		$OH_PATH/$TOMCAT_DIR/bin/catalina.sh stop $OH_PATH/$LOG_DIR/$API_LOG_FILE 2>&1
+		$OH_PATH/$TOMCAT_DIR/bin/catalina.sh stop >> $OH_PATH/$LOG_DIR/$API_LOG_FILE 2>&1
 		echo "Tomcat stopped!"
 #	else
 #		exit 1
