@@ -2,7 +2,7 @@
 #!/usr/bin/pwsh
 #
 # Open Hospital (www.open-hospital.org)
-# Copyright © 2006-2025 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
+# Copyright © 2006-2026 Informatici Senza Frontiere (info@informaticisenzafrontiere.org)
 #
 # Open Hospital is a free and open source software for healthcare data management.
 #
@@ -1296,10 +1296,9 @@ function stop_api_server {
 	if ( !($OH_MODE -eq "CLIENT") -And ( $API_SERVER -eq "on" ) ) {
 		# shutdown tomcat
                 Write-Host "Shutting down Tomcat - Open Hospital API server..."
-		#Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("stop") -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE"
 		Start-Process -FilePath "$OH_PATH/$TOMCAT_DIR/bin/catalina.bat" -ArgumentList ("stop") -WindowStyle Hidden -RedirectStandardOutput "$OH_PATH/$TMP_DIR/$TMP_LOG_FILE" -RedirectStandardError "$OH_PATH/$LOG_DIR/$API_ERR_LOG_FILE" -Wait
 		Add-Content -Path "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -Value (Get-Content "$OH_PATH/$TMP_DIR/$TMP_LOG_FILE")
-		Move-Item -Path "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -Destination "$OH_PATH/$LOG_DIR/$API_LOG_FILE.$DATE"
+		Copy-Item -Path "$OH_PATH/$LOG_DIR/$API_LOG_FILE" -Destination "$OH_PATH/$LOG_DIR/$API_LOG_FILE.$DATE"
 		Remove-Item "$OH_PATH/$TMP_DIR/$TMP_LOG_FILE"
                 Write-Host "Tomcat stopped!"
 	}
