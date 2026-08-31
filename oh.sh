@@ -228,7 +228,7 @@ function script_menu {
 	# show help / user options
 	echo " ------------------------------------------------------------------------"
 	echo "|                                                                        |"
-	echo "|                Open Hospital - v$OH_VERSION                                 |"
+	echo "|                   Open Hospital - v$OH_VERSION                              |"
 	echo "|                                                                        |"
 	echo " ------------------------------------------------------------------------"
 	echo "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA | log level: $LOG_LEVEL | "
@@ -784,13 +784,15 @@ function initialize_database {
 	fi
 }
 
+
 ###################################################################
-# Whether the database is accepting connections on its TCP port.
-#
-# The port is probed with bash's own /dev/tcp redirection rather than with `nc`, which is not part
-# of the package and is absent from many minimal installations: there the probe never succeeded, so
-# the wait loop below span forever and the launcher hung with no message and no way to tell why.
 function database_port_open {
+	# Whether the database is accepting connections on its TCP port.
+	#
+	# The port is probed with bash's own /dev/tcp redirection rather than with `nc`, which is not part
+	# of the package and is absent from many minimal installations: there the probe never succeeded, so
+	# the wait loop below span forever and the launcher hung with no message and no way to tell why.
+
 	(exec 3<>/dev/tcp/$DATABASE_SERVER/$DATABASE_PORT) > /dev/null 2>&1
 }
 

@@ -300,7 +300,7 @@ function script_menu {
 	#
 	Write-Host " ------------------------------------------------------------------------"
 	Write-Host "|                                                                        |"
-	Write-Host "|                Open Hospital - v$OH_VERSION                                 |"
+	Write-Host "|                   Open Hospital - v$OH_VERSION                              |"
 	Write-Host "|                                                                        |"
 	Write-Host " ------------------------------------------------------------------------"
 	Write-Host "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA | log level: $LOG_LEVEL | "
@@ -1048,11 +1048,12 @@ function dump_database {
 }
 
 ###################################################################
-# Whether the database is accepting connections on its TCP port.
-#
-# A refused connection makes Task.Wait throw rather than return false, so the call is guarded: left
-# uncaught the failure would surface as an error from the loops below instead of as a closed port.
 function database_port_open {
+	# Whether the database is accepting connections on its TCP port.
+	#
+	# A refused connection makes Task.Wait throw rather than return false, so the call is guarded: left
+	# uncaught the failure would surface as an error from the loops below instead of as a closed port.
+	
 	$client = New-Object System.Net.Sockets.TcpClient
 	try {
 		return $client.ConnectAsync("$DATABASE_SERVER", $DATABASE_PORT).Wait(1000)
