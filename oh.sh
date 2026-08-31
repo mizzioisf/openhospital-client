@@ -787,11 +787,7 @@ function initialize_database {
 
 ###################################################################
 function database_port_open {
-	# Whether the database is accepting connections on its TCP port.
-	#
-	# The port is probed with bash's own /dev/tcp redirection rather than with `nc`, which is not part
-	# of the package and is absent from many minimal installations: there the probe never succeeded, so
-	# the wait loop below span forever and the launcher hung with no message and no way to tell why.
+	# Check if the database serveris accepting connections on its TCP port.
 
 	(exec 3<>/dev/tcp/$DATABASE_SERVER/$DATABASE_PORT) > /dev/null 2>&1
 }
@@ -816,6 +812,7 @@ function start_database {
 		echo "Error: $MYSQL_NAME server not started! Exiting."
 		exit 2
 	fi
+
 	# wait till the MariaDB/MySQL tcp port is open.
 	#
 	# A start that has already failed is not waited out: mysqld_safe stays alive for as long as the
@@ -825,6 +822,7 @@ function start_database {
 	# timeout. The timeout is what remains for the rarer case of a server that runs but does not get
 	# to listening, where waiting is the right thing to do: a start that has to build its system
 	# tables, or one recovering after an unclean shutdown, takes its time and does succeed.
+
 	WAITED=0
 	until database_port_open; do
 		if ! kill -0 $DATABASE_LAUNCHER_PID 2>/dev/null; then
@@ -1844,6 +1842,7 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	mysql_check;
 	# config database
 	config_database;
+
 	# check if OH database already exists
 	#
 	# The data directory alone does not say that: initialize_database creates it as its very first
@@ -1854,7 +1853,9 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 	# up without regard to case, because the shipped my.cnf sets lower_case_table_names and the
 	# engine then stores the schema of a database named MyHospital in a directory called myhospital,
 	# while DATA_DIR keeps the name as the user typed it.
+
 	if [ ! -d ./"$DATA_DIR" ]; then
+		# if mariadb data directory does not exist, start from scratch
 		echo "OH database not found, starting from scratch..."
 		# prepare database
 		initialize_database;
@@ -1868,6 +1869,7 @@ if [ "$OH_MODE" = "PORTABLE" ] || [ "$OH_MODE" = "SERVER" ] ; then
 		create_database;
 		# load data
 		import_database;
+		# check if broken/unfinished OH database references already exist
 	elif [ -z "$(find ./"$DATA_DIR" -mindepth 1 -maxdepth 1 -type d -iname "$DATABASE_NAME" -print -quit 2>/dev/null)" ]; then
 		echo "Error: a previous installation of the [$DATABASE_NAME] database was left unfinished in ./$DATA_DIR."
 		echo "Remove that directory, or reset the installation with option [X] which deletes the data for you,"

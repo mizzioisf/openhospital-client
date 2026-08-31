@@ -910,6 +910,7 @@ function start_database {
 	# A start that has already failed is not waited out either - once mysqld has exited, the port
 	# will never open and there is nothing left to wait for. That is the common failure and it is
 	# reported at once; the timeout covers the rarer server that runs but does not get to listening.
+
 	$WAITED = 0
 	while ( !(database_port_open) ) {
 		if ( $script:DATABASE_PROCESS -And $script:DATABASE_PROCESS.HasExited ) {
@@ -1049,10 +1050,7 @@ function dump_database {
 
 ###################################################################
 function database_port_open {
-	# Whether the database is accepting connections on its TCP port.
-	#
-	# A refused connection makes Task.Wait throw rather than return false, so the call is guarded: left
-	# uncaught the failure would surface as an error from the loops below instead of as a closed port.
+	# Check if the database server is accepting connections on its TCP port.
 	
 	$client = New-Object System.Net.Sockets.TcpClient
 	try {
@@ -1952,6 +1950,7 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 	mysql_check;
 	# config database
 	config_database;
+
 	# check if OH database already exists.
 	#
 	# The data directory alone does not say that: initialize_database creates it as its very first
@@ -1960,6 +1959,8 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 	# hint that the first attempt had never finished. What tells a finished installation apart is
 	# the directory the database engine creates for the [$DATABASE_NAME] schema itself, inside the
 	# data directory.
+
+	# check if broken/unfinished OH database references already exist
 	if ( (Test-Path "$OH_PATH/$DATA_DIR") -And !(Test-Path "$OH_PATH/$DATA_DIR/$DATABASE_NAME") ) {
 		Write-Host "Error: a previous installation of the [$DATABASE_NAME] database was left unfinished in $DATA_DIR." -ForegroundColor Red
 		Write-Host "Remove that directory, or reset the installation with option [X] which deletes the data for you," -ForegroundColor Red
@@ -1967,6 +1968,7 @@ if ( ($OH_MODE -eq "PORTABLE") -Or ($OH_MODE -eq "SERVER") ){
 		Read-Host; exit 2
 	}
 	if ( !(Test-Path "$OH_PATH/$DATA_DIR") ) {
+		# if mariadb data directory does not exist, start from scratch
 		Write-Host "OH database not found, starting from scratch..."
 		# prepare database
 		initialize_database;
