@@ -166,9 +166,9 @@ EXPERT_MODE="off"
 
 ######## MariaDB/MySQL Software
 # MariaDB version
-MYSQL_VERSION="10.6.23"
+MYSQL_VERSION="10.6.28"
 #MYSQL_VERSION="11.6.2"
-MYSQL32_VERSION="10.5.27"
+MYSQL32_VERSION="10.5.28"
 PACKAGE_TYPE="systemd" 
 
 ######## define system and software architecture
@@ -209,12 +209,12 @@ MYSQL_NAME="MariaDB" # For console output - MariaDB/MYSQL_NAME
 
 ### JRE 17 - zulu distribution
 #JAVA_DISTRO="zulu11.68.17-ca-jre11.0.21-linux_$JAVA_PACKAGE_ARCH"
-JAVA_DISTRO="zulu17.60.17-ca-jre17.0.16-linux_$JAVA_PACKAGE_ARCH"
+JAVA_DISTRO="zulu17.68.203-ca-fx-jre17.0.20.1-linux_$JAVA_PACKAGE_ARCH"
 JAVA_URL="https://cdn.azul.com/zulu/bin"
 JAVA_DIR=$JAVA_DISTRO
 
 # Tomcat 11
-TOMCAT_VERSION="11.0.15"
+TOMCAT_VERSION="11.0.25"
 TOMCAT_URL="https://archive.apache.org/dist/tomcat/tomcat-11/v$TOMCAT_VERSION/bin/"
 TOMCAT_DISTRO="apache-tomcat-$TOMCAT_VERSION"
 TOMCAT_DIR=$TOMCAT_DISTRO
