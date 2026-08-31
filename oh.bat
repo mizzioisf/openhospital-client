@@ -305,7 +305,8 @@ if not EXIST %OH_PATH%\%DATA_DIR%\%DATABASE_NAME% (
 
 	echo Importing database %DATABASE_NAME% with user %DATABASE_USER%@%DATABASE_SERVER%...
 	cd /d %OH_PATH%\%SQL_DIR%
-	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --local-infile=1 -u %DATABASE_USER% -p%DATABASE_PASSWORD% --host=%DATABASE_SERVER% --port=%DATABASE_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
+	rem --abort-source-on-error: the client otherwise carries on after a failed statement inside a sourced file and still exits 0
+	start /b /min /wait %OH_PATH%\%MYSQL_DIR%\bin\mysql.exe --abort-source-on-error --local-infile=1 -u %DATABASE_USER% -p%DATABASE_PASSWORD% --host=%DATABASE_SERVER% --port=%DATABASE_PORT% %DATABASE_NAME% < "%OH_PATH%\sql\%DB_CREATE_SQL%"  >> "%OH_PATH%\%LOG_DIR%\%LOG_FILE%" 2>&1
 	if ERRORLEVEL 1 (goto error)
 	cd /d %OH_PATH%
 	echo Database imported!
@@ -346,7 +347,7 @@ REM ###### Start Open Hospital #####
 echo Starting Open Hospital GUI...
 
 cd /d %OH_PATH%\%OH_DIR%
-%JAVA_BIN% -client -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.Application
+%JAVA_BIN% -client --add-opens java.desktop/javax.imageio.stream=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED -Xms64m -Xmx1024m -Dsun.java2d.dpiaware=false -Djava.library.path=%NATIVE_LIB_PATH% -cp %CLASSPATH% org.isf.Application
 
 REM # Shutdown MySQL
 echo Shutting down MySQL...
