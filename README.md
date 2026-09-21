@@ -6,7 +6,7 @@
 
 **This repo is experimental and is used to test the latest Open Hospital releases and features. Use at your own risk !**
 
-**New! Updated to 1.15.1 Open Hospital official release!**
+**New! Updated to 1.16-dev Open Hospital test release!**
 
 # Running OH - Ultra-quickstart
 
