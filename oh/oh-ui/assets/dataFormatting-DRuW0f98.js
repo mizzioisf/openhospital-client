@@ -1,0 +1,1 @@
+import{i as e}from"./Button-DWXB698g.js";import"./functions-P8SxSMrW.js";var t=t=>e(t).isValid()?e(t).format(`DD/MM/YYYY`):``,n=t=>e(t).isValid()?e(t).format(`DD/MM/YYYY HH:mm:ss`):``;export{n,t};

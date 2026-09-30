@@ -1,0 +1,1 @@
+import{t as e}from"./usePermissions-63vBlJZp.js";var t=t=>e().includes(t);export{t};
