@@ -11,21 +11,21 @@ server.port=8080
 server.servlet.session.cookie.http-only=true
 #server.servlet.session.cookie.secure=true # only over HTTPS
 spring.pid.fail-on-write-error=true
-spring.pid.file=
+spring.pid.file=OH_API_PID
 spring.mustache.check-template-location=false
 spring.jpa.open-in-view=false
 
 ### In production change to http://<domain>
-cors.allowed.origins=http://localhost:8080,http://localhost:8080
+cors.allowed.origins=http://API_HOST:API_PORT,http://UI_HOST:UI_PORT
 
 ### Swagger-UI (info)
-api.host=localhost:8080/oh-api
+api.host=API_HOST:API_PORT/API_URL
 api.protocol=http
 springdoc.swagger-ui.tagsSorter=alpha
 springdoc.swagger-ui.doc-expansion=none
 
 ### Security token secret (JWT)
-jwt.token.secret=AdZ1azzNGlhWSb0JPHFXN79QPBlinrLy1spKyzejulAH6c9OnTSIzPqB9lsipmv4x2
+jwt.token.secret=JWT_TOKEN_SECRET
 
 ### JWT token validity, 30 minutes (1,800 seconds)
 jwt.token.validityInSeconds=1800
