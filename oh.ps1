@@ -119,9 +119,14 @@ $script:OH_SINGLE_USER="no"
 $script:DEMO_DATA="off"
 $script:DEMO_DATABASE="ohdemo"
 
+##################### JAVA/JRE configuration #######################
 # set JAVA_BIN 
 # Uncomment this if you want to use system wide JAVA
 #$script:JAVA_BIN="C:\Program Files\JAVA\bin\java.exe"
+
+# set JAVA_HOME
+# Uncomment this if you want to use system wide JAVA_HOME
+#$script:JAVA_HOME="C:\Program Files\JAVA\"
 
 ##################### Database configuration #######################
 $script:DATABASE_SERVER="127.0.0.1"
@@ -306,7 +311,7 @@ function script_menu {
 	Write-Host "| arch: $ARCH | lang: $OH_LANGUAGE | mode: $OH_MODE | Demo: $DEMO_DATA | log level: $LOG_LEVEL | "
 	Write-Host " ------------------------------------------------------------------------"
 	if ( $EXPERT_MODE -eq "on" ) {
-		Write-Host "| Expert mode: $EXPERT_MODE | EXPERIMENTAL:  API server: $API_SERVER | GUI: $GUI_INTERFACE | UI: $UI_INTERFACE |"
+		Write-Host "| Expert mode: $EXPERT_MODE | EXPERIMENTAL: API server: $API_SERVER | GUI: $GUI_INTERFACE | UI: $UI_INTERFACE |"
 		Write-Host " ------------------------------------------------------------------------"
 	}
 	Write-Host ""
@@ -712,6 +717,13 @@ function java_check {
 	}
 	Write-Host "Java found!"
 	Write-Host "Using $JAVA_BIN"
+	
+	# set JAVA_HOME
+	if ( !( $JAVA_HOME ) ) {
+        	# set default
+        	Write-Host "Setting JAVA_HOME..."
+		$script:JAVA_HOME="$OH_PATH\$JAVA_DIR"
+	}
 }
 
 ###################################################################
