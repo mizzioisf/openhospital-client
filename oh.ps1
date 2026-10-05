@@ -406,7 +406,7 @@ function read_settings {
 		
 		$script:OH_MODE=$oh_settings.MODE
 		$script:OH_LANGUAGE=$oh_settings.LANGUAGE
-		$script:OH_SINGLE_USER=$oh_settings.SINGLE_USER
+		$script:OH_SINGLE_USER=$oh_settings.SINGLEUSER
 		$script:OH_DOC_DIR=$oh_settings.OH_DOC_DIR
 		$script:DEMO_DATA=$oh_settings.DEMODATA
 		$script:API_SERVER=$oh_settings.APISERVER
