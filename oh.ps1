@@ -143,8 +143,6 @@ $script:OH_DOC_DIR="doc"
 $script:CONF_DIR="data/conf"
 $script:DATA_DIR="data/db"
 
-# seconds to wait for the database to start listening, or to release its port on shutdown
-$script:DATABASE_WAIT_TIMEOUT=90
 $script:PHOTO_DIR="data/photo"
 $script:BACKUP_DIR="data/dump"
 $script:LOG_DIR="data/log"
@@ -180,6 +178,9 @@ $script:EXT="zip"
 
 # mysql configuration file
 $script:MYSQL_CONF_FILE="my.cnf"
+
+# seconds to wait for the database to start listening, or to release its port on shutdown
+$script:DATABASE_WAIT_TIMEOUT=90
 
 # OH configuration files - see also settings.properties
 $script:OH_SETTINGS="settings.properties"
@@ -717,11 +718,11 @@ function java_check {
 	}
 	Write-Host "Java found!"
 	Write-Host "Using $JAVA_BIN"
-	
+
 	# set JAVA_HOME
 	if ( !( $JAVA_HOME ) ) {
-        	# set default
-        	Write-Host "Setting JAVA_HOME..."
+		# set default
+		Write-Host "Setting JAVA_HOME..."
 		$script:JAVA_HOME="$OH_PATH\$JAVA_DIR"
 	}
 }
